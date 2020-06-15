@@ -2,6 +2,8 @@ import logging
 import os
 import re
 from pathlib import Path
+import sys
+
 
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets

@@ -287,8 +287,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             run_loader = RunDeserializer(xtal_file_path)
             run = run_loader.xtal_to_run()  # attempt to load the run
 
-            assert isinstance(run, (Run, HWIRun))
-
             if not isinstance(run, (Run, HWIRun)):
                 error_box = self.make_message_box(
                     message='Save file could not be read :(',

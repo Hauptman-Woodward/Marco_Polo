@@ -60,7 +60,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         # Widget display setup
         self.set_menu_options()
         logger.info('Opened run importer dialog')
-        self.exec_()
+        # self.exec_()
     
     @property
     def current_menu_type(self):

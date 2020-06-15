@@ -344,11 +344,12 @@ class RunDeserializer():  # convert saved file into a run
         :return: byte string with non-data artifacts removed
         :rtype: bytes
         '''
-        if string[0] == 'b':  # bytes string written directly to string
-            string = string[1:]
-        if string[-1] == "'":
-            string = string[:-1]
-        return bytes(string, 'utf-8')
+        if string:
+            if string[0] == 'b':  # bytes string written directly to string
+                string = string[1:]
+            if string[-1] == "'":
+                string = string[:-1]
+            return bytes(string, 'utf-8')
 
     @staticmethod
     def dict_to_obj(our_dict):
@@ -442,10 +443,12 @@ class RunDeserializer():  # convert saved file into a run
                     reagents = []
                     if run.images[i].cocktail:
                         for j, _ in enumerate(run.images[i].cocktail['reagents']):
+                            # holy mother of jank
+                            run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
                             reagents.append(RunDeserializer.dict_to_obj(
                                 run.images[i].cocktail['reagents'][j]))
-                            reagents[-1].concentration = RunDeserializer.dict_to_obj(
-                                reagents[-1].concentration)
+                            # reagents[-1].concentration = RunDeserializer.dict_to_obj(
+                            #     reagents[j].concentration)
                         run.images[i].cocktail = RunDeserializer.dict_to_obj(
                             run.images[i].cocktail)
                         run.images[i].cocktail.reagents = reagents
@@ -591,7 +594,7 @@ class CocktailMenuReader():
         for i in range(0, len(reagent_pos), 2):
             chem_add, con = row[reagent_pos[i]], row[reagent_pos[i+1]]
             if chem_add:
-                con = SignedValue(con)
+                con = SignedValue.make_from_string(con)
                 c.add_reagent(
                     Reagent(
                         chemical_additive=chem_add,
