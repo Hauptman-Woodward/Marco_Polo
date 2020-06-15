@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="src/python/static/stylesheet.css">
+  </head>
+<body>
+<h1>{{run_name}} Journal</h1>
+<br>
+{% for entry_date, content in journal.items() %}
+    <h2>{{content[0]}}</h2>
+    <h3>{{entry_date}}</h3>
+    <hr>
+    {{content[1]}}
+{% endfor %}
+</body>
+</html>

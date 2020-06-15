@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="src/python/static/stylesheet.css">
+  </head>
+
+<body>
+<h1>Screening Run {{run_name}}</h1>
+<hr>
+<h2>User Annotations</h2>
+<p>{{annotations}}</p>
+
+
+{% for image in images %}
+    {% if image %}
+        <h2>{{image.path}}</h2>
+        {% if image.well_number %}
+            <h3>Well Number: {{image.well_number}}</h3>
+        {% endif %}
+        {% if image.human_class %}
+            <h3>Human Classification: {{image.human_class}}</h3>
+        {% endif %}
+        {% if image.machine_class %}
+        <h3>MARCO Classification: {{image.machine_class}}</h3>
+        {% endif %}
+        <hr>
+        {% if image.bites %}
+        <img  src="data:image/gif;base64,{{image.bites}}"/>
+        {{ else }}
+            <p><img src={{image.path}}></p>
+        {% endif %}
+
+        
+        {% if image.cocktail %}
+            <h2>Cocktail Composition</h2>
+            <h3>Cocktail Number: {{image.cocktail.number}}</h3>
+            <h3>Cocktail Commercial Code: {{image.cocktail.commercial_code}}</h3>
+            <table style="width:100%">
+                <tr>
+                    <th>Chemcial Additive</th>
+                    <th>Formula</th>
+                    <th>Concentration</th>
+                    <th>Units</th>
+                </tr>
+                {% for solution in image.cocktail.solutions %}
+                    {% if solution %}  
+                    <tr>
+                        <td>{{solution.chemical_additive}}</td>
+                        {% if solution.formula %}
+                            <td>{{solution.formula}}</td>
+                        {% else %}
+                            <td>Not Available</td>
+                        {% endif %}
+                        <td>{{solution.concentration}}</td>
+                        <td>{{solution.concentration_units}}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</body>
+</html>

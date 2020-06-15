@@ -1,0 +1,11 @@
+# windows to be run from the python directory
+pyinstaller --add-data polo\data\;polo\data\ --add-data polo\marco\savedmodel\;polo\marco\savedmodel\ --add-data astor;astor\ Polo.py
+
+# windows command as of jun 12
+pyinstaller --add-data data;data\ --add-data src\astor;astor\ src\Polo.py 
+
+
+# isssues with tensorflow packaging in linux
+# pyinstaller not picking up the required files
+
+pyinstaller --add-data data:data/ --add-data src/astor:astor/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/rnn/python/ops/*:tensorflow/contrib/rnn/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/bigtable/python/ops/*:tensorflow/contrib/bigtable/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/layers/python/ops/*:tensorflow/contrib/layers/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/input_pipeline/python/ops/*:tensorflow/contrib/input_pipeline/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/factorization/python/ops/*:tensorflow/contrib/factorization/python/ops/ src/Polo.py

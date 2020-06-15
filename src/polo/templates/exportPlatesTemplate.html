@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+            table, th, td {
+            border: 1px solid black;
+            padding: 5px;
+            }
+        </style>
+    <link rel="stylesheet" href="src/python/static/stylesheet.css">
+  </head>
+
+<body>
+    <h1>Grid Screen for Well {{well_number}} of run {{run_name}}</h1>
+    <h3>Generated {{date}}</h3>
+    <h3>{{x_reagent_stock}}</h3>
+    <h3>{{y_reagent_stock}}</h3>
+    <h3>Well Volume: {{well_volume}}</h3>
+    <hr>
+    <table style="width: 100%">
+        {% for row in plate_list %}
+        <tr>
+            {% for column in row %}
+            <td>
+                <p>{{column}}</p>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
