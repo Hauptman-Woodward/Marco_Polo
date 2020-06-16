@@ -307,6 +307,126 @@ using the plot control icons at the bottom of the **Plots** tab. Select the
 floppy disc to save the current plot.
 
 
+Using the Optimize Tool
+#############################
+
+Once you have identified crystal containing wells, you can easily
+design optimization screens using the optimize tool. The optimize tool
+automatically creates screens around the cocktail conditions a crystal hit
+grown in.
+
+Currently all conditions come directly from HWI screening conditions and changing
+the conditions manually is not currently supported.
+
+For more information on
+optimization protocols you can read this document provided by HWI,
+
+`Reproducing HWI HTCSC crystallization screening hits <https://hwi.buffalo.edu/wp-content/uploads/2017/10/ReproduceCrystalLeads.pdf>`_
+
+ .. image:: ./images/optimize.png
+   :alt: The plateviewer tab.
+
+
+Setting Up Your Plate
+---------------------------------
+The first thing to do is to tell Polo what the plate you will be using for
+your optimization screen. Set the number of wells in your plate by adjusting
+the plate dimensions.
+
+For example a standard 24 well plate could have 6 wells on X axis and 4 on
+the Y or vice versa. Which value you assign to which axis is arbitrary as
+long as you assign the reagent you want to screen for on that same axis.
+
+You should also adjust the well volume by using the **Well Volume** and associated
+units combo boxes. This volume will be used as the maximum volume for each well.
+
+Selecting Reagents
+-------------------------------
+Once your plate is set up you are ready to select reagents to screen for.
+Wells you have classified as crystal containing are listed in the **Hit Well**
+combo box under the **Reagent Controls** panel. Selecting a well will display
+its containing reagents under the **Assign Reagents** combo boxes of the
+**X Reagent** and **Y Reagent** tabs.
+
+.. note::  A reagent assigned under the **X Reagent tab** will be varied on the X-axis of the plate and the reagent assigned under the **Y Reagent** tab will be varied on the Y-axis of the plate.
+
+Since any given plate only has two axis only two reagents can be screened for,
+but many crystallization cocktail contain three or more reagents. Reagents not
+assigned to either the x or y reagent will be considered constant and will
+be present in your final screen but always at the same concentration.
+
+Once you have assigned your reagents set a stock concentration for each reagent and
+select a percentage to the x and y reagents by. This is always in reference to the
+hit concentration for the particular reagent.
+
+For example if you selected citric acid as your x reagent and it was present
+in the crystallization cocktail at a concentration of 0.5 M the concentration
+of citric acid in your optimization screen will be varied in reference to
+0.5 M by the percentage selected in the **Vary each well by** spin box.
+
+Additionally, the hit concentration is always the center most well of the
+axis. Meaning if there are 6 wells on your plate's x-axis you can expect
+the concentration of citric acis in the 3rd well to be 0.5 M (using the
+example above).
+
+Viewing Your Optimization Screen
+-------------------------------------
+After everything is set up, press **Show Screen** to display your
+current optimization screen. It will look something like the image below.
+
+ .. image:: ./images/screen.png
+   :alt: The plateviewer tab.
+
+If it does not fill the screen slightly adjust the size of the Polo window and
+it should snap into place.
+
+Exporting A Screen
+------------------------
+After setting up your screen you can export it to an html file to print
+and / or share with your friends. To do so just hit the **Export** button.
+This will open a file browser and you can select where you would like to
+save the file. You can then open the file with any browser to view it or
+save it as a pdf.
+
+
+Advanced Tools
+####################
+Advanced tools go a bit beyond image classification and viewing and allow you
+to take advantage of the fact a single screening run will likely be imaged at
+multiple points in time and with multiple imaging technologies. All tools
+described below can be found by navigating to the menu bar and selecting 
+**Advanced Tools**.
+
+Time Resolved Runs
+---------------------
+
+Usually, the sample plate will be imaged at multiple points in time. Polo allows
+you to link these runs together using the **Add Time Resolved** tool under
+**Advanced Tools**. Polo will automatically determine the order of the runs
+based on their date and then allow you to navigate between them in both
+the Slideshow Viewer tab and Plate Viewer tab using the **Next Date** and
+**Previous Date** buttons.
+
+Adding an Alternative Spectrum
+-------------------------------
+Oftentimes, the same plate will be imaged with a photographic technology
+besides microscopy in order to verify the presence of crystals in a sample.
+If you have images taken with such a technology you can identify them as such
+in the **Run Importer** window (link here).
+
+Then navigate to **Advanced Tools** and select **Add Spectrum** which will
+open a dialog like the one shown below.
+
+
+
+Valid runs will automatically be assigned to an image category based on the
+spectrum they were assigned at import. Select one run from each category that
+you would like to link and when finished press **Submit Assignment**.
+
+You will then be able to swap between these images in both the Slideshow Viewer
+and Plate Viewers. This can be very useful for verifying a crystal is in fact
+a protein crystal and not salt.
+
 
 Saving a Run
 ####################

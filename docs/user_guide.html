@@ -116,6 +116,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#saving-a-plot">Saving a Plot</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-optimize-tool">Using the Optimize Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-your-plate">Setting Up Your Plate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-reagents">Selecting Reagents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-your-optimization-screen">Viewing Your Optimization Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-a-screen">Exporting A Screen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-tools">Advanced Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#time-resolved-runs">Time Resolved Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-an-alternative-spectrum">Adding an Alternative Spectrum</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#saving-a-run">Saving a Run</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#xtal-file-format">.xtal File Format</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#actually-saving-your-run">Actually Saving Your Run</a></li>
@@ -452,6 +464,109 @@ all images in your screening run.</p>
 <p>If you wish, you can save a plot as an image to your machine by
 using the plot control icons at the bottom of the <strong>Plots</strong> tab. Select the
 floppy disc to save the current plot.</p>
+</div>
+</div>
+<div class="section" id="using-the-optimize-tool">
+<h2>Using the Optimize Tool<a class="headerlink" href="#using-the-optimize-tool" title="Permalink to this headline">¶</a></h2>
+<p>Once you have identified crystal containing wells, you can easily
+design optimization screens using the optimize tool. The optimize tool
+automatically creates screens around the cocktail conditions a crystal hit
+grown in.</p>
+<p>Currently all conditions come directly from HWI screening conditions and changing
+the conditions manually is not currently supported.</p>
+<p>For more information on
+optimization protocols you can read this document provided by HWI,</p>
+<p><a class="reference external" href="https://hwi.buffalo.edu/wp-content/uploads/2017/10/ReproduceCrystalLeads.pdf">Reproducing HWI HTCSC crystallization screening hits</a></p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/optimize.png" />
+</div></blockquote>
+<div class="section" id="setting-up-your-plate">
+<h3>Setting Up Your Plate<a class="headerlink" href="#setting-up-your-plate" title="Permalink to this headline">¶</a></h3>
+<p>The first thing to do is to tell Polo what the plate you will be using for
+your optimization screen. Set the number of wells in your plate by adjusting
+the plate dimensions.</p>
+<p>For example a standard 24 well plate could have 6 wells on X axis and 4 on
+the Y or vice versa. Which value you assign to which axis is arbitrary as
+long as you assign the reagent you want to screen for on that same axis.</p>
+<p>You should also adjust the well volume by using the <strong>Well Volume</strong> and associated
+units combo boxes. This volume will be used as the maximum volume for each well.</p>
+</div>
+<div class="section" id="selecting-reagents">
+<h3>Selecting Reagents<a class="headerlink" href="#selecting-reagents" title="Permalink to this headline">¶</a></h3>
+<p>Once your plate is set up you are ready to select reagents to screen for.
+Wells you have classified as crystal containing are listed in the <strong>Hit Well</strong>
+combo box under the <strong>Reagent Controls</strong> panel. Selecting a well will display
+its containing reagents under the <strong>Assign Reagents</strong> combo boxes of the
+<strong>X Reagent</strong> and <strong>Y Reagent</strong> tabs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A reagent assigned under the <strong>X Reagent tab</strong> will be varied on the X-axis of the plate and the reagent assigned under the <strong>Y Reagent</strong> tab will be varied on the Y-axis of the plate.</p>
+</div>
+<p>Since any given plate only has two axis only two reagents can be screened for,
+but many crystallization cocktail contain three or more reagents. Reagents not
+assigned to either the x or y reagent will be considered constant and will
+be present in your final screen but always at the same concentration.</p>
+<p>Once you have assigned your reagents set a stock concentration for each reagent and
+select a percentage to the x and y reagents by. This is always in reference to the
+hit concentration for the particular reagent.</p>
+<p>For example if you selected citric acid as your x reagent and it was present
+in the crystallization cocktail at a concentration of 0.5 M the concentration
+of citric acid in your optimization screen will be varied in reference to
+0.5 M by the percentage selected in the <strong>Vary each well by</strong> spin box.</p>
+<p>Additionally, the hit concentration is always the center most well of the
+axis. Meaning if there are 6 wells on your plate’s x-axis you can expect
+the concentration of citric acis in the 3rd well to be 0.5 M (using the
+example above).</p>
+</div>
+<div class="section" id="viewing-your-optimization-screen">
+<h3>Viewing Your Optimization Screen<a class="headerlink" href="#viewing-your-optimization-screen" title="Permalink to this headline">¶</a></h3>
+<p>After everything is set up, press <strong>Show Screen</strong> to display your
+current optimization screen. It will look something like the image below.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/screen.png" />
+</div></blockquote>
+<p>If it does not fill the screen slightly adjust the size of the Polo window and
+it should snap into place.</p>
+</div>
+<div class="section" id="exporting-a-screen">
+<h3>Exporting A Screen<a class="headerlink" href="#exporting-a-screen" title="Permalink to this headline">¶</a></h3>
+<p>After setting up your screen you can export it to an html file to print
+and / or share with your friends. To do so just hit the <strong>Export</strong> button.
+This will open a file browser and you can select where you would like to
+save the file. You can then open the file with any browser to view it or
+save it as a pdf.</p>
+</div>
+</div>
+<div class="section" id="advanced-tools">
+<h2>Advanced Tools<a class="headerlink" href="#advanced-tools" title="Permalink to this headline">¶</a></h2>
+<p>Advanced tools go a bit beyond image classification and viewing and allow you
+to take advantage of the fact a single screening run will likely be imaged at
+multiple points in time and with multiple imaging technologies. All tools
+described below can be found by navigating to the menu bar and selecting
+<strong>Advanced Tools</strong>.</p>
+<div class="section" id="time-resolved-runs">
+<h3>Time Resolved Runs<a class="headerlink" href="#time-resolved-runs" title="Permalink to this headline">¶</a></h3>
+<p>Usually, the sample plate will be imaged at multiple points in time. Polo allows
+you to link these runs together using the <strong>Add Time Resolved</strong> tool under
+<strong>Advanced Tools</strong>. Polo will automatically determine the order of the runs
+based on their date and then allow you to navigate between them in both
+the Slideshow Viewer tab and Plate Viewer tab using the <strong>Next Date</strong> and
+<strong>Previous Date</strong> buttons.</p>
+</div>
+<div class="section" id="adding-an-alternative-spectrum">
+<h3>Adding an Alternative Spectrum<a class="headerlink" href="#adding-an-alternative-spectrum" title="Permalink to this headline">¶</a></h3>
+<p>Oftentimes, the same plate will be imaged with a photographic technology
+besides microscopy in order to verify the presence of crystals in a sample.
+If you have images taken with such a technology you can identify them as such
+in the <strong>Run Importer</strong> window (link here).</p>
+<p>Then navigate to <strong>Advanced Tools</strong> and select <strong>Add Spectrum</strong> which will
+open a dialog like the one shown below.</p>
+<p>Valid runs will automatically be assigned to an image category based on the
+spectrum they were assigned at import. Select one run from each category that
+you would like to link and when finished press <strong>Submit Assignment</strong>.</p>
+<p>You will then be able to swap between these images in both the Slideshow Viewer
+and Plate Viewers. This can be very useful for verifying a crystal is in fact
+a protein crystal and not salt.</p>
 </div>
 </div>
 <div class="section" id="saving-a-run">
