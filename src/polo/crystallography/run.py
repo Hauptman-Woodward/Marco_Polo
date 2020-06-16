@@ -382,7 +382,6 @@ class HWIRun(Run):
         stored as a dictionary in the mainWindow object.
         '''
         self.images = [BLANK_IMAGE for i in range(0, self.num_wells)]
-        print(self.image_dir)
         assert os.path.exists(self.image_dir)
 
         for image_path in list_dir_abs(self.image_dir, allowed=True):
@@ -390,7 +389,6 @@ class HWIRun(Run):
             image_path = str(image_path)
             plate_id, well_num, date, other = parse_HWI_filename_meta(
                 image_path)
-            print(type(well_num), 'well_number type')
             self.images[well_num-1] = Image(path=image_path,
                                             well_number=well_num,
                                             date=date, plate_id=plate_id,

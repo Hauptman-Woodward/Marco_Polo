@@ -10,10 +10,13 @@ Welcome to Polo's documentation!
    :maxdepth: 1
    :caption: Contents:
    
+   about
    Quickstart
    FAQS
    user_guide
+   beta_testers
    polo
+   
 
 
 Indices and tables

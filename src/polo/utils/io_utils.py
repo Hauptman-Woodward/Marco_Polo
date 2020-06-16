@@ -431,40 +431,41 @@ class RunDeserializer():  # convert saved file into a run
         '''
         logger.info('Attempting to load run from {}'.format(self.xtal_path))
         try:
-            with open(self.xtal_path) as xtal_data:
-                header_data = self.xtal_header_reader(
-                    xtal_data)  # must read header first
-                j_d = json.load(xtal_data)
-            run = RunDeserializer.dict_to_obj(j_d)
+            if os.path.isfile(self.xtal_path):
+                with open(self.xtal_path) as xtal_data:
+                    header_data = self.xtal_header_reader(
+                        xtal_data)  # must read header first
+                    j_d = json.load(xtal_data)
+                run = RunDeserializer.dict_to_obj(j_d)
 
-            run.date = datetime.strptime(
-                run.date, '%Y-%m-%d %H:%M:%S')
-            for i, _ in enumerate(run.images):
-                run.images[i] = RunDeserializer.dict_to_obj(run.images[i])
-                run.images[i].bites = RunDeserializer.clean_base64_string(
-                    run.images[i].bites)
-                if run.images[i]:
-                    if run.images[i].date:
-                        date = run.images[i].date
-                        run.images[i].date = datetime.strptime(
-                            date, '%Y-%m-%d %H:%M:%S')
-                    reagents = []
-                    if run.images[i].cocktail:
-                        for j, _ in enumerate(run.images[i].cocktail['reagents']):
-                            # holy mother of jank
-                            run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
-                                run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
-                            reagents.append(RunDeserializer.dict_to_obj(
-                                run.images[i].cocktail['reagents'][j]))
-                            # reagents[-1].concentration = RunDeserializer.dict_to_obj(
-                            #     reagents[j].concentration)
-                        run.images[i].cocktail = RunDeserializer.dict_to_obj(
-                            run.images[i].cocktail)
-                        run.images[i].cocktail.reagents = reagents
-            return run  # TODO Interpret the header data
+                run.date = datetime.strptime(
+                    run.date, '%Y-%m-%d %H:%M:%S')
+                for i, _ in enumerate(run.images):
+                    run.images[i] = RunDeserializer.dict_to_obj(run.images[i])
+                    run.images[i].bites = RunDeserializer.clean_base64_string(
+                        run.images[i].bites)
+                    if run.images[i]:
+                        if run.images[i].date:
+                            date = run.images[i].date
+                            run.images[i].date = datetime.strptime(
+                                date, '%Y-%m-%d %H:%M:%S')
+                        reagents = []
+                        if run.images[i].cocktail:
+                            for j, _ in enumerate(run.images[i].cocktail['reagents']):
+                                # holy mother of jank
+                                run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
+                                    run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
+                                reagents.append(RunDeserializer.dict_to_obj(
+                                    run.images[i].cocktail['reagents'][j]))
+                                # reagents[-1].concentration = RunDeserializer.dict_to_obj(
+                                #     reagents[j].concentration)
+                            run.images[i].cocktail = RunDeserializer.dict_to_obj(
+                                run.images[i].cocktail)
+                            run.images[i].cocktail.reagents = reagents
+                return run  # TODO Interpret the header data
         except (json.JSONDecodeError, AttributeError, IsADirectoryError, PermissionError) as e:
             logger.error('Failed to read {} into run object at {}'.format(
-                self.xtal_path, load_run_object
+                self.xtal_path, 'Place Holder'
             ))
             raise e
 

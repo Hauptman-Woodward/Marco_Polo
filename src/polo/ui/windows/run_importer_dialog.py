@@ -67,7 +67,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         # Widget display setup
         self.set_menu_options()
         logger.info('Opened run importer dialog')
-        # self.exec_()
+        self.exec_()
 
     @property
     def current_menu_type(self):
@@ -138,9 +138,13 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def set_hwi_image_type(self, image_type):
         if image_type == 'uvt':
-            self.ui.comboBox_2.setCurrentIndex(0)
+            self.ui.comboBox_2.setCurrentIndex(1)
         elif image_type == 'jpg':
             self.ui.comboBox_2.setCurrentIndex(0)
+        elif image_type == 'shg':
+            self.ui.comboBox_2.setCurrentIndex(2)
+        else:
+            self.ui.comboBox_2.setCurrentIndex(3)
 
     def suggest_menu_by_date(self, image_date, menu_type=None):
         if not menu_type:
@@ -277,7 +281,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         the run name lineEdit widget.
 
         In order for a run name to be valid it must contain only UTF-8
-        encodable characters and not already be in use by another
+        codable characters and not already be in use by another
         run object. This is because the run name is used as a key to refer
         to the run object in other functions.
 
@@ -286,13 +290,13 @@ class RunImporterDialog(QtWidgets.QDialog):
         validator_result = run_name_validator(text, self.current_run_names)
         if validator_result == UnicodeError:
             self.show_error_message('Run name is not UTF-8 Compliant')
-            self.set_run_name_by_current_index('')
+            self.current_run_name_lineEdit.setText('')
         elif validator_result == TypeError:
             self.show_error_message('Run name must not be empty.')
         elif not validator_result:  # result is false already exists
             self.show_error_message(
                 message='Run name already exists, please pick a unique name.')
-            self.set_run_name_by_current_index('')
+            self.current_run_name_lineEdit.setText('')
             # TODO option to overwrite the run of that same name
         else:
             self.current_run_name_lineEdit.setText(text)

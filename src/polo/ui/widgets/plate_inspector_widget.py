@@ -145,7 +145,6 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         Method to uncheck all user selected settings
         '''
         for widget in self.ui.groupBox_26.children():
-            print(widget)
             if isinstance(widget, QtWidgets.QCheckBox):
                 widget.setChecked(False)
         self.apply_plate_settings()

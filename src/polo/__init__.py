@@ -9,7 +9,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 # CONSTANT FILE PATHS
 # =====================================================================
@@ -28,7 +28,6 @@ else:
     # data_prefix = '../data/'
     # above is temp for spinx only
     os.path.abspath('../data')  # running as python script
-print(data_prefix)
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(data_prefix, 'cocktail_data/cocktail_meta.csv'))
 DEFAULT_IMAGE_PATH = Path(os.path.join(data_prefix, 'images/default_image.jpg'))
@@ -79,7 +78,7 @@ ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 # =================================================================
 num_regex = re.compile('[-+]?([0-9]*\.[0-9]+|[0-9]+)')
 peg_regex = re.compile('[0-9]+')
-unit_regex = re.compile('v/v|w/v|M', re.I)
+unit_regex = re.compile('v/v|w/v|M|L', re.I)
 water_regex = re.compile('\*[0-9]*h2o', re.I)
 
 

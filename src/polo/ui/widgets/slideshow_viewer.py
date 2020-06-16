@@ -21,6 +21,7 @@ class Slide():
     '''
 
     def __init__(self, image, next_slide=None, prev_slide=None, slide_number=None):
+        
         self.image = image  # image object holds well data
         self.next_slide = next_slide
         self.prev_slide = prev_slide

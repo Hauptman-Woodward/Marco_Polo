@@ -59,7 +59,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def x_wells(self):
-        '''Returns spinBox value that is to be intrepreted as number x wells'''
+        '''Returns spinBox value that is to be interpreted as number x wells'''
         return self.ui.spinBox_2.value()
 
     @property
@@ -70,7 +70,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     @property
     def x_reagent(self):
         '''
-        Used to retrieve the Reagent object that is to be varried along
+        Used to retrieve the Reagent object that is to be varied along
         the x axis of the optimization plate.
         '''
         reagent_text = self.ui.comboBox_6.currentText()
@@ -82,7 +82,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     @property
     def y_reagent(self):
         '''
-        Used to retreive the Reagent object that is to be varried along
+        Used to retreive the Reagent object that is to be varied along
         the y axis of the optimization plate
         '''
         reagent_text = self.ui.comboBox_13.currentText()
@@ -93,7 +93,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     def constant_reagents(self):
         '''
         Retrieved a set of reagents that are not included as either the
-        x reagent of the y reagent but are still part of the crystalization
+        x reagent of the y reagent but are still part of the crystallization
         cocktail and therefore need to be included in the screen. Unlike
         either the x or y reagents, constant reagents do not change their
         concentration across the screening plate.
@@ -111,9 +111,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         volume unit is currently selected.
         '''
         v = self.ui.spinBox_4.value()
-        if self.ui.comboBox_11.currentText() == 'ul':
+        if self.ui.comboBox_16.currentText() == 'ul':
             v *= 1e-6
-        elif self.ui.comboBox_11.currentText() == 'ml':
+        elif self.ui.comboBox_16.currentText() == 'ml':
             v *= 1e-3
         return SignedValue(v, 'L')  # always return in liters
 
@@ -136,7 +136,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     def x_step(self):
         '''
         Retrieves the x_step divided by 100. Determines the percent
-        varience between x_reagent wells.
+        variance between x_reagent wells.
         '''
         return self.ui.doubleSpinBox_4.value() / 100
 
@@ -144,7 +144,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     def y_step(self):
         '''
         Retrieves the y_step divided by 100. Determines the percent
-        varience between y_reagent wells.
+        variance between y_reagent wells.
         '''
         return self.ui.doubleSpinBox_5.value() / 100
 
@@ -245,7 +245,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         selected well. Reagents must come from the cocktail associated with
         the selected well.
 
-        TODO: Add the option to varry pH instead of a reagent along either
+        TODO: Add the option to vary pH instead of a reagent along either
         axis. This would also mean that the constant reagents would need to
         be updated.
         '''
@@ -279,7 +279,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def change_reagent_stock_con(self, value, reagent):
         '''Change the stock concentration of a give reagent to a new value.
-        TODO: Support more units besided molarity.
+        TODO: Support more units besides molarity.
 
         :param value: The new concentration in mols / liter
         :type value: float  
@@ -290,18 +290,18 @@ class OptimizeWidget(QtWidgets.QWidget):
             reagent.stock_con = SignedValue(value, 'M')
 
     def gradient(self, reagent, num_wells, step, stock=False):
-        '''Use this method for varrying the concentration of a given
+        '''Use this method for varying the concentration of a given
         reagent along either the x or y axis of the optimization plate. The
-        graident of concentrations are always centered around the hit
-        concentration for the reagent being varried.
+        gradient of concentrations are always centered around the hit
+        concentration for the reagent being varied.
 
-        :param reagent: Reagent to varry concentration
+        :param reagent: Reagent to vary concentration
         :type reagent: Reagent
-        :param num_wells: Number of wells to varry concentration across
+        :param num_wells: Number of wells to vary concentration across
         :type num_wells: int
-        :param step: Proportion of hit concentration to varry each well by
+        :param step: Proportion of hit concentration to vary each well by
         :type step: float < 1
-        :param stock: If True, varry the stock volume not the hit \
+        :param stock: If True, vary the stock volume not the hit \
             concentration unit, defaults to False
         :type stock: bool, optional
         :return: List of SignedValues that make up the gradient

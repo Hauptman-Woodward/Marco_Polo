@@ -192,10 +192,11 @@ class Reagent():
         :return: molarity or False
         :rtype: SignedValue or Bool
         '''
-        if self.__concentration.unit == 'M':
+        if self.__concentration.units == 'M':
             return self.concentration
-        elif self.__concentration.unit == 'w/v' and self.molar_mass:
+        elif self.__concentration.units == 'w/v' and self.molar_mass:
             M = (self.__concentration.value / self.molar_mass) * 10
+            print(SignedValue(M, 'M'), 'molarity')
             return SignedValue(M, 'M')
         else:
             return False
@@ -253,6 +254,7 @@ class Reagent():
             #print(type(self.molarity.value), type(target_volume.value), type(self.stock_con.value))
             L = (self.molarity.value * target_volume.value) / \
                 self.stock_con.value
+            print(SignedValue(L, 'L'), 'stock con')
             return SignedValue(L, 'L')
         else:
             return False
@@ -297,15 +299,8 @@ class SignedValue():
         return self.__value
 
     @value.setter
-    def value(self, string):
-        if string:
-            r = num_regex.findall(str(string))
-            if r:
-                self.__value = float(r[0])
-            else:
-                self.__value = 0.0
-        else:
-            self.__value = 0.0
+    def value(self, value):
+        self.__value = value
 
     @property
     def units(self):
