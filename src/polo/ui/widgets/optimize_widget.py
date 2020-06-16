@@ -212,6 +212,13 @@ class OptimizeWidget(QtWidgets.QWidget):
             self.ui.listWidget_4.setCurrentRow(0)
 
     def change_constant_reagent_stock_con(self, value):
+        '''Changes the stock concentration of the currently selected
+        constant reagent to the concentration of the doublespinbox widget
+        associated with the constant reagents tab.
+
+        :param value: new concentration in mols / liter
+        :type value: float
+        '''
         if value and self.ui.listWidget_4.currentItem():
             selected_reagent = self.ui.listWidget_4.currentItem().text()
             if selected_reagent:
@@ -221,6 +228,9 @@ class OptimizeWidget(QtWidgets.QWidget):
                 )
 
     def set_constant_reagent_stock_con(self):
+        '''Display the currently selected constant reagent's stock
+        concentration in the constant reagent double spin box widget.
+        '''
         current_reagent = self.ui.listWidget_4.currentItem()
         if current_reagent and current_reagent.text():
             current_reagent = self.__current_reagents[current_reagent.text()]
@@ -231,6 +241,14 @@ class OptimizeWidget(QtWidgets.QWidget):
                 self.ui.doubleSpinBox_7.setValue(0.0)
 
     def set_reagent_choices(self):
+        '''Set reagent choices for the x and y reagents based on the currently
+        selected well. Reagents must come from the cocktail associated with
+        the selected well.
+
+        TODO: Add the option to varry pH instead of a reagent along either
+        axis. This would also mean that the constant reagents would need to
+        be updated.
+        '''
         # assumes current reagents have already been set
         if self.__current_reagents:
             self.ui.comboBox_6.clear()
@@ -244,6 +262,11 @@ class OptimizeWidget(QtWidgets.QWidget):
             self.ui.comboBox_13.setCurrentIndex(len(self.__current_reagents)-1)
 
     def set_reagent_stock_con(self):
+        '''Sets the value of either the x or y reagent concentration double
+        spin box to the value for its respective reagent stock concentration.
+        This method is how we show the user what the current stock concentration
+        of a selected reagent is.
+        '''
         if self.x_reagent and self.x_reagent.stock_con:
             self.ui.doubleSpinBox.setValue(self.x_reagent.stock_con.value)
         else:
@@ -255,20 +278,48 @@ class OptimizeWidget(QtWidgets.QWidget):
         self.set_constant_reagents()
 
     def change_reagent_stock_con(self, value, reagent):
+        '''Change the stock concentration of a give reagent to a new value.
+        TODO: Support more units besided molarity.
+
+        :param value: The new concentration in mols / liter
+        :type value: float  
+        :param reagent: The reagent who's stock con is being changed 
+        :type reagent: Reagent
+        '''
         if value and reagent:
             reagent.stock_con = SignedValue(value, 'M')
 
     def gradient(self, reagent, num_wells, step, stock=False):
+        '''Use this method for varrying the concentration of a given
+        reagent along either the x or y axis of the optimization plate. The
+        graident of concentrations are always centered around the hit
+        concentration for the reagent being varried.
+
+        :param reagent: Reagent to varry concentration
+        :type reagent: Reagent
+        :param num_wells: Number of wells to varry concentration across
+        :type num_wells: int
+        :param step: Proportion of hit concentration to varry each well by
+        :type step: float < 1
+        :param stock: If True, varry the stock volume not the hit \
+            concentration unit, defaults to False
+        :type stock: bool, optional
+        :return: List of SignedValues that make up the gradient
+        :rtype: list
+        '''
         if stock and reagent.stock_volume(self.well_volume):
             c = reagent.stock_volume(self.well_volume)
         else:
             c = reagent.concentration
         m = math.floor(num_wells / 2)
         s = float(c) * step
-        return [SignedValue((c.value + (s * (n-m))), c.unit) for n in range(
+        return [SignedValue((c.value + (s * (n-m))), c.units) for n in range(
             1, num_wells+1)]  # return a list of signed values
 
     def write_optimization_screen(self):
+        '''Method to call to write the current to the table widget for display
+        to the user.
+        '''
         if self.error_checker():
             x_grad_stock, x_grad_con = (
                 self.gradient(self.x_reagent, self.x_wells,
@@ -306,7 +357,8 @@ class OptimizeWidget(QtWidgets.QWidget):
                     else:  # well overflows
                         msg = QtWidgets.QMessageBox()
                         msg.setIcon(QtWidgets.QMessageBox.Warning)
-                        msg.setText('Well Overflow Error! Try increasing your stock concentrations or using a higher well volume.')
+                        msg.setText('Well Overflow Error! Try increasing \
+                            your stock concentrations or using a higher well volume.')
                         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
                         msg.exec_()
                         self.ui.tableWidget.clear()
@@ -315,6 +367,25 @@ class OptimizeWidget(QtWidgets.QWidget):
                 if breaker: break
 
     def make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
+        '''Format the information that describes the contents of an
+        individual well into nice html that can be displayed to the user
+        in a textBrowser widget.
+
+        :param x_con: Concentration of x reagent in this well
+        :type x_con: SignedValue
+        :param x_stock: Volume of x reagent stock in this well
+        :type x_stock: SignedValue
+        :param y_con: Concentration of y reagent in this well
+        :type y_con: SignedValue
+        :param y_stock: Volume of y reagent stock in this well
+        :type y_stock: SignedValue
+        :param constants: Tuples of constant reagents to be included in each well
+        :type constants: list of tuples
+        :param water: Volume of water to be added to this well
+        :type water: Signed Value
+        :return: Html string to be rendered to the user
+        :rtype: str
+        '''
         write_unit = self.ui.comboBox_16.currentText()
         template, s = '<h4>{} {}</h4>\n{} of stock\n', ''
         s += template.format(self.x_reagent.chemical_additive, x_con, x_stock)
@@ -352,6 +423,13 @@ class OptimizeWidget(QtWidgets.QWidget):
             return True
     
     def make_plate_list(self):
+        '''Converts the concents of the tablewidget (assuming that a optimization
+        screen has been already rendered to the user) to a list of lists that
+        is easier to write to html using the jinja2 template.
+
+        :return: tableWidget contents converted to list
+        :rtype: list
+        '''
         plate_list = []
         for i in range(0, self.ui.tableWidget.rowCount()):
             plate_list.append([])
@@ -373,22 +451,27 @@ class OptimizeWidget(QtWidgets.QWidget):
                 self.x_reagent, self.y_reagent, self.well_volume, export_path)
     
     def check_for_overflow(self, volume_list):
-        '''
-        Check to see if the volume of reagents in a given well exceeds
-        the well volume. Return True if reagents fit in the well volume
-        and false otherwise.
+        ''' Check to see if the volume of reagents in a given well exceeds
+        the well volume.
+
+        :param volume_list: List of SignedValues that make up all contents \
+            of a given well. Currently assumes units are all liters. 
+        :type volume_list: list
+        :return: True if the sum of the values of volume_list are less than\
+            the current well volume, False otherwise.
+        :rtype: Bool
         '''
         # args should be volumes as signed value of all stuff
         max_volume, total_volume = self.well_volume, 0
         for value in volume_list:
             if isinstance(value, SignedValue):
-                if value.unit == 'L':
+                if value.units == 'L':
                     total_volume += value.value
-                elif value.unit == 'w/v':
+                elif value.units == 'w/v':
                     pass
                     # some kind of warning here about could not convert
                     # weight volume
-                elif value.unit == 'v/v':
+                elif value.units == 'v/v':
                     total_volume += max_volume * (value.value/100)
         if total_volume > max_volume.value:
             return False

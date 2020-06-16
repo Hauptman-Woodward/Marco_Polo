@@ -24,8 +24,11 @@ APP_ICON = Path('polo.png')
 if os.path.isdir('./data'):  # data is in same dir as __main__
     data_prefix = 'data'
 else:
-    data_prefix = '../data'  # running as python script
-
+    data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'
+    # data_prefix = '../data/'
+    # above is temp for spinx only
+    os.path.abspath('../data')  # running as python script
+print(data_prefix)
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(data_prefix, 'cocktail_data/cocktail_meta.csv'))
 DEFAULT_IMAGE_PATH = Path(os.path.join(data_prefix, 'images/default_image.jpg'))
@@ -101,6 +104,7 @@ from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
 from polo.crystallography.run import HWIRun, Run
 from polo.crystallography.image import Image
 from polo.utils.io_utils import BarTender
+from polo.threads import thread
 
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
 # best bartender at Cunneen's bar in Rodger's Park

@@ -16,6 +16,15 @@ from PyQt5 import QtWidgets
 
 
 class thread(QThread):
+
+    '''Very basic wrapper class around Qthread class. Should be
+    inherited by a more specific class and then the `run` method
+    can be overwritten do run the code that should be execulted on the
+    thread instance.
+
+    :param parent: parent widget, defaults to None
+    :type parent: QWidget, optional
+    '''
     
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -28,6 +37,20 @@ class thread(QThread):
         return NotImplementedError
 
 class QuickThread(thread):
+    
+    '''QuickThreads are very similar
+    to thread objects except instead of writing code that would be
+    executed by the `run` function directly, the function to be run
+    on the thread is passed as an arguement to `job_func` and any arguements
+    that the passed function requires are passed as key word arguements.
+    When the thread is started the key word arguements are passed to the
+    job_func and the results of the call are stored in the `results` attribute
+
+    :param job_func: function to execute on the thread
+    :type job_func: [type]
+    :param parent: [description], defaults to None
+    :type parent: [type], optional
+    '''
 
     def __init__(self, job_func, parent=None, **kwargs):
         super().__init__(parent=parent)

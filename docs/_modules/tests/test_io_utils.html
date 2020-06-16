@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests.test_io_utils &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tests.test_io_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tests.test_io_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># ============================================================================</span>
+<span class="c1"># all imports below here</span>
+
+
+<span class="n">cocktail_metadata</span> <span class="o">=</span> <span class="s1">&#39;../data/cocktail_data/cocktail_meta.csv&#39;</span>
+<span class="n">cocktail_dir</span> <span class="o">=</span> <span class="s1">&#39;../data/cocktail_data/&#39;</span>
+
+
+<div class="viewcode-block" id="xtal_test_files"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.xtal_test_files">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">xtal_test_files</span><span class="p">():</span>
+    <span class="n">xtal_files</span> <span class="o">=</span> <span class="s1">&#39;tests/data/test_xtals&#39;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xtal_files</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">xtal_files</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="run_deserializers"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.run_deserializers">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">run_deserializers</span><span class="p">(</span><span class="n">xtal_test_files</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_file</span><span class="p">)</span> <span class="k">for</span> <span class="n">xtal_file</span> <span class="ow">in</span> <span class="n">xtal_test_files</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="default_bartender"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.default_bartender">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">default_bartender</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">BarTender</span><span class="p">(</span><span class="n">cocktail_meta</span><span class="o">=</span><span class="n">cocktail_metadata</span><span class="p">,</span> <span class="n">cocktail_dir</span><span class="o">=</span><span class="n">cocktail_dir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_deserializer_creation"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_deserializer_creation">[docs]</a><span class="k">def</span> <span class="nf">test_deserializer_creation</span><span class="p">(</span><span class="n">xtal_test_files</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">xtal_file</span> <span class="ow">in</span> <span class="n">xtal_test_files</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_file</span><span class="p">),</span> <span class="n">RunDeserializer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_xtal_to_run"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_xtal_to_run">[docs]</a><span class="k">def</span> <span class="nf">test_xtal_to_run</span><span class="p">(</span><span class="n">run_deserializers</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rd</span> <span class="ow">in</span> <span class="n">run_deserializers</span><span class="p">:</span>
+        <span class="n">run</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">,</span> <span class="n">Cocktail</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">cocktail_dict</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cocktail</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">cocktail_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cocktail</span><span class="p">,</span> <span class="n">Cocktail</span><span class="p">)</span></div>
+        
+
+
+<div class="viewcode-block" id="test_bartender_init"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_bartender_init">[docs]</a><span class="k">def</span> <span class="nf">test_bartender_init</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">,</span> <span class="n">BarTender</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_bartender_menu_creation"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_bartender_menu_creation">[docs]</a><span class="k">def</span> <span class="nf">test_bartender_menu_creation</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">menus</span>
+
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">menu</span> <span class="ow">in</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">menus</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">Menu</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_bartender_menu_contents"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_bartender_menu_contents">[docs]</a><span class="k">def</span> <span class="nf">test_bartender_menu_contents</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">menu</span> <span class="ow">in</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">menus</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">menu</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">menu</span><span class="o">.</span><span class="n">cocktails</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_bartender_get_menu_by_path"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_bartender_get_menu_by_path">[docs]</a><span class="k">def</span> <span class="nf">test_bartender_get_menu_by_path</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">menu</span> <span class="ow">in</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">menus</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">get_menu_by_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">path</span></div>
+
+
+<div class="viewcode-block" id="test_cocktail_menu_reader"><a class="viewcode-back" href="../../tests.html#tests.test_io_utils.test_cocktail_menu_reader">[docs]</a><span class="k">def</span> <span class="nf">test_cocktail_menu_reader</span><span class="p">(</span><span class="n">default_bartender</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">default_bartender</span><span class="o">.</span><span class="n">menus</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">menu_reader</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cocktail</span> <span class="ow">in</span> <span class="n">menu_reader</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cocktail</span><span class="p">,</span> <span class="n">Cocktail</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">reagent</span> <span class="ow">in</span> <span class="n">cocktail</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reagent</span><span class="p">,</span> <span class="n">Reagent</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

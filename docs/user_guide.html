@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User’s Guide &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="polo package" href="polo.html" />
+    <link rel="prev" title="FAQs" href="FAQS.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-and-opening-image-data">Importing and Opening Image Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-your-data-via-ftp">Getting Your Data (via FTP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-run-importer">Using the Run Importer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-a-saved-run">Importing a Saved Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opening-a-run">Opening a Run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-slideshow-view">Using the Slideshow View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#navigation">Navigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classification">Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filtering">Filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-metadata">Image Metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-table-view">Using the Table View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-plot-functions">Using Plot Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editing-run-data-after-loading">Editing Run Data After Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#editing-run-date">Editing Run Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#editing-run-name">Editing Run Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-annotations">Adding Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-a-run">Deleting a Run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-a-run">Saving a Run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xtal-file-format">.xtal File Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exporting-a-run">Exporting a Run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#html-and-pdf-reports">HTML and PDF Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csv-exports">CSV Exports</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>User’s Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/user_guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-s-guide">
+<h1>User’s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h1>
+<p>If you have yet to install Polo on your machine, head to the installation
+guide here.</p>
+<div class="section" id="importing-and-opening-image-data">
+<h2>Importing and Opening Image Data<a class="headerlink" href="#importing-and-opening-image-data" title="Permalink to this headline">¶</a></h2>
+<p>The first step to using Polo is adding your own data. Polo organizes data into “runs”, which
+consist of a set of related screening images. Polo organizes runs into three different
+categories which are described below.</p>
+<ul class="simple">
+<li><p>HWI Screening Runs</p></li>
+<li><p>Non-HWI Screening Runs</p></li>
+<li><p>Raw Image Collections</p></li>
+</ul>
+<div class="section" id="getting-your-data-via-ftp">
+<h3>Getting Your Data (via FTP)<a class="headerlink" href="#getting-your-data-via-ftp" title="Permalink to this headline">¶</a></h3>
+<p>If you do not already have your data downloaded to your local machine, Polo
+includes an FTP file browser which utilizes Python’s ftplib package. For
+HWI users this allows you to download your screening images from the
+HWI server without leaving the application.</p>
+<p>To open the FTP file browser, on the menubar navigate to Import -&gt; Images
+-&gt; From FTP. Enter your credentials in the new window.Once you are
+connected to a server files available to download will be listed in the browser menu.
+Select the checkboxes next to the files you wish to download, or select
+all files in a directory at once. Pressing “Download Selected Files”
+will start the download.</p>
+</div>
+<div class="section" id="using-the-run-importer">
+<h3>Using the Run Importer<a class="headerlink" href="#using-the-run-importer" title="Permalink to this headline">¶</a></h3>
+<p>To import a new run into Polo for classification head to the menubar and
+click Import -&gt; Images -&gt; New Run. This will open a new window that will
+look similar to the one below.</p>
+<p>The selection box under “Import Type” lists the three run types you can
+import. Only one type may be imported at a time. Fill in the fields listed
+for the run type you wish to import and hit “submit run” to import your
+image data into Polo. Once you select a directory Polo will fill in fields
+automatically based on any metadata it finds. This is done most extensively
+for HWI Screening Runs and unless you know what you are doing it is
+recommended to use the Polo suggested settings.</p>
+</div>
+<div class="section" id="importing-a-saved-run">
+<h3>Importing a Saved Run<a class="headerlink" href="#importing-a-saved-run" title="Permalink to this headline">¶</a></h3>
+<p>One of the advantages of Polo is the introduction of the .xtal file format. Xtal
+is a json file that can store all your run data, including images, classification and
+other metadata in a single, portable format. If you have an xtal file from a previously
+saved run you can load it into Polo by navigating to the menubar and selecting
+Import -&gt; Images -&gt; From Saved Run. A file browser will open and you can select
+your .xtal file and pick up where you left off.</p>
+</div>
+<div class="section" id="opening-a-run">
+<h3>Opening a Run<a class="headerlink" href="#opening-a-run" title="Permalink to this headline">¶</a></h3>
+<p>Once a run has been successfully imported, the run name will appear in the
+loaded runs list, like in the image below.</p>
+<p>If it is a new run double clicking on the run name will run the MARCO model
+on the run’s images. You can check on MARCO’s progress by using the
+Classification Progress bar located just below the Loaded Runs list.</p>
+<p>Once a run has been classified you can load it into the current view
+by double clicking on it again.</p>
+</div>
+</div>
+<div class="section" id="using-the-slideshow-view">
+<h2>Using the Slideshow View<a class="headerlink" href="#using-the-slideshow-view" title="Permalink to this headline">¶</a></h2>
+<p>The slideshow view is the main Polo user interface. It allows you to view
+your screening images, label them and filter them by MARCO classifications,
+your own classifications or both.</p>
+<div class="section" id="navigation">
+<h3>Navigation<a class="headerlink" href="#navigation" title="Permalink to this headline">¶</a></h3>
+<p>Once you have images loaded in you can cycle through images by
+pressing the next or previous image buttons under the navigation
+panel. You can also use the right or left arrowkeys respectively.</p>
+<p>If you are viewing an HWI Screening Run you will be able to toogle
+between ordering images by index (well numbe) or by cocktail number. Also
+for HWI runs, you can navigate directly to an image by well number by using
+the By Well Number selector also in the Navigation panel.</p>
+<p>It is also posssible to move between runs that may be of the same protein
+sample but imaged at a different time or with a different optical
+technology. See the Advanced Settings section for more details on
+these features.</p>
+</div>
+<div class="section" id="classification">
+<h3>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
+<p>Arguebly the most important Polo feature is the ability to easily
+label your screening images. To label the currently displayed image
+press the button in the classification panel with your desired label.
+You can classify images as Crystal, Precipitate, Clear or Other.
+See this link for more details on each classifiction. To increase
+your speed you can classify images using keyboard shortcuts which are
+listed below.</p>
+<ul class="simple">
+<li><p>1: Crystal</p></li>
+<li><p>2: Precipitate</p></li>
+<li><p>3: Clear</p></li>
+<li><p>4: Other</p></li>
+</ul>
+<p>Classifiying an image will automatically move you to the next image in
+the slideshow.</p>
+</div>
+<div class="section" id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h3>
+<p>Using the checkboxes under the Image Filter’s panel in the lower
+right corner of the window will allow you to filter the kinds of
+images in your current slideshow. For example if you only wanted to
+see images that MARCO has classified as Crystal you could check the Crystal box
+under Image Types and MARCO under the Classifier panel. If you had checked Human
+instead only images that you have classified as Crystal would be shown.</p>
+<p>You can reset the slideshow to include all images by selecting all checkboxes
+or no boxes and pressing submit filters.</p>
+</div>
+<div class="section" id="image-metadata">
+<h3>Image Metadata<a class="headerlink" href="#image-metadata" title="Permalink to this headline">¶</a></h3>
+<p>Image metadata will be displayed in the Image Details and Cocktail Details
+windows when it is available. Image details will give you basic information about
+the image currently being displayed, such as well number, imaging technology
+imaging date and current classifications. If you are viewing an HWI run
+the chemical conditions the current image was plated in will be displayed in the
+Cocktail Details window.</p>
+</div>
+</div>
+<div class="section" id="using-the-table-view">
+<h2>Using the Table View<a class="headerlink" href="#using-the-table-view" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="using-plot-functions">
+<h2>Using Plot Functions<a class="headerlink" href="#using-plot-functions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="editing-run-data-after-loading">
+<h2>Editing Run Data After Loading<a class="headerlink" href="#editing-run-data-after-loading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="editing-run-date">
+<h3>Editing Run Date<a class="headerlink" href="#editing-run-date" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="editing-run-name">
+<h3>Editing Run Name<a class="headerlink" href="#editing-run-name" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="adding-annotations">
+<h3>Adding Annotations<a class="headerlink" href="#adding-annotations" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="deleting-a-run">
+<h3>Deleting a Run<a class="headerlink" href="#deleting-a-run" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="saving-a-run">
+<h2>Saving a Run<a class="headerlink" href="#saving-a-run" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="xtal-file-format">
+<h3>.xtal File Format<a class="headerlink" href="#xtal-file-format" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="exporting-a-run">
+<h2>Exporting a Run<a class="headerlink" href="#exporting-a-run" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="html-and-pdf-reports">
+<h3>HTML and PDF Reports<a class="headerlink" href="#html-and-pdf-reports" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="csv-exports">
+<h3>CSV Exports<a class="headerlink" href="#csv-exports" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="polo.html" class="btn btn-neutral float-right" title="polo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="FAQS.html" class="btn btn-neutral float-left" title="FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

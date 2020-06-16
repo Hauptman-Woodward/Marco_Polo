@@ -15,9 +15,24 @@ BLANK_IMAGE = Image(path=str(BLANK_IMAGE))
 
 class Run():
     '''
-    Holds data relating to an individual screening run, or one plate of
-    images.
+    :param image_dir: String. Path to directory containing images to \
+        be classified.
+    :param run_name: String. Unique name of this run.
+    :param images: List. List of Image objects is images already exist \
+        and need to be passed into a run (Unlikely).
+    :param current_image: Int. Index in self.current_slide_show_images \
+        where the image that should be currently rendered into the app \
+        can be found.
+    :param current_slide_show_images: List. List of indexes in self.images. \
+        The Images at these indicies are the set of images that based \
+        on current filters applied by the user, are \
+        available for viewing. Works in tandem with the value stored \
+        in self.current_image to create a chain of reference
+        that recovers the actual image object stored in self.images. No
+        image objects are ever stored in self.current_image or\
+        self.current_slide_show_images.
     '''
+
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress']
 
@@ -26,24 +41,7 @@ class Run():
                  image_spectrum=None, next_run=None, previous_run=None,
                  alt_spectrum=None, journal={},
                  current_image=None, current_image_index=0, *args, **kwargs):
-        '''
-        :param image_dir: String. Path to directory containing images to \
-            be classified.
-        :param run_name: String. Unique name of this run.
-        :param images: List. List of Image objects is images already exist \
-            and need to be passed into a run (Unlikely).
-        :param current_image: Int. Index in self.current_slide_show_images \
-            where the image that should be currently rendered into the app \
-            can be found.
-        :param current_slide_show_images: List. List of indexes in self.images. \
-            The Images at these indicies are the set of images that based \
-            on current filters applied by the user, are \
-            available for viewing. Works in tandem with the value stored \
-            in self.current_image to create a chain of reference
-            that recovers the actual image object stored in self.images. No
-            image objects are ever stored in self.current_image or\
-            self.current_slide_show_images.
-        '''
+
         self.image_dir = str(image_dir)
         self.run_name = run_name
         self.images = images
@@ -67,22 +65,18 @@ class Run():
         return sum([1 for i in self.images if i != None])
 
     def encode_images_to_base64(self):
+        '''Helper method that encodes all images in the Run to
+        base64.
+        '''
         for image in self.images:
             if image:
                 image.encode_base64()
 
     def add_images_from_dir(self):
-        '''
-        Adds the contents of a directory to self.images
-
-        TODO: Add validation for file types and content. Handle if user
-              gives a directory where there are no images or edge cases like
-              that.
+        '''Adds the contents of a directory to `images` attribute.
         '''
         logger.info('Adding images to {} from {}'.format(self, self.image_dir))
         self.images = []
-    
-
         for image_path in list_dir_abs(self.image_dir, allowed=True):
             self.images.append(
                 Image(path=str(image_path), spectrum=self.image_spectrum,
@@ -233,13 +227,55 @@ class HWIRun(Run):
                      'Plate Heatmaps']
     # HWI still store images in list but in order of well number
     # index = well -1
-    '''
-    Child class of Run. Is used to represent runs from the HWI screening center
+    '''Child class of Run. Is used to represent runs from the HWI screening center
     as images will have additional metadata like well and cocktail information.
     Main difference is that HWIRuns will always contain 1536 images as that is
     the number of wells in a HWI crystallization plate. Each well uses a
     different chemcial cocktail which is described in the cocktail tsv file
     included in the directory of images provided by HWI in each run. 
+
+    :param image_dir: Path to directory holding the image files
+    :type image_dir: str or Path
+    :param run_name: Unique ID for the Run
+    :type run_name: str
+    :param cocktail_dict: Dictionary mapping well numbers to
+                          Cocktail instances, defaults to None
+    :type cocktail_dict: dict, optional
+    :param images: List of Image instances taken for this run, defaults to []
+    :type images: list, optional
+    :param plate_id: HWI given unique plate ID, defaults to None
+    :type plate_id: str, optional
+    :param annotations: Any notes relating to this run, defaults to None
+    :type annotations: str, optional
+    :param save_file_path: Path to where this Run will be saved if 
+                           serialized to xtal format, defaults to None
+    :type save_file_path: Path or str, optional
+    :param num_wells: Number of wells (images) in this run, defaults to 1536
+    :type num_wells: int, optional
+    :param image_spectrum: Image tech used in this run, defaults to None
+    :type image_spectrum: str, optional
+    :param date: Date images were taken on, defaults to None
+    :type date: Datetime, optional
+    :param next_run: Another Run instance that is of the same sample but 
+                     taken later in time, defaults to None
+    :type next_run: Run or HWIRun, optional
+    :param previous_run: Another Run instance that is of the same sample 
+                         but taken previously in time, defaults to None
+    :type previous_run: Run or HWIRun, optional
+    :param alt_spectrum: Another Run instance that is of the same sample 
+                         but taken in using a different imaging technology,
+                         defaults to None
+    :type alt_spectrum: Run or HWIRun, optional
+    :param number_grid_pages: DEPR, defaults to None
+    :type number_grid_pages: DEPR, optional
+    :param current_grid_page: DEPR, defaults to 1
+    :type current_grid_page: int, optional
+    :param journal: DEPR, defaults to None
+    :type journal: DEPR, optional
+    :param current_image_index: DEPR, defaults to 0
+    :type current_image_index: int, optional
+    :param current_image: DEPR, defaults to None
+    :type current_image: DEPR, optional
     '''
 
     def __init__(self, image_dir, run_name, cocktail_dict=None,
@@ -248,18 +284,7 @@ class HWIRun(Run):
                  next_run=None, previous_run=None, alt_spectrum=None,
                  number_grid_pages=None, current_grid_page=1, journal=None, current_image_index=0,
                  current_image=None, *args, **kwargs):
-        '''
-        param: cocktail_path: String. Path to tsv or csv file that contains \
-            information on chemical cocktail composition and well asignments.
-        param: plate_id: String. Unique key given to plate that images are \
-            taken from. Should be parsable from the directory name.
 
-        TODO: Add methods that check if image and run directory names are valid
-        based on curreent HWI formating practices. If not throw somekind of
-        error to the user and import as a Run object. Could also include some
-        methods that try to infer correct image names based on surroning file
-        names.
-        '''
         super().__init__(image_dir, run_name, images=images,
                          annotations=annotations,
                          save_file_path=save_file_path, date=date,
@@ -328,10 +353,12 @@ class HWIRun(Run):
         self.current_image = 0
 
     def link_to_alt_images(self, other_run):
+        '''Establish linked lists between this run and another run instance
+        that holds images of a different imaging spectrum / technology.
 
-        # establish if a visible spectrum is present in the linking
-        # if so it gets preference for marco classifications
-        # images in this run need to give classifications to other ru
+        :param other_run: A different run instance
+        :type other_run: Run
+        '''
 
         for current_image, alt_image in zip(self.images, other_run.images):
             current_image.alternative_image = alt_image

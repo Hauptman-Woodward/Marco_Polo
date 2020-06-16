@@ -62,6 +62,19 @@ class RunSerializer():
     def make_message_box(message, icon=QtWidgets.QMessageBox.Information,
                          buttons=QtWidgets.QMessageBox.Ok,
                          connected_function=None):
+        '''Return a QMessageBox instance to show to the user.
+
+        :param message: Message to be displayed to the user
+        :type message: str
+        :param icon: Icon for message box, defaults to QtWidgets.QMessageBox.Information
+        :type icon: QMessageBoxIcon, optional
+        :param buttons: [description], defaults to QtWidgets.QMessageBox.Ok
+        :type buttons: [type], optional
+        :param connected_function: [description], defaults to None
+        :type connected_function: [type], optional
+        :return: [description]
+        :rtype: [type]
+        '''
         msg = QtWidgets.QMessageBox()
         msg.setIcon(icon)
         msg.setText(message)
@@ -91,7 +104,7 @@ class RunSerializer():
     def __repr__(self):
         s = ''
         for key, value in self.__dict__.items():
-            s += '{}: {}\n'.format(key, value)
+            s += '{}: {}.unitsn'.format(key, value)
         return s[:-1]
 
 
@@ -187,7 +200,7 @@ class HtmlWriter(RunSerializer):
 
 class XtalWriter(RunSerializer):
     header_flag = '<>'  # do not change unless very good reason
-    header_line = '{}{}:{}\n'
+    header_line = '{}{}:{}.unitsn'
     file_ext = '.xtal'
 
     def __init__(self, run, **kwargs):
@@ -211,7 +224,7 @@ class XtalWriter(RunSerializer):
         for key, value in self.__dict__.items():
             header += self.header_line.format(
                 self.header_flag, str(key).upper(), value)
-        return header + '='*79 + '\n'
+        return header + '='*79 + '.unitsn'
         # add ==== as a break between json data and header data
 
     @staticmethod
@@ -416,11 +429,6 @@ class RunDeserializer():  # convert saved file into a run
         :return: The contents of xtal file as a Run instance
         :rtype: Run
         '''
-        # currently still looking into a less brittle recursive way of
-        # turning json dict into run object. This works for now but requires
-        # changes when significant changes are made to Run classes which
-        # may cause compatbility issues between releases
-        # reads json into object
         logger.info('Attempting to load run from {}'.format(self.xtal_path))
         try:
             with open(self.xtal_path) as xtal_data:
@@ -444,7 +452,8 @@ class RunDeserializer():  # convert saved file into a run
                     if run.images[i].cocktail:
                         for j, _ in enumerate(run.images[i].cocktail['reagents']):
                             # holy mother of jank
-                            run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
+                            run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
+                                run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
                             reagents.append(RunDeserializer.dict_to_obj(
                                 run.images[i].cocktail['reagents'][j]))
                             # reagents[-1].concentration = RunDeserializer.dict_to_obj(
@@ -454,9 +463,9 @@ class RunDeserializer():  # convert saved file into a run
                         run.images[i].cocktail.reagents = reagents
             return run  # TODO Interpret the header data
         except (json.JSONDecodeError, AttributeError, IsADirectoryError, PermissionError) as e:
-            # logger.error('Failed to read {} into run object at {}'.format(
-            #     self.xtal_path, load_run_object
-            # ))
+            logger.error('Failed to read {} into run object at {}'.format(
+                self.xtal_path, load_run_object
+            ))
             raise e
 
 
@@ -464,6 +473,19 @@ class BarTender():
     '''Class for organizing and accessing cocktail menus'''
 
     def __init__(self, cocktail_dir, cocktail_meta):
+        '''Create instance of BarTender object. Probably only going to need
+        to make one instance since the bartender should organize all
+        available cocktail menus for the current Polo session. Currently,
+        the BarTender instance that is used everywhere is declared in polo
+        __init__ file.
+
+        :param cocktail_dir: Path to directory holding cocktail menu files
+        :type cocktail_dir: str
+        :param cocktail_meta: Path to csv file containing cocktail menu metadata.units
+        which includes things like when each menu was used, what kind.units
+        of screens it was used for, etc.
+        :type cocktail_meta: str
+        '''
         self.cocktail_dir = cocktail_dir
         self.cocktail_meta = cocktail_meta
         self.menus = {}
@@ -471,6 +493,16 @@ class BarTender():
 
     @staticmethod
     def datetime_converter(date_string):
+        '''General utility function for converting strings to datetime objects..units
+            Attempts to convert the string by trying a couple of datetime.units
+            formats that are common in cocktail menu files and other.units
+            locations in the HWI file universe Polo runs across.
+
+        :param date_string: string to convert to datetime
+        :type date_string: str
+        :return: datetime object
+        :rtype: datetime
+        '''
         date_string = date_string.strip()
         datetime_formats = ['%m/%d/%Y', '%m/%d/%y', '%m-%d-%Y', '%m-%d-%y']
         for form in datetime_formats:
@@ -481,6 +513,24 @@ class BarTender():
 
     @staticmethod
     def date_range_parser(date_range_string):
+        '''Utility function for converting the date ranges in the cocktail.units
+            metadata csv file to datetime objects using the `datetime_converter`
+            classmethod.
+
+            Date ranges should have the format
+
+            start date - end date
+
+            If the date range is for the most recent cocktail menu then there
+            will not be an end date and the format will be
+
+            start date - 
+
+        :param date_range_string: string to pull dates out of   
+        :type date_range_string: str
+        :return: tuple of datetime objects, start date and end date
+        :rtype: tuple
+        '''
         s, e = date_range_string.split('-')
         s = BarTender.datetime_converter(s.strip())
         if e.strip():
@@ -490,6 +540,7 @@ class BarTender():
         return s, e
 
     def add_menus_from_metadata(self):
+        '''Adds menu objects to the menus attribute.'''
         if self.cocktail_meta:
             with open(str(self.cocktail_meta)) as menu_files:
                 reader = csv.DictReader(menu_files)
@@ -504,6 +555,19 @@ class BarTender():
                     # key
 
     def get_menu_by_date(self, date, type_):
+        '''Get a menu instance who's usage dates include the given date and
+        match the given screen type.
+
+        Screen types can either be 's' for 'soluble' screens or 'm' for
+        membrane screens.
+
+        :param date: Date to search menus with
+        :type date: datetime
+        :param type_: Type of screen to return (soluble or membrane)
+        :type type_: str
+        :return: menu matching the given date and type
+        :rtype: Menu
+        '''
         if isinstance(date, datetime):
             # search for a menu whos usage dates include this date
             menus_keys_by_date = sorted(
@@ -517,20 +581,30 @@ class BarTender():
                 if date < self.menus[each_key].start_date:
                     return self.menus[each_key]
             return self.menus[menus_keys_by_date[-1]]
-            # if date >= self.menus[each_key].start_date:
-            # print('after this')
-            # if self.menus[each_key].end_date: # not current menu
-            #     if date <= self.menus[each_key].end_date:
-            #         return self.menus[each_key]
-            # else:  # at the current date, must return this one
-            #     return self.menus[each_key]
 
     def get_menus_by_type(self, type_):
+        '''Returns all menus of a given screen type.
+
+        's' for soluble screens and 'm' for membrane screens. No other
+        characters should be passed to `type_`.
+
+        :param type_: Key for type of screen to return
+        :type type_: str (max length 1)
+        :return: list of menus of that screen type
+        :rtype: list
+        '''
 
         return [menu for menu in self.menus.values() if menu.type_ == type_]
 
-    
     def get_menu_by_path(self, path):
+        '''Returns a menu by its file path, which is used as the key
+        for accessing the menus attribute normally.
+
+        :param path: file path of a menu csv file
+        :type path: str
+        :return: Menu instance that is mapped to given path
+        :rtype: Menu
+        '''
         if path in self.menus:
             return self.menus[path]
 
@@ -543,13 +617,25 @@ class CocktailMenuReader():
         8: 'pH',
         2: 'commercial_code'
     }
-
     formula_pos = 4  # each reagent could have a formula but only ever
     # one is included per cocktail entry
-
     # all other indicies are reagent names and concentrations
 
     def __init__(self, menu_file, delim=',', **kwargs):
+        '''Create a CocktailMenuReader instance, which is basically a
+        csv.reader instance with extra steps. The iterator returns Cocktail
+        instances instead or lists so when creating Menus, the csv file that
+        holds the cocktail data can be read directly ad Cocktail instances
+        instead of dealing with converting the rows to Cocktails when creating
+        Menus.
+
+        :param menu_file: Path to cocktail menu file to read. Should be csv
+                          formated
+        :type menu_file: str or Path 
+        :param delim: Seperator for menu_file; really should not need to 
+                      be changed, defaults to ','
+        :type delim: str, optional
+        '''
         self.menu_file = menu_file
         self.reader = csv.reader(self.menu_file)
         self.delim = delim
@@ -558,18 +644,67 @@ class CocktailMenuReader():
 
     @classmethod
     def set_cocktail_map(cls, map):
+        '''Classmethod to edit the cocktail_map. The cocktail map describes
+        where Cocktail level information is stored in a given cocktail menu
+        file row. It is a dictionary that maps specific indicies in a row to
+        the Cocktail attribute to set the value of the key index to.
+
+        The default cocktail_map dictionary is below.
+
+        cocktail_map = {
+        0: 'well_assignment',
+        1: 'number',
+        8: 'pH',
+        2: 'commercial_code'
+        }
+
+        This tells instances of CocktailMenuReader to look at index 0 of a row
+        for the well_assignment attribute of the Cocktail class, index 1 for
+        the number attribute of the Cocktail class, etc.
+
+        :param map: Dictionary mapping csv row indicies to Cocktail object
+                    attributes
+        :type map: dict
+        '''
         cls.cocktail_map = cocktail_map
 
     @classmethod
     def set_formula_pos(cls, pos):
+        '''Classmethod to change the formula_pos attribute. The formula_pos
+        describes the location (base 0) of the chemical formula in a row of
+        a cocktail menu file csv. For some reason, HWI cocktail menu files
+        will only have one chemical formula per row (cocktail) no matter
+        the number of reagents that composite that cocktail. This is why
+        its location is represented using an int instead of a dict.
+
+        Generally, formula_pos should not be changed without a very good
+        reason as the position of the chemical formula is consistent across
+        all HWI cocktail menu files.
+
+        :param pos: Index where chemical formula can be found
+        :type pos: int
+        '''
         cls.formula_pos = pos
 
     @property
     def menu_file(self):
+        '''Get the instances menu file
+
+        :return: the menu file path
+        :rtype: str or Path or IO
+        '''
         return self.__menu_file
 
     @menu_file.setter
     def menu_file(self, new_file):
+        '''Setter method for the menu_file attribute. If the value passed in
+        is a string will open the file, iterate over the first two lines as
+        these are header lines in all the HWI cocktail menu files included with
+        Polo and set menu_file to the IO stream.
+
+        :param new_file: [description]
+        :type new_file: [type]
+        '''
         if isinstance(new_file, str):
             self.__menu_file = open(new_file)
             next(self.__menu_file)
@@ -577,11 +712,17 @@ class CocktailMenuReader():
         else:
             self.__menu_file = new_file
 
-    def parse_row(self, row):
-        return [i.replace('"', '') for i in row.strip().split(self.delim)]
-
     # need to deciede how fixed on the current header system want to be
     def __next__(self):  # would be nice if returned a cocktail
+        '''Dictates the behavior of CocktailMenuReader objects when `next`
+        is called. Uses the csv.reader object stored in the reader attribute
+        to get the next row of the csv file in a consistent way and then
+        converts the information in that row to a Cocktail object.
+
+        :return: Cocktail instance representing the cocktail at the next row of
+                 the menu_file
+        :rtype: Cocktail
+        '''
         row = next(self.reader)
         d = {self.cocktail_map[index]: row[index]
              for index in self.cocktail_map}
@@ -616,6 +757,30 @@ class CocktailMenuReader():
 class Menu():  # holds the dictionary of cocktails
 
     def __init__(self, path, start_date, end_date, type_):
+        '''Creates a Menu instance. Menu objects are used to organize a single
+        screening run plate set up. They should contain 1536 unique screening
+        conditions; one for each well in the HWI highthrouput plate. HWI
+        has altered what cocktails are used in each of the 1536 wells over the
+        years and so many versions of cocktail menus have been used. A single
+        Menu instance represents one of these versions and accordingly has a
+        start and end date to identify when the menu was used. Additionally, 
+        HWI offers two types of high throughput screens; membrane or solulbe
+        screens. Both use 1536 well plates but have very different chemical
+        conditions at the same well index. 
+
+        Menus that hold conditions for soluble screens are the `type_`
+        attribute set to 's' and menus that hold conditions for membrane
+        screens have the `type_` attribute set to 'm'.
+
+        :param path: Location of the menu csv file
+        :type path: str
+        :param start_date: Date when this screen menu was first used
+        :type start_date: datetime
+        :param end_date: Last date this screen menu was used
+        :type end_date: datetime
+        :param type_: Membrane or soluble screen
+        :type type_: str
+        '''
         self.start_date = start_date
         self.end_date = end_date
         self.type_ = type_
@@ -624,19 +789,43 @@ class Menu():  # holds the dictionary of cocktails
 
     @property
     def cocktails(self):
+        '''Property to return the Menu instance's cocktail dict
+
+        :return: cocktail attribute
+        :rtype: dict
+        '''
         return self.__cocktails
 
     @property
     def path(self):
+        '''Property to return the Menu instance's path attribute
+
+        :return: The path attribute
+        :rtype: str or IO
+        '''
         return self.__path
 
     @path.setter
     def path(self, new_path):
+        '''Setter function for path attribute. Creates an instance of
+        a CocktailMenuReader class and passes the path attribute to it.
+        Then uses the CocktailMenuReader instance to read the contents of
+        the new_path (which should be a csv file) as Cocktail objects.
+        Cocktail instances are added to the __cocktail dict by their
+        well number assignemnt.
+
+        :param new_path: [description]
+        :type new_path: [type]
+        '''
         self.__path = new_path  # set the path to the new_path
         cocktail_reader = CocktailMenuReader(self.path)
         for cocktail in cocktail_reader:
             self.cocktails[cocktail.well_assignment] = cocktail
         # create dictionary from cocktails, key is the well number (assignment)
+
+
+# orphan functions that have not made it into a class yet
+# =============================================================================
 
 
 def write_screen_html(plate_list, well_number, run_name, x_reagent,

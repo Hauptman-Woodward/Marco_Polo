@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.crystallography.run &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.crystallography.run</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.crystallography.run</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="c1"># from polo.utils.io_utils import list_dir_abs, parse_HWI_filename_meta</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">if_dir_not_exists_make</span><span class="p">,</span> <span class="n">list_dir_abs</span><span class="p">,</span> <span class="n">parse_HWI_filename_meta</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">DEFAULT_IMAGE</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">DEFAULT_IMAGE_PATH</span><span class="p">))</span>
+<span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">BLANK_IMAGE</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run">[docs]</a><span class="k">class</span> <span class="nc">Run</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    :param image_dir: String. Path to directory containing images to \</span>
+<span class="sd">        be classified.</span>
+<span class="sd">    :param run_name: String. Unique name of this run.</span>
+<span class="sd">    :param images: List. List of Image objects is images already exist \</span>
+<span class="sd">        and need to be passed into a run (Unlikely).</span>
+<span class="sd">    :param current_image: Int. Index in self.current_slide_show_images \</span>
+<span class="sd">        where the image that should be currently rendered into the app \</span>
+<span class="sd">        can be found.</span>
+<span class="sd">    :param current_slide_show_images: List. List of indexes in self.images. \</span>
+<span class="sd">        The Images at these indicies are the set of images that based \</span>
+<span class="sd">        on current filters applied by the user, are \</span>
+<span class="sd">        available for viewing. Works in tandem with the value stored \</span>
+<span class="sd">        in self.current_image to create a chain of reference</span>
+<span class="sd">        that recovers the actual image object stored in self.images. No</span>
+<span class="sd">        image objects are ever stored in self.current_image or\</span>
+<span class="sd">        self.current_slide_show_images.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">AllOWED_PLOTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Classification Counts&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;MARCO Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;Classification Progress&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">images</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">save_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">image_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">next_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">previous_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">alt_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">journal</span><span class="o">=</span><span class="p">{},</span>
+                 <span class="n">current_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">current_image_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">images</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_table_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">image_spectrum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_file_path</span> <span class="o">=</span> <span class="n">save_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="n">next_run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="n">previous_run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">alt_spectrum</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Returns the number of non null Images&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Run.encode_images_to_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.encode_images_to_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_images_to_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method that encodes all images in the Run to</span>
+<span class="sd">        base64.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">encode_base64</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Run.add_images_from_dir"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.add_images_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_images_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Adds the contents of a directory to `images` attribute.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Adding images to </span><span class="si">{}</span><span class="s1"> from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">image_path</span><span class="p">),</span> <span class="n">spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">,</span>
+                      <span class="n">date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Run.get_images_by_classification"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_images_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">get_images_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Create a dictionary of image classifcations. Keys are</span>
+<span class="sd">        each type of classification and values are list of</span>
+<span class="sd">        images with classification of the key. The human</span>
+<span class="sd">        boolean determines what classifier should be used to</span>
+<span class="sd">        determine the image type. Human = True sets the human</span>
+<span class="sd">        as the classifier and False sets MARCO as the classifier.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">image_class_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">human</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
+                        <span class="n">c</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                        <span class="n">c</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span>
+                <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">image_class_dict</span><span class="p">:</span>
+                    <span class="n">image_class_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">image_class_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">image_class_dict</span></div>
+
+<div class="viewcode-block" id="Run.get_image_table_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_image_table_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_table_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+        <span class="n">im_dict</span><span class="p">,</span> <span class="n">row_dict</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">im_dict</span><span class="p">:</span>
+                <span class="n">row_dict</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">im_dict</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row_dict</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">row_dict</span></div>
+
+<div class="viewcode-block" id="Run.get_table_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_table_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_table_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Getting table data for </span><span class="si">{}</span><span class="s1"> with image types </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span>
+        <span class="p">))</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;well_number&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;machine_class&#39;</span><span class="p">,</span> <span class="s1">&#39;human_class&#39;</span><span class="p">,</span> <span class="s1">&#39;spectrum&#39;</span><span class="p">]</span>
+
+        <span class="n">header_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">header</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">header</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headers</span><span class="p">)}</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span><span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">)</span>
+        <span class="n">table_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">image_index</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">image_index</span><span class="p">]</span>
+            <span class="n">image_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image_table_data</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">image_dict</span><span class="p">:</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">header_dict</span><span class="p">[</span><span class="n">header</span><span class="p">]</span>
+                <span class="n">table_data</span><span class="p">[(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)]</span> <span class="o">=</span> <span class="n">image_dict</span><span class="p">[</span><span class="n">header</span><span class="p">]</span>
+            <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">header_dict</span><span class="p">:</span>
+            <span class="c1"># add header values to first row</span>
+            <span class="n">table_data</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">header_dict</span><span class="p">[</span><span class="n">header</span><span class="p">])]</span> <span class="o">=</span> <span class="n">header</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_table_data</span> <span class="o">=</span> <span class="n">table_data</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Returned table with </span><span class="si">{}</span><span class="s1"> rows and </span><span class="si">{}</span><span class="s1"> columns&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">row</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Run.get_current_table_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_current_table_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_table_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span><span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_table_data</span><span class="p">(</span><span class="n">images</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Run.image_filter_query"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.image_filter_query">[docs]</a>    <span class="k">def</span> <span class="nf">image_filter_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+            <span class="n">filter_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_filter_engine</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filter_result</span><span class="p">:</span>
+                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_result</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">images</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">images</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">DEFAULT_IMAGE</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Run.image_filter_engine"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.image_filter_engine">[docs]</a>    <span class="k">def</span> <span class="nf">image_filter_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image_types</span><span class="p">:</span>
+            <span class="n">image_types</span> <span class="o">==</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">human</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">marco</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">spectrum</span> <span class="o">==</span> <span class="s1">&#39;Visible&#39;</span><span class="p">:</span>
+                <span class="n">human</span><span class="p">,</span> <span class="n">marco</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">image</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>  <span class="c1"># is an image</span>
+            <span class="k">if</span> <span class="n">human</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>  <span class="c1"># human classification precidence over marco</span>
+                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">image</span>
+            <span class="k">if</span> <span class="n">marco</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">image</span></div>
+            <span class="c1"># non visible spectrum needs no classificaion</span>
+            <span class="c1"># IDEA if has a connected spectrum than image</span>
+            <span class="c1"># filtering is done based on the images</span>
+            <span class="c1"># in the visible spectrum and the well</span>
+            <span class="c1"># numbers of this spectrum are returned</span>
+
+<div class="viewcode-block" id="Run.add_journal_entry"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.add_journal_entry">[docs]</a>    <span class="k">def</span> <span class="nf">add_journal_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="n">entry_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">journal</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">entry_datetime</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">contents</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Add entry with title </span><span class="si">{}</span><span class="s1"> to journal&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="p">))</span></div>
+        <span class="c1"># jounal is doulbe dict first key is title and second is datetime</span>
+        <span class="c1"># of when the entry was added</span>
+
+<div class="viewcode-block" id="Run.get_human_statistics"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_human_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_human_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns stats that would be shown in the stats tab of the viewer.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Run.get_cocktails"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_cocktails">[docs]</a>    <span class="k">def</span> <span class="nf">get_cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns list of list of cocktails assigned to this run</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Run.export_to_csv"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.export_to_csv">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Exports run classifcation data to a csv table.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Run.get_heap_map_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_heap_map_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_heap_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns data that will be needed to render the heatmap</span>
+<span class="sd">        view of results</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Run.get_current_hits"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_current_hits">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_hits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># hits are classified as images with human crystal designation</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">image</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="k">if</span> <span class="n">image</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">==</span> <span class="s1">&#39;Crystals&#39;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="HWIRun"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun">[docs]</a><span class="k">class</span> <span class="nc">HWIRun</span><span class="p">(</span><span class="n">Run</span><span class="p">):</span>
+
+    <span class="n">AllOWED_PLOTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Classification Counts&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;MARCO Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;Classification Progress&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Plate Heatmaps&#39;</span><span class="p">]</span>
+    <span class="c1"># HWI still store images in list but in order of well number</span>
+    <span class="c1"># index = well -1</span>
+    <span class="sd">&#39;&#39;&#39;Child class of Run. Is used to represent runs from the HWI screening center</span>
+<span class="sd">    as images will have additional metadata like well and cocktail information.</span>
+<span class="sd">    Main difference is that HWIRuns will always contain 1536 images as that is</span>
+<span class="sd">    the number of wells in a HWI crystallization plate. Each well uses a</span>
+<span class="sd">    different chemcial cocktail which is described in the cocktail tsv file</span>
+<span class="sd">    included in the directory of images provided by HWI in each run. </span>
+
+<span class="sd">    :param image_dir: Path to directory holding the image files</span>
+<span class="sd">    :type image_dir: str or Path</span>
+<span class="sd">    :param run_name: Unique ID for the Run</span>
+<span class="sd">    :type run_name: str</span>
+<span class="sd">    :param cocktail_dict: Dictionary mapping well numbers to</span>
+<span class="sd">                          Cocktail instances, defaults to None</span>
+<span class="sd">    :type cocktail_dict: dict, optional</span>
+<span class="sd">    :param images: List of Image instances taken for this run, defaults to []</span>
+<span class="sd">    :type images: list, optional</span>
+<span class="sd">    :param plate_id: HWI given unique plate ID, defaults to None</span>
+<span class="sd">    :type plate_id: str, optional</span>
+<span class="sd">    :param annotations: Any notes relating to this run, defaults to None</span>
+<span class="sd">    :type annotations: str, optional</span>
+<span class="sd">    :param save_file_path: Path to where this Run will be saved if </span>
+<span class="sd">                           serialized to xtal format, defaults to None</span>
+<span class="sd">    :type save_file_path: Path or str, optional</span>
+<span class="sd">    :param num_wells: Number of wells (images) in this run, defaults to 1536</span>
+<span class="sd">    :type num_wells: int, optional</span>
+<span class="sd">    :param image_spectrum: Image tech used in this run, defaults to None</span>
+<span class="sd">    :type image_spectrum: str, optional</span>
+<span class="sd">    :param date: Date images were taken on, defaults to None</span>
+<span class="sd">    :type date: Datetime, optional</span>
+<span class="sd">    :param next_run: Another Run instance that is of the same sample but </span>
+<span class="sd">                     taken later in time, defaults to None</span>
+<span class="sd">    :type next_run: Run or HWIRun, optional</span>
+<span class="sd">    :param previous_run: Another Run instance that is of the same sample </span>
+<span class="sd">                         but taken previously in time, defaults to None</span>
+<span class="sd">    :type previous_run: Run or HWIRun, optional</span>
+<span class="sd">    :param alt_spectrum: Another Run instance that is of the same sample </span>
+<span class="sd">                         but taken in using a different imaging technology,</span>
+<span class="sd">                         defaults to None</span>
+<span class="sd">    :type alt_spectrum: Run or HWIRun, optional</span>
+<span class="sd">    :param number_grid_pages: DEPR, defaults to None</span>
+<span class="sd">    :type number_grid_pages: DEPR, optional</span>
+<span class="sd">    :param current_grid_page: DEPR, defaults to 1</span>
+<span class="sd">    :type current_grid_page: int, optional</span>
+<span class="sd">    :param journal: DEPR, defaults to None</span>
+<span class="sd">    :type journal: DEPR, optional</span>
+<span class="sd">    :param current_image_index: DEPR, defaults to 0</span>
+<span class="sd">    :type current_image_index: int, optional</span>
+<span class="sd">    :param current_image: DEPR, defaults to None</span>
+<span class="sd">    :type current_image: DEPR, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">cocktail_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">images</span><span class="o">=</span><span class="p">[],</span> <span class="n">plate_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">save_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_wells</span><span class="o">=</span><span class="mi">1536</span><span class="p">,</span> <span class="n">image_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">next_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">previous_run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alt_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">number_grid_pages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">current_grid_page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">journal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">current_image_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">current_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
+                         <span class="n">annotations</span><span class="o">=</span><span class="n">annotations</span><span class="p">,</span>
+                         <span class="n">save_file_path</span><span class="o">=</span><span class="n">save_file_path</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span>
+                         <span class="n">image_spectrum</span><span class="o">=</span><span class="n">image_spectrum</span><span class="p">,</span> <span class="n">next_run</span><span class="o">=</span><span class="n">next_run</span><span class="p">,</span>
+                         <span class="n">previous_run</span><span class="o">=</span><span class="n">previous_run</span><span class="p">,</span> <span class="n">alt_spectrum</span><span class="o">=</span><span class="n">alt_spectrum</span><span class="p">,</span>
+                         <span class="n">number_grid_pages</span><span class="o">=</span><span class="n">number_grid_pages</span><span class="p">,</span> <span class="n">current_grid_page</span><span class="o">=</span><span class="n">current_grid_page</span><span class="p">,</span>
+                         <span class="n">journal</span><span class="o">=</span><span class="n">journal</span><span class="p">,</span> <span class="n">current_image</span><span class="o">=</span><span class="n">current_image</span><span class="p">,</span>
+                         <span class="n">current_image_index</span><span class="o">=</span><span class="n">current_image_index</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_dict</span> <span class="o">=</span> <span class="n">cocktail_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span> <span class="o">=</span> <span class="n">plate_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_wells</span> <span class="o">=</span> <span class="n">num_wells</span>
+
+<div class="viewcode-block" id="HWIRun.link_to_predecessor"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other_run</span><span class="p">)</span> <span class="o">==</span> <span class="n">HWIRun</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Linking </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">current_image</span><span class="p">,</span> <span class="n">pred_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">other_run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">current_image</span><span class="p">:</span>
+                    <span class="n">current_image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="n">pred_image</span>
+                <span class="k">if</span> <span class="n">pred_image</span><span class="p">:</span>
+                    <span class="n">pred_image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">current_image</span></div>
+
+<div class="viewcode-block" id="HWIRun.link_to_decendent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_decendent">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_decendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other_run</span><span class="p">)</span> <span class="o">==</span> <span class="n">HWIRun</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Linking </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">current_image</span><span class="p">,</span> <span class="n">dec_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">other_run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">current_image</span><span class="p">:</span>
+                    <span class="n">current_image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">dec_image</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
+                        <span class="n">current_image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="n">current_image</span>
+                <span class="k">if</span> <span class="n">dec_image</span><span class="p">:</span>
+                    <span class="n">dec_image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="n">current_image</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">dec_image</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
+                        <span class="n">dec_image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">dec_image</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="n">other_run</span>
+            <span class="n">other_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="HWIRun.link_to_alt_spectrum"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_alt_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_alt_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_run</span><span class="p">,</span> <span class="p">(</span><span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">current_image</span><span class="p">,</span> <span class="n">alt_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">other_run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+                <span class="n">current_image</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span>
+                <span class="n">alt_image</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="n">current_image</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="s1">&#39;Visible&#39;</span><span class="p">:</span>
+                    <span class="n">alt_image</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">current_image</span><span class="o">.</span><span class="n">machine_class</span>
+                    <span class="n">alt_image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">current_image</span><span class="o">.</span><span class="n">human_class</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">current_image</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">machine_class</span>
+                    <span class="n">current_image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">human_class</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">other_run</span>
+                <span class="n">other_run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+        <span class="c1"># only do a one way link here currently</span>
+
+<div class="viewcode-block" id="HWIRun.sort_current_images_by_cocktail"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.sort_current_images_by_cocktail">[docs]</a>    <span class="k">def</span> <span class="nf">sort_current_images_by_cocktail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sorts the current slideshow images by cocktail number. Allows the user</span>
+<span class="sd">        to navigate by cocktail number and therefore similar chemical conditions</span>
+<span class="sd">        opposed to as by well number which is proxy for physical location in</span>
+<span class="sd">        the well. Oftentimes due to plate shape similar well numbers will be</span>
+<span class="sd">        in different family of chemcial conditions.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_slide_show_images</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">get_cocktail_number</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="HWIRun.link_to_alt_images"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_alt_images">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_alt_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Establish linked lists between this run and another run instance</span>
+<span class="sd">        that holds images of a different imaging spectrum / technology.</span>
+
+<span class="sd">        :param other_run: A different run instance</span>
+<span class="sd">        :type other_run: Run</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">for</span> <span class="n">current_image</span><span class="p">,</span> <span class="n">alt_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">other_run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+            <span class="n">current_image</span><span class="o">.</span><span class="n">alternative_image</span> <span class="o">=</span> <span class="n">alt_image</span>
+            <span class="n">alt_image</span><span class="o">.</span><span class="n">alternative_image</span> <span class="o">=</span> <span class="n">current_image</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="s1">&#39;Visible&#39;</span><span class="p">:</span>
+                <span class="n">alt_image</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">current_image</span><span class="o">.</span><span class="n">machine_class</span>
+                <span class="n">alt_image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">current_image</span><span class="o">.</span><span class="n">human_class</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current_image</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">machine_class</span>
+                <span class="n">current_image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">human_class</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">other_run</span>
+            <span class="n">other_run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="HWIRun.add_images_from_dir"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.add_images_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_images_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Populates the images attribute with a list of images read from the</span>
+<span class="sd">        image_dir location. Currently is dependent on having a cocktail</span>
+<span class="sd">        dictionary available. This is passed into the function and would</span>
+<span class="sd">        normally come from the most recently used HWI file that is</span>
+<span class="sd">        stored as a dictionary in the mainWindow object.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">BLANK_IMAGE</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_wells</span><span class="p">)]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="c1"># cast to string as read in as Path object</span>
+            <span class="n">image_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+            <span class="n">plate_id</span><span class="p">,</span> <span class="n">well_num</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="n">parse_HWI_filename_meta</span><span class="p">(</span>
+                <span class="n">image_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">well_num</span><span class="p">),</span> <span class="s1">&#39;well_number type&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">well_num</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">image_path</span><span class="p">,</span>
+                                            <span class="n">well_number</span><span class="o">=</span><span class="n">well_num</span><span class="p">,</span>
+                                            <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">plate_id</span><span class="o">=</span><span class="n">plate_id</span><span class="p">,</span>
+                                            <span class="n">cocktail</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktail_dict</span><span class="p">[</span><span class="n">well_num</span><span class="p">],</span>
+                                            <span class="n">spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added </span><span class="si">{}</span><span class="s1"> images from </span><span class="si">{}</span><span class="s1"> to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">,</span> <span class="bp">self</span>
+        <span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
