@@ -224,7 +224,7 @@ class Ui_Form(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_11), _translate("Form", "X Reagent"))
         self.tab_12.setToolTip(_translate("Form", "Set the reagent to be varried in the y-axis of the plate"))
         self.label_40.setText(_translate("Form", "Assign Reagent"))
-        self.label_41.setText(_translate("Form", "Varry each well by"))
+        self.label_41.setText(_translate("Form", "Vary each well by"))
         self.label_42.setText(_translate("Form", "%"))
         self.label_43.setText(_translate("Form", "Stock Concentration"))
         self.comboBox_14.setItemText(0, _translate("Form", "M"))

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import sys, traceback
 import logging
 import multiprocessing
 import os
@@ -22,9 +22,14 @@ __version__ = '0.0.1'
 logger = make_default_logger(__name__)
 
 def excepthook(exec_type, exec_value, exec_tb):
-    message = '{}\nError Message: {}\nValue: {}\n Traceback: {}\n'.format(
+    trace =  traceback.format_exception(etype=exec_type, value=exec_value, tb=exec_tb)
+    trace = ' '.join([t.strip() for t in trace])
+
+
+
+    message = '{}\nError Message: {}\nValue: {}\n Error Type: {}\n'.format(
         'Polo encountered an unexpected error.',
-        exec_type, exec_value, str(exec_tb)
+        trace, exec_value, exec_type
     )
     logger.critical(message)
     m = QtWidgets.QMessageBox()
@@ -36,7 +41,7 @@ def excepthook(exec_type, exec_value, exec_tb):
 def main():
 
     # Run the app
-    #sys.excepthook = excepthook
+    sys.excepthook = excepthook
     logger.info('Started Polo version {}'.format(__version__))
     multiprocessing.freeze_support()
     app = QtWidgets.QApplication(sys.argv)

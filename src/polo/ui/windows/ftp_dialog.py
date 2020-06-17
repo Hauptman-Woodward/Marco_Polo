@@ -42,19 +42,47 @@ class FTPDialog(QtWidgets.QDialog):
 
         logger.info('Opened FTP Dialog')
         self.exec_()
+    
+    @property
+    def host(self):
+        return self.ui.lineEdit_3.text()
+    
+    @property
+    def password(self):
+        return self.ui.lineEdit_2.text()
+    
+    @property
+    def username(self):
+        return self.ui.lineEdit.text()
+
 
     def connect_ftp(self):
-        username, password = self.read_username(), self.read_password()
-        if username and password:
+        if self.host:
             self.ui.fileBrowser.clear()
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.ftp = logon(host=self.FTP_HOSTS[0], username=username,
-                            password=password)
+            self.ftp = logon(host=self.host, username=self.username,
+                             password=self.password)
             if isinstance(self.ftp, ftplib.FTP):
-                self.home_dir = self.ftp.pwd()
-                self.ui.fileBrowser.grow_tree_using_mlsd(self.ftp, self.home_dir)
-                logger.info('Connected to FTP server')
-                self.set_connection_status(connected=True)
+                try:
+                    self.home_dir = self.ftp.pwd()
+                    self.ui.fileBrowser.grow_tree_using_mlsd(self.ftp, self.home_dir)
+                    logger.info('Connected to FTP server')
+                    self.set_connection_status(connected=True)
+                    self.make_message_box(
+                        message='Connected to {}! They say {}'.format(
+                        self.host,
+                        self.ftp.getwelcome())
+                    ).exec_()
+                    QApplication.restoreOverrideCursor()
+                except Exception as e:
+                    QApplication.restoreOverrideCursor()
+                    self.make_message_box(
+                        message='After connecting to {}. This error occured {}'.format(
+                            self.host, e
+                        ).exec_()
+                    )
+                    self.set_connection_status(connected=False)
+            
             else:
                 QApplication.restoreOverrideCursor()
                 m = self.make_message_box(message='Connection Failed: {}'.format(
@@ -64,7 +92,44 @@ class FTPDialog(QtWidgets.QDialog):
                 ))
                 self.set_connection_status(connected=False)
                 m.exec_()
-        QApplication.restoreOverrideCursor()
+        else:
+            QApplication.restoreOverrideCursor() 
+            self.make_message_box(
+                message='Please enter a host to connect to'
+            ).exec_()
+
+                           
+
+
+            
+        # error enter a host address
+
+
+
+
+
+
+    #     username, password = self.read_username(), self.read_password()
+    #     if username and password:
+    #         self.ui.fileBrowser.clear()
+    #         QApplication.setOverrideCursor(Qt.WaitCursor)
+    #         self.ftp = logon(host=self.FTP_HOSTS[0], username=username,
+    #                         password=password)
+    #         if isinstance(self.ftp, ftplib.FTP):
+    #             self.home_dir = self.ftp.pwd()
+    #             self.ui.fileBrowser.grow_tree_using_mlsd(self.ftp, self.home_dir)
+    #             logger.info('Connected to FTP server')
+    #             self.set_connection_status(connected=True)
+    #         else:
+    #             QApplication.restoreOverrideCursor()
+    #             m = self.make_message_box(message='Connection Failed: {}'.format(
+    #                 self.ftp), buttons=QtWidgets.QMessageBox.Ok)
+    #             logger.info('FTP connection failed with code {}'.format(
+    #                 self.ftp
+    #             ))
+    #             self.set_connection_status(connected=False)
+    #             m.exec_()
+    #     QApplication.restoreOverrideCursor()
     
     def set_connection_status(self, connected=False):
         if connected:
@@ -101,7 +166,8 @@ class FTPDialog(QtWidgets.QDialog):
         return self.ui.lineEdit.text()
 
     def make_message_box(self, message, icon=QtWidgets.QMessageBox.Information,
-                         buttons=None, connected_function=None):
+                         buttons=QtWidgets.QMessageBox.Ok,
+                         connected_function=None):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(icon)
         msg.setText(message)
