@@ -83,7 +83,7 @@ class Cocktail():
 
     def __str__(self):
         cocktail_string = 'Cocktail {}\n'.format(self.number)
-        cocktail_string += '-'*len(cocktail_string)*2 + '\n\n'
+        cocktail_string += '-'*len(cocktail_string) + '\n'
         cocktail_string += 'pH: {}\n'.format(self.pH)
         for reagent in self.reagents:
             cocktail_string += '{} {}\n'.format(
@@ -310,7 +310,7 @@ class SignedValue():
     def units(self, string):
         r = unit_regex.findall(str(string))
         if r and r[0] in self.supported_units:
-            self.__units = r[0]
+            self.__units = string
         else:
             self.__units = 'X'  # missing units
 
@@ -322,7 +322,7 @@ class SignedValue():
         :return: Value converted to milli
         :rtype: float
         '''
-        return self.value / 1e-3
+        return SignedValue(self.value / 1e-3, 'm{}'.format(self.units))
 
     @property
     def micro(self):
@@ -332,7 +332,7 @@ class SignedValue():
         :return: Value converted to micro
         :rtype: float
         '''
-        return self.value / 1e-6
+        return SignedValue(self.value / 1e-6, 'u{}'.format(self.units))
 
     @property
     def nano(self):
@@ -342,7 +342,7 @@ class SignedValue():
         :return: Value converted to nano
         :rtype: float
         '''
-        return self.value / 1e-9
+        return SignedValue(self.value / 1e-6, 'n{}'.format(self.units))
 
     def __add__(self, other):
         if self.units == other.units:

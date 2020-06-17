@@ -53,7 +53,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             QtWidgets.QHeaderView.ResizeToContents)
         self.__sider.setSectionResizeMode(
             QtWidgets.QHeaderView.ResizeToContents)
-        
+
         self.ui.pushButton_26.setIcon(QIcon(self.HTML_ICON))
         self.ui.pushButton_27.setIcon(QIcon(self.GRID_ICON))
 
@@ -111,9 +111,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         volume unit is currently selected.
         '''
         v = self.ui.spinBox_4.value()
-        if self.ui.comboBox_16.currentText() == 'ul':
+        if self.ui.comboBox_11.currentText() == 'ul':
             v *= 1e-6
-        elif self.ui.comboBox_16.currentText() == 'ml':
+        elif self.ui.comboBox_11.currentText() == 'ml':
             v *= 1e-3
         return SignedValue(v, 'L')  # always return in liters
 
@@ -336,7 +336,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                 if not stock_vol:
                     stock_vol = c.concentration
                 constants.append((c.chemical_additive,
-                                 c.concentration, stock_vol))
+                                  c.concentration, stock_vol))
 
             self.ui.tableWidget.setRowCount(len(y_grad_con))
             self.ui.tableWidget.setColumnCount(len(x_grad_con))
@@ -344,7 +344,8 @@ class OptimizeWidget(QtWidgets.QWidget):
             breaker = False
             for i in range(0, len(y_grad_con)):
                 for j in range(0, len(x_grad_con)):
-                    volume_list = [x_grad_stock[j], y_grad_stock[i]] + [c[-1] for c in constants]
+                    volume_list = [x_grad_stock[j],
+                                   y_grad_stock[i]] + [c[-1] for c in constants]
                     # pull out the concentrations from constant tuples
                     water_volume = self.check_for_overflow(volume_list)
                     if water_volume:  # well does not overflow
@@ -364,7 +365,19 @@ class OptimizeWidget(QtWidgets.QWidget):
                         self.ui.tableWidget.clear()
                         breaker = True
                         break
-                if breaker: break
+                if breaker:
+                    break
+
+    def adjust_unit(self, signed_value, new_unit):
+        if signed_value.units == 'L':  # only convert volume for now
+            if new_unit == 'ul':
+                return signed_value.micro
+            elif new_unit == 'ml':
+                return signed_value.milli
+            else:
+                return signed_value
+        else:
+            return signed_value
 
     def make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
         '''Format the information that describes the contents of an
@@ -387,15 +400,16 @@ class OptimizeWidget(QtWidgets.QWidget):
         :rtype: str
         '''
         write_unit = self.ui.comboBox_16.currentText()
+        print(write_unit)
+        print(x_stock, y_stock, 'stock values before write')
         template, s = '<h4>{} {}</h4>\n{} of stock\n', ''
-        s += template.format(self.x_reagent.chemical_additive, x_con, x_stock)
-        s += template.format(self.y_reagent.chemical_additive, y_con, y_stock)
+        s += template.format(self.x_reagent.chemical_additive, x_con, self.adjust_unit(x_stock, write_unit))
+        s += template.format(self.y_reagent.chemical_additive, y_con, self.adjust_unit(y_stock, write_unit))
         for c in constants:
             a, b, d = c
-            s += template.format(a, b, d)  # rename this so it makes sense
-        s += '<h4>Volume of H20</h4>\n{}'.format(water)
+            s += template.format(a, b, self.adjust_unit(d, write_unit))  # rename this so it makes sense
+        s += '<h4>Volume of H20</h4>\n{}'.format(self.adjust_unit(water, write_unit))
         return s
-    
 
     def error_checker(self):
         '''
@@ -421,7 +435,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             return False
         else:
             return True
-    
+
     def make_plate_list(self):
         '''Converts the concents of the tablewidget (assuming that a optimization
         screen has been already rendered to the user) to a list of lists that
@@ -434,7 +448,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         for i in range(0, self.ui.tableWidget.rowCount()):
             plate_list.append([])
             for j in range(0, self.ui.tableWidget.columnCount()):
-                plate_list[i].append(self.ui.tableWidget.cellWidget(i, j).toHtml())
+                plate_list[i].append(
+                    self.ui.tableWidget.cellWidget(i, j).toHtml())
         return plate_list
 
     def export_screen(self):
@@ -442,14 +457,15 @@ class OptimizeWidget(QtWidgets.QWidget):
         Write the screen to html.
         '''
         if self.__run and self.error_checker():
-            export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Screen')[0]
+            export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Screen')[
+                0]
             if export_path:
                 well_number = self.ui.comboBox_12.currentText()
                 run_name = self.__run.run_name
                 plate_list = self.make_plate_list()
                 write_screen_html(plate_list, well_number, run_name,
-                self.x_reagent, self.y_reagent, self.well_volume, export_path)
-    
+                                  self.x_reagent, self.y_reagent, self.well_volume, export_path)
+
     def check_for_overflow(self, volume_list):
         ''' Check to see if the volume of reagents in a given well exceeds
         the well volume.
@@ -472,10 +488,11 @@ class OptimizeWidget(QtWidgets.QWidget):
                     # some kind of warning here about could not convert
                     # weight volume
                 elif value.units == 'v/v':
-                    total_volume += max_volume * (value.value/100)
+                    total_volume += max_volume.value * (value.value/100)
         if total_volume > max_volume.value:
             return False
         else:
-            return SignedValue(max_volume.value - total_volume, 'L')  # does fit in the well
+            # does fit in the well
+            return SignedValue(max_volume.value - total_volume, 'L')
             # return the value of water that should be included in the well in
             # liters

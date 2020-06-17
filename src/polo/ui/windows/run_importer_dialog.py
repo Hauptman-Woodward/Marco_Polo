@@ -4,6 +4,7 @@ from datetime import datetime
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import QDateTime, QPoint, Qt
+from PyQt5.QtCore import QItemSelectionModel
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo import make_default_logger
@@ -26,6 +27,22 @@ from polo import tim  # the bartender
 
 # TODO clear the field if there is an error relating to that feild
 logger = make_default_logger(__name__)
+
+import_descriptors = [
+        'Use HWI image import for screening runs conducted at the \
+        Hauptman-Woodward Medical Research Insitutue High-Throughput\
+        Crystallization Screening Center. Polo includes all current and past\
+        crystallization cocktail menus for HWI screens and will automatically\
+        extract metadata from your imported files based on current HWI\
+        file naming conventions.',
+        'Use raw image import for importing a directory of misc images into\
+        Polo. Be aware that using inconsistent image sizes and types may cause\
+        unexpected behavior from Polo.',
+        'Use Non-HWI image import settings for crystallization images taken\
+        at a high-throughput facility other than the one at HWI. Currently you\
+        cannot specify alternative metadata parsing methods or cocktail menus\
+        outside of HWI.'
+]
 
 
 class RunImporterDialog(QtWidgets.QDialog):
@@ -61,8 +78,10 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.pushButton_2.clicked.connect(self.create_new_run)
         self.ui.radioButton.toggled.connect(self.set_menu_options)
         self.ui.radioButton_2.toggled.connect(self.set_menu_options)
+        self.ui.listWidget.selectionModel().setCurrentIndex(self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
         # self.ui.comboBox.currentIndexChanged.connect(
         #     self.validate_hwi_number_images_run)
+
 
         # Widget display setup
         self.set_menu_options()
@@ -233,6 +252,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         param i: Int. Index of stackWidget to show to user.
         '''
         self.ui.stackedWidget.setCurrentIndex(i)
+        self.ui.textBrowser.setPlainText(import_descriptors[i])
 
     def open_directory_browser(self):
         '''

@@ -34,10 +34,10 @@ class RunSerializer():
     def make_thread(cls, job_function, **kwargs):
         '''
         Creates a new qthread object. The job function is the
-        function the thread will execute and and arguements that the job
-        function requires should be passed has keyword arguements. These are
+        function the thread will execute and and arguments that the job
+        function requires should be passed has keyword arguments. These are
         stored as a dictionary in the new thread object until the thread is
-        activated and they are passed as arguements.
+        activated and they are passed as arguments.
         '''
         return QuickThread(job_function, parent=None, **kwargs)
 
@@ -200,7 +200,7 @@ class HtmlWriter(RunSerializer):
 
 class XtalWriter(RunSerializer):
     header_flag = '<>'  # do not change unless very good reason
-    header_line = '{}{}:{}.unitsn'
+    header_line = '{}{}:{}\n'
     file_ext = '.xtal'
 
     def __init__(self, run, **kwargs):
@@ -224,7 +224,7 @@ class XtalWriter(RunSerializer):
         for key, value in self.__dict__.items():
             header += self.header_line.format(
                 self.header_flag, str(key).upper(), value)
-        return header + '='*79 + '.unitsn'
+        return header + '='*79 + '\n'
         # add ==== as a break between json data and header data
 
     @staticmethod
@@ -287,6 +287,7 @@ class XtalWriter(RunSerializer):
         '''
         if XtalWriter.path_validator(output_path, parent=True):
             # path is good to go and ready to write file into
+            self.run.encode_images_to_base64()
             run_str = self.run_to_dict()
             if isinstance(run_str, str):  # encoding worked, no errors caught
                 output_path = XtalWriter.path_suffix_checker(

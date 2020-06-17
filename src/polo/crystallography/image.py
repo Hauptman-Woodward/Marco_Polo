@@ -106,8 +106,13 @@ class Image():
 
         # TODO Pick a better way to add cocktail to the tooltip
         '''
+        if self.cocktail:
+            cocktail = self.cocktail.number
+        else:
+            cocktail = None
         return 'Well: {}\nCocktail: {}\nMARCO Class: {}\nHuman Class: {}'.format(
-            str(self.well_number), 'pass', str(self.machine_class), str(self.human_class)
+            str(self.well_number), cocktail, str(self.machine_class),
+            str(self.human_class)
         )
 
 
@@ -150,3 +155,4 @@ class Image():
         # at some point probably want an image that is a default image not found
         # and can have a warning pop up if import from HWIrun and there are
         # still null images in run.images
+

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Polo_Builder/pyqt_designer/optimizeWidget.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -110,8 +110,6 @@ class Ui_Form(object):
         self.comboBox_8.setObjectName("comboBox_8")
         self.comboBox_8.addItem("")
         self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
-        self.comboBox_8.addItem("")
         self.gridLayout_27.addWidget(self.comboBox_8, 5, 1, 1, 2)
         self.tabWidget_2.addTab(self.tab_11, "")
         self.tab_12 = QtWidgets.QWidget()
@@ -195,7 +193,7 @@ class Ui_Form(object):
         self.gridLayout_4.addItem(spacerItem, 3, 1, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -223,8 +221,6 @@ class Ui_Form(object):
         self.label_33.setText(_translate("Form", "Stock Concentration"))
         self.comboBox_8.setItemText(0, _translate("Form", "M"))
         self.comboBox_8.setItemText(1, _translate("Form", "uM"))
-        self.comboBox_8.setItemText(2, _translate("Form", "%v/v"))
-        self.comboBox_8.setItemText(3, _translate("Form", "%w/v"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_11), _translate("Form", "X Reagent"))
         self.tab_12.setToolTip(_translate("Form", "Set the reagent to be varried in the y-axis of the plate"))
         self.label_40.setText(_translate("Form", "Assign Reagent"))

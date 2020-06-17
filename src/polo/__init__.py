@@ -27,7 +27,7 @@ else:
     #data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'
     data_prefix = '../data/'
     # above is temp for spinx only
-    os.path.abspath('../data')  # running as python script
+    #os.path.abspath('../data')  # running as python script
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(data_prefix, 'cocktail_data/cocktail_meta.csv'))
 DEFAULT_IMAGE_PATH = Path(os.path.join(data_prefix, 'images/default_image.jpg'))

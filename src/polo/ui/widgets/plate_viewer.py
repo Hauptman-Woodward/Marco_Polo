@@ -304,10 +304,8 @@ class plateViewer(QtWidgets.QGraphicsView):
     def color_images(self, color_mapping, strength=0.5, human=False):
         for each_gw in self.__graphics_wells:
             if each_gw:
-                print('set color')
                 each_gw.set_color(color_mapping, strength=strength,
                                   by_human_class=human)
-        print('colored images with mapping', color_mapping)
 
     def emphasize_all_images(self):
         for each_gw in self.__graphics_wells:
