@@ -1620,10 +1620,12 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionQuickstart_Guide"/>
+    <addaction name="actionAbout"/>
     <addaction name="separator"/>
+    <addaction name="actionUser_Guide"/>
+    <addaction name="actionQuickstart_Guide"/>
+    <addaction name="actionFAQ"/>
     <addaction name="actionDocumentation"/>
-    <addaction name="actionFAG"/>
    </widget>
    <widget class="QMenu" name="menuAdvanced_Tools">
     <property name="title">
@@ -1670,7 +1672,7 @@
     <string>Documentation</string>
    </property>
   </action>
-  <action name="actionFAG">
+  <action name="actionFAQ">
    <property name="text">
     <string>FAQ</string>
    </property>
@@ -1865,30 +1867,40 @@
     <string>Optimization Screens</string>
    </property>
   </action>
+  <action name="actionUser_Guide">
+   <property name="text">
+    <string>User's Guide</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>OptimizeWidget</class>
    <extends>QWidget</extends>
-   <header>polo/ui/widgets/optimize_widget.h</header>
+   <header>polo/widgets/optimize_widget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PlateInspectorWidget</class>
    <extends>QWidget</extends>
-   <header>polo/ui/widgets/plate_inspector_widget</header>
+   <header>polo/widgets/plate_inspector_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>slideshowInspector</class>
    <extends>QWidget</extends>
-   <header>polo/ui/widgets/slideshow_inspector.h</header>
+   <header>polo/widgets/slideshow_inspector.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>TableInspector</class>
    <extends>QWidget</extends>
-   <header>polo/ui/widgets/table_inspector.h</header>
+   <header>polo/widgets/table_inspector.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

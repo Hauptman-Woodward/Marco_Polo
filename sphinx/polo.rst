@@ -11,6 +11,9 @@ Subpackages
    polo.marco
    polo.utils
    polo.threads
+   polo.widgets
+   polo.windows
+   polo.designer
 
 
 

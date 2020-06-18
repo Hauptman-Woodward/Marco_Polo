@@ -1,7 +1,7 @@
 import os
 
 Ui_dir = '/home/ethan/Documents/github/Polo_Builder/pyqt_designer'
-target_dir = '/home/ethan/Documents/github/Polo_Builder/src/polo/ui/designer'
+target_dir = '/home/ethan/Documents/github/Polo_Builder/src/polo/designer'
 ui_files = [os.path.join(Ui_dir, f) for f in os.listdir(Ui_dir)]
 
 for each_ui_file in ui_files:

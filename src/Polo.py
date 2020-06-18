@@ -13,7 +13,7 @@ from PyQt5.QtGui import QColor, QIcon, QPalette
 
 import astor
 from polo.crystallography.run import Run, HWIRun
-from polo.ui.windows.main_window import MainWindow
+from polo.windows.main_window import MainWindow
 from polo.utils.io_utils import *
 from polo import LOG_PATH, APP_ICON, make_default_logger
 

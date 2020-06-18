@@ -75,7 +75,7 @@ COLORS = {
 ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 
 # REGEX
-# =================================================================
+# =============================================================================
 num_regex = re.compile('[-+]?([0-9]*\.[0-9]+|[0-9]+)')
 peg_regex = re.compile('[0-9]+')
 unit_regex = re.compile('v/v|w/v|M|L', re.I)
@@ -84,7 +84,7 @@ water_regex = re.compile('\*[0-9]*h2o', re.I)
 
 
 # FUNCTIONS
-# ================================================================
+# =============================================================================
 
 def make_default_logger(name):
     logger = logging.getLogger(name)
@@ -108,3 +108,10 @@ from polo.threads import thread
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
 # best bartender at Cunneen's bar in Rodger's Park
 
+# URLS
+# =============================================================================
+ABOUT = 'https://ethanholleman.github.io/Marco_Polo/about.html'
+QUICKSTART = 'https://ethanholleman.github.io/Marco_Polo/Quickstart.html'
+FAQS = 'https://ethanholleman.github.io/Marco_Polo/FAQS.html'
+USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
+DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
