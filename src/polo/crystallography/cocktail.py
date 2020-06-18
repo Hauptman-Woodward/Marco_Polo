@@ -1,9 +1,7 @@
 from polo.utils.exceptions import NotASolutionError
-from polo import water_regex
 from molmass import Formula
 import re
-
-from polo import num_regex, unit_regex, water_regex, peg_regex
+from polo import *
 
 
 class Cocktail():

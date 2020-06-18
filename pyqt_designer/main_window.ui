@@ -1654,11 +1654,18 @@
     <addaction name="separator"/>
     <addaction name="actionRemove_Run"/>
    </widget>
+   <widget class="QMenu" name="menuBeta_Testers">
+    <property name="title">
+     <string>Beta Testers</string>
+    </property>
+    <addaction name="actionBeta_Tester_s_Guide"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
    <addaction name="menuAdvanced_Tools"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuBeta_Testers"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1875,6 +1882,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionBeta_Tester_s_Guide">
+   <property name="text">
+    <string>Beta Tester's Guide</string>
    </property>
   </action>
  </widget>

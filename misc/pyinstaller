@@ -8,4 +8,18 @@ pyinstaller --add-data data;data\ --add-data src\astor;astor\ src\Polo.py
 # isssues with tensorflow packaging in linux
 # pyinstaller not picking up the required files
 
-pyinstaller --add-data data:data/ --add-data src/astor:astor/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/rnn/python/ops/*:tensorflow/contrib/rnn/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/bigtable/python/ops/*:tensorflow/contrib/bigtable/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/layers/python/ops/*:tensorflow/contrib/layers/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/input_pipeline/python/ops/*:tensorflow/contrib/input_pipeline/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/factorization/python/ops/*:tensorflow/contrib/factorization/python/ops/ src/Polo.py
+pyinstaller --add-data data:data/ --add-data /home/ethan/Documents/github/Polo_Builder/src/astor/*:astor/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/rnn/python/ops/*:tensorflow/contrib/rnn/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/bigtable/python/ops/*:tensorflow/contrib/bigtable/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/layers/python/ops/*:tensorflow/contrib/layers/python/ops/ --add-data  /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/input_pipeline/python/ops/*:tensorflow/contrib/input_pipeline/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/factorization/python/ops/*:tensorflow/contrib/factorization/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/image/python/ops/*:tensorflow/contrib/image/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/memory_stats/python/ops/*:tensorflow/contrib/memory_stats/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/bigtable/python/ops/*:tensorflow/contrib/bigtable/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/periodic_resample/python/ops/*:tensorflow/contrib/periodic_resample/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages//tensorflow/contrib/resampler/python/ops/*:tensorflow/contrib/resampler/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/seq2seq/python/ops/*:tensorflow/contrib/seq2seq/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib/tensor_forest/python/ops/*:tensorflow/contrib/tensor_forest/python/ops/ --add-data /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/*:tensorflow/ src/Polo.py
+
+
+tensorflow/contrib/seq2seq/python/ops/
+
+
+
+
+
+
+
+
+
+
+
