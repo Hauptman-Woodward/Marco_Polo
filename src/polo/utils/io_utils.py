@@ -21,6 +21,7 @@ from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
 from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
+from polo.crystallography.image import Image
 
 logger = make_default_logger(__name__)
 
@@ -196,6 +197,84 @@ class HtmlWriter(RunSerializer):
                                    well_volume=str(well_volume))
             with open(output_path, 'w') as screen_html:
                 screen_html.write(html)
+
+
+class RunCsvWriter(RunSerializer):
+
+    def __init__(self, run, output_path=None, **kwargs):
+        self.__dict__.update(kwargs)
+        self.output_path = output_path
+        super(RunCsvWriter, self).__init__(run)
+
+    @property
+    def output_path(self):
+        return self.__output_path
+
+    @property
+    def fieldnames(self):  # could use more efficent way of determining feildnames
+        rows = [row for row in self]
+        fieldnames = set([])
+        for row in rows:
+            fieldnames = fieldnames.union(set(row.keys()))
+        return fieldnames
+
+
+    @output_path.setter
+    def output_path(self, new_path):
+        if isinstance(new_path, Path):
+            new_path = str(new_path)
+
+        self.__output_path = new_path
+
+    @classmethod
+    def image_to_row(cls, image):
+        row = {}
+        for attr, value in image.__dict__.items():
+            if isinstance(value, Cocktail):
+                row[attr] = value.number
+            elif isinstance(value, Image):
+                row[attr] = value.path
+            elif isinstance(value, dict):
+                # unwrap the dict
+                for attr_b, value_b in value.items():
+                    if attr_b not in row:  # only add if will not override higher level attr
+                        # only go one level deep for now
+                        row[attr_b] = str(value_b)
+            elif isinstance(value, bytes):
+                continue  # currently do not encode bytes (base 64 stuff)
+            else:
+                row[attr] = str(value)  # default to case to string
+        return row
+    
+    def get_csv_data(self):
+        try:
+            rows = [row for row in self]
+            fieldnames = set([])
+            for row in rows:
+                fieldnames = fieldnames.union(set(row.keys()))
+            return fieldnames, rows
+        except Exception as e:
+            raise e
+
+
+    def write_csv(self):
+        try:
+            rows = [row for row in self]
+            fieldnames = set([])
+            for row in rows:
+                fieldnames = fieldnames.union(set(row.keys()))
+            with open(self.output_path, 'w') as csv_path:
+                writer = csv.DictWriter(csv_path, fieldnames)
+                writer.writeheader()
+                for row in rows:
+                    writer.writerow(row)
+            return True
+        except Exception as e:
+            return e
+
+    def __iter__(self):
+        for image in self.run.images:
+            yield RunCsvWriter.image_to_row(image)
 
 
 class XtalWriter(RunSerializer):

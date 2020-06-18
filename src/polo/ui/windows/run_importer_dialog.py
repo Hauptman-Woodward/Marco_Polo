@@ -29,19 +29,19 @@ from polo import tim  # the bartender
 logger = make_default_logger(__name__)
 
 import_descriptors = [
-        'Use HWI image import for screening runs conducted at the \
-        Hauptman-Woodward Medical Research Insitutue High-Throughput\
-        Crystallization Screening Center. Polo includes all current and past\
-        crystallization cocktail menus for HWI screens and will automatically\
-        extract metadata from your imported files based on current HWI\
-        file naming conventions.',
-        'Use raw image import for importing a directory of misc images into\
-        Polo. Be aware that using inconsistent image sizes and types may cause\
-        unexpected behavior from Polo.',
-        'Use Non-HWI image import settings for crystallization images taken\
-        at a high-throughput facility other than the one at HWI. Currently you\
-        cannot specify alternative metadata parsing methods or cocktail menus\
-        outside of HWI.'
+        '''Use HWI image import for screening runs conducted at the 
+        Hauptman-Woodward Medical Research Insitutue High-Throughput
+        Crystallization Screening Center. Polo includes all current and past 
+        crystallization cocktail menus for HWI screens and will automatically
+        extract metadata from your imported files based on current HWI
+        file naming conventions.''',
+        '''Use raw image import for importing a directory of misc images into 
+        Polo. Be aware that using inconsistent image sizes and types may cause
+        unexpected behavior from Polo.''',
+        '''Use Non-HWI image import settings for crystallization images taken
+        at a high-throughput facility other than the one at HWI. Currently you
+        cannot specify alternative metadata parsing methods or cocktail menus
+        outside of HWI.'''
 ]
 
 

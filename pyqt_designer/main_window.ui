@@ -1466,128 +1466,8 @@
         <string>Table View</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="1" rowspan="2">
-         <widget class="QGroupBox" name="groupBox_11">
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Table Settings</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <widget class="QGroupBox" name="groupBox_14">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>150</height>
-              </size>
-             </property>
-             <property name="title">
-              <string>Image Type</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
-              <item>
-               <widget class="QCheckBox" name="checkBox_7">
-                <property name="text">
-                 <string>Crystal</string>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_8">
-                <property name="text">
-                 <string>Clear</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_9">
-                <property name="text">
-                 <string>Precipitate</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_10">
-                <property name="text">
-                 <string>Other</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_15">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>100</height>
-              </size>
-             </property>
-             <property name="title">
-              <string>Classifier</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <item>
-               <widget class="QCheckBox" name="checkBox_11">
-                <property name="text">
-                 <string>MARCO</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox_12">
-                <property name="text">
-                 <string>Human</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_7">
-             <property name="text">
-              <string>Apply Settings</string>
-             </property>
-             <property name="default">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_8">
-             <property name="text">
-              <string>Uncheck All</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="0" rowspan="3">
-         <widget class="TableViewer" name="tableViewer" native="true"/>
+        <item row="0" column="0" rowspan="2">
+         <widget class="TableInspector" name="tableInspector" native="true"/>
         </item>
        </layout>
       </widget>
@@ -1988,12 +1868,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TableViewer</class>
-   <extends>QWidget</extends>
-   <header>polo/ui/widgets/table_viewer.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>OptimizeWidget</class>
    <extends>QWidget</extends>
    <header>polo/ui/widgets/optimize_widget.h</header>
@@ -2009,6 +1883,12 @@
    <class>slideshowInspector</class>
    <extends>QWidget</extends>
    <header>polo/ui/widgets/slideshow_inspector.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TableInspector</class>
+   <extends>QWidget</extends>
+   <header>polo/ui/widgets/table_inspector.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

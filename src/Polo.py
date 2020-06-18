@@ -26,7 +26,6 @@ def excepthook(exec_type, exec_value, exec_tb):
     trace = ' '.join([t.strip() for t in trace])
 
 
-
     message = '{}\nError Message: {}\nValue: {}\n Error Type: {}\n'.format(
         'Polo encountered an unexpected error.',
         trace, exec_value, exec_type

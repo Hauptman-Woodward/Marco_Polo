@@ -71,8 +71,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuExport.triggered[QAction].connect(self.handle_export)
         self.menuFile.triggered[QAction].connect(self.handle_file_menu)
         self.listWidget.itemDoubleClicked.connect(self.handle_opening_run)
-        self.pushButton_7.clicked.connect(self.update_table_view)
-        self.pushButton_8.clicked.connect(self.uncheck_all_filters)
+        # self.pushButton_7.clicked.connect(self.update_table_view)
+        # self.pushButton_8.clicked.connect(self.uncheck_all_filters)
         self.run_interface.currentChanged.connect(self.on_changed_tab)
 
        # plot view method connections
@@ -212,8 +212,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.current_run = self.loaded_runs[run_name]
             # self.update_run_data_tab()
             self.slideshowInspector.run = self.current_run
-            self.tableViewer.run = self.current_run
-            self.update_table_view()
+            self.tableInspector.run = self.current_run
+            self.tableInspector.update_table_view()
             self.optimizeWidget.run = self.current_run
             self.plateInspector.run = self.current_run
             self.tab_limiter()  # set allowed tabs by run type
@@ -238,16 +238,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             export_path = QtWidgets.QFileDialog.getSaveFileName(
                 self, 'Save Run')[0]
             if export_path:
-                export_path = Path(export_path)
+                export_path, export_results = Path(export_path), None
                 if action == self.actionAs_HTML:
                     export_path = export_path.with_name(
                         export_path.name + '.html')
-                    make_run_html(self.current_run, export_path)
+                    export_results = make_run_html(self.current_run, export_path)
                 elif action == self.actionAs_CSV:
-                    export_path = export_path.with_name(export_path + '.csv')
-                    self.current_run  # TODO add export csv method
+                    export_path = export_path.with_suffix('.csv')
+                    csv_exporter = RunCsvWriter(self.current_run, export_path)
+                    export_results = csv_exporter.write_csv()
+                
+                if export_results == True:
+                    status_message = self.make_message_box(
+                        message='Current run exported to {}'.format(export_path)
+                    )
+                else:
+                    status_message = self.make_message_box(
+                        message='Export to {} failed with error {}'.format(
+                            export_path, export_results
+                        )
+                    )
+                status_message.exec_()
         else:
             logger.info('User attempted to export with no current run')
+            self.make_message_box(message='Please load a run first').exec_()
 
     def handle_file_menu(self, selection):
         '''
@@ -346,7 +360,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         logger.info('Set run linked tools enabled to {}'.format(disabled))
 
     def make_message_box(self, message, icon=QtWidgets.QMessageBox.Information,
-                         buttons=None, connected_function=None):
+                         buttons=QtWidgets.QMessageBox.Ok,
+                         connected_function=None):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(icon)
         msg.setText(message)
@@ -363,29 +378,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # Table View Methods
     # ==========================================================================
 
-    def parse_table_filters(self):
-        image_types, human, marco = self.filter_parser(
-            marco_widget=self.checkBox_11,
-            human_widget=self.checkBox_12,
-            crystal_widget=self.checkBox_7,
-            clear_widget=self.checkBox_8,
-            precipitate_widget=self.checkBox_9,
-            other_widget=self.checkBox_10
-        )
-        # add hook ups for cocktail filters here
-        # add sort by hook ups here
-        return image_types, human, marco
+    # def parse_table_filters(self):
+    #     image_types, human, marco = self.filter_parser(
+    #         marco_widget=self.checkBox_11,
+    #         human_widget=self.checkBox_12,
+    #         crystal_widget=self.checkBox_7,
+    #         clear_widget=self.checkBox_8,
+    #         precipitate_widget=self.checkBox_9,
+    #         other_widget=self.checkBox_10
+    #     )
+    #     # add hook ups for cocktail filters here
+    #     # add sort by hook ups here
+    #     return image_types, human, marco
 
-    def uncheck_all_filters(self):
-        check_widgets = self.layout_widget_lister(self.gridLayout_3)
-        for widget in check_widgets:
-            if type(widget) == QtWidgets.QCheckBox:
-                widget.setChecked(False)
+    # def uncheck_all_filters(self):
+    #     check_widgets = self.layout_widget_lister(self.gridLayout_3)
+    #     for widget in check_widgets:
+    #         if type(widget) == QtWidgets.QCheckBox:
+    #             widget.setChecked(False)
 
-    def update_table_view(self):
-        image_types, human, marco = self.parse_table_filters()
-        self.tableViewer.set_current_data(image_types, human, marco)
-        self.tableViewer.populate_table()
+    # def update_table_view(self):
+    #     image_types, human, marco = self.parse_table_filters()
+    #     self.tableViewer.set_current_data(image_types, human, marco)
+    #     self.tableViewer.populate_table()
 
     # Plot Window Methods
     # ==========================================================================
