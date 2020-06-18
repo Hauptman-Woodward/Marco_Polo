@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.designer package &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="polo.windows package" href="polo.windows.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="polo.html">polo package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.widgets.html">polo.widgets package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">polo.designer package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_FTP_Dialog">polo.designer.UI_FTP_Dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_HTML_Dialog">polo.designer.UI_HTML_Dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_buld_classifier">polo.designer.UI_buld_classifier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_image_pop_dialog">polo.designer.UI_image_pop_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_log_dialog">polo.designer.UI_log_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_main_window">polo.designer.UI_main_window module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_make_tray">polo.designer.UI_make_tray module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_optimizeWidget">polo.designer.UI_optimizeWidget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_optimize_widget">polo.designer.UI_optimize_widget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_plate_inspector_widget">polo.designer.UI_plate_inspector_widget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_plot_maker">polo.designer.UI_plot_maker module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_run_exporter">polo.designer.UI_run_exporter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_run_importer">polo.designer.UI_run_importer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_secure_save_dialog">polo.designer.UI_secure_save_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_settings">polo.designer.UI_settings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_slideshow_inspector">polo.designer.UI_slideshow_inspector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_spectrum_dialog">polo.designer.UI_spectrum_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_table_inspector">polo.designer.UI_table_inspector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_test">polo.designer.UI_test module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_time_res_dialog">polo.designer.UI_time_res_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_time_resolved_dialog">polo.designer.UI_time_resolved_dialog module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer.UI_unit_converter">polo.designer.UI_unit_converter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">polo.designer.Ui_make_tray module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.designer">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="polo.html">polo package</a> &raquo;</li>
+        
+      <li>polo.designer package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/polo.designer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="polo-designer-package">
+<h1>polo.designer package<a class="headerlink" href="#polo-designer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-polo.designer.UI_FTP_Dialog">
+<span id="polo-designer-ui-ftp-dialog-module"></span><h2>polo.designer.UI_FTP_Dialog module<a class="headerlink" href="#module-polo.designer.UI_FTP_Dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_FTP_Dialog.Ui_FTPDialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_FTP_Dialog.</code><code class="sig-name descname">Ui_FTPDialog</code><a class="reference internal" href="_modules/polo/designer/UI_FTP_Dialog.html#Ui_FTPDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_FTP_Dialog.Ui_FTPDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_FTP_Dialog.Ui_FTPDialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FTPDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_FTP_Dialog.html#Ui_FTPDialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_FTP_Dialog.Ui_FTPDialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_FTP_Dialog.Ui_FTPDialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">FTPDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_FTP_Dialog.html#Ui_FTPDialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_FTP_Dialog.Ui_FTPDialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_HTML_Dialog">
+<span id="polo-designer-ui-html-dialog-module"></span><h2>polo.designer.UI_HTML_Dialog module<a class="headerlink" href="#module-polo.designer.UI_HTML_Dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_HTML_Dialog.</code><code class="sig-name descname">Ui_HTMLReportDialog</code><a class="reference internal" href="_modules/polo/designer/UI_HTML_Dialog.html#Ui_HTMLReportDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">HTMLReportDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_HTML_Dialog.html#Ui_HTMLReportDialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">HTMLReportDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_HTML_Dialog.html#Ui_HTMLReportDialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_HTML_Dialog.Ui_HTMLReportDialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_buld_classifier">
+<span id="polo-designer-ui-buld-classifier-module"></span><h2>polo.designer.UI_buld_classifier module<a class="headerlink" href="#module-polo.designer.UI_buld_classifier" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_buld_classifier.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_buld_classifier.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_buld_classifier.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_buld_classifier.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_buld_classifier.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_buld_classifier.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_buld_classifier.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_buld_classifier.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_buld_classifier.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_buld_classifier.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_image_pop_dialog">
+<span id="polo-designer-ui-image-pop-dialog-module"></span><h2>polo.designer.UI_image_pop_dialog module<a class="headerlink" href="#module-polo.designer.UI_image_pop_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_image_pop_dialog.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_image_pop_dialog.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_image_pop_dialog.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_image_pop_dialog.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_image_pop_dialog.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_image_pop_dialog.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_image_pop_dialog.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_image_pop_dialog.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_image_pop_dialog.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_image_pop_dialog.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_log_dialog">
+<span id="polo-designer-ui-log-dialog-module"></span><h2>polo.designer.UI_log_dialog module<a class="headerlink" href="#module-polo.designer.UI_log_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_log_dialog.Ui_LogDialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_log_dialog.</code><code class="sig-name descname">Ui_LogDialog</code><a class="reference internal" href="_modules/polo/designer/UI_log_dialog.html#Ui_LogDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_log_dialog.Ui_LogDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_log_dialog.Ui_LogDialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">LogDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_log_dialog.html#Ui_LogDialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_log_dialog.Ui_LogDialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_log_dialog.Ui_LogDialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">LogDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_log_dialog.html#Ui_LogDialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_log_dialog.Ui_LogDialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_main_window">
+<span id="polo-designer-ui-main-window-module"></span><h2>polo.designer.UI_main_window module<a class="headerlink" href="#module-polo.designer.UI_main_window" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_main_window.Ui_MainWindow">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_main_window.</code><code class="sig-name descname">Ui_MainWindow</code><a class="reference internal" href="_modules/polo/designer/UI_main_window.html#Ui_MainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_main_window.Ui_MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_main_window.Ui_MainWindow.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MainWindow</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_main_window.html#Ui_MainWindow.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_main_window.Ui_MainWindow.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_main_window.Ui_MainWindow.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MainWindow</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_main_window.html#Ui_MainWindow.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_main_window.Ui_MainWindow.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_make_tray">
+<span id="polo-designer-ui-make-tray-module"></span><h2>polo.designer.UI_make_tray module<a class="headerlink" href="#module-polo.designer.UI_make_tray" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_make_tray.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_make_tray.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_make_tray.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_make_tray.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_make_tray.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_make_tray.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_make_tray.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_make_tray.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_make_tray.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_make_tray.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_optimizeWidget">
+<span id="polo-designer-ui-optimizewidget-module"></span><h2>polo.designer.UI_optimizeWidget module<a class="headerlink" href="#module-polo.designer.UI_optimizeWidget" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_optimizeWidget.Ui_Form">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_optimizeWidget.</code><code class="sig-name descname">Ui_Form</code><a class="reference internal" href="_modules/polo/designer/UI_optimizeWidget.html#Ui_Form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimizeWidget.Ui_Form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_optimizeWidget.Ui_Form.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_optimizeWidget.html#Ui_Form.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimizeWidget.Ui_Form.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_optimizeWidget.Ui_Form.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_optimizeWidget.html#Ui_Form.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimizeWidget.Ui_Form.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_optimize_widget">
+<span id="polo-designer-ui-optimize-widget-module"></span><h2>polo.designer.UI_optimize_widget module<a class="headerlink" href="#module-polo.designer.UI_optimize_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_optimize_widget.Ui_Form">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_optimize_widget.</code><code class="sig-name descname">Ui_Form</code><a class="reference internal" href="_modules/polo/designer/UI_optimize_widget.html#Ui_Form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimize_widget.Ui_Form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_optimize_widget.Ui_Form.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_optimize_widget.html#Ui_Form.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimize_widget.Ui_Form.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_optimize_widget.Ui_Form.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_optimize_widget.html#Ui_Form.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_optimize_widget.Ui_Form.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_plate_inspector_widget">
+<span id="polo-designer-ui-plate-inspector-widget-module"></span><h2>polo.designer.UI_plate_inspector_widget module<a class="headerlink" href="#module-polo.designer.UI_plate_inspector_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_plate_inspector_widget.Ui_PlateInspector">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_plate_inspector_widget.</code><code class="sig-name descname">Ui_PlateInspector</code><a class="reference internal" href="_modules/polo/designer/UI_plate_inspector_widget.html#Ui_PlateInspector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plate_inspector_widget.Ui_PlateInspector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_plate_inspector_widget.Ui_PlateInspector.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">PlateInspector</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_plate_inspector_widget.html#Ui_PlateInspector.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plate_inspector_widget.Ui_PlateInspector.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_plate_inspector_widget.Ui_PlateInspector.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">PlateInspector</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_plate_inspector_widget.html#Ui_PlateInspector.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plate_inspector_widget.Ui_PlateInspector.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_plot_maker">
+<span id="polo-designer-ui-plot-maker-module"></span><h2>polo.designer.UI_plot_maker module<a class="headerlink" href="#module-polo.designer.UI_plot_maker" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_plot_maker.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_plot_maker.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_plot_maker.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plot_maker.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_plot_maker.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_plot_maker.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plot_maker.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_plot_maker.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_plot_maker.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_plot_maker.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_run_exporter">
+<span id="polo-designer-ui-run-exporter-module"></span><h2>polo.designer.UI_run_exporter module<a class="headerlink" href="#module-polo.designer.UI_run_exporter" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_run_exporter.Ui_ExporDialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_run_exporter.</code><code class="sig-name descname">Ui_ExporDialog</code><a class="reference internal" href="_modules/polo/designer/UI_run_exporter.html#Ui_ExporDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_exporter.Ui_ExporDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_run_exporter.Ui_ExporDialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ExporDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_run_exporter.html#Ui_ExporDialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_exporter.Ui_ExporDialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_run_exporter.Ui_ExporDialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ExporDialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_run_exporter.html#Ui_ExporDialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_exporter.Ui_ExporDialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_run_importer">
+<span id="polo-designer-ui-run-importer-module"></span><h2>polo.designer.UI_run_importer module<a class="headerlink" href="#module-polo.designer.UI_run_importer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_run_importer.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_run_importer.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_run_importer.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_importer.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_run_importer.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_run_importer.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_importer.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_run_importer.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_run_importer.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_run_importer.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_secure_save_dialog">
+<span id="polo-designer-ui-secure-save-dialog-module"></span><h2>polo.designer.UI_secure_save_dialog module<a class="headerlink" href="#module-polo.designer.UI_secure_save_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_secure_save_dialog.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_secure_save_dialog.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_secure_save_dialog.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_secure_save_dialog.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_secure_save_dialog.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_secure_save_dialog.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_secure_save_dialog.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_secure_save_dialog.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_secure_save_dialog.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_secure_save_dialog.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_settings">
+<span id="polo-designer-ui-settings-module"></span><h2>polo.designer.UI_settings module<a class="headerlink" href="#module-polo.designer.UI_settings" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_settings.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_settings.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_settings.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_settings.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_settings.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_settings.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_settings.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_settings.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_settings.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_settings.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_slideshow_inspector">
+<span id="polo-designer-ui-slideshow-inspector-module"></span><h2>polo.designer.UI_slideshow_inspector module<a class="headerlink" href="#module-polo.designer.UI_slideshow_inspector" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_slideshow_inspector.Ui_slideshowInspector">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_slideshow_inspector.</code><code class="sig-name descname">Ui_slideshowInspector</code><a class="reference internal" href="_modules/polo/designer/UI_slideshow_inspector.html#Ui_slideshowInspector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_slideshow_inspector.Ui_slideshowInspector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_slideshow_inspector.Ui_slideshowInspector.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slideshowInspector</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_slideshow_inspector.html#Ui_slideshowInspector.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_slideshow_inspector.Ui_slideshowInspector.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_slideshow_inspector.Ui_slideshowInspector.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slideshowInspector</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_slideshow_inspector.html#Ui_slideshowInspector.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_slideshow_inspector.Ui_slideshowInspector.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_spectrum_dialog">
+<span id="polo-designer-ui-spectrum-dialog-module"></span><h2>polo.designer.UI_spectrum_dialog module<a class="headerlink" href="#module-polo.designer.UI_spectrum_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_spectrum_dialog.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_spectrum_dialog.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_spectrum_dialog.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_spectrum_dialog.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_spectrum_dialog.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_spectrum_dialog.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_spectrum_dialog.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_spectrum_dialog.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_spectrum_dialog.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_spectrum_dialog.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_table_inspector">
+<span id="polo-designer-ui-table-inspector-module"></span><h2>polo.designer.UI_table_inspector module<a class="headerlink" href="#module-polo.designer.UI_table_inspector" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_table_inspector.Ui_Form">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_table_inspector.</code><code class="sig-name descname">Ui_Form</code><a class="reference internal" href="_modules/polo/designer/UI_table_inspector.html#Ui_Form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_table_inspector.Ui_Form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_table_inspector.Ui_Form.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_table_inspector.html#Ui_Form.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_table_inspector.Ui_Form.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_table_inspector.Ui_Form.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Form</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_table_inspector.html#Ui_Form.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_table_inspector.Ui_Form.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_test">
+<span id="polo-designer-ui-test-module"></span><h2>polo.designer.UI_test module<a class="headerlink" href="#module-polo.designer.UI_test" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-polo.designer.UI_time_res_dialog">
+<span id="polo-designer-ui-time-res-dialog-module"></span><h2>polo.designer.UI_time_res_dialog module<a class="headerlink" href="#module-polo.designer.UI_time_res_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_time_res_dialog.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_time_res_dialog.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_time_res_dialog.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_res_dialog.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_time_res_dialog.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_time_res_dialog.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_res_dialog.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_time_res_dialog.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_time_res_dialog.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_res_dialog.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_time_resolved_dialog">
+<span id="polo-designer-ui-time-resolved-dialog-module"></span><h2>polo.designer.UI_time_resolved_dialog module<a class="headerlink" href="#module-polo.designer.UI_time_resolved_dialog" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_time_resolved_dialog.Ui_Dialog">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_time_resolved_dialog.</code><code class="sig-name descname">Ui_Dialog</code><a class="reference internal" href="_modules/polo/designer/UI_time_resolved_dialog.html#Ui_Dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_resolved_dialog.Ui_Dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_time_resolved_dialog.Ui_Dialog.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_time_resolved_dialog.html#Ui_Dialog.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_resolved_dialog.Ui_Dialog.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_time_resolved_dialog.Ui_Dialog.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Dialog</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_time_resolved_dialog.html#Ui_Dialog.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_time_resolved_dialog.Ui_Dialog.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.designer.UI_unit_converter">
+<span id="polo-designer-ui-unit-converter-module"></span><h2>polo.designer.UI_unit_converter module<a class="headerlink" href="#module-polo.designer.UI_unit_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.designer.UI_unit_converter.Ui_UnitConverter">
+<em class="property">class </em><code class="sig-prename descclassname">polo.designer.UI_unit_converter.</code><code class="sig-name descname">Ui_UnitConverter</code><a class="reference internal" href="_modules/polo/designer/UI_unit_converter.html#Ui_UnitConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_unit_converter.Ui_UnitConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="polo.designer.UI_unit_converter.Ui_UnitConverter.retranslateUi">
+<code class="sig-name descname">retranslateUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">UnitConverter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_unit_converter.html#Ui_UnitConverter.retranslateUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_unit_converter.Ui_UnitConverter.retranslateUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.designer.UI_unit_converter.Ui_UnitConverter.setupUi">
+<code class="sig-name descname">setupUi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">UnitConverter</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/designer/UI_unit_converter.html#Ui_UnitConverter.setupUi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.designer.UI_unit_converter.Ui_UnitConverter.setupUi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>polo.designer.Ui_make_tray module<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-polo.designer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polo.designer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="polo.windows.html" class="btn btn-neutral float-left" title="polo.windows package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

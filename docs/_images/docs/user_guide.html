@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User’s Guide &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Beta Testers Guide" href="beta_testers.html" />
+    <link rel="prev" title="FAQs" href="FAQS.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-and-opening-image-data">Importing and Opening Image Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-your-data-via-ftp">Getting Your Data (via FTP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-images-from-a-directory">Importing Images from a Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-a-saved-run">Importing a Saved Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opening-a-run">Opening a Run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-slideshow-view">Using the Slideshow View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-navigation">Basic Navigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classification">Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filtering">Filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-metadata">Image Metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-plate-viewer">Using the Plate Viewer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-controls">Basic Controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-filtering-and-coloring">Image Filtering and Coloring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detail-view">Detail View</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-table-view">Using the Table View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-plot-functions">Using Plot Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classification-counts">Classification Counts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#marco-accuracy">MARCO Accuracy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plate-heatmaps">Plate Heatmaps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-a-plot">Saving a Plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-optimize-tool">Using the Optimize Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-your-plate">Setting Up Your Plate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-reagents">Selecting Reagents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-your-optimization-screen">Viewing Your Optimization Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-a-screen">Exporting A Screen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-tools">Advanced Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#time-resolved-runs">Time Resolved Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-an-alternative-spectrum">Adding an Alternative Spectrum</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-a-run">Saving a Run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xtal-file-format">.xtal File Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#actually-saving-your-run">Actually Saving Your Run</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exporting-a-run">Exporting a Run</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#html-reports">HTML Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#csv-exports">CSV Exports</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>User’s Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/user_guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-s-guide">
+<h1>User’s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h1>
+<p>If you have yet to install Polo on your machine, head to the installation
+guide here.</p>
+<div class="section" id="importing-and-opening-image-data">
+<h2>Importing and Opening Image Data<a class="headerlink" href="#importing-and-opening-image-data" title="Permalink to this headline">¶</a></h2>
+<p>The first step to using Polo is adding your own data. Polo organizes data into “runs”, which
+consist of a set of related screening images. Polo organizes runs into three different
+categories which are described below.</p>
+<ul class="simple">
+<li><p>HWI Screening Runs</p></li>
+<li><p>Non-HWI Screening Runs</p></li>
+<li><p>Raw Image Collections</p></li>
+</ul>
+<div class="section" id="getting-your-data-via-ftp">
+<h3>Getting Your Data (via FTP)<a class="headerlink" href="#getting-your-data-via-ftp" title="Permalink to this headline">¶</a></h3>
+<p>If you do not already have your data downloaded to your local machine, Polo
+includes an FTP file browser which utilizes Python’s ftplib package. For
+HWI users this allows you to download your screening images from the
+HWI server without leaving the application.</p>
+<p>To open the FTP file browser, on the menubar navigate to Import -&gt; Images
+-&gt; From FTP. Enter your credentials in the new window. Once you are
+connected to a server files available to download will be listed in the browser menu.</p>
+<img alt="Image of the built in FTP browser showing available files." class="align-center" src="_images/ftp_browser.png" />
+<p>Select the checkboxes next to the files you wish to download, or select
+all files in a directory at once. Pressing “Download Selected Files”
+will start the download.</p>
+<p>Since these are large files, Polo will download them in the background so you
+can continue to the program normally. Once all files are downloaded Polo will
+notify you that your download is complete. Closing Polo before this will
+result in an incomplete download.</p>
+</div>
+<div class="section" id="importing-images-from-a-directory">
+<h3>Importing Images from a Directory<a class="headerlink" href="#importing-images-from-a-directory" title="Permalink to this headline">¶</a></h3>
+<p>Once you have your images on your local machine you can import them into
+Polo by using the Run Importer tool. It can be opened by navigating to the
+menu bar and selecting Import -&gt; Images -&gt; From Directory. A window like
+the one below will then open.</p>
+<img alt="Run importer window" src="_images/run_importer.png" />
+<p>If you are importing HWI screening images select <strong>HWI Screening Run</strong> from
+the <strong>Import Type</strong> window (Beta testers do this). Select <strong>Browse</strong> to open
+a file browser and select the directory containing the images you want to
+import.</p>
+<p>Other import types are included for compatibility with other
+high-throughput protocols but metadata for these import modes is out of
+the scope of the program. This means runs imported as these types will have
+fewer available features.</p>
+<p>However, since HWI has standard naming conventions Polo will suggest settings for your
+run including what cocktail file to use, the date of imaging, the spectrum
+and the number of wells. However, if you want to change any of these settings
+you are free to do so.</p>
+<p>Once you are happy with your import click <strong>Submit Run</strong> to load your
+images into Polo.</p>
+</div>
+<div class="section" id="importing-a-saved-run">
+<h3>Importing a Saved Run<a class="headerlink" href="#importing-a-saved-run" title="Permalink to this headline">¶</a></h3>
+<p>One of the advantages of Polo is the introduction of the .xtal file format.
+Xtal is a json like file that can store all the data relating to an individual
+screening run in a single file with no other dependencies. Xtal files store
+images, classifications, cocktail data and other annotations made while using
+the Polo program.</p>
+<p>If you have xtal file ready for import you can load it into Polo by navigating
+to the menu bar and selecting <strong>Import</strong> -&gt; <strong>Images</strong> -&gt; <strong>From Saved Run</strong>.
+This will open a file browser and allow you to select the xtal file you wish
+to import.</p>
+</div>
+<div class="section" id="opening-a-run">
+<h3>Opening a Run<a class="headerlink" href="#opening-a-run" title="Permalink to this headline">¶</a></h3>
+<p>Once a run has been successfully imported, the run name will appear in the
+<strong>Loaded Runs</strong> list, like in the image below.</p>
+<p>If it is a new run double clicking on the run name will run the MARCO model
+on the run’s images. You can check on MARCO’s progress by using the
+<strong>Classification Progress</strong> bar located just below the Loaded Runs list. Polo
+will also attempt to estimate the time remaining in your classification job.</p>
+<blockquote>
+<div><img alt="Polo mid-classification" src="_images/mid_class.png" />
+</div></blockquote>
+<p>Once a run has been classified you can load it into the current view
+by double clicking on it again. This will set the selected run as your
+<strong>Current Run</strong> and all actions will be taken in reference to this run.
+You can change your current run by double clicking another loaded run in the
+<strong>Loaded Runs</strong> tab.</p>
+<blockquote>
+<div><img alt="Image loaded into the slideshow view after the run as been classified." src="_images/loaded_image.png" />
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="using-the-slideshow-view">
+<h2>Using the Slideshow View<a class="headerlink" href="#using-the-slideshow-view" title="Permalink to this headline">¶</a></h2>
+<p>The slideshow view is the main Polo user interface. It allows you to view
+your screening images, label them and filter them by MARCO classifications,
+your own classifications or both.</p>
+<blockquote>
+<div><img alt="Object structure model" src="_images/loaded_image.png" />
+</div></blockquote>
+<div class="section" id="basic-navigation">
+<h3>Basic Navigation<a class="headerlink" href="#basic-navigation" title="Permalink to this headline">¶</a></h3>
+<p>Once you have images loaded in you can cycle through them by
+pressing the <strong>Next</strong> or <strong>Previous</strong> image buttons under the navigation
+panel. You can also use the right or left arrowkeys respectively. If you are
+viewing an HWI screening run you can also navigate directly to a specific
+well number by entering the well number into the <strong>By Well Number</strong> box.</p>
+</div>
+<div class="section" id="classification">
+<h3>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
+<p>Arguably the most important Polo feature is the ability to easily
+label your screening images. To label the currently displayed image
+press the button in the <strong>Classification</strong> panel with your desired label.
+You can classify images as Crystals, Precipitate, Clear or Other. To increase
+your speed you can classify images using keyboard shortcuts which are
+listed below.</p>
+<ul class="simple">
+<li><p>1: Crystal</p></li>
+<li><p>2: Precipitate</p></li>
+<li><p>3: Clear</p></li>
+<li><p>4: Other</p></li>
+</ul>
+<p>Classifying an image will automatically move you to the next image in
+the slideshow.</p>
+</div>
+<div class="section" id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h3>
+<p>Using the checkboxes under the <strong>Image Filters</strong> panel in the lower
+right corner of the window will allow you to filter the kinds of
+images in your current slideshow. For example if you only wanted to
+see images that MARCO has classified as Crystal you could check the Crystal box
+under <strong>Image Types</strong> and MARCO under the <strong>Classifier</strong> panel. If you had checked Human
+instead only images that you have classified as Crystal would be shown.</p>
+<p>You can reset the slideshow to include all images by selecting all checkboxes
+or no boxes and pressing submit filters.</p>
+</div>
+<div class="section" id="image-metadata">
+<h3>Image Metadata<a class="headerlink" href="#image-metadata" title="Permalink to this headline">¶</a></h3>
+<p>Image metadata will be displayed in the <strong>Image Details</strong> and <strong>Cocktail Details</strong>
+windows when it is available. Image details will give you basic information about
+the image currently being displayed, such as well number, imaging technology
+imaging date and current classifications. If you are viewing an HWI run
+the chemical conditions the current image was plated in will be displayed in the
+<strong>Cocktail Details</strong> window.</p>
+</div>
+</div>
+<div class="section" id="using-the-plate-viewer">
+<h2>Using the Plate Viewer<a class="headerlink" href="#using-the-plate-viewer" title="Permalink to this headline">¶</a></h2>
+<p>To view multiple images in a grid you can utilize the <strong>Plate Viewer</strong>, which
+can be found under the <strong>Plate Viewer</strong> tab. When you first open it up, it will
+look something like the image below.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/plate_view.png" />
+</div></blockquote>
+<div class="section" id="basic-controls">
+<h3>Basic Controls<a class="headerlink" href="#basic-controls" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you have a run loaded and selected press <strong>Reload Current View</strong> button
+to load in some images with the current settings.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/plate_24.png" />
+</div></blockquote>
+<p>You can adjust the number of images shown in the grid by using the
+<strong>Images Per Plate</strong> combo box and pressing <strong>Reload Current View</strong>.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/plate_96.png" />
+</div></blockquote>
+<p>You can navigate to the next or previous view by using the <strong>Next</strong> or
+<strong>Previous</strong> buttons respectively.</p>
+</div>
+<div class="section" id="image-filtering-and-coloring">
+<h3>Image Filtering and Coloring<a class="headerlink" href="#image-filtering-and-coloring" title="Permalink to this headline">¶</a></h3>
+<p>The Plateviewer window allows you to highlight images by either their MARCO
+classification or the one you have given them. This allows you to find true
+hits faster. First we will look at how to color images by their classification.</p>
+<p>Open the <strong>Image Coloring</strong> tab on the bottom of the Plateviewer window.
+Use the combo boxes to assign a color to each classification type. The
+<strong>MARCO</strong> and <strong>Human</strong> radiobuttons tell Polo what classifier to use.
+After you have picked out a color scheme switch back to the <strong>Plate View</strong> tab
+select the <strong>Apply Image Colors</strong> checkbox and
+press the <strong>Apply Plate Settings</strong> button to color your images.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>Apply Image Colors</strong> checkbox must be selected for colorings to be applied.</p>
+</div>
+<p>A 96 well view with colors applied to all MARCO classifications.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/colo_96.png" />
+</div></blockquote>
+<p>A disappointing 96 well view with only the Crystal classified images colored blue.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/one_colo_96.png" />
+</div></blockquote>
+<p>Similarly, images can also be emphasized and deemphasized by either their
+human or MARCO classification. Use the checkboxes under the <strong>Image Filtering</strong>
+tab to select which images to emphasize. Then switch back to the <strong>Plate View</strong> tab
+and check the <strong>Apply Image Filters</strong> box and hit <strong>Apply Plate Settings</strong>.</p>
+<p>The same view as above but only selecting for MARCO classified crystal images.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/filter_96.png" />
+</div></blockquote>
+</div>
+<div class="section" id="detail-view">
+<h3>Detail View<a class="headerlink" href="#detail-view" title="Permalink to this headline">¶</a></h3>
+<p>If you see an image that looks interesting you can select it and it will be
+opened in a popout window like the one below. Here you can view details about
+the image and assign it a classification using the buttons in the <strong>Human Classification</strong>
+panel.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/pop.png" />
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="using-the-table-view">
+<h2>Using the Table View<a class="headerlink" href="#using-the-table-view" title="Permalink to this headline">¶</a></h2>
+<p>The table view allows you to view a run in a spreadsheet like view and does
+not display images.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/table.png" />
+</div></blockquote>
+<div class="section" id="id1">
+<h3>Filtering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Just like the <strong>Slideshow Viewer</strong> and <strong>Plate Viewer</strong> tabs you can filter
+what data is shown to you in the table view. For those familiar with SQL this
+is like a SELECT / WHERE statement. Press the <strong>Apply Settings</strong> button to
+apply your currently selected filters.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/filter_table.png" />
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="using-plot-functions">
+<h2>Using Plot Functions<a class="headerlink" href="#using-plot-functions" title="Permalink to this headline">¶</a></h2>
+<p>Polo utilizes the Matplotlib python library to provide a few diagnostic
+plots to give you more information on your screening run. Once a run is loaded
+in plots can be viewed by selecting the <strong>Plots</strong> tab.</p>
+<div class="section" id="classification-counts">
+<h3>Classification Counts<a class="headerlink" href="#classification-counts" title="Permalink to this headline">¶</a></h3>
+<p>Visualize human and MARCO classifications by image type.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/class_counts.png" />
+</div></blockquote>
+</div>
+<div class="section" id="marco-accuracy">
+<h3>MARCO Accuracy<a class="headerlink" href="#marco-accuracy" title="Permalink to this headline">¶</a></h3>
+<p>View a basic bar graph of MARCO classification accuracy. Correct classifications
+are those where the model applied the same classification as the human.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/mark_acc.png" />
+</div></blockquote>
+</div>
+<div class="section" id="plate-heatmaps">
+<h3>Plate Heatmaps<a class="headerlink" href="#plate-heatmaps" title="Permalink to this headline">¶</a></h3>
+<p>View the MARCO model confidence for each image classification across
+all images in your screening run.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/heat.png" />
+</div></blockquote>
+</div>
+<div class="section" id="saving-a-plot">
+<h3>Saving a Plot<a class="headerlink" href="#saving-a-plot" title="Permalink to this headline">¶</a></h3>
+<p>If you wish, you can save a plot as an image to your machine by
+using the plot control icons at the bottom of the <strong>Plots</strong> tab. Select the
+floppy disc to save the current plot.</p>
+</div>
+</div>
+<div class="section" id="using-the-optimize-tool">
+<h2>Using the Optimize Tool<a class="headerlink" href="#using-the-optimize-tool" title="Permalink to this headline">¶</a></h2>
+<p>Once you have identified crystal containing wells, you can easily
+design optimization screens using the optimize tool. The optimize tool
+automatically creates screens around the cocktail conditions a crystal hit
+grown in.</p>
+<p>Currently all conditions come directly from HWI screening conditions and changing
+the conditions manually is not currently supported.</p>
+<p>For more information on
+optimization protocols you can read this document provided by HWI,</p>
+<p><a class="reference external" href="https://hwi.buffalo.edu/wp-content/uploads/2017/10/ReproduceCrystalLeads.pdf">Reproducing HWI HTCSC crystallization screening hits</a></p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/optimize.png" />
+</div></blockquote>
+<div class="section" id="setting-up-your-plate">
+<h3>Setting Up Your Plate<a class="headerlink" href="#setting-up-your-plate" title="Permalink to this headline">¶</a></h3>
+<p>The first thing to do is to tell Polo what the plate you will be using for
+your optimization screen. Set the number of wells in your plate by adjusting
+the plate dimensions.</p>
+<p>For example a standard 24 well plate could have 6 wells on X axis and 4 on
+the Y or vice versa. Which value you assign to which axis is arbitrary as
+long as you assign the reagent you want to screen for on that same axis.</p>
+<p>You should also adjust the well volume by using the <strong>Well Volume</strong> and associated
+units combo boxes. This volume will be used as the maximum volume for each well.</p>
+</div>
+<div class="section" id="selecting-reagents">
+<h3>Selecting Reagents<a class="headerlink" href="#selecting-reagents" title="Permalink to this headline">¶</a></h3>
+<p>Once your plate is set up you are ready to select reagents to screen for.
+Wells you have classified as crystal containing are listed in the <strong>Hit Well</strong>
+combo box under the <strong>Reagent Controls</strong> panel. Selecting a well will display
+its containing reagents under the <strong>Assign Reagents</strong> combo boxes of the
+<strong>X Reagent</strong> and <strong>Y Reagent</strong> tabs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A reagent assigned under the <strong>X Reagent tab</strong> will be varied on the X-axis of the plate and the reagent assigned under the <strong>Y Reagent</strong> tab will be varied on the Y-axis of the plate.</p>
+</div>
+<p>Since any given plate only has two axis only two reagents can be screened for,
+but many crystallization cocktail contain three or more reagents. Reagents not
+assigned to either the x or y reagent will be considered constant and will
+be present in your final screen but always at the same concentration.</p>
+<p>Once you have assigned your reagents set a stock concentration for each reagent and
+select a percentage to the x and y reagents by. This is always in reference to the
+hit concentration for the particular reagent.</p>
+<p>For example if you selected citric acid as your x reagent and it was present
+in the crystallization cocktail at a concentration of 0.5 M the concentration
+of citric acid in your optimization screen will be varied in reference to
+0.5 M by the percentage selected in the <strong>Vary each well by</strong> spin box.</p>
+<p>Additionally, the hit concentration is always the center most well of the
+axis. Meaning if there are 6 wells on your plate’s x-axis you can expect
+the concentration of citric acis in the 3rd well to be 0.5 M (using the
+example above).</p>
+</div>
+<div class="section" id="viewing-your-optimization-screen">
+<h3>Viewing Your Optimization Screen<a class="headerlink" href="#viewing-your-optimization-screen" title="Permalink to this headline">¶</a></h3>
+<p>After everything is set up, press <strong>Show Screen</strong> to display your
+current optimization screen. It will look something like the image below.</p>
+<blockquote>
+<div><img alt="The plateviewer tab." src="_images/screen.png" />
+</div></blockquote>
+<p>If it does not fill the screen slightly adjust the size of the Polo window and
+it should snap into place.</p>
+</div>
+<div class="section" id="exporting-a-screen">
+<h3>Exporting A Screen<a class="headerlink" href="#exporting-a-screen" title="Permalink to this headline">¶</a></h3>
+<p>After setting up your screen you can export it to an html file to print
+and / or share with your friends. To do so just hit the <strong>Export</strong> button.
+This will open a file browser and you can select where you would like to
+save the file. You can then open the file with any browser to view it or
+save it as a pdf.</p>
+</div>
+</div>
+<div class="section" id="advanced-tools">
+<h2>Advanced Tools<a class="headerlink" href="#advanced-tools" title="Permalink to this headline">¶</a></h2>
+<p>Advanced tools go a bit beyond image classification and viewing and allow you
+to take advantage of the fact a single screening run will likely be imaged at
+multiple points in time and with multiple imaging technologies. All tools
+described below can be found by navigating to the menu bar and selecting
+<strong>Advanced Tools</strong>.</p>
+<div class="section" id="time-resolved-runs">
+<h3>Time Resolved Runs<a class="headerlink" href="#time-resolved-runs" title="Permalink to this headline">¶</a></h3>
+<p>Usually, the sample plate will be imaged at multiple points in time. Polo allows
+you to link these runs together using the <strong>Add Time Resolved</strong> tool under
+<strong>Advanced Tools</strong>. Polo will automatically determine the order of the runs
+based on their date and then allow you to navigate between them in both
+the Slideshow Viewer tab and Plate Viewer tab using the <strong>Next Date</strong> and
+<strong>Previous Date</strong> buttons.</p>
+</div>
+<div class="section" id="adding-an-alternative-spectrum">
+<h3>Adding an Alternative Spectrum<a class="headerlink" href="#adding-an-alternative-spectrum" title="Permalink to this headline">¶</a></h3>
+<p>Oftentimes, the same plate will be imaged with a photographic technology
+besides microscopy in order to verify the presence of crystals in a sample.
+If you have images taken with such a technology you can identify them as such
+in the <strong>Run Importer</strong> window (link here).</p>
+<p>Then navigate to <strong>Advanced Tools</strong> and select <strong>Add Spectrum</strong> which will
+open a dialog like the one shown below.</p>
+<p>Valid runs will automatically be assigned to an image category based on the
+spectrum they were assigned at import. Select one run from each category that
+you would like to link and when finished press <strong>Submit Assignment</strong>.</p>
+<p>You will then be able to swap between these images in both the Slideshow Viewer
+and Plate Viewers. This can be very useful for verifying a crystal is in fact
+a protein crystal and not salt.</p>
+</div>
+</div>
+<div class="section" id="saving-a-run">
+<h2>Saving a Run<a class="headerlink" href="#saving-a-run" title="Permalink to this headline">¶</a></h2>
+<p>Once you have invested time into picking out the best screening conditions you
+are going to want to save your work and share it with others. The best way to
+do this in Polo is by saving your current run as a .xtal file.</p>
+<div class="section" id="xtal-file-format">
+<h3>.xtal File Format<a class="headerlink" href="#xtal-file-format" title="Permalink to this headline">¶</a></h3>
+<p>.xtal is a json based format for saving screening runs after they have been
+loaded into and processed using Polo. It will maintain all of your image
+classifications and metadata in a single file. Additionally, the actual
+screening images are encoded directly into the xtal file which makes sharing
+your data to another Polo user very easy as it only requires sharing the
+single .xtal file.</p>
+</div>
+<div class="section" id="actually-saving-your-run">
+<h3>Actually Saving Your Run<a class="headerlink" href="#actually-saving-your-run" title="Permalink to this headline">¶</a></h3>
+<p>To save your Run from Polo, navigate to the menu bar and and select
+<strong>File</strong> -&gt; <strong>Save</strong> or <strong>Save As</strong>. If you have not saved your current run
+to a xtal file before a file browser will automatically be opened and you
+can specify a location and name for your save file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not close Polo while a run is being saved!</p>
+</div>
+<p>After the save is complete Polo will notify you with a popup telling you it
+is safe to close the program and your save as completed. You can now share
+your xtal file with anyone else using Polo!</p>
+</div>
+</div>
+<div class="section" id="exporting-a-run">
+<h2>Exporting a Run<a class="headerlink" href="#exporting-a-run" title="Permalink to this headline">¶</a></h2>
+<p>In addition to saving screening runs as xtal files, Polo supports exporting
+to formats which can be viewed outside of the Polo application. Currently
+available export options are described below.</p>
+<div class="section" id="html-reports">
+<h3>HTML Reports<a class="headerlink" href="#html-reports" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="csv-exports">
+<h3>CSV Exports<a class="headerlink" href="#csv-exports" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="beta_testers.html" class="btn btn-neutral float-right" title="Beta Testers Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="FAQS.html" class="btn btn-neutral float-left" title="FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

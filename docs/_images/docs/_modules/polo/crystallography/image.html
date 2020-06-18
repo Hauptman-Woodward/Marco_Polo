@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.crystallography.image &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.crystallography.image</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.crystallography.image</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">MODEL</span>
+<span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">classify_image</span>
+
+
+<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">():</span>
+
+    <span class="sd">&#39;&#39;&#39;Image objects hold the data relating to one image of a particular</span>
+<span class="sd">    screening well in a larger run. Images encode the actual image file as</span>
+<span class="sd">    a file path to the image if it is on the machine Polo is being run from,</span>
+<span class="sd">    as a base64 encoded image or both.</span>
+
+<span class="sd">    :param path: Path to the actual image file, defaults to None</span>
+<span class="sd">    :type path: str or Path, optional</span>
+<span class="sd">    :param bites: Image encoded as base64, defaults to None</span>
+<span class="sd">    :type bites: str or bytes, optional</span>
+<span class="sd">    :param well_number: Well number of the image, defaults to None</span>
+<span class="sd">    :type well_number: int, optional</span>
+<span class="sd">    :param human_class: Human classification of this image, defaults to None</span>
+<span class="sd">    :type human_class: str, optional</span>
+<span class="sd">    :param machine_class: MARCO classification of this image, defaults to None</span>
+<span class="sd">    :type machine_class: str, optional</span>
+<span class="sd">    :param prediction_dict: Dictionary containing MARCO model confidence for</span>
+<span class="sd">                            all image classifications, defaults to None</span>
+<span class="sd">    :type prediction_dict: dict, optional</span>
+<span class="sd">    :param plate_id: HWI given unique ID for plate this image belongs to</span>
+<span class="sd">                     , defaults to None</span>
+<span class="sd">    :type plate_id: str, optional</span>
+<span class="sd">    :param date: Date this image was taken on, defaults to None</span>
+<span class="sd">    :type date: Datetime, optional</span>
+<span class="sd">    :param cocktail: Cocktail assigned to the well this image is of, defaults to None</span>
+<span class="sd">    :type cocktail: Cocktail, optional</span>
+<span class="sd">    :param spectrum: Keyword describing the imaging tech used to take the image</span>
+<span class="sd">                    , defaults to None</span>
+<span class="sd">    :type spectrum: str, optional</span>
+<span class="sd">    :param previous_image: Image of the same well and sample but taken on a previous date</span>
+<span class="sd">                            , defaults to None</span>
+<span class="sd">    :type previous_image: Image, optional</span>
+<span class="sd">    :param next_image: Image of the same well and sample but taken on a future </span>
+<span class="sd">                        date, defaults to None</span>
+<span class="sd">    :type next_image: Image, optional</span>
+<span class="sd">    :param alt_image: Image of the same well and sample but taken with a </span>
+<span class="sd">                      different imaging tech, defaults to None</span>
+<span class="sd">    :type alt_image: Image, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bites</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">well_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">human_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">machine_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prediction_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">plate_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cocktail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">previous_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alt_image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">human_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">machine_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">well_number</span> <span class="o">=</span> <span class="n">well_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="o">=</span> <span class="n">prediction_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span> <span class="o">=</span> <span class="n">plate_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cocktail</span> <span class="o">=</span> <span class="n">cocktail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">spectrum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="n">previous_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">next_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">bites</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">image_string</span> <span class="o">=</span> <span class="s1">&#39;Well Num: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">))</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">))</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Date: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">))</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image_string</span>
+
+
+<div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If the `path` attribute exists and is an image file then encodes</span>
+<span class="sd">        that file as base64 and returns the encoded image.</span>
+
+<span class="sd">        :return: base64 encoded image</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Image.resize"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">preserve_aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Resizes an image given x and y resolution. Copy is true will copy</span>
+<span class="sd">        the image instead of overwriting it.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">pixel_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">preserve_aspect</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pixel_map</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Image.get_tool_tip"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_tool_tip">[docs]</a>    <span class="k">def</span> <span class="nf">get_tool_tip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Format a string to use as a tooltip for this image instance.</span>
+
+<span class="sd">        :return: Tooltip string</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        # TODO Pick a better way to add cocktail to the tooltip</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;Well: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Cocktail: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">attribs</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
+<div class="viewcode-block" id="Image.get_pixel_map"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_pixel_map">[docs]</a>    <span class="k">def</span> <span class="nf">get_pixel_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a pixelmap object from either the base64 encoded version</span>
+<span class="sd">        of the image or the actual image file if it exists. Base64 takes</span>
+<span class="sd">        precedence. The pixelmap is what is eventually displayed to the user.</span>
+
+<span class="sd">        :return: Pixelmap</span>
+<span class="sd">        :rtype: QPixmap</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">:</span>
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">loadFromData</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">pm</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+        <span class="c1"># if path does exist and there is no base64 encoding then</span>
+        <span class="c1"># there is goin to be an issue</span>
+
+<div class="viewcode-block" id="Image.classify_image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Classify the image using the MARCO CNN model. Sets the </span>
+<span class="sd">           `machine class` and `prediction_dict` attributes based on the</span>
+<span class="sd">           model results.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="o">=</span> <span class="n">classify_image</span><span class="p">(</span><span class="n">MODEL</span><span class="p">,</span>
+                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div></div>
+        <span class="c1"># exception in case there is not image stored for that well. Maybe it</span>
+        <span class="c1"># got deleted for something</span>
+        <span class="c1"># at some point probably want an image that is a default image not found</span>
+        <span class="c1"># and can have a warning pop up if import from HWIrun and there are</span>
+        <span class="c1"># still null images in run.images</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

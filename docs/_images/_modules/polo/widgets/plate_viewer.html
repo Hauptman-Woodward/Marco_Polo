@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.widgets.plate_viewer &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.widgets.plate_viewer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.widgets.plate_viewer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBitmap</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QGraphicsColorizeEffect</span><span class="p">,</span> <span class="n">QGraphicsScene</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">COLORS</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">polo.widgets.slideshow_viewer</span> <span class="kn">import</span> <span class="n">PhotoViewer</span>
+<span class="kn">from</span> <span class="nn">polo.windows.image_pop_dialog</span> <span class="kn">import</span> <span class="n">ImagePopDialog</span>
+<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="graphicsWell"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell">[docs]</a><span class="k">class</span> <span class="nc">graphicsWell</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsPixmapItem</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsPixmapItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>  <span class="c1"># image object</span>
+        <span class="c1"># self.setPixmap()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFlag</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>
+
+<div class="viewcode-block" id="graphicsWell.width"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.width">[docs]</a>    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixmap</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="graphicsWell.height"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.height">[docs]</a>    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixmap</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="graphicsWell.setToolTip"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.setToolTip">[docs]</a>    <span class="k">def</span> <span class="nf">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_tool_tip</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="graphicsWell.setPixmap"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.setPixmap">[docs]</a>    <span class="k">def</span> <span class="nf">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixmap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pixmap</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="graphicsWell.resetOpacity"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.resetOpacity">[docs]</a>    <span class="k">def</span> <span class="nf">resetOpacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="graphicsWell.setOpacity"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.setOpacity">[docs]</a>    <span class="k">def</span> <span class="nf">setOpacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filtered_opacity</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">set_visible</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image_types</span><span class="p">:</span>  <span class="c1"># otherwise no images specified</span>
+                <span class="k">if</span> <span class="n">human</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="n">set_visible</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">marco</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="n">set_visible</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">human</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
+                    <span class="n">set_visible</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">marco</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                    <span class="n">set_visible</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">set_visible</span><span class="p">:</span>
+            <span class="n">filtered_opacity</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># image has met filtering requirements</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="n">filtered_opacity</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="graphicsWell.set_color"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.set_color">[docs]</a>    <span class="k">def</span> <span class="nf">set_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_mapping</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">by_human_class</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">effect</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">color_mapping</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">by_human_class</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">color_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">by_human_class</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">color_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
+                    <span class="n">effect</span> <span class="o">=</span> <span class="n">QGraphicsColorizeEffect</span><span class="p">()</span>
+                    <span class="n">effect</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+                    <span class="n">effect</span><span class="o">.</span><span class="n">setStrength</span><span class="p">(</span><span class="n">strength</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setGraphicsEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="graphicsWell.get_alt_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.get_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">previous_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">next_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span>
+            <span class="k">elif</span> <span class="n">previous_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">previous_image</span>
+            <span class="k">elif</span> <span class="n">alt_spec</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span></div></div>
+
+
+<span class="c1"># class PlateCache():</span>
+
+<span class="c1">#     def __init__(self, plateViewer):</span>
+<span class="c1">#         self.plateViewer = plateViewer</span>
+<span class="c1">#         self.cache = {}</span>
+
+<span class="c1">#     @property</span>
+<span class="c1">#     def run(self):</span>
+<span class="c1">#         if self.plateViewer:</span>
+<span class="c1">#             return self.plateViewer.run</span>
+
+<span class="c1">#     @property</span>
+<span class="c1">#     def current_page(self):</span>
+<span class="c1">#         if self.plateViewer:</span>
+<span class="c1">#             return self.plateViewer.current_page</span>
+
+<span class="c1">#     @property</span>
+<span class="c1">#     def images_per_page(self):</span>
+<span class="c1">#         if self.plateViewer:</span>
+<span class="c1">#             return self.plateViewer.images_per_page</span>
+
+<span class="c1">#     @property</span>
+<span class="c1">#     def scene(self):</span>
+<span class="c1">#         if self.plateViewer:</span>
+<span class="c1">#             return self.plateViewer.scene</span>
+
+<span class="c1">#     def add_scene(self, num_images, page_num):</span>
+<span class="c1">#         pass</span>
+
+<span class="c1">#     def cache_current_scene(self):</span>
+
+<span class="c1">#         run_name = self.run.run_name</span>
+<span class="c1">#         self.add_to_cache(self.run, self.current_page,</span>
+<span class="c1">#                           self.images_per_page, self.scene)</span>
+
+<span class="c1">#     def erase_current_scene(self):</span>
+<span class="c1">#         try:</span>
+<span class="c1">#             self.cache[self.run.run_name][self.current_page][self.images_per_page] = None</span>
+<span class="c1">#         except KeyError as e:</span>
+<span class="c1">#             return False</span>
+
+<span class="c1">#     def add_to_cache(self, run=None, current_page=None, images_per_page=None, scene=None):</span>
+<span class="c1">#         try:</span>
+<span class="c1">#             self.cache[run.run_name][current_page][images_per_page] = scene</span>
+<span class="c1">#         except KeyError:</span>
+<span class="c1">#             if run:</span>
+<span class="c1">#                 if run.run_name not in self.cache:</span>
+<span class="c1">#                     self.cache[run.run_name] = {}</span>
+<span class="c1">#                 if current_page:</span>
+<span class="c1">#                     if current_page not in self.cache[run.run_name]:</span>
+<span class="c1">#                         self.cache[run.run_name][current_page] = {}</span>
+<span class="c1">#                     if images_per_page:</span>
+<span class="c1">#                         if images_per_page not in self.cache[run.run_name][current_page]:</span>
+<span class="c1">#                             self.cache[run.run_name][current_page][images_per_page] = scene</span>
+
+    <span class="c1"># def check_for_current_scene(self):</span>
+    <span class="c1">#     try:</span>
+    <span class="c1">#         return self.cache[self.run.run_name][self.current_page][self.images_per_page]</span>
+    <span class="c1">#     except KeyError as e:</span>
+    <span class="c1">#         return False</span>
+
+
+<div class="viewcode-block" id="plateViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer">[docs]</a><span class="k">class</span> <span class="nc">plateViewer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">images_per_page</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">plateViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preserve_aspect</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># how to fit images in scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__images_per_page</span> <span class="o">=</span> <span class="n">images_per_page</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_page</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># self.__cache = PlateCache(self)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setScene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">selectionChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_out_selected_well</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setInteractive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBackgroundBrush</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QColor</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTransformationAnchor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AnchorUnderMouse</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setDragMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">ScrollHandDrag</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">images_per_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__images_per_page</span>
+
+    <span class="nd">@images_per_page</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">images_per_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_num</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__images_per_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__images_per_page</span> <span class="o">=</span> <span class="n">new_num</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__current_page</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scene</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">visible_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">view_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">:</span>
+            <span class="n">view_w</span><span class="p">,</span> <span class="n">view_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_dims</span>
+            <span class="k">return</span> <span class="n">best_aspect_ratio</span><span class="p">(</span><span class="n">view_w</span><span class="p">,</span> <span class="n">view_h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_page</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span>
+
+    <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="n">Run</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span> <span class="o">=</span> <span class="p">[</span><span class="n">graphicsWell</span><span class="p">(</span>
+                <span class="n">image</span><span class="o">=</span><span class="n">im</span><span class="p">)</span> <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="o">.</span><span class="n">images</span><span class="p">]</span>
+
+    <span class="nd">@current_page</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">current_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_page_number</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_page_number</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span><span class="p">:</span>
+            <span class="n">new_page_number</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">new_page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_page_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_page</span> <span class="o">=</span> <span class="n">new_page_number</span>
+
+<div class="viewcode-block" id="plateViewer.fitInView"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.fitInView">[docs]</a>    <span class="k">def</span> <span class="nf">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">preserve_aspect</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">preserve_aspect</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">plateViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">itemsBoundingRect</span><span class="p">(),</span>
+                                               <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">plateViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">itemsBoundingRect</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="plateViewer.tile_graphics_wells"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.tile_graphics_wells">[docs]</a>    <span class="k">def</span> <span class="nf">tile_graphics_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># check if scene has already been cached</span>
+
+        <span class="c1"># if overwrite_cache and self.__cache.check_for_current_scene():</span>
+        <span class="c1"># want to overwrite the cache and the cache exists</span>
+        <span class="c1">#   self.__cache.erase_current_scene()</span>
+        <span class="c1">#   print(&#39;OVERWROTE THE CACHE&#39;)</span>
+        <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">visible_wells</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">)</span>
+        <span class="n">cur_x</span><span class="p">,</span> <span class="n">cur_y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># current pixel positions to place image</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aspect_ratio</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+            <span class="n">max_h</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+                <span class="n">cur_graphics_well</span> <span class="o">=</span> <span class="n">visible_wells</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">cur_graphics_well</span><span class="o">.</span><span class="n">get_alt_image</span><span class="p">(</span><span class="n">next_date</span><span class="p">,</span> <span class="n">prev_date</span><span class="p">,</span> <span class="n">alt_spec</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">cur_graphics_well</span><span class="p">)</span>
+                <span class="n">cur_graphics_well</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">cur_x</span><span class="p">,</span> <span class="n">cur_y</span><span class="p">)</span>
+                <span class="n">cur_graphics_well</span><span class="o">.</span><span class="n">setSelected</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">cgw_w</span><span class="p">,</span> <span class="n">cgw_h</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">cur_graphics_well</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span>
+                    <span class="n">cur_graphics_well</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">cgw_h</span> <span class="o">&gt;</span> <span class="n">max_h</span><span class="p">:</span>
+                    <span class="n">max_h</span> <span class="o">=</span> <span class="n">cgw_h</span>
+                <span class="n">cur_x</span> <span class="o">+=</span> <span class="n">cgw_w</span>
+            <span class="n">cur_y</span> <span class="o">+=</span> <span class="n">max_h</span>
+            <span class="n">cur_x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">selectionChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_out_selected_well</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setScene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">preserve_aspect</span><span class="p">)</span>
+        <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="plateViewer.wheelEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.25</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="mf">0.8</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">preserve_aspect</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="plateViewer.pop_out_selected_well"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.pop_out_selected_well">[docs]</a>    <span class="k">def</span> <span class="nf">pop_out_selected_well</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selection</span><span class="p">:</span>
+            <span class="n">pop_out</span> <span class="o">=</span> <span class="n">ImagePopDialog</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">pop_out</span><span class="o">.</span><span class="n">setWindowModality</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationModal</span><span class="p">)</span>
+            <span class="n">pop_out</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="plateViewer.demphasize_filtered_images"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.demphasize_filtered_images">[docs]</a>    <span class="k">def</span> <span class="nf">demphasize_filtered_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each_gw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">each_gw</span><span class="p">:</span>
+                <span class="n">each_gw</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">image_types</span><span class="o">=</span><span class="n">image_types</span><span class="p">,</span>
+                                   <span class="n">human</span><span class="o">=</span><span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="n">marco</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="plateViewer.color_images"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.color_images">[docs]</a>    <span class="k">def</span> <span class="nf">color_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_mapping</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each_gw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">each_gw</span><span class="p">:</span>
+                <span class="n">each_gw</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">color_mapping</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="n">strength</span><span class="p">,</span>
+                                  <span class="n">by_human_class</span><span class="o">=</span><span class="n">human</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="plateViewer.emphasize_all_images"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.emphasize_all_images">[docs]</a>    <span class="k">def</span> <span class="nf">emphasize_all_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each_gw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">each_gw</span><span class="p">:</span>
+                <span class="n">each_gw</span><span class="o">.</span><span class="n">resetOpacity</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="plateViewer.decolor_all_images"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.decolor_all_images">[docs]</a>    <span class="k">def</span> <span class="nf">decolor_all_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">each_gw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">each_gw</span><span class="p">:</span>
+                <span class="n">each_gw</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
