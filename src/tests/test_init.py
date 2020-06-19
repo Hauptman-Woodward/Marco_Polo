@@ -30,3 +30,4 @@ def test_bartender_creation():
             assert isinstance(well_assignment, int)
             assert well_assignment > 0 and well_assignment <= 1537
             assert isinstance(cocktail, Cocktail)
+

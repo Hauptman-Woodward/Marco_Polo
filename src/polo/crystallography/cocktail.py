@@ -42,8 +42,11 @@ class Cocktail():
 
         :return: cocktail number
         :rtype: int
-        '''     
-        return self.number.split('_C').lstrip('0')
+        '''
+        try:     
+            return int(s.split('_C')[-1].lstrip('0'))
+        except IndexError:
+            return None
         # normal cocktail number format 13_C0001
 
     @property
@@ -194,7 +197,7 @@ class Reagent():
             return self.concentration
         elif self.__concentration.units == 'w/v' and self.molar_mass:
             M = (self.__concentration.value / self.molar_mass) * 10
-            print(SignedValue(M, 'M'), 'molarity')
+            print(self.chemical_additive, SignedValue(M, 'M'), 'molarity')
             return SignedValue(M, 'M')
         else:
             return False
@@ -208,11 +211,15 @@ class Reagent():
         :return: Molarity or False
         :rtype: SignedValue or False
         '''
+        mm = None
         if isinstance(self.chemical_formula, Formula):
-            return self.chemical_formula.mass
+            mm = self.chemical_formula.mass
         PEG = self.peg_parser(self.chemical_additive)
         if PEG:
-            return PEG
+            mm = PEG
+        if mm:
+            print(mm, self.chemical_additive, 'molar mass at calculations')
+            return mm
         return False
 
     def peg_parser(self, peg_string):
@@ -229,9 +236,10 @@ class Reagent():
         keywords = set(['PEG', 'Polyethylene glycol'])
         for k in keywords:
             if k in peg_string:
-                peg_string.replace(',', '')
+                peg_string = peg_string.replace(',', '')
                 mm = peg_regex.findall(peg_string)
                 if mm:
+                    print(float(mm[0]), 'mm', self.chemical_additive)
                     return float(mm[0])
         return False
 
@@ -250,9 +258,10 @@ class Reagent():
         # target volume in liters
         if self.stock_con and self.molarity:
             #print(type(self.molarity.value), type(target_volume.value), type(self.stock_con.value))
+            print(self.chemical_additive, self.concentration, 'concentration units')
             L = (self.molarity.value * target_volume.value) / \
                 self.stock_con.value
-            print(SignedValue(L, 'L'), 'stock con')
+            print(self.chemical_additive, SignedValue(L, 'L'), 'stock con')
             return SignedValue(L, 'L')
         else:
             return False

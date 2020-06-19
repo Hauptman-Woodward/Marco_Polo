@@ -547,7 +547,7 @@ class RunDeserializer():  # convert saved file into a run
             logger.error('Failed to read {} into run object at {}'.format(
                 self.xtal_path, 'Place Holder'
             ))
-            raise e
+            return e
 
 
 class BarTender():
