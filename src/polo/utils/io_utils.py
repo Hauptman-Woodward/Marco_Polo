@@ -30,7 +30,7 @@ class RunSerializer():
 
     def __init__(self, run):
         self.run = run
-        self.logger.info('Made RunSerializer {}'.format(self))
+        logger.info('Made RunSerializer {}'.format(self))
 
     @classmethod
     def make_thread(cls, job_function, **kwargs):
@@ -258,8 +258,7 @@ class RunCsvWriter(RunSerializer):
                 fieldnames = fieldnames.union(set(row.keys()))
             return fieldnames, rows
         except Exception as e:
-            raise e
-
+            raise e  # pass it along will ya 
 
     def write_csv(self):
         try:
@@ -418,7 +417,7 @@ class XtalWriter(RunSerializer):
                                   default=XtalWriter.json_encoder)
             except (TypeError, FileNotFoundError,
                     IsADirectoryError, PermissionError) as e:
-                 logger.warning('Failed to encode {} to dict. Gave {}'.format(
+                logger.warning('Failed to encode {} to dict. Gave {}'.format(
                      self.run, e))
                 return e
 

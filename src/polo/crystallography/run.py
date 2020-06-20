@@ -324,10 +324,11 @@ class HWIRun(Run):
             other_run.previous_run = self
 
     def link_to_alt_spectrum(self, other_run):
+        # only a one way link from this run to the other run
+        # outside funcion is required to cirle the list
         if isinstance(other_run, (HWIRun, Run)):
             for current_image, alt_image in zip(self.images, other_run.images):
                 current_image.alt_image = alt_image
-                alt_image.alt_image = current_image
                 if self.image_spectrum == 'Visible':
                     alt_image.machine_class = current_image.machine_class
                     alt_image.human_class = current_image.human_class
@@ -336,7 +337,6 @@ class HWIRun(Run):
                     current_image.human_class = alt_image.human_class
 
                 self.alt_spectrum = other_run
-                other_run.alt_spectrum = self
 
         # only do a one way link here currently
 

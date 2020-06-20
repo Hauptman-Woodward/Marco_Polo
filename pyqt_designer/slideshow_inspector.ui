@@ -962,6 +962,9 @@
           <height>150</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Images will be displayed here</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -1039,6 +1042,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QCheckBox" name="checkBox_5">
+           <property name="toolTip">
+            <string>Set image types to refer to human (your) classifications. That is assuming you are a human.</string>
+           </property>
            <property name="text">
             <string>Human</string>
            </property>
@@ -1046,6 +1052,9 @@
          </item>
          <item>
           <widget class="QCheckBox" name="checkBox_6">
+           <property name="toolTip">
+            <string>Set image types in reference to MARCO classifications.</string>
+           </property>
            <property name="text">
             <string>MARCO</string>
            </property>
@@ -1056,6 +1065,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="checkBox_8">
+        <property name="toolTip">
+         <string>Include only images  you have marked as favorite</string>
+        </property>
         <property name="text">
          <string>Favorites</string>
         </property>
@@ -1063,6 +1075,9 @@
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QPushButton" name="pushButton_11">
+        <property name="toolTip">
+         <string>Apply your currently selected filters</string>
+        </property>
         <property name="text">
          <string>Submit Filters</string>
         </property>
@@ -1148,6 +1163,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QSpinBox" name="spinBox">
+           <property name="toolTip">
+            <string>Show the image assigned to this well number</string>
+           </property>
            <property name="minimum">
             <number>1</number>
            </property>
@@ -1170,6 +1188,9 @@
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton_6">
+           <property name="toolTip">
+            <string>Show the next image in the slideshow</string>
+           </property>
            <property name="text">
             <string>Next</string>
            </property>
@@ -1180,6 +1201,9 @@
          </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton_4">
+           <property name="toolTip">
+            <string>Show the previous image in the slideshow</string>
+           </property>
            <property name="text">
             <string>Previous</string>
            </property>
@@ -1765,6 +1789,9 @@
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBox_7">
+        <property name="toolTip">
+         <string>Mark current image as favorite</string>
+        </property>
         <property name="text">
          <string>Favorite?</string>
         </property>

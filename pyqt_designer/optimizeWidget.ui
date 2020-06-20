@@ -38,6 +38,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QSpinBox" name="spinBox_2">
+        <property name="toolTip">
+         <string>Change the x (number of rows) dimension of your screening plate.</string>
+        </property>
         <property name="maximum">
          <number>1536</number>
         </property>
@@ -52,6 +55,9 @@
       </item>
       <item row="1" column="3">
        <widget class="QSpinBox" name="spinBox_3">
+        <property name="toolTip">
+         <string>Change the y (number of columns) dimension of your screening plate.</string>
+        </property>
         <property name="maximum">
          <number>1536</number>
         </property>
@@ -66,6 +72,9 @@
       </item>
       <item row="2" column="2">
        <widget class="QSpinBox" name="spinBox_4">
+        <property name="toolTip">
+         <string>Edit the well volume of your screening plate. Well volume is applied to all wells in the plate.</string>
+        </property>
         <property name="maximum">
          <number>1536</number>
         </property>
@@ -73,6 +82,9 @@
       </item>
       <item row="2" column="3">
        <widget class="QComboBox" name="comboBox_11">
+        <property name="toolTip">
+         <string>Set unit for the well volume.</string>
+        </property>
         <item>
          <property name="text">
           <string>ul</string>
@@ -99,6 +111,9 @@
       </item>
       <item row="3" column="3">
        <widget class="QComboBox" name="comboBox_16">
+        <property name="toolTip">
+         <string>Set the stock solution unit in the final output.</string>
+        </property>
         <item>
          <property name="text">
           <string>ul</string>
@@ -155,7 +170,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QTabWidget" name="tabWidget_2">
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_11">
          <property name="toolTip">
@@ -173,7 +188,11 @@
            </widget>
           </item>
           <item row="1" column="0" colspan="3">
-           <widget class="QComboBox" name="comboBox_6"/>
+           <widget class="QComboBox" name="comboBox_6">
+            <property name="toolTip">
+             <string>Select the reagent to vary across the x axis of the plate.</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QLabel" name="label_38">
@@ -184,6 +203,9 @@
           </item>
           <item row="3" column="0" colspan="2">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+            <property name="toolTip">
+             <string>Percent difference of each well along the x axis in reference to the x reagent hit concentration.</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -205,6 +227,9 @@
           </item>
           <item row="5" column="0">
            <widget class="QDoubleSpinBox" name="doubleSpinBox">
+            <property name="toolTip">
+             <string>Stock concentration of the x reagent.</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -242,7 +267,11 @@
            </widget>
           </item>
           <item row="1" column="0" colspan="3">
-           <widget class="QComboBox" name="comboBox_13"/>
+           <widget class="QComboBox" name="comboBox_13">
+            <property name="toolTip">
+             <string>Select the reagent to vary on the y axis of the plate.</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QLabel" name="label_41">
@@ -253,6 +282,9 @@
           </item>
           <item row="3" column="0" colspan="2">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+            <property name="toolTip">
+             <string>Percent difference of each well along the y axis in reference to the y reagent hit concentration.</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -274,6 +306,9 @@
           </item>
           <item row="5" column="0">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_6">
+            <property name="toolTip">
+             <string>Stock concentration of the y reagent</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -308,7 +343,11 @@
            </widget>
           </item>
           <item row="1" column="0" colspan="3">
-           <widget class="QListWidget" name="listWidget_4"/>
+           <widget class="QListWidget" name="listWidget_4">
+            <property name="toolTip">
+             <string>Reagents that have not been selected as the x nor y reagent appear hear</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0" colspan="3">
            <widget class="QLabel" name="label_37">
@@ -319,6 +358,9 @@
           </item>
           <item row="3" column="0">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_7">
+            <property name="toolTip">
+             <string>Set the stock concentration for the currently selected constant reagent.</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -347,6 +389,9 @@
           </item>
           <item row="4" column="2">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_8">
+            <property name="toolTip">
+             <string>Set the pH of your screen across the optimization plate.</string>
+            </property>
             <property name="value">
              <double>1.000000000000000</double>
             </property>
@@ -373,6 +418,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QPushButton" name="pushButton_26">
+        <property name="toolTip">
+         <string>Export the current optimization screen to an html file. Will open a file browser and ask you to specify a location and filename for your export.</string>
+        </property>
         <property name="text">
          <string>Export</string>
         </property>
@@ -380,6 +428,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="pushButton_27">
+        <property name="toolTip">
+         <string>Render the optimization plate to the screen.</string>
+        </property>
         <property name="text">
          <string>Show Screen</string>
         </property>

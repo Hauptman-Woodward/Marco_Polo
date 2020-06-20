@@ -4,7 +4,7 @@ import os
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon, QPixmap
 
-from polo import MODEL
+from polo import MODEL, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.marco.run_marco import classify_image
 
 
@@ -78,6 +78,26 @@ class Image():
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
+    
+    @property
+    def human_class(self):
+        return self.__human_class
+    
+    @human_class.setter
+    def human_class(self, new_class):
+        if new_class in IMAGE_CLASSIFICATIONS:
+            self.__human_class = new_class
+
+            if hasattr(self, 'alt_image') and self.alt_image:
+                # alt images inherit their linked classifications
+                alt_image = self.alt_image
+                while alt_image.path and alt_image.path != self.path:
+                    alt_image.__human_class = new_class
+                    # assign directly to hidden attr to avoid creating an
+                    # endless recursive call loop
+                    alt_image = alt_image.alt_image        
+        else:
+            self.__human_class = None
 
 
     def encode_base64(self):
