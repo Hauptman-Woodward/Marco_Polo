@@ -30,6 +30,7 @@ class RunSerializer():
 
     def __init__(self, run):
         self.run = run
+        self.logger.info('Made RunSerializer {}'.format(self))
 
     @classmethod
     def make_thread(cls, job_function, **kwargs):
@@ -135,6 +136,8 @@ class HtmlWriter(RunSerializer):
             encode_images=encode_images)
         self.thread.finished.connect(self.finished_writing)
         self.thread.start()
+        logger.info('Writing {} as html to {}'.format(
+            self.write_complete_run, output_path))
 
     def finished_writing(self):  # should only be called from connection to thread
         '''
@@ -146,6 +149,7 @@ class HtmlWriter(RunSerializer):
             message = 'Export to {} was successful'.format(result)
         else:
             message = 'Export to HTML file failed. Returned {}'.format(result)
+        logger.info('Html write attempt status: {}'.format(message))
         HtmlWriter.make_message_box(message=message).exec_()
 
     def write_complete_run(self, output_path, encode_images=True):
@@ -270,6 +274,7 @@ class RunCsvWriter(RunSerializer):
                     writer.writerow(row)
             return True
         except Exception as e:
+            logger.warning('Caught exception {} at {}'.format(e, self.write_csv))
             return e
 
     def __iter__(self):
@@ -377,6 +382,7 @@ class XtalWriter(RunSerializer):
                         xtal_file.write(run_str)
                         return output_path
                 except PermissionError as e:
+                    logger.warning('Caught {} at {}'.format(e, self.write_xtal_file))
                     return e
 
     def clean_run_for_save(self):
@@ -412,9 +418,8 @@ class XtalWriter(RunSerializer):
                                   default=XtalWriter.json_encoder)
             except (TypeError, FileNotFoundError,
                     IsADirectoryError, PermissionError) as e:
-                # logger.warning('Failed to write {} to {} Gave {}'.format(
-                #     run, output_path, e
-                # ))
+                 logger.warning('Failed to encode {} to dict. Gave {}'.format(
+                     self.run, e))
                 return e
 
 
