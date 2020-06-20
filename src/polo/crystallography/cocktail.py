@@ -119,7 +119,6 @@ class Reagent():
         self.concentration = concentration
         self.__chemical_formula = chemical_formula
         self.stock_con = stock_con  # should be in Molarity
-        #print(self.__concentration, self.__concentration_units)
 
     @property
     def chemical_formula(self):
@@ -197,7 +196,6 @@ class Reagent():
             return self.concentration
         elif self.__concentration.units == 'w/v' and self.molar_mass:
             M = (self.__concentration.value / self.molar_mass) * 10
-            print(self.chemical_additive, SignedValue(M, 'M'), 'molarity')
             return SignedValue(M, 'M')
         else:
             return False
@@ -218,7 +216,6 @@ class Reagent():
         if PEG:
             mm = PEG
         if mm:
-            print(mm, self.chemical_additive, 'molar mass at calculations')
             return mm
         return False
 
@@ -239,7 +236,6 @@ class Reagent():
                 peg_string = peg_string.replace(',', '')
                 mm = peg_regex.findall(peg_string)
                 if mm:
-                    print(float(mm[0]), 'mm', self.chemical_additive)
                     return float(mm[0])
         return False
 
@@ -257,11 +253,8 @@ class Reagent():
         '''
         # target volume in liters
         if self.stock_con and self.molarity:
-            #print(type(self.molarity.value), type(target_volume.value), type(self.stock_con.value))
-            print(self.chemical_additive, self.concentration, 'concentration units')
             L = (self.molarity.value * target_volume.value) / \
                 self.stock_con.value
-            print(self.chemical_additive, SignedValue(L, 'L'), 'stock con')
             return SignedValue(L, 'L')
         else:
             return False

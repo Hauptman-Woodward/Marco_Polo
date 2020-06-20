@@ -52,7 +52,8 @@ class Image():
     def __init__(self, path=None, bites=None, well_number=None, human_class=None,
                  machine_class=None, prediction_dict=None,
                  plate_id=None, date=None, cocktail=None, spectrum=None,
-                 previous_image=None, next_image=None, alt_image=None):
+                 previous_image=None, next_image=None, alt_image=None, 
+                 favorite=False):
 
         self.path = str(path)
         self.human_class = human_class
@@ -67,6 +68,7 @@ class Image():
         self.next_image = next_image
         self.alt_image = alt_image
         self.bites = bites
+        self.favorite = favorite
 
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))

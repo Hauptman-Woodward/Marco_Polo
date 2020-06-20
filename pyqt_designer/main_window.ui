@@ -1636,7 +1636,7 @@
     <addaction name="separator"/>
     <addaction name="actionView_Log_2"/>
     <addaction name="separator"/>
-    <addaction name="actionBatch_Import"/>
+    <addaction name="actionEdit_Current_Run_Data"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -1650,7 +1650,6 @@
     <addaction name="actionSave_Run"/>
     <addaction name="actionSave_Run_As"/>
     <addaction name="separator"/>
-    <addaction name="actionSecure_Save"/>
     <addaction name="separator"/>
     <addaction name="actionRemove_Run"/>
    </widget>
@@ -1887,6 +1886,11 @@
   <action name="actionBeta_Tester_s_Guide">
    <property name="text">
     <string>Beta Tester's Guide</string>
+   </property>
+  </action>
+  <action name="actionEdit_Current_Run_Data">
+   <property name="text">
+    <string>Edit Current Run Data</string>
    </property>
   </action>
  </widget>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>767</width>
+    <width>949</width>
     <height>632</height>
    </rect>
   </property>
@@ -26,6 +26,9 @@
       <string>Viewing Page 0 of 0</string>
      </property>
     </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="plateViewer" name="plateViewer" native="true"/>
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_26">
@@ -365,38 +368,7 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_13">
           <item row="1" column="1">
-           <widget class="QComboBox" name="comboBox_7">
-            <item>
-             <property name="text">
-              <string>24</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>96</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>192</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>384</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>768</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>1536</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="comboBox_7"/>
           </item>
           <item row="1" column="2">
            <spacer name="horizontalSpacer_2">
@@ -478,9 +450,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="plateViewer" name="plateViewer" native="true"/>
    </item>
   </layout>
  </widget>
