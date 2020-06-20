@@ -238,9 +238,9 @@ class HWIRun(Run):
     :type image_dir: str or Path
     :param run_name: Unique ID for the Run
     :type run_name: str
-    :param cocktail_dict: Dictionary mapping well numbers to
+    :param cocktail_menu: Dictionary mapping well numbers to
                           Cocktail instances, defaults to None
-    :type cocktail_dict: dict, optional
+    :type cocktail_menu: dict, optional
     :param images: List of Image instances taken for this run, defaults to []
     :type images: list, optional
     :param plate_id: HWI given unique plate ID, defaults to None
@@ -278,7 +278,7 @@ class HWIRun(Run):
     :type current_image: DEPR, optional
     '''
 
-    def __init__(self, image_dir, run_name, cocktail_dict=None,
+    def __init__(self, image_dir, run_name, cocktail_menu=None,
                  images=[], plate_id=None, annotations=None,
                  save_file_path=None, num_wells=1536, image_spectrum=None, date=None,
                  next_run=None, previous_run=None, alt_spectrum=None,
@@ -294,7 +294,7 @@ class HWIRun(Run):
                          journal=journal, current_image=current_image,
                          current_image_index=current_image_index)
 
-        self.cocktail_dict = cocktail_dict
+        self.cocktail_menu = cocktail_menu
         self.plate_id = plate_id
         self.num_wells = num_wells
 
@@ -324,10 +324,11 @@ class HWIRun(Run):
             other_run.previous_run = self
 
     def link_to_alt_spectrum(self, other_run):
+        # only a one way link from this run to the other run
+        # outside funcion is required to cirle the list
         if isinstance(other_run, (HWIRun, Run)):
             for current_image, alt_image in zip(self.images, other_run.images):
                 current_image.alt_image = alt_image
-                alt_image.alt_image = current_image
                 if self.image_spectrum == 'Visible':
                     alt_image.machine_class = current_image.machine_class
                     alt_image.human_class = current_image.human_class
@@ -336,7 +337,6 @@ class HWIRun(Run):
                     current_image.human_class = alt_image.human_class
 
                 self.alt_spectrum = other_run
-                other_run.alt_spectrum = self
 
         # only do a one way link here currently
 
@@ -392,8 +392,9 @@ class HWIRun(Run):
             self.images[well_num-1] = Image(path=image_path,
                                             well_number=well_num,
                                             date=date, plate_id=plate_id,
-                                            cocktail=self.cocktail_dict[well_num],
+                                            cocktail=self.cocktail_menu.cocktails[well_num],
                                             spectrum=self.image_spectrum)
         logger.info('Added {} images from {} to {}'.format(
             len(self.images), self.image_dir, self
         ))
+        print(type(self.cocktail_menu), 'MENU \n\n\n')

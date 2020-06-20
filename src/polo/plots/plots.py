@@ -41,6 +41,21 @@ class StaticCanvas(MplCanvas):
 
     def clear_axis(self):
         self.fig.clf()
+    
+
+    def plot_current_map_view(self, plate_rows, plate_cols, current_wells):
+        self.clear_axis()
+        self.fig.add_subplot(111)
+        plate = np.zeros(plate_rows*plate_cols) # reshape(plate_rows, plate_cols)
+        for i in range(len(plate)):
+            if i in current_wells:
+                plate[i] = 1
+        plate = plate.reshape(plate_rows, plate_cols)
+        print(plate)
+        axis = self.fig.get_axes()[0]
+        axis.get_xaxis().set_visible(False)
+        axis.get_yaxis().set_visible(False)
+        im = axis.imshow(plate)
 
     def marco_accuracy(self, current_run):
         correctness = [0, 0]

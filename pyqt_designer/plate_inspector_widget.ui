@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>767</width>
+    <width>949</width>
     <height>632</height>
    </rect>
   </property>
@@ -24,6 +24,13 @@
      </property>
      <property name="text">
       <string>Viewing Page 0 of 0</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="plateViewer" name="plateViewer" native="true">
+     <property name="toolTip">
+      <string>Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate.</string>
      </property>
     </widget>
    </item>
@@ -133,6 +140,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string/>
+        </property>
         <property name="currentIndex">
          <number>2</number>
         </property>
@@ -143,6 +153,9 @@
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
            <widget class="QGroupBox" name="groupBox">
+            <property name="toolTip">
+             <string>Highlight images that meet your selected filters</string>
+            </property>
             <property name="title">
              <string>Classifier</string>
             </property>
@@ -237,6 +250,9 @@
               <width>300</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string/>
             </property>
            </widget>
           </item>
@@ -365,38 +381,7 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_13">
           <item row="1" column="1">
-           <widget class="QComboBox" name="comboBox_7">
-            <item>
-             <property name="text">
-              <string>24</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>96</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>192</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>384</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>768</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>1536</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="comboBox_7"/>
           </item>
           <item row="1" column="2">
            <spacer name="horizontalSpacer_2">
@@ -416,6 +401,9 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="checkBox_28">
+            <property name="toolTip">
+             <string>Apply image colorings selected in the &quot;Image Coloring&quot; tab</string>
+            </property>
             <property name="text">
              <string>Apply Image Colors</string>
             </property>
@@ -423,6 +411,9 @@
           </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBox_27">
+            <property name="toolTip">
+             <string>Apply image filters selected in the &quot;Image Filtering&quot; tab.</string>
+            </property>
             <property name="text">
              <string>Apply Image Filters</string>
             </property>
@@ -437,6 +428,9 @@
           </item>
           <item row="2" column="3" rowspan="2">
            <widget class="QPushButton" name="pushButton_23">
+            <property name="toolTip">
+             <string>Reload the current view. Like a refresh button.</string>
+            </property>
             <property name="text">
              <string>Reload Current View</string>
             </property>
@@ -444,6 +438,9 @@
           </item>
           <item row="1" column="3">
            <widget class="QPushButton" name="pushButton_19">
+            <property name="toolTip">
+             <string>Apply the currently selected coloring and filtering options if selected</string>
+            </property>
             <property name="text">
              <string>Apply Plate Settings</string>
             </property>
@@ -454,6 +451,9 @@
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QCheckBox" name="checkBox_29">
+            <property name="toolTip">
+             <string>Keep the aspect ratio of the images in the grid. Favors accuracy to the image over image size.</string>
+            </property>
             <property name="text">
              <string>Preserve Aspect Ratio</string>
             </property>
@@ -478,9 +478,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="plateViewer" name="plateViewer" native="true"/>
    </item>
   </layout>
  </widget>
