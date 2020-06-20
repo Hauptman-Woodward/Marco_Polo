@@ -80,14 +80,62 @@ class Image():
         return image_string
     
     @property
+    def marco_class(self):
+        '''Return the `__marco_class` hidden attribute.
+
+        :return: Current MARCO classification of this image
+        :rtype: str
+        '''
+        return self.__marco_class
+    
+    @marco_class.setter
+    def marco_class(self, new_class):
+        '''Setter method for `__marco_class`. If this image has alt images
+        linked to it and has its `spectrum` set as 'Visible' linked alt images
+        will share this image's marco classification. This is because MARCO
+        model has only been trained on visible light images so should not be
+        used to classify images taken with alternative photographic technologies.
+        Since linked alt images should in theory be images of the exact same
+        well in the exact same plate the visible spectrum image can share
+        its MARCO classification with it's linked alt images.
+
+        :param new_class: New MARCO classification for the image
+        :type new_class: str
+        '''
+        if new_class in IMAGE_CLASSIFICATIONS:
+            self.__marco_class = new_class
+            if hasattr(self, 'alt_image') and self.alt_image and self.spectrum == 'Visible':
+                # alt images inherit their linked classifications
+                alt_image = self.alt_image
+                while alt_image.path and alt_image.path != self.path:
+                    alt_image.__marco_class = new_class
+                    alt_image = alt_image.alt_image       
+        else:
+            self.__marco_class = None
+    
+    @property
     def human_class(self):
+        '''Return the `__human_class` hidden attribute
+
+        :return: Current human classification of this image
+        :rtype: str
+        '''
         return self.__human_class
     
     @human_class.setter
     def human_class(self, new_class):
+        '''Change the human classification of this image and any alternative
+        spectrum images it is linked to. The motivation for sharing human
+        classifications between spectrums is that in theory linked spectrums
+        are images of the exact same well just using a different photographic
+        technology. Therefore the classifications should be consistent across
+        the runs.
+
+        :param new_class: New image classification
+        :type new_class: str
+        '''
         if new_class in IMAGE_CLASSIFICATIONS:
             self.__human_class = new_class
-
             if hasattr(self, 'alt_image') and self.alt_image:
                 # alt images inherit their linked classifications
                 alt_image = self.alt_image
