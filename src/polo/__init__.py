@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 import sys
+import platform
 
 
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
@@ -23,11 +24,12 @@ APP_ICON = Path('polo.png')
 
 if os.path.isdir('./data'):  # data is in same dir as __main__
     data_prefix = 'data'
+    UNRAR = 'unrar'
 else:
-    data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'
+    data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # spinx
+    UNRAR = '../unrar/'
     #data_prefix = '../data/'
-    # above is temp for spinx only
-    # os.path.abspath('../data')  # running as python script
+
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(
     data_prefix, 'cocktail_data/cocktail_meta.csv'))
@@ -35,6 +37,8 @@ DEFAULT_IMAGE_PATH = Path(os.path.join(
     data_prefix, 'images/default_images/default_image.jpg'))
 MODEL_PATH = Path(os.path.join(data_prefix, 'savedmodel'))
 BLANK_IMAGE = Path(os.path.join(data_prefix), 'images/default_images/blank_image.png')
+
+
 
 # HTML jinja2 templates
 RUN_HTML_TEMPLATE = Path('polo/templates/exportRunTemplate.html')
@@ -77,6 +81,29 @@ COLORS = {
 }
 
 ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
+
+
+
+# UNRAR EXE
+# =============================================================================
+
+unrar_versions = set([OS for OS in os.listdir(UNRAR)])
+platform = platform.system()
+print(unrar_versions, platform)
+if platform in unrar_versions:
+    UNRAR_DIR = Path(os.path.join(UNRAR, platform))
+else:
+    UNRAR_DIR = False
+
+UNRAR_EXE = [os.path.join(str(UNRAR_DIR), f) for f in os.listdir(str(UNRAR_DIR)) if f == 'unrar.exe'].pop()
+print(UNRAR_EXE)
+
+
+# is_64bits = sys.maxsize > 2**32
+# get 32 or 64 bit 
+
+
+
 
 # REGEX
 # =============================================================================
