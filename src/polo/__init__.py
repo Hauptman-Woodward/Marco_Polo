@@ -117,7 +117,7 @@ BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
 
 from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
 from polo.threads import thread
-from polo.utils.io_utils import BarTender
+from polo.utils.io_utils import BarTender, Menu
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 

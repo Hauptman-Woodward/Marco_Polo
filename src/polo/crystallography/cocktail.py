@@ -33,6 +33,15 @@ class Cocktail():
         self.commercial_code = commercial_code
         self.pH = pH
         self.reagents = []
+    
+
+    @classmethod
+    def deserializer(cls, d):
+        # dictionary after preprocessing just with the stuff that we need to
+        # make the class
+        for reagent_dict in dict['reagents']:
+            reagent_dict = Reagent.deserializer(reagent_dict)
+        return cls(**d)
 
     @property
     def cocktail_index(self):
@@ -119,6 +128,15 @@ class Reagent():
         self.concentration = concentration
         self.__chemical_formula = chemical_formula
         self.stock_con = stock_con  # should be in Molarity
+    
+    @classmethod
+    def deserializer(cls, d):
+        d['chemical_formula'] = dict_to_obj(d['chemical_formula'])
+        # need to check up on what to do for molmass formulas
+        d['concentration'] = SignedValue.deserializer(d['concentration'])
+        d['stock_con'] = dict_to_obj(s['stock_con'])
+
+
 
     @property
     def chemical_formula(self):

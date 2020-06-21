@@ -504,54 +504,101 @@ class RunDeserializer():  # convert saved file into a run
             header_data.append(xtal_file_io.readline())
         return header_data
 
+    # def xtal_to_run(self):
+    #     '''Method that actually does the heavy lifting of converting the json
+    #     contents of xtal files back into Run instances. Currently is pretty
+    #     brittle and ugly so looking for a more flexible recursive solution.
+
+    #     :raises e: Error raised while reading the xtal file
+    #     :return: The contents of xtal file as a Run instance
+    #     :rtype: Run
+    #     '''
+    #     logger.info('Attempting to load run from {}'.format(self.xtal_path))
+    #     # jesus god need a recursive solution
+    #     try:
+    #         if os.path.isfile(self.xtal_path):
+    #             with open(self.xtal_path) as xtal_data:
+    #                 header_data = self.xtal_header_reader(
+    #                     xtal_data)  # must read header first
+    #                 j_d = json.load(xtal_data)
+
+    #             cocktail_menu = j_d['cocktail_menu']
+                
+    #             run = RunDeserializer.dict_to_obj(j_d)
+    #             run.date = datetime.strptime(
+    #                 run.date, '%Y-%m-%d %H:%M:%S')
+    #             for i, _ in enumerate(run.images):
+    #                 run.images[i] = RunDeserializer.dict_to_obj(run.images[i])
+    #                 run.images[i].bites = RunDeserializer.clean_base64_string(
+    #                     run.images[i].bites)
+    #                 if run.images[i]:
+    #                     if run.images[i].date:
+    #                         date = run.images[i].date
+    #                         run.images[i].date = datetime.strptime(
+    #                             date, '%Y-%m-%d %H:%M:%S')
+    #                     reagents = []
+    #                     if run.images[i].cocktail:
+    #                         for j, _ in enumerate(run.images[i].cocktail['reagents']):
+    #                             # holy mother of jank
+    #                             run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
+    #                                 run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
+    #                             reagents.append(RunDeserializer.dict_to_obj(
+    #                                 run.images[i].cocktail['reagents'][j]))
+    #                             # reagents[-1].concentration = RunDeserializer.dict_to_obj(
+    #                             #     reagents[j].concentration)
+    #                         run.images[i].cocktail = RunDeserializer.dict_to_obj(
+    #                             run.images[i].cocktail)
+    #                         run.images[i].cocktail.reagents = reagents
+    #             return run  # TODO Interpret the header data
+    #     except (json.JSONDecodeError, AttributeError, IsADirectoryError, PermissionError) as e:
+    #         logger.error('Failed to read {} into run object at {}'.format(
+    #             self.xtal_path, 'Place Holder'
+    #         ))
+    #         raise e
+    
     def xtal_to_run(self):
-        '''Method that actually does the heavy lifting of converting the json
-        contents of xtal files back into Run instances. Currently is pretty
-        brittle and ugly so looking for a more flexible recursive solution.
+        with open(self.xtal_path) as xtal_data:
+            header_data = self.xtal_header_reader(xtal_data)  # must read header first
+            j_d = json.load(xtal_data)
+        
+        def recursive_modify(d):
+            if '__class__' in d:
+                
+        
+        for key, value in j_d.items():
+            if isinstance(value, list):
+                for item in value:
 
-        :raises e: Error raised while reading the xtal file
-        :return: The contents of xtal file as a Run instance
-        :rtype: Run
-        '''
-        logger.info('Attempting to load run from {}'.format(self.xtal_path))
-        try:
-            if os.path.isfile(self.xtal_path):
-                with open(self.xtal_path) as xtal_data:
-                    header_data = self.xtal_header_reader(
-                        xtal_data)  # must read header first
-                    j_d = json.load(xtal_data)
-                run = RunDeserializer.dict_to_obj(j_d)
+class DictDeserializer():
+    key_seperator = '$'
+    # https://towardsdatascience.com/how-to-flatten-deeply-nested-json-objects-in-non-recursive-elegant-python-55f96533103d
 
-                run.date = datetime.strptime(
-                    run.date, '%Y-%m-%d %H:%M:%S')
-                for i, _ in enumerate(run.images):
-                    run.images[i] = RunDeserializer.dict_to_obj(run.images[i])
-                    run.images[i].bites = RunDeserializer.clean_base64_string(
-                        run.images[i].bites)
-                    if run.images[i]:
-                        if run.images[i].date:
-                            date = run.images[i].date
-                            run.images[i].date = datetime.strptime(
-                                date, '%Y-%m-%d %H:%M:%S')
-                        reagents = []
-                        if run.images[i].cocktail:
-                            for j, _ in enumerate(run.images[i].cocktail['reagents']):
-                                # holy mother of jank
-                                run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
-                                    run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
-                                reagents.append(RunDeserializer.dict_to_obj(
-                                    run.images[i].cocktail['reagents'][j]))
-                                # reagents[-1].concentration = RunDeserializer.dict_to_obj(
-                                #     reagents[j].concentration)
-                            run.images[i].cocktail = RunDeserializer.dict_to_obj(
-                                run.images[i].cocktail)
-                            run.images[i].cocktail.reagents = reagents
-                return run  # TODO Interpret the header data
-        except (json.JSONDecodeError, AttributeError, IsADirectoryError, PermissionError) as e:
-            logger.error('Failed to read {} into run object at {}'.format(
-                self.xtal_path, 'Place Holder'
-            ))
-            return e
+    def __init__(self, d):
+        self.d = d
+        self.flat = {}
+    
+    def flatten_dict(self):
+
+        def recursive_flatten(x, name=''):
+            if isinstance(x, dict):
+                for key in x:
+                    recursive_flatten(x[key], name + key + self.key_seperator)
+                    # possible add putting dict ot object here if it meets the
+                    # conditions but not sure where it would get saved to
+            elif isinstance(x, list):
+                for i, item in enumerate(x):
+                    recursive_flatten(item, name + str(i) + self.key_seperator)
+            else:
+                self.flat[name[:-1]] = x  # value
+
+        recursive_flatten(self.d)
+
+    # can flatten the dict out but then we are going to go down to the lowest
+    # values of the low need to either encorperte dict to object or
+    # need a way to floow the path back around and create objects as we go
+        
+
+
 
 
 class BarTender():
@@ -841,7 +888,7 @@ class CocktailMenuReader():
 
 class Menu():  # holds the dictionary of cocktails
 
-    def __init__(self, path, start_date, end_date, type_):
+    def __init__(self, path, start_date, end_date, type_, cocktails={}):
         '''Creates a Menu instance. Menu objects are used to organize a single
         screening run plate set up. They should contain 1536 unique screening
         conditions; one for each well in the HWI highthrouput plate. HWI
@@ -869,17 +916,8 @@ class Menu():  # holds the dictionary of cocktails
         self.start_date = start_date
         self.end_date = end_date
         self.type_ = type_
-        self.__cocktails = {}  # holds all cocktails (items on the menu)
+        self.cocktails = cocktails  # holds all cocktails (items on the menu)
         self.path = path
-
-    @property
-    def cocktails(self):
-        '''Property to return the Menu instance's cocktail dict
-
-        :return: cocktail attribute
-        :rtype: dict
-        '''
-        return self.__cocktails
 
     @property
     def path(self):
