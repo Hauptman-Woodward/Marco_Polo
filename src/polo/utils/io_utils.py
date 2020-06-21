@@ -231,6 +231,14 @@ class RunCsvWriter(RunSerializer):
 
     @classmethod
     def image_to_row(cls, image):
+        '''Given an Image object, convert it into a list that could be
+        easily written to a csv file.
+
+        :param image: Image object to convert to list
+        :type image: Image
+        :return: List
+        :rtype: list
+        '''
         row = {}
         for attr, value in image.__dict__.items():
             if isinstance(value, Cocktail):
@@ -250,6 +258,14 @@ class RunCsvWriter(RunSerializer):
         return row
 
     def get_csv_data(self):
+        '''Convert the `run` attribute to csv style data. Returns a tuple of
+        headers and a list of dictionaries with each dictionary representing
+        one row of csv data.
+
+        :raises e: Catch all exception. TODO: Make more specific
+        :return: Tuple, list of headers and list of dicts
+        :rtype: tuple
+        '''
         try:
             rows = [row for row in self]
             fieldnames = set([])
