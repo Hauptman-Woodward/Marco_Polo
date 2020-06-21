@@ -222,7 +222,6 @@ class RunCsvWriter(RunSerializer):
             fieldnames = fieldnames.union(set(row.keys()))
         return fieldnames
 
-
     @output_path.setter
     def output_path(self, new_path):
         if isinstance(new_path, Path):
@@ -249,7 +248,7 @@ class RunCsvWriter(RunSerializer):
             else:
                 row[attr] = str(value)  # default to case to string
         return row
-    
+
     def get_csv_data(self):
         try:
             rows = [row for row in self]
@@ -258,7 +257,7 @@ class RunCsvWriter(RunSerializer):
                 fieldnames = fieldnames.union(set(row.keys()))
             return fieldnames, rows
         except Exception as e:
-            raise e  # pass it along will ya 
+            raise e  # pass it along will ya
 
     def write_csv(self):
         try:
@@ -273,7 +272,8 @@ class RunCsvWriter(RunSerializer):
                     writer.writerow(row)
             return True
         except Exception as e:
-            logger.warning('Caught exception {} at {}'.format(e, self.write_csv))
+            logger.warning(
+                'Caught exception {} at {}'.format(e, self.write_csv))
             return e
 
     def __iter__(self):
@@ -381,7 +381,8 @@ class XtalWriter(RunSerializer):
                         xtal_file.write(run_str)
                         return output_path
                 except PermissionError as e:
-                    logger.warning('Caught {} at {}'.format(e, self.write_xtal_file))
+                    logger.warning('Caught {} at {}'.format(
+                        e, self.write_xtal_file))
                     return e
 
     def clean_run_for_save(self):
@@ -418,7 +419,7 @@ class XtalWriter(RunSerializer):
             except (TypeError, FileNotFoundError,
                     IsADirectoryError, PermissionError) as e:
                 logger.warning('Failed to encode {} to dict. Gave {}'.format(
-                     self.run, e))
+                    self.run, e))
                 return e
 
 
@@ -449,37 +450,33 @@ class RunDeserializer():  # convert saved file into a run
             return bytes(string, 'utf-8')
 
     @staticmethod
-    def dict_to_obj(our_dict):
-        '''Oposite of the obj_to_dict method in XtalWriter class, this method
+    def dict_to_obj(d):
+        '''Opposite of the obj_to_dict method in XtalWriter class, this method
         takes a dictionary instance that has been previously serialized and
-        attempts to convert it back into an object instance.
+        attempts to convert it back into an object instance. Used as the
+        `object_hook` arguement when calling `json.loads` to read xtal files.
 
-        :param our_dict: dictionary to convert back to object
-        :type our_dict: dict
+        :param d: dictionary to convert back to object
+        :type d: dict
         :return: an object
         :rtype: object
         '''
-        if our_dict:
-            try:
-                if "__class__" in our_dict:
-                    class_name = our_dict.pop("__class__")
-                    module_name = our_dict.pop("__module__")
-                    module = __import__(module_name)
-                    class_ = getattr(module, class_name)
-                    our_dict_two = {}
-                    for key, item in our_dict.items():
-                        if '__' in key:
-                            key = key.split('__')[-1]
-                        elif '_' == key[0]:
-                            key = key.replace('_', '')
-                        our_dict_two[key] = item
-                    obj = class_(**our_dict_two)
-                else:
-                    obj = our_dict
-                return obj
-            except NotADirectoryError as e:
-                logger.error('Caught {} attempting to create object'.format(e))
-                return None
+        if d:
+            if '__class__' in d:  # is a serialized object
+                class_name, mod_name = d.pop('__class__'), d.pop('__module__')
+                module = __import__(module_name)
+                class_ = getattr(module, class_name)
+                temp_d = {}
+                for key, item in d.items():
+                    if '__' in key:  # deal with object properties
+                        key = key.split('__')[-1]
+                    elif '_' == key[0]:
+                        key = key.replace('_', '')
+                    temp_d[key] = item
+                obj = class_(**d_two)
+            else:
+                obj = d  # just a regular dictionary to read in
+            return obj
         else:
             logger.warning(
                 'Attempted to serialize an empty dictionary at {}'.format(dict_to_obj))
@@ -505,53 +502,17 @@ class RunDeserializer():  # convert saved file into a run
         return header_data
 
     def xtal_to_run(self):
-        '''Method that actually does the heavy lifting of converting the json
-        contents of xtal files back into Run instances. Currently is pretty
-        brittle and ugly so looking for a more flexible recursive solution.
+        '''Attempt to convert the file specified by the path stored in the
+        `xtal_path` attribute to a Run object. 
 
-        :raises e: Error raised while reading the xtal file
-        :return: The contents of xtal file as a Run instance
+        :return: Run object encoded by an xtal file
         :rtype: Run
         '''
-        logger.info('Attempting to load run from {}'.format(self.xtal_path))
-        try:
-            if os.path.isfile(self.xtal_path):
-                with open(self.xtal_path) as xtal_data:
-                    header_data = self.xtal_header_reader(
-                        xtal_data)  # must read header first
-                    j_d = json.load(xtal_data)
-                run = RunDeserializer.dict_to_obj(j_d)
-
-                run.date = datetime.strptime(
-                    run.date, '%Y-%m-%d %H:%M:%S')
-                for i, _ in enumerate(run.images):
-                    run.images[i] = RunDeserializer.dict_to_obj(run.images[i])
-                    run.images[i].bites = RunDeserializer.clean_base64_string(
-                        run.images[i].bites)
-                    if run.images[i]:
-                        if run.images[i].date:
-                            date = run.images[i].date
-                            run.images[i].date = datetime.strptime(
-                                date, '%Y-%m-%d %H:%M:%S')
-                        reagents = []
-                        if run.images[i].cocktail:
-                            for j, _ in enumerate(run.images[i].cocktail['reagents']):
-                                # holy mother of jank
-                                run.images[i].cocktail['reagents'][j]['_Reagent__concentration'] = RunDeserializer.dict_to_obj(
-                                    run.images[i].cocktail['reagents'][j]['_Reagent__concentration'])
-                                reagents.append(RunDeserializer.dict_to_obj(
-                                    run.images[i].cocktail['reagents'][j]))
-                                # reagents[-1].concentration = RunDeserializer.dict_to_obj(
-                                #     reagents[j].concentration)
-                            run.images[i].cocktail = RunDeserializer.dict_to_obj(
-                                run.images[i].cocktail)
-                            run.images[i].cocktail.reagents = reagents
-                return run  # TODO Interpret the header data
-        except (json.JSONDecodeError, AttributeError, IsADirectoryError, PermissionError) as e:
-            logger.error('Failed to read {} into run object at {}'.format(
-                self.xtal_path, 'Place Holder'
-            ))
-            return e
+        with open(self.xtal_path) as xtal_data:
+            header_data = self.xtal_header_reader(
+                xtal_data)  # must read header first
+            return json.load(xtal_data,
+                             object_hook=RunDeserializer.dict_to_obj)
 
 
 class BarTender():
@@ -841,7 +802,7 @@ class CocktailMenuReader():
 
 class Menu():  # holds the dictionary of cocktails
 
-    def __init__(self, path, start_date, end_date, type_):
+    def __init__(self, path, start_date, end_date, type_, cocktails={}):
         '''Creates a Menu instance. Menu objects are used to organize a single
         screening run plate set up. They should contain 1536 unique screening
         conditions; one for each well in the HWI highthrouput plate. HWI
@@ -869,17 +830,8 @@ class Menu():  # holds the dictionary of cocktails
         self.start_date = start_date
         self.end_date = end_date
         self.type_ = type_
-        self.__cocktails = {}  # holds all cocktails (items on the menu)
+        self.cocktails = cocktails  # holds all cocktails (items on the menu)
         self.path = path
-
-    @property
-    def cocktails(self):
-        '''Property to return the Menu instance's cocktail dict
-
-        :return: cocktail attribute
-        :rtype: dict
-        '''
-        return self.__cocktails
 
     @property
     def path(self):

@@ -27,12 +27,12 @@ class Cocktail():
     '''
 
     def __init__(self, number=None, well_assignment=None,
-                 commercial_code=None, pH=None, reagents=None):
+                 commercial_code=None, pH=None, reagents=[]):
         self.well_assignment = well_assignment
         self.number = number
         self.commercial_code = commercial_code
         self.pH = pH
-        self.reagents = []
+        self.reagents = reagents
 
     @property
     def cocktail_index(self):
