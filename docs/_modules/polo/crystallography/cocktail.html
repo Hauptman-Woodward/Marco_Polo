@@ -153,11 +153,9 @@
             
   <h1>Source code for polo.crystallography.cocktail</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">NotASolutionError</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">water_regex</span>
 <span class="kn">from</span> <span class="nn">molmass</span> <span class="kn">import</span> <span class="n">Formula</span>
 <span class="kn">import</span> <span class="nn">re</span>
-
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">num_regex</span><span class="p">,</span> <span class="n">unit_regex</span><span class="p">,</span> <span class="n">water_regex</span><span class="p">,</span> <span class="n">peg_regex</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <div class="viewcode-block" id="Cocktail"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail">[docs]</a><span class="k">class</span> <span class="nc">Cocktail</span><span class="p">():</span>
@@ -198,8 +196,11 @@
 
 <span class="sd">        :return: cocktail number</span>
 <span class="sd">        :rtype: int</span>
-<span class="sd">        &#39;&#39;&#39;</span>     
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>     
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="c1"># normal cocktail number format 13_C0001</span>
 
     <span class="nd">@property</span>
@@ -272,7 +273,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">concentration</span> <span class="o">=</span> <span class="n">concentration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__chemical_formula</span> <span class="o">=</span> <span class="n">chemical_formula</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stock_con</span> <span class="o">=</span> <span class="n">stock_con</span>  <span class="c1"># should be in Molarity</span>
-        <span class="c1">#print(self.__concentration, self.__concentration_units)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chemical_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -350,7 +350,6 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">concentration</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__concentration</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;w/v&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">:</span>
             <span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__concentration</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">SignedValue</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">),</span> <span class="s1">&#39;molarity&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -364,11 +363,14 @@
 <span class="sd">        :return: Molarity or False</span>
 <span class="sd">        :rtype: SignedValue or False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">mm</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chemical_formula</span><span class="p">,</span> <span class="n">Formula</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chemical_formula</span><span class="o">.</span><span class="n">mass</span>
+            <span class="n">mm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chemical_formula</span><span class="o">.</span><span class="n">mass</span>
         <span class="n">PEG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peg_parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">PEG</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">PEG</span>
+            <span class="n">mm</span> <span class="o">=</span> <span class="n">PEG</span>
+        <span class="k">if</span> <span class="n">mm</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mm</span>
         <span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Reagent.peg_parser"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent.peg_parser">[docs]</a>    <span class="k">def</span> <span class="nf">peg_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peg_string</span><span class="p">):</span>
@@ -385,7 +387,7 @@
         <span class="n">keywords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;PEG&#39;</span><span class="p">,</span> <span class="s1">&#39;Polyethylene glycol&#39;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">peg_string</span><span class="p">:</span>
-                <span class="n">peg_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">peg_string</span> <span class="o">=</span> <span class="n">peg_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
                 <span class="n">mm</span> <span class="o">=</span> <span class="n">peg_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">peg_string</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">mm</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -405,10 +407,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># target volume in liters</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stock_con</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">molarity</span><span class="p">:</span>
-            <span class="c1">#print(type(self.molarity.value), type(target_volume.value), type(self.stock_con.value))</span>
             <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molarity</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">target_volume</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> \
                 <span class="bp">self</span><span class="o">.</span><span class="n">stock_con</span><span class="o">.</span><span class="n">value</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">SignedValue</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">),</span> <span class="s1">&#39;stock con&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>

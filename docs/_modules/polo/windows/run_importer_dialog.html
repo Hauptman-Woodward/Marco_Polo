@@ -563,12 +563,12 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_run_name</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">run_name</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_directory</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">current_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">cocktail_dict</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_path</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span><span class="o">.</span><span class="n">cocktails</span>
+                <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_path</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
                 <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span>
                     <span class="n">image_dir</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span>
                     <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
-                    <span class="n">cocktail_dict</span><span class="o">=</span><span class="n">cocktail_dict</span><span class="p">,</span>
+                    <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">cocktail_menu</span><span class="p">,</span>
                     <span class="n">image_spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
                     <span class="n">date</span><span class="o">=</span><span class="n">date</span>
                 <span class="p">)</span>

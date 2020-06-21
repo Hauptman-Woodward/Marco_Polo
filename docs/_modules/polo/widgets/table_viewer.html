@@ -161,7 +161,16 @@
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunCsvWriter</span><span class="p">,</span> <span class="n">write_screen_html</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">make_default_logger</span>
 
+<span class="c1"># Jun 16 BUG</span>
+<span class="c1"># changing headers causings issues with stuff lining up with each other</span>
+<span class="c1"># possible if one image has none for a spefic header need to look</span>
+<span class="c1"># more into this</span>
+
+<span class="c1"># seems like headers are not being updated from the list of selected headers</span>
+<span class="c1"># but from the feildnames calculated on the first view</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TableViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_viewer.TableViewer">[docs]</a><span class="k">class</span> <span class="nc">TableViewer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
 
@@ -206,7 +215,12 @@
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">RunCsvWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span><span class="o">.</span><span class="n">get_csv_data</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">RunCsvWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span><span class="o">.</span><span class="n">get_csv_data</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span> <span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at trying to get table&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="p">[],</span> <span class="p">{}</span>  <span class="c1"># empty list and dict need to handle better</span>
+                <span class="c1"># down the line</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -254,7 +268,7 @@
 <span class="sd">        :return: dictionary of header strings mapped to indices</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">h</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">headers</span><span class="p">))</span> <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_headers</span><span class="p">}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">h</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_headers</span><span class="p">))}</span></div>
 
 <div class="viewcode-block" id="TableViewer.populate_table"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_viewer.TableViewer.populate_table">[docs]</a>    <span class="k">def</span> <span class="nf">populate_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_classes</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Populates the table and displays data to the user based on their</span>
@@ -274,6 +288,7 @@
             <span class="n">header_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_header_map</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
             <span class="n">header_labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">header_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">header_map</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">header_labels</span><span class="p">)</span>
             <span class="n">table_data</span><span class="p">,</span> <span class="n">row_count</span> <span class="o">=</span> <span class="p">{},</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>  <span class="c1"># dictionary</span>
                 <span class="k">if</span> <span class="n">TableViewer</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">image_classes</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
@@ -286,7 +301,6 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">header_map</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">row_count</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">header_labels</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">table_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">k</span>

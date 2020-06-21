@@ -164,9 +164,16 @@
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 <span class="kn">from</span> <span class="nn">polo.designer.UI_plate_inspector_widget</span> <span class="kn">import</span> <span class="n">Ui_PlateInspector</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">write_screen_html</span>
+<span class="kn">from</span> <span class="nn">polo.plots.plots</span> <span class="kn">import</span> <span class="n">StaticCanvas</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">make_default_logger</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PlateInspectorWidget"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget">[docs]</a><span class="k">class</span> <span class="nc">PlateInspectorWidget</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="n">images_per_page</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">96</span><span class="p">]</span>
+
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;The PlateInspectorWidget is a primary run interface widget and is</span>
 <span class="sd">        designed to emulate the MarcoScopeJ image viewer with extended</span>
@@ -183,8 +190,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__run</span> <span class="o">=</span> <span class="n">run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">set_color_comboboxs</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_color_options</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image_count_options</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_18</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigate_plateview</span><span class="p">(</span><span class="n">next_page</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -208,6 +217,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_22</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">(</span><span class="n">alt_spec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="PlateInspectorWidget.set_image_count_options"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_image_count_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_count_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set image count options to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">))</span></div>
+
     
 <div class="viewcode-block" id="PlateInspectorWidget.set_aspect_ratio_mode"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_aspect_ratio_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_aspect_ratio_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">preserve_aspect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_29</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
@@ -250,6 +267,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__run</span> <span class="o">=</span> <span class="n">new_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set </span><span class="si">{}</span><span class="s1"> run to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="p">,</span> <span class="n">new_run</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="o">.</span><span class="n">previous_run</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="o">.</span><span class="n">next_run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_time_resolved_buttons</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
@@ -331,8 +349,8 @@
 <span class="sd">        for the plateViewer widget is requested by the user.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_27</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">apply_image_filters</span><span class="p">()</span>
@@ -344,18 +362,44 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">decolor_all_images</span><span class="p">()</span></div>
     
-<div class="viewcode-block" id="PlateInspectorWidget.show_current_plate"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.show_current_plate">[docs]</a>    <span class="k">def</span> <span class="nf">show_current_plate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">tile_graphics_wells</span><span class="p">(</span>
+<div class="viewcode-block" id="PlateInspectorWidget.show_current_plate"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.show_current_plate">[docs]</a>    <span class="k">def</span> <span class="nf">show_current_plate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Show the images belonging to the current plate view to the user.</span>
+
+<span class="sd">        :param next_date: Flag, if True show equivalent images from future </span>
+<span class="sd">                          date, defaults to False</span>
+<span class="sd">        :type next_date: bool, optional</span>
+<span class="sd">        :param prev_date: Flag, if True shows equivalent images from past</span>
+<span class="sd">                          date, defaults to False</span>
+<span class="sd">        :type prev_date: bool, optional</span>
+<span class="sd">        :param alt_spec: Flag if True shows equivalent images in alternative</span>
+<span class="sd">                         imaging spectrum, defaults to False</span>
+<span class="sd">        :type alt_spec: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>     
+        <span class="bp">self</span><span class="o">.</span><span class="n">apply_plate_settings</span><span class="p">()</span>
+        <span class="n">added_wells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">tile_graphics_wells</span><span class="p">(</span>
             <span class="n">next_date</span> <span class="o">=</span> <span class="n">next_date</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="n">prev_date</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="n">alt_spec</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_plate_label</span><span class="p">()</span></div>
             
     
 <div class="viewcode-block" id="PlateInspectorWidget.apply_image_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_image_filters">[docs]</a>    <span class="k">def</span> <span class="nf">apply_image_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper function around plateViewer `deemphasize_filtered_images`</span>
+<span class="sd">        which changes the opacity of currently displayed images based on if</span>
+<span class="sd">        their labels meet the currently selected image filter checkboxes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">demphasize_filtered_images</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">selected_classifications</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span>
         <span class="p">)</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget.apply_color_mapping"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_color_mapping">[docs]</a>    <span class="k">def</span> <span class="nf">apply_color_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Applies the current color mapping to images. Changes the color of</span>
+<span class="sd">        images based on their classifications. The color mapping is altered by</span>
+<span class="sd">        the user by using the color combo boxes to select a color for each</span>
+<span class="sd">        image classification (Crystal, Clear, ...). The user can also select</span>
+<span class="sd">        what classifier the image classifications should be in reference to;</span>
+<span class="sd">        either Marco or human classifications. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">human</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">color_images</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">color_mapping</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">horizontalSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>

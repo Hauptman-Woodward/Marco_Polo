@@ -184,6 +184,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Made RunSerializer </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
 <div class="viewcode-block" id="RunSerializer.make_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.make_thread">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">make_thread</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">job_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -288,7 +289,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
             <span class="n">encode_images</span><span class="o">=</span><span class="n">encode_images</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finished_writing</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Writing </span><span class="si">{}</span><span class="s1"> as html to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">,</span> <span class="n">output_path</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.finished_writing"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.finished_writing">[docs]</a>    <span class="k">def</span> <span class="nf">finished_writing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># should only be called from connection to thread</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -300,6 +303,7 @@
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Export to </span><span class="si">{}</span><span class="s1"> was successful&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Export to HTML file failed. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Html write attempt status: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
         <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.write_complete_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_complete_run">[docs]</a>    <span class="k">def</span> <span class="nf">write_complete_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">encode_images</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -408,8 +412,7 @@
                 <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
             <span class="k">return</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="n">rows</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">e</span></div>
-
+            <span class="k">raise</span> <span class="n">e</span>  <span class="c1"># pass it along will ya </span></div>
 
 <div class="viewcode-block" id="RunCsvWriter.write_csv"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.write_csv">[docs]</a>    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -424,6 +427,7 @@
                     <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught exception </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_csv</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -531,6 +535,7 @@
                         <span class="n">xtal_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">run_str</span><span class="p">)</span>
                         <span class="k">return</span> <span class="n">output_path</span>
                 <span class="k">except</span> <span class="ne">PermissionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
                     <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XtalWriter.clean_run_for_save"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.clean_run_for_save">[docs]</a>    <span class="k">def</span> <span class="nf">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -566,9 +571,8 @@
                                   <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">,</span>
                     <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># logger.warning(&#39;Failed to write {} to {} Gave {}&#39;.format(</span>
-                <span class="c1">#     run, output_path, e</span>
-                <span class="c1"># ))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to encode </span><span class="si">{}</span><span class="s1"> to dict. Gave </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">e</span></div></div>
 
 
@@ -701,7 +705,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to read </span><span class="si">{}</span><span class="s1"> into run object at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">,</span> <span class="s1">&#39;Place Holder&#39;</span>
             <span class="p">))</span>
-            <span class="k">raise</span> <span class="n">e</span></div></div>
+            <span class="k">return</span> <span class="n">e</span></div></div>
 
 
 <div class="viewcode-block" id="BarTender"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender">[docs]</a><span class="k">class</span> <span class="nc">BarTender</span><span class="p">():</span>

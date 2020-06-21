@@ -211,6 +211,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_12</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_alt_image</span><span class="p">(</span><span class="n">alt_spec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mark_current_image_as_favorite</span>
+        <span class="p">)</span>
 
 
 <div class="viewcode-block" id="slideshowInspector.set_classification_button_labels"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_classification_button_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_classification_button_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -266,6 +269,10 @@
     <span class="k">def</span> <span class="nf">human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Human image classifier boolean&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_5</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">favorites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_8</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">marco</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -280,7 +287,26 @@
 <div class="viewcode-block" id="slideshowInspector.show_image_from_well_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.show_image_from_well_number">[docs]</a>    <span class="k">def</span> <span class="nf">show_image_from_well_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">set_current_image_by_well_number</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="slideshowInspector.set_favorite_checkbox"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_favorite_checkbox">[docs]</a>    <span class="k">def</span> <span class="nf">set_favorite_checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Sets the value of the favorite checkbox based on whether the current</span>
+<span class="sd">        image is marked as a favorite or not. Should be used when loading an</span>
+<span class="sd">        image into the view.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="slideshowInspector.mark_current_image_as_favorite"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.mark_current_image_as_favorite">[docs]</a>    <span class="k">def</span> <span class="nf">mark_current_image_as_favorite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Sets the favorite label on the current image to the current</span>
+<span class="sd">        value of the favorite checkbox.</span>
 
+<span class="sd">        :param favorite_status: Whether this image is a favorite or not</span>
+<span class="sd">        :type favorite_status: Bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="slideshowInspector.classify_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classification</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -311,7 +337,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">get_cur_img_cocktail_str</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_image_name</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_favorite_checkbox</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="slideshowInspector.submit_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.submit_filters">[docs]</a>    <span class="k">def</span> <span class="nf">submit_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -320,7 +347,7 @@
 <span class="sd">        new filters. Displays the current image after filtering.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">update_slides_from_filters</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">selected_classifications</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selected_classifications</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorites</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
 
