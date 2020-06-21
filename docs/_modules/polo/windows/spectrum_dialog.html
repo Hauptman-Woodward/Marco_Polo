@@ -248,21 +248,21 @@
 <span class="sd">        linked list structure.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">selected_runs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_selections</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">selected_runs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_selection</span><span class="p">(</span><span class="n">selected_runs</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_runs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">run_a</span><span class="p">,</span> <span class="n">run_b</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
                 <span class="p">)</span>
-                <span class="c1">#run_a.alt_spectrum = run_b</span>
                 <span class="n">run_a</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">run_b</span><span class="p">)</span>
-            <span class="n">first_run</span><span class="p">,</span> <span class="n">last_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                                                   <span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="n">first_run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">last_run</span><span class="o">.</span><span class="n">run_name</span>
-            <span class="n">last_run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">first_run</span><span class="o">.</span><span class="n">run_name</span>
-
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;linked&#39;</span><span class="p">,</span> <span class="n">run_a</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="n">run_b</span><span class="p">)</span>
+            <span class="n">first_run</span><span class="p">,</span> <span class="n">last_run</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="n">last_run</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">first_run</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;linked &#39;</span><span class="p">,</span> <span class="n">last_run</span><span class="p">,</span> <span class="s1">&#39; to &#39;</span><span class="p">,</span> <span class="n">first_run</span><span class="p">)</span>
             <span class="c1">#last_run.link_to_alt_spectrum(first_run)</span>
-
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
             <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">selected_runs</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">+=</span> <span class="n">run</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>

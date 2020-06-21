@@ -261,10 +261,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">next_slide</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">next_slide</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Requested next slide in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">prev_slide</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">prev_slide</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Requested previous slide in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">prev_slide</span></div></div>
 
 
 <div class="viewcode-block" id="PhotoViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer">[docs]</a><span class="k">class</span> <span class="nc">PhotoViewer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="p">):</span>
@@ -329,6 +327,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="PhotoViewer.set_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer.set_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixmap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Sets a pixelmap as the current photo and fits into view.</span>
+
+<span class="sd">        :param pixmap: Pixelmap to display, defaults to None</span>
+<span class="sd">        :type pixmap: Pixmap, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">pixmap</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__empty</span> <span class="o">=</span> <span class="kc">False</span>
@@ -341,6 +344,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PhotoViewer.wheelEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Handles mouse wheel events to allow for scaling for zooming in and</span>
+<span class="sd">        out of the currently displayed image.</span>
+
+<span class="sd">        :param event: Mouse scroll wheel event</span>
+<span class="sd">        :type event: QEvent</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasPhoto</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.25</span>
@@ -356,12 +365,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__zoom</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="PhotoViewer.toggleDragMode"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer.toggleDragMode">[docs]</a>    <span class="k">def</span> <span class="nf">toggleDragMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Turns drag mode on and off.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dragMode</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">ScrollHandDrag</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setDragMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">NoDrag</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__photo</span><span class="o">.</span><span class="n">pixmap</span><span class="p">()</span><span class="o">.</span><span class="n">isNull</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setDragMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">ScrollHandDrag</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PhotoViewer.mousePressEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Handles mouse press events.</span>
+
+<span class="sd">        :param event: Mouse press event</span>
+<span class="sd">        :type event: QEvent</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__photo</span><span class="o">.</span><span class="n">isUnderMouse</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">photoClicked</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span><span class="o">.</span><span class="n">toPoint</span><span class="p">())</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PhotoViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div></div>
@@ -447,7 +463,7 @@
 
             <span class="c1"># self.display_current_image()</span>
 
-<div class="viewcode-block" id="SlideshowViewer.update_slides_from_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">[docs]</a>    <span class="k">def</span> <span class="nf">update_slides_from_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
+<div class="viewcode-block" id="SlideshowViewer.update_slides_from_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">[docs]</a>    <span class="k">def</span> <span class="nf">update_slides_from_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Creates new Carousel slides based on selected image filters.</span>
 <span class="sd">        Sets the current_image attribute to the image contained at</span>
@@ -464,12 +480,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="n">images</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span>
                 <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">))</span>
-            <span class="c1"># BUG When images are passed with no marco classification</span>
-            <span class="c1"># then no image are returned. This is an issue for</span>
-            <span class="c1"># loading runs that do not need to be classified</span>
-            <span class="c1"># ie runs that are not in the visible spectrum</span>
-            <span class="c1"># might need some kind of marker that will be on that</span>
-            <span class="c1"># so always returns images or add a place holder type classificaion</span>
+            <span class="k">if</span> <span class="n">favorite</span><span class="p">:</span>  <span class="c1"># probably move this to image filter query soon</span>
+                <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">images</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">favorite</span><span class="p">]</span>
             
             <span class="bp">self</span><span class="o">.</span><span class="n">__carousel</span><span class="o">.</span><span class="n">add_slides</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">image</span>
@@ -485,12 +497,10 @@
 <span class="sd">        :returns: None</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cur_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span>
+        <span class="n">cur_img</span><span class="o">.</span><span class="n">alt_image</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cur_img</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
             <span class="n">pixmap</span> <span class="o">=</span> <span class="n">cur_img</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set pixelmap to </span><span class="si">{}</span><span class="s1"> from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">pixmap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span>
-            <span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to set current image to </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="bp">self</span>
