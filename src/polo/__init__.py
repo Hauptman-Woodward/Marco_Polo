@@ -110,7 +110,7 @@ print(UNRAR_EXE, 'this is UNRAR')
 # =============================================================================
 num_regex = re.compile('[-+]?([0-9]*\.[0-9]+|[0-9]+)')
 peg_regex = re.compile('[0-9]+')
-unit_regex = re.compile('v/v|w/v|M|L', re.I)
+unit_regex = re.compile('v/v|w/v|M|L|ml|ul', re.I)
 water_regex = re.compile('\*[0-9]*h2o', re.I)
 
 

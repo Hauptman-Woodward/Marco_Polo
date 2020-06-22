@@ -32,16 +32,16 @@ from PyQt5.QtWidgets import QApplication
 logger = make_default_logger(__name__)
 
 import_descriptors = [  # TODO Move this into a text file
-        '''Use HWI image import for screening runs conducted at the 
+    '''Use HWI image import for screening runs conducted at the 
         Hauptman-Woodward Medical Research Insitutue High-Throughput
         Crystallization Screening Center. Polo includes all current and past 
         crystallization cocktail menus for HWI screens and will automatically
         extract metadata from your imported files based on current HWI
         file naming conventions.''',
-        '''Use raw image import for importing a directory of misc images into 
+    '''Use raw image import for importing a directory of misc images into 
         Polo. Be aware that using inconsistent image sizes and types may cause
         unexpected behavior from Polo.''',
-        '''Use Non-HWI image import settings for crystallization images taken
+    '''Use Non-HWI image import settings for crystallization images taken
         at a high-throughput facility other than the one at HWI. Currently you
         cannot specify alternative metadata parsing methods or cocktail menus
         outside of HWI.'''
@@ -82,17 +82,16 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.pushButton_2.clicked.connect(self.create_new_run)
         self.ui.radioButton.toggled.connect(self.set_menu_options)
         self.ui.radioButton_2.toggled.connect(self.set_menu_options)
-        self.ui.listWidget.selectionModel().setCurrentIndex(self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
+        self.ui.listWidget.selectionModel().setCurrentIndex(
+            self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
         # self.ui.comboBox.currentIndexChanged.connect(
         #     self.validate_hwi_number_images_run)
-
 
         # Widget display setup
         self.set_menu_options()
         logger.info('Opened run importer dialog')
         self.cannot_unrar_message()
         self.exec_()
-        
 
     @property
     def current_menu_type(self):
@@ -163,7 +162,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             return self.ui.lineEdit_6
         else:
             return self.ui.lineEdit_4
-    
+
     def cannot_unrar_message(self):
         if not self.can_unrar:
             message = '''Polo was unable to find a working unrar program for
@@ -172,9 +171,9 @@ class RunImporterDialog(QtWidgets.QDialog):
             unrar for Polo please visit this link LINK HERE'''
             msg = make_message_box(message, parent=self)
             self.ui.comboBox_6.clear()
-            self.ui.comboBox_6.addItem('From Directory')  # only allow imports from dir
+            # only allow imports from dir
+            self.ui.comboBox_6.addItem('From Directory')
             msg.exec_()
-
 
     def get_menu_options(self):
         '''Returns a list of Menus that are available for the user to pick from
@@ -330,7 +329,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         browser = QtWidgets.QFileDialog(self, filter=f)
         browser.setFileMode(mode)
-        
+
         browser.exec_()
         f = browser.selectedFiles()
 
@@ -338,25 +337,26 @@ class RunImporterDialog(QtWidgets.QDialog):
             return f[0]
         else:
             return ''
-        
+
     def crack_open_a_rar_one(self, rar_path):
         if not isinstance(rar_path, Path):
             rar_path = Path(rar_path)
         parent_path = rar_path.parent
         return unrar_archive(rar_path, parent_path)
-        
+
     def validate_import(self, import_path=None):
 
         if not isinstance(import_path, Path):
             import_path = Path(import_path)
-        
+
         if import_path.suffix == '.rar':
-            import_thread = QuickThread(self.crack_open_a_rar_one, rar_path=import_path)
+            import_thread = QuickThread(self.crack_open_a_rar_one,
+                                        rar_path=import_path)
             message = 'Unpacking rar archive'
         else:
             import_thread = QuickThread(lambda: import_path)
             message = ''
-        
+
         def thread_done():
             self.setEnabled(True)
             if message:
@@ -368,7 +368,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                 if validator_result:
                     self.current_dir_path_lineEdit.setText(str(r))
                     if self.ui.stackedWidget.currentIndex() == 0:
-                    # additional actions if loading in an HWI directory
+                        # additional actions if loading in an HWI directory
                         self.make_hwi_run_suggestions()
                         self.validate_run_name(text=self.ui.lineEdit_2.text())
                 else:
@@ -377,7 +377,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                     ))
             else:
                 make_message_box('Failed to read {} with error {}'.format(
-                    import_path ,r 
+                    import_path, r
                 )).exec_()
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -392,7 +392,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         path = self.open_run_browser()
         if path:
             self.validate_import(path)
-        
 
     def validate_run_name(self, text=None):
         '''
@@ -421,14 +420,12 @@ class RunImporterDialog(QtWidgets.QDialog):
         else:
             self.current_run_name_lineEdit.setText(text)
             return True
-    
-    
+
     def handle_rar_file(self, rar_path):
         # do stuff for rar file and then set the path to the uncompressed
-        # dirctory 
+        # dirctory
         pass
 
-    
     def show_rar_popup(self):
         pass
     # add method that pops up when unrar file is imported and asks how the
@@ -462,10 +459,8 @@ class RunImporterDialog(QtWidgets.QDialog):
                 image_spectrum = self.ui.comboBox_4.currentText()
 
             new_run = Run(image_dir=dir_name, run_name=run_name,
-                            image_spectrum=image_spectrum, date=date)
+                          image_spectrum=image_spectrum, date=date)
         if new_run != None:
             new_run.add_images_from_dir()
             self.new_run = new_run
             self.close()
-
-

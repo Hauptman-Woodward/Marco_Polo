@@ -272,7 +272,7 @@ class SignedValue():
     `make_from_string` which will use regex to pull out supported units and
     values.
     '''
-    supported_units = set(['M', 'v/v', 'w/v', 'L', 'X'])  # x is missing unit
+    supported_units = set(['M', 'v/v', 'w/v', 'L', 'X', 'ul', 'ml'])  # x is missing unit
 
     def __init__(self, value=None, units=None):
         self.value = value
@@ -300,6 +300,14 @@ class SignedValue():
 
     @value.setter
     def value(self, value):
+        if isinstance(value, (int, float)):
+            self.__value = value
+        elif isinstance(value, str):
+            value = num_regex.findall(value)
+            if value:
+                value = float(value[0])
+        else:
+            value = 0.0
         self.__value = value
 
     @property
@@ -309,8 +317,8 @@ class SignedValue():
     @units.setter
     def units(self, string):
         r = unit_regex.findall(str(string))
-        if r and r[0] in self.supported_units:
-            self.__units = string
+        if r and r[0]:
+            self.__units = r[0]
         else:
             self.__units = 'X'  # missing units
 
@@ -356,4 +364,5 @@ class SignedValue():
         return '{} {}'.format(self.value, self.units)
 
     def __float__(self):
-        return self.value
+        print(self.value, self.units)
+        return float(self.value)
