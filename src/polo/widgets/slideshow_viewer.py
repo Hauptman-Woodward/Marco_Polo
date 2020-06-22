@@ -16,7 +16,7 @@ class Slide():
 
     :param image: Image. Image object to be displayed for this slide.
     :param next_slide: Slide. Next image in the slideshow to be displayed.
-    :param prev_slide: Sldie. Previous slide in the slideshow to be displayed.
+    :param prev_slide: Slidee. Previous slide in the slideshow to be displayed.
     :param slide_number: Int. Index of the slide, should be base 0.
     '''
 

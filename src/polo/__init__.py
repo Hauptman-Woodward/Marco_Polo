@@ -104,8 +104,7 @@ if UNRAR_DIR:
     UNRAR_EXE = [UNRAR_DIR.joinpath(f) for f in os.listdir(str(UNRAR_DIR)) if 'unrar' in f].pop()
 else:
     UNRAR_EXE = Path('unrar')  # pray they have it installed and in their PATH
-print(UNRAR_EXE, 'this is UNRAR')
-
+    
 # REGEX
 # =============================================================================
 num_regex = re.compile('[-+]?([0-9]*\.[0-9]+|[0-9]+)')

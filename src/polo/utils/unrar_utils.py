@@ -9,7 +9,6 @@ UNRAR_EXE = str(UNRAR_EXE)
 def unrar_archive(rar_path, target_dir):
     try:
         unrar_cmd = [UNRAR_EXE, 'x', '-y', str(rar_path), str(target_dir)]
-        print(' '.join(unrar_cmd))
         exit_status = subprocess.call(unrar_cmd)
 
         if exit_status == 0:
