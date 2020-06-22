@@ -21,6 +21,9 @@ from polo import ALLOWED_IMAGE_COUNTS
 
 from polo import tim  # the bartender
 
+from polo.threads.thread import QuickThread
+from PyQt5.QtWidgets import QApplication
+
 # TODO: Downloading function and reflect files in the actual FTP server
 # Probably want to look into threads for downloading so not being done on
 # the GUI thread
@@ -72,9 +75,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         # Widget connections
         self.ui.listWidget.currentRowChanged.connect(
             self.display_selected_run_type)
-        self.ui.pushButton.clicked.connect(self.set_image_directory)
-        self.ui.pushButton_6.clicked.connect(self.set_image_directory)
-        self.ui.pushButton_5.clicked.connect(self.set_image_directory)
+        self.ui.pushButton.clicked.connect(self.handle_browse_request)
+        self.ui.pushButton_6.clicked.connect(self.handle_browse_request)
+        self.ui.pushButton_5.clicked.connect(self.handle_browse_request)
         self.ui.lineEdit.editingFinished.connect(self.make_hwi_run_suggestions)
         self.ui.pushButton_2.clicked.connect(self.create_new_run)
         self.ui.radioButton.toggled.connect(self.set_menu_options)
@@ -254,8 +257,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         if os.path.exists(dir_path):
             dir_data = parse_hwi_dir_metadata(dir_path)
             if isinstance(dir_data, ValueError):
-                self.show_error_message('Selected directory does not conform to HWI naming\
-                    conventions. Could not make suggestions.')
+                make_message_box('Selected directory does not conform to HWI naming\
+                    conventions. Could not make suggestions.').exec_()
                 return False
             else:
                 image_type, plate_id, date, run_name = dir_data
@@ -275,27 +278,6 @@ class RunImporterDialog(QtWidgets.QDialog):
             # make suggestion for number of images here
         else:
             pass
-        # missing data, suggest using FTP to redownload images
-        # or insert place holder images
-        # also if suggestion is less than current number of images
-
-    def set_image_directory(self):
-        '''
-        Opens a directory browser dialog and validates that directory
-        as meeting the requirements for import. Then calls
-        update_current_stack to update the lineEdit widget on the
-        current page to reflect the selected directory. This is conditional
-        on the selected directory being valid.
-        '''
-        dir_path = self.open_run_browser()
-        if dir_path:
-            import_directory = self.validate_import(dir_path)
-            if import_directory:
-                self.current_dir_path_lineEdit.setText(str(import_directory))
-                if self.ui.stackedWidget.currentIndex() == 0:
-                    # additional actions if loading in an HWI directory
-                    self.make_hwi_run_suggestions()
-                    self.validate_run_name(text=self.ui.lineEdit_2.text())
 
     def validate_hwi_number_images_run(self):
         '''
@@ -339,16 +321,19 @@ class RunImporterDialog(QtWidgets.QDialog):
         Returns the path of the directory the user selects. Will be none
         is no directory is selected.
         '''
-        browser = QtWidgets.QFileDialog(parent=self)
         if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
-            browser.setFileMode(QtWidgets.QFileDialog.ExistingFile)
+            mode = QtWidgets.QFileDialog.ExistingFile
             f = 'Rar archives (*.rar)'
-            print('set rar')
         else:
-            browser.setFileMode(QtWidgets.QFileDialog.Directory)
+            mode = QtWidgets.QFileDialog.DirectoryOnly
             f = ''
+
+        browser = QtWidgets.QFileDialog(self, filter=f)
+        browser.setFileMode(mode)
         
-        f = QtWidgets.QFileDialog.getOpenFileName(browser, 'Run Importer', filter=f)
+        browser.exec_()
+        f = browser.selectedFiles()
+
         if f and len(f) > 0 and f[0]:  # avoid index errors
             return f[0]
         else:
@@ -360,52 +345,52 @@ class RunImporterDialog(QtWidgets.QDialog):
         parent_path = rar_path.parent
         return unrar_archive(rar_path, parent_path)
         
-
     def validate_import(self, import_path=None):
-        '''
-        Validates a given directory path and ensures that it meets
-        the requirements to be imported without causing errors in
-        other functions down the line. Shows error message corresponding to
-        validation error if directory is not valid.
 
-        In order for a directory to be valid it must exist, be a directory
-        and contain at least one image of an allowed type.
-
-        :param image_dir: String. Path to be validated.
-        '''
         if not isinstance(import_path, Path):
             import_path = Path(import_path)
-        if import_path.suffix.lower() == '.rar':
-            # is a rar file attempt to extract the file
-            unrar_result = self.crack_open_a_rar_one(import_path)
-            if isinstance(unrar_result, Path):  # it worked!
-                import_directory = unrar_result
-            elif isinstance(unrar_result, (int, Exception)):
-                make_message_box(
-                    message='Failed to unrar the archive {}. Threw error {}'.format(
-                        str(import_path), unrar_result
-                    )
-                ).exec_()
-                return False
-        else:
-            import_directory = import_path
         
-        # now should be dealing with a directory we can check for images
-        validator_result = directory_validator(str(import_directory))
-        if validator_result == True:
-            return import_directory
+        if import_path.suffix == '.rar':
+            import_thread = QuickThread(self.crack_open_a_rar_one, rar_path=import_path)
+            message = 'Unpacking rar archive'
         else:
-            if validator_result == NotADirectoryError:
-                message = '{} is not a directory. Could not complete import.'.format(
-                    import_directory)
-            elif validator_result == FileNotFoundError:
-                message = '{} does not exist. Could not complete import.'.format(
-                    import_directory)
-            elif validator_result == ForbiddenImageTypeError:
-                message = '{} does not contain any allowed image types'.format(
-                    import_directory)
-            make_message_box(message).exec_()
-            return False
+            import_thread = QuickThread(lambda: import_path)
+            message = ''
+        
+        def thread_done():
+            if message:
+                message.close()
+            QApplication.restoreOverrideCursor()
+            r = import_thread.result
+            if isinstance(r, Path):
+                validator_result = directory_validator(str(r))
+                if validator_result:
+                    self.current_dir_path_lineEdit.setText(str(r))
+                    if self.ui.stackedWidget.currentIndex() == 0:
+                    # additional actions if loading in an HWI directory
+                        self.make_hwi_run_suggestions()
+                        self.validate_run_name(text=self.ui.lineEdit_2.text())
+                else:
+                    make_message_box('Failed to import with error {}'.format(
+                        validator_result
+                    ))
+            else:
+                make_message_box('Failed to read {} with error {}'.format(
+                    import_path ,r 
+                )).exec_()
+
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        import_thread.finished.connect(thread_done)
+        import_thread.start()
+        if message:
+            message = make_message_box(message)
+            message.exec_()
+
+    def handle_browse_request(self):
+        path = self.open_run_browser()
+        if path:
+            self.validate_import(path)
+        
 
     def validate_run_name(self, text=None):
         '''
