@@ -704,7 +704,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 elif i == 5:  # run data editor
                     self.current_run.annotations = self.plainTextEdit.toPlainText()
                 elif i == 4:
-                    self.optimizeWidget.changed_tab_update()
+                    self.optimizeWidget.update()
                     # self.populate_hit_combo()
                     # need better way of updating
 

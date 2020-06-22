@@ -201,10 +201,17 @@ class OptimizeWidget(QtWidgets.QWidget):
         they have made additional classifications that would increase or
         decrease the pool of crystal classified images.
         '''
-        self.set_hit_well_choices()  # set wells to pick from
-        self.ui.comboBox_12.setCurrentIndex(0)
+        current_well = self.ui.comboBox_12.currentText()
+        if self.set_hit_well_choices():  # set wells to pick from
+            current_well_index = self.ui.comboBox_12.findText(current_well)
+            if current_well_index > 0:
+                self.ui.comboBox_12.setCurrentIndex(current_well_index)
+            else:
+                self.ui.comboBox_12.setCurrentIndex(0)
+                self.ui.tableWidget.clear()
+            self.set_constant_reagents()
         # set the current index in order to update the reagent choices
-        self.set_constant_reagents()
+            
         
     def set_hit_well_choices(self):
         '''
@@ -213,11 +220,14 @@ class OptimizeWidget(QtWidgets.QWidget):
         '''
         if isinstance(self.run, (Run, HWIRun)):
             hits = self.hit_images
+            self.ui.comboBox_12.clear()
             if hits:
-                self.ui.comboBox_12.clear()
                 self.ui.comboBox_12.addItems(
                     [str(image.well_number) for image in hits]
                 )
+                return True
+            else:
+                return False
         # sets options to well numbers of hits
 
     def update_current_reagents(self, image_index=None):
