@@ -324,8 +324,9 @@ class XtalWriter(RunSerializer):
     header_line = '{}{}:{}\n'
     file_ext = '.xtal'
 
-    def __init__(self, run, **kwargs):
+    def __init__(self, run, main_window, **kwargs):
         self.__dict__.update(kwargs)
+        self.main_window = main_window
         super(XtalWriter, self).__init__(run)
 
     @property
@@ -386,9 +387,11 @@ class XtalWriter(RunSerializer):
         # connect to something when thread finishes
         self.thread.finished.connect(self.finished_save)
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.main_window.setEnabled(False)
         self.thread.start()
 
     def finished_save(self):
+        self.main_window.setEnabled(True)
         QApplication.restoreOverrideCursor()  # return cursor to normal
         # should contain path to now saved file
         if os.path.exists(str(self.thread.result)):

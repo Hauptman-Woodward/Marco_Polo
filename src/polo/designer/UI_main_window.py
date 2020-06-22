@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1134, 0)
+        MainWindow.resize(1134, 302)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -789,7 +789,7 @@ class Ui_MainWindow(object):
         self.actionNew_Run_2.setText(_translate("MainWindow", "New Run"))
         self.actionFrom_Saved_Run_2.setText(_translate("MainWindow", "From Saved Run"))
         self.actionFrom_Saved_Run_3.setText(_translate("MainWindow", "From Saved Run"))
-        self.actionFrom_Directory.setText(_translate("MainWindow", "From Directory"))
+        self.actionFrom_Directory.setText(_translate("MainWindow", "From Rar Archive / Directory "))
         self.actionAS_PDF.setText(_translate("MainWindow", "AS PDF"))
         self.actionAs_CSV.setText(_translate("MainWindow", "As CSV"))
         self.actionDelete_Run_2.setText(_translate("MainWindow", "Remove Run"))

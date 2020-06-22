@@ -122,7 +122,7 @@ class GraphThread(thread):
 
 class SaveThread(thread):
 
-    def __init__(self, run_to_save, output_path):
+    def __init__(self, main_window, run_to_save, output_path):
         thread.__init__(self)
         self.run_to_save = run_to_save
         self.output_path = output_path

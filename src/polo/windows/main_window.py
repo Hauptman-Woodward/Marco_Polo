@@ -281,7 +281,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         save_path = None
         if self.current_run:
-            current_run_saver = XtalWriter(self.current_run)
+            current_run_saver = XtalWriter(self.current_run, self)
             if selection == self.actionSave_Run:
                 sp = self.current_run.save_file_path
                 if sp and os.path.exists(sp):  # save run path already exist
