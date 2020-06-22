@@ -14384,3 +14384,61 @@ INFO:2020-06-22 15:04:32,468:polo.widgets.optimize_widget:151:Identified 0 hit i
 INFO:2020-06-22 15:04:32,468:polo.widgets.optimize_widget:184:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f52c243e160>
 INFO:2020-06-22 15:04:32,475:polo.widgets.plate_inspector_widget:124:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f52cac88f78> run to <polo.crystallography.run.HWIRun object at 0x7f52c243e160>
 INFO:2020-06-22 15:04:32,475:polo.windows.main_window:230:Loaded new run named X000015805202005211148-uvt
+INFO:2020-06-22 15:16:33,575:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:16:33,717:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fa37ea56678>
+INFO:2020-06-22 15:16:33,717:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fa37ea56678>
+INFO:2020-06-22 15:16:33,728:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:16:33,733:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fa37e9c14c8>
+INFO:2020-06-22 15:16:33,742:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:16:36,429:polo.windows.ftp_dialog:42:Opened FTP Dialog
+INFO:2020-06-22 15:16:59,336:polo.windows.ftp_dialog:98:Connected to FTP server
+INFO:2020-06-22 15:17:29,096:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:17:29,175:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2b6d301678>
+INFO:2020-06-22 15:17:29,175:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2b6d301678>
+INFO:2020-06-22 15:17:29,183:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:17:29,186:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f2b4cac74c8>
+INFO:2020-06-22 15:17:29,191:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:17:36,773:polo.windows.ftp_dialog:42:Opened FTP Dialog
+INFO:2020-06-22 15:17:46,198:polo.windows.ftp_dialog:96:Connected to FTP server
+INFO:2020-06-22 15:21:02,503:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:21:02,582:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdd0c0ad678>
+INFO:2020-06-22 15:21:02,582:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdd0c0ad678>
+INFO:2020-06-22 15:21:02,591:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:21:02,595:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fdce73fc4c8>
+INFO:2020-06-22 15:21:02,599:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:21:05,984:polo.windows.ftp_dialog:42:Opened FTP Dialog
+CRITICAL:2020-06-22 15:21:11,561:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Polo_Builder/src/polo/windows/ftp_dialog.py", line 118, in fin_connection_attempt
+    self.enabled(True) AttributeError: 'FTPDialog' object has no attribute 'enabled'
+Value: 'FTPDialog' object has no attribute 'enabled'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-06-22 15:21:37,802:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:21:37,880:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1055343678>
+INFO:2020-06-22 15:21:37,880:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1055343678>
+INFO:2020-06-22 15:21:37,888:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:21:37,891:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f104d30a4c8>
+INFO:2020-06-22 15:21:37,896:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:21:40,347:polo.windows.ftp_dialog:42:Opened FTP Dialog
+INFO:2020-06-22 15:21:54,720:polo.windows.ftp_dialog:123:FTP connection failed with code 530 Login incorrect.
+INFO:2020-06-22 15:22:10,739:polo.windows.ftp_dialog:123:FTP connection failed with code 530 Login incorrect.
+INFO:2020-06-22 15:22:14,770:polo.windows.ftp_dialog:123:FTP connection failed with code 530 Login incorrect.
+INFO:2020-06-22 15:22:38,148:polo.windows.ftp_dialog:96:Connected to FTP server
+INFO:2020-06-22 15:23:17,675:polo.windows.ftp_dialog:96:Connected to FTP server
+INFO:2020-06-22 15:23:25,867:polo.windows.ftp_dialog:96:Connected to FTP server
+INFO:2020-06-22 15:23:53,070:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:23:53,146:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f78b3a3e678>
+INFO:2020-06-22 15:23:53,146:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f78b3a3e678>
+INFO:2020-06-22 15:23:53,154:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:23:53,158:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f788e0714c8>
+INFO:2020-06-22 15:23:53,162:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:23:57,272:polo.windows.ftp_dialog:42:Opened FTP Dialog
+INFO:2020-06-22 15:24:10,106:polo.windows.ftp_dialog:98:Connected to FTP server
+INFO:2020-06-22 15:26:52,569:__main__:44:Started Polo version 0.0.1
+INFO:2020-06-22 15:26:52,645:polo.widgets.slideshow_viewer:279:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1c488df678>
+INFO:2020-06-22 15:26:52,645:polo.widgets.slideshow_viewer:253:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1c488df678>
+INFO:2020-06-22 15:26:52,653:polo.widgets.plate_inspector_widget:75:Set image count options to [16, 64, 96]
+INFO:2020-06-22 15:26:52,657:polo.widgets.optimize_widget:76:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f1c488464c8>
+INFO:2020-06-22 15:26:52,661:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-22 15:26:55,231:polo.windows.run_importer_dialog:92:Opened run importer dialog
+INFO:2020-06-22 15:26:59,645:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"

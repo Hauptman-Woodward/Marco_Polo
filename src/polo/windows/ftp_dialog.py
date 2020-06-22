@@ -9,7 +9,7 @@ from polo import make_default_logger, ICON_DICT
 import ftplib
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication
-from polo.threads.thread import FTPDownloadThread
+from polo.threads.thread import FTPDownloadThread, QuickThread
 
 
 # TODO: Downloading function and reflect files in the actual FTP server
@@ -68,6 +68,7 @@ class FTPDialog(QtWidgets.QDialog):
         :rtype: str
         '''
         return self.ui.lineEdit.text()
+    
 
 
     def connect_ftp(self):
@@ -81,43 +82,64 @@ class FTPDialog(QtWidgets.QDialog):
         if self.host:
             self.ui.fileBrowser.clear()
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.ftp = logon(host=self.host, username=self.username,
-                             password=self.password)
-            if isinstance(self.ftp, ftplib.FTP):
-                try:
-                    self.home_dir = self.ftp.pwd()
-                    self.ui.fileBrowser.grow_tree_using_mlsd(self.ftp, self.home_dir)
-                    logger.info('Connected to FTP server')
-                    self.set_connection_status(connected=True)
-                    self.make_message_box(
-                        message='Connected to {}! They say {}'.format(
-                        self.host,
-                        self.ftp.getwelcome())
-                    ).exec_()
-                    QApplication.restoreOverrideCursor()
-                except Exception as e:
-                    QApplication.restoreOverrideCursor()
-                    self.make_message_box(
-                        message='After connecting to {}. This error occured {}'.format(
-                            self.host, e
-                        ).exec_()
-                    )
-                    self.set_connection_status(connected=False)
+
+            logon_thread = QuickThread(
+                logon, host=self.host, username=self.username,
+                password=self.password)
+            message = self.make_message_box('Attempting to connect to host')
             
-            else:
-                QApplication.restoreOverrideCursor()
-                m = self.make_message_box(message='Connection Failed: {}'.format(
-                    self.ftp), buttons=QtWidgets.QMessageBox.Ok)
-                logger.info('FTP connection failed with code {}'.format(
-                    self.ftp
-                ))
-                self.set_connection_status(connected=False)
-                m.exec_()
+            def fin_connection_attempt():
+                self.ftp = logon_thread.result
+                if isinstance(self.ftp, ftplib.FTP):
+                    try:  # connection attempt was good
+                        self.home_dir = self.ftp.pwd()
+                        self.ui.fileBrowser.grow_tree_using_mlsd(self.ftp, self.home_dir)
+                        # probably want to list files on new thread
+                        # TODO
+                        QApplication.restoreOverrideCursor()
+                        message.close()
+                        logger.info('Connected to FTP server')
+                        self.set_connection_status(connected=True)
+                        self.make_message_box(
+                            message='Connected to {}! They say {}'.format(
+                            self.host,
+                            self.ftp.getwelcome())
+                        ).exec_()
+                        message.close()
+                        self.setEnabled(True)
+                    except Exception as e:
+                        message.close()
+                        QApplication.restoreOverrideCursor()
+                        self.setEnabled(True)
+                        self.make_message_box(
+                            message='After connecting to {}. This error occured {}'.format(
+                                self.host, e
+                            ).exec_()
+                        )
+                        self.set_connection_status(connected=False)
+                else:  # did not connect in the first place
+                    message.close()
+                    self.setEnabled(True)
+                    QApplication.restoreOverrideCursor()
+                    m = self.make_message_box(message='Connection Failed: {}'.format(
+                        self.ftp), buttons=QtWidgets.QMessageBox.Ok)
+                    logger.info('FTP connection failed with code {}'.format(
+                        self.ftp
+                    ))
+                    self.set_connection_status(connected=False)
+                    m.exec_()
         else:
             QApplication.restoreOverrideCursor() 
             self.make_message_box(
                 message='Please enter a host to connect to'
             ).exec_()
+        
+        logon_thread.finished.connect(fin_connection_attempt)
+        logon_thread.start()
+        self.setEnabled(False)  # disable interface while connecting 
+        message.exec_()  # show the attempting connection message
+        
+        
 
     
     def set_connection_status(self, connected=False):

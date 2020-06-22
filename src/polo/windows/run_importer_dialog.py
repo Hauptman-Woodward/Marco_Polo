@@ -358,6 +358,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             message = ''
         
         def thread_done():
+            self.setEnabled(True)
             if message:
                 message.close()
             QApplication.restoreOverrideCursor()
@@ -382,6 +383,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         import_thread.finished.connect(thread_done)
         import_thread.start()
+        self.setEnabled(False)
         if message:
             message = make_message_box(message)
             message.exec_()
