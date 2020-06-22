@@ -43,20 +43,3 @@ def list_dir(ftp, dir=None):
 @catch_ftp_errors
 def get_cwd(ftp):
     return ftp.cwd()
-
-
-def traverse_folder(cwd, tree, ftp):
-    items = []
-    def recurse(cwd, tree):
-        mlsd = ftp.mlsd(cwd)
-        for item, d in mlsd:
-            parent_item = QtWidgets.QTreeWidgetItem(tree, [item])
-            if d['type'] == 'dir':
-                recurse(os.path.join(cwd, item), ftp)
-                # set the icon here
-            else:
-                items.append((cwd, item))
-                # set the icon here
-    recurse(cwd, ftp)
-    return tree
-    

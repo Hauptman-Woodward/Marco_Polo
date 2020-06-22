@@ -324,8 +324,9 @@ class XtalWriter(RunSerializer):
     header_line = '{}{}:{}\n'
     file_ext = '.xtal'
 
-    def __init__(self, run, **kwargs):
+    def __init__(self, run, main_window, **kwargs):
         self.__dict__.update(kwargs)
+        self.main_window = main_window
         super(XtalWriter, self).__init__(run)
 
     @property
@@ -386,9 +387,11 @@ class XtalWriter(RunSerializer):
         # connect to something when thread finishes
         self.thread.finished.connect(self.finished_save)
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.main_window.setEnabled(False)
         self.thread.start()
 
     def finished_save(self):
+        self.main_window.setEnabled(True)
         QApplication.restoreOverrideCursor()  # return cursor to normal
         # should contain path to now saved file
         if os.path.exists(str(self.thread.result)):
@@ -636,9 +639,8 @@ class BarTender():
                     path = os.path.join(
                         str(COCKTAIL_DATA_PATH), row['File Name'])
                     s, e = BarTender.date_range_parser(row['Dates Used'])
-                    self.menus[path] = Menu(
-                        path, s, e, row['Screen Type']
-                    )
+                    new_menu = Menu(path, s, e, row['Screen Type'])
+                    self.menus[path] = new_menu
                     # add new menu to menus dict path to csv file is the menu
                     # key
 
@@ -723,12 +725,10 @@ class CocktailMenuReader():
     # one is included per cocktail entry
     # all other indicies are reagent names and concentrations
 
-    def __init__(self, menu_file, delim=',', **kwargs):
-        self.menu_file = menu_file
-        self.reader = csv.reader(self.menu_file)
+    def __init__(self, menu_file_path, delim=','):
+        self.menu_file_path = menu_file_path
         self.delim = delim
         self.__row_counter = 0
-        self.__dict__.update(kwargs)
 
     @classmethod
     def set_cocktail_map(cls, map):
@@ -773,75 +773,38 @@ class CocktailMenuReader():
         :type pos: int
         '''
         cls.formula_pos = pos
-
-    @property
-    def menu_file(self):
-        '''Get the instances menu file
-
-        :return: the menu file path
-        :rtype: str or Path or IO
-        '''
-        return self.__menu_file
-
-    @menu_file.setter
-    def menu_file(self, new_file):
-        '''Setter method for the menu_file attribute. If the value passed in
-        is a string will open the file, iterate over the first two lines as
-        these are header lines in all the HWI cocktail menu files included with
-        Polo and set menu_file to the IO stream.
-
-        :param new_file: [description]
-        :type new_file: [type]
-        '''
-        if isinstance(new_file, str):
-            self.__menu_file = open(new_file)
-            next(self.__menu_file)
-            next(self.__menu_file)  # skip first two rows
-        else:
-            self.__menu_file = new_file
-
-    # need to deciede how fixed on the current header system want to be
-    def __next__(self):  # would be nice if returned a cocktail
-        '''Dictates the behavior of CocktailMenuReader objects when `next`
-        is called. Uses the csv.reader object stored in the reader attribute
-        to get the next row of the csv file in a consistent way and then
-        converts the information in that row to a Cocktail object.
-
-        :return: Cocktail instance representing the cocktail at the next row of
-                 the menu_file
-        :rtype: Cocktail
-        '''
-        row = next(self.reader)
-        d = {self.cocktail_map[index]: row[index]
-             for index in self.cocktail_map}
-        c = Cocktail(**d)
-        reagent_pos = [i for i in range(
+    
+    def read_menu_file(self):
+        cocktail_menu = {}
+        with open(self.menu_file_path, 'r') as menu_file:
+            reader = csv.reader(menu_file)
+            next(reader)
+            next(reader) # skip first two rows
+            for row in reader:
+                d = {self.cocktail_map[index]: row[index]
+                     for index in self.cocktail_map}
+                new_cocktail = Cocktail(**d)
+                new_cocktail.reagents = []
+                # BUG: when new cocktail is intialized it contains the reagents
+                # of all previously initialized cocktails. For now setting
+                # new_cocktail.reagents to a new empty list fixes the
+                # problem but does not address the source
+                reagent_positions = [i for i in range(
             len(row)) if i not in self.cocktail_map and i != self.formula_pos]
-        # positions that should contain reagent information. Additionally,
-        # reagent names and their concentrations should now be adjacent to
-        # each other in the list of indicies
-        for i in range(0, len(reagent_pos), 2):
-            chem_add, con = row[reagent_pos[i]], row[reagent_pos[i+1]]
-            if chem_add:
-                con = SignedValue.make_from_string(con)
-                c.add_reagent(
-                    Reagent(
-                        chemical_additive=chem_add,
-                        concentration=con
-                    )
-                )
-        if row[self.formula_pos]:
-            c.reagents[0].chemical_formula = row[self.formula_pos].strip()
-        return c
+                for i in range(0, len(reagent_positions), 2):
+                    chem_add, con = row[reagent_positions[i]], row[reagent_positions[i+1]]
+                    if chem_add:
+                        con = SignedValue.make_from_string(con)
+                        new_cocktail.add_reagent(
+                            Reagent(
+                                chemical_additive=chem_add,
+                                concentration=con
+                            )
+                        )
+                cocktail_menu[new_cocktail.well_assignment] = new_cocktail
+        return cocktail_menu
 
-    def __iter__(self):
-        while True:
-            try:
-                yield self.__next__()
-            except StopIteration:
-                break
-
-
+                
 class Menu():  # holds the dictionary of cocktails
 
     def __init__(self, path, start_date, end_date, type_, cocktails={}):
@@ -872,34 +835,46 @@ class Menu():  # holds the dictionary of cocktails
         self.start_date = start_date
         self.end_date = end_date
         self.type_ = type_
-        self.cocktails = cocktails  # holds all cocktails (items on the menu)
         self.path = path
-
+        self.cocktails = cocktails  # holds all cocktails (items on the menu)
+    
     @property
-    def path(self):
-        '''Property to return the Menu instance's path attribute
+    def cocktails(self):
+        return self.__cocktails
+    
+    @cocktails.setter
+    def cocktails(self, new_cocktails):
+        if new_cocktails:
+            self.__cocktails = new_cocktails
+        else:
+            self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
+        
+    # @property
+    # def path(self):
+    #     '''Property to return the Menu instance's path attribute
 
-        :return: The path attribute
-        :rtype: str or IO
-        '''
-        return self.__path
+    #     :return: The path attribute
+    #     :rtype: str or IO
+    #     '''
+    #     return self.__path
 
-    @path.setter
-    def path(self, new_path):
-        '''Setter function for path attribute. Creates an instance of
-        a CocktailMenuReader class and passes the path attribute to it.
-        Then uses the CocktailMenuReader instance to read the contents of
-        the new_path (which should be a csv file) as Cocktail objects.
-        Cocktail instances are added to the __cocktail dict by their
-        well number assignment.
+    # @path.setter
+    # def path(self, new_path):
+    #     '''Setter function for path attribute. Creates an instance of
+    #     a CocktailMenuReader class and passes the path attribute to it.
+    #     Then uses the CocktailMenuReader instance to read the contents of
+    #     the new_path (which should be a csv file) as Cocktail objects.
+    #     Cocktail instances are added to the __cocktail dict by their
+    #     well number assignment.
 
-        :param new_path: [description]
-        :type new_path: [type]
-        '''
-        self.__path = new_path  # set the path to the new_path
-        cocktail_reader = CocktailMenuReader(self.path)
-        for cocktail in cocktail_reader:
-            self.cocktails[cocktail.well_assignment] = cocktail
+    #     :param new_path: [description]
+    #     :type new_path: [type]
+    #     '''
+    #     self.__path = new_path  # set the path to the new_path
+    #     print('new path made')
+    #     cocktail_reader = CocktailMenuReader(open(self.path))
+    #     for i, cocktail in enumerate(cocktail_reader):
+    #         self.cocktails[cocktail.well_assignment] = cocktail
         # create dictionary from cocktails, key is the well number (assignment)
 
 
@@ -928,14 +903,6 @@ def write_screen_html(plate_list, well_number, run_name, x_reagent,
         screen_html.write(html)
 
 
-def make_dict_from_run_via_json(run):
-    return json.loads(json.dumps(run, default=encoder))
-
-
-def get_cocktail_number_as_int(cocktail_number_string):
-    return int(cocktail_number_string.split('_C')[-1].lstrip('0'))
-
-
 def parse_HWI_filename_meta(HWI_image_file):
     '''
     HWI images have a standard file nameing schema that gives info about when
@@ -949,35 +916,6 @@ def parse_HWI_filename_meta(HWI_image_file):
         datetime.strptime(HWI_image_file[14:22], '%Y''%m''%d'),
         HWI_image_file[22:]
     )
-
-
-def export_run_to_csv(run, output_path):
-    output_path = str(output_path)
-    csv_data = []
-    for image in run.images:
-        if image:
-            pass
-
-
-def get_available_cocktails():  # change this to parse metadata
-    '''
-    Returns a list of cocktail csv files that are included with the Polo
-    program. List is sorted from most recently used cocktails to least 
-    recently used. The year the cocktails were first used are the first two
-    characters of the csv file name if downloaded from HWI website.
-
-    TODO: Inculde metadata file on available cocktails that gives when they
-    were used at the screening center. Add another function to read in that
-    metadata and create dialog so user can select cocktail that would go with
-    their screen.
-
-    NOTE: Cocktail TSV file had unicode error in it when read using UTF-8
-    incoding but one on webiste did not. Need to ask Bowman about that one.
-    '''
-    cocktail_paths = list_dir_abs(COCKTAIL_DATA_PATH)
-    return [parse_cocktail_csv(csv_path) for csv_path in sorted(cocktail_paths,
-                                                                key=lambda x: os.path.basename(x.split('_')[0]))]
-    # returns list of dictionaries
 
 
 def list_dir_abs(parent_dir, allowed=False):
@@ -994,67 +932,6 @@ def list_dir_abs(parent_dir, allowed=False):
     return allowed_files
 
 
-def parse_reagents(row):
-    reagents = []
-    formula = row[4]
-    row = [i.strip() for i in [row[3]] + row[5:8] + row[9:]]
-    row = [i for i in row if i]
-    if len(row) > 1:
-        for i in range(0, len(row), 2):
-            con, units = row[i+1].split(' ')[0], row[i+1].split(' ')[-1]
-            if row[i]:  # some solutions without units all have additive name
-                reagents.append(Reagent())
-                reagents[-1].chemical_additive = row[i]
-                con = num_regex.findall(con)[0]
-                units = unit_regex.findall(units)[0]
-                reagents[-1].concentration = SignedValue(con, units)
-
-        if formula:
-            reagents[0].chemical_formula = formula
-
-    return reagents
-
-
-def parse_cocktail_csv(file_path):
-    cocktail_dict = {}
-    try:
-        with open(file_path, 'r') as cocktails:
-            reader = csv.reader(cocktails, delimiter=',')
-            for row in reader:
-                try:
-                    well_pos, number, commercial_code = row[:3]
-                    well_pos = int(round(float(well_pos)))
-                    pH = row[8]
-                    cocktail_dict[well_pos] = Cocktail(number=number,
-                                                       well_assignment=well_pos,
-                                                       commercial_code=commercial_code,
-                                                       pH=pH)
-                    cocktail_dict[well_pos].reagents = parse_reagents(row)
-                except (IndexError, TypeError, ValueError) as e:
-                    logger.warning('Caught {} at {} attempting to read {}'.format(
-                        e, parse_cocktail_csv, file_path
-                    ))
-                    continue
-        logger.info('Successfully parsed cocktail file at {}'.format(file_path))
-        return cocktail_dict
-    except FileNotFoundError as e:
-        logger.error('Caught {} at {} attempting to open {}'.format(
-            e, parse_cocktail_csv, file_path
-        ))
-        return e
-
-
-# attempts to convert date string using bunch of formats
-def datetime_converter(date_string):
-    date_string = date_string.strip()
-    datetime_formats = ['%m/%d/%Y', '%m/%d/%y', '%m-%d-%Y', '%m-%d-%y']
-    for form in datetime_formats:
-        try:
-            return datetime.strptime(date_string, form)
-        except ValueError as e:
-            continue
-
-
 def parse_hwi_dir_metadata(dir_name):
     try:
         dir_name = os.path.basename(dir_name)
@@ -1069,42 +946,6 @@ def parse_hwi_dir_metadata(dir_name):
             e, parse_hwi_dir_metadata, dir_name
         ))
         return e
-
-
-def parse_cocktail_metadata():
-    # parse the metadata csv file into a dictionary of cocktail csv files
-    cocktail_dict = {}
-    dates_header = 'Dates Used'
-    path_header = 'File Name'
-    data = COCKTAIL_META_DATA.read_text()
-    try:
-        with open(str(COCKTAIL_META_DATA)) as meta_cock:
-            reader = csv.DictReader(meta_cock)
-            for row in reader:
-                dates = row[dates_header]
-                start, end = dates.split('-')
-                if start:  # convert dates to datetime
-                    start = datetime_converter(start)
-                if end:
-                    try:
-                        end = datetime_converter(end)
-                    except ValueError as e:
-                        logger.warning('Caught {} at {}'.format(
-                            e, parse_cocktail_metadata))
-                row[dates_header] = (start, end)
-                file_name = os.path.basename(row[path_header]).split('.')[0]
-                cocktail_dict[file_name] = row
-
-        return cocktail_dict
-
-    except (FileNotFoundError, TypeError) as e:
-        logger.error('Caught {} at {}'.format(e, parse_cocktail_metadata))
-        logger.debug(data)
-        return e
-
-
-def read_import_descriptors():
-    pass
 
 
 def directory_validator(dir_path):

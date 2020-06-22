@@ -26,9 +26,9 @@ if os.path.isdir('./data'):  # data is in same dir as __main__
     data_prefix = 'data'
     UNRAR = 'unrar'
 else:
-    data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # spinx
+    #data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # spinx
     UNRAR = '../unrar/'
-    #data_prefix = '../data/'
+    data_prefix = '../data/'
 
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(
@@ -94,21 +94,22 @@ if platform in unrar_versions:
 else:
     UNRAR_DIR = False
 
-UNRAR_EXE = [os.path.join(str(UNRAR_DIR), f) for f in os.listdir(str(UNRAR_DIR)) if f == 'unrar.exe'].pop()
-
-if platform == 'Windows':
-    # get bits
-    if sys.maxsize > 2**32:  # is 64 bit version
-        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win64')
-    else:
-        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win32')
-
-
+if UNRAR_DIR:
+    if platform == 'Windows':
+        # get bits
+        if sys.maxsize > 2**32:  # is 64 bit version
+            UNRAR_DIR = UNRAR_DIR.joinpath('Win64')
+        else:
+            UNRAR_DIR = UNRAR_DIR.joinpath('Win32')
+    UNRAR_EXE = [UNRAR_DIR.joinpath(f) for f in os.listdir(str(UNRAR_DIR)) if 'unrar' in f].pop()
+else:
+    UNRAR_EXE = Path('unrar')  # pray they have it installed and in their PATH
+    
 # REGEX
 # =============================================================================
 num_regex = re.compile('[-+]?([0-9]*\.[0-9]+|[0-9]+)')
 peg_regex = re.compile('[0-9]+')
-unit_regex = re.compile('v/v|w/v|M|L', re.I)
+unit_regex = re.compile('v/v|w/v|M|L|ml|ul', re.I)
 water_regex = re.compile('\*[0-9]*h2o', re.I)
 
 

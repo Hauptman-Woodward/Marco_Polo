@@ -40,13 +40,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Image Directory</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="1">
            <widget class="QComboBox" name="comboBox_2">
             <item>
@@ -154,6 +147,20 @@
           </item>
           <item row="0" column="1" colspan="3">
            <widget class="QLineEdit" name="lineEdit"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QComboBox" name="comboBox_6">
+            <item>
+             <property name="text">
+              <string>From Rar</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>From Directory</string>
+             </property>
+            </item>
+           </widget>
           </item>
          </layout>
         </widget>
