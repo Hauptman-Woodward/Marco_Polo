@@ -210,25 +210,6 @@ class RunCsvWriter(RunSerializer):
         self.output_path = output_path
         super(RunCsvWriter, self).__init__(run)
 
-    @property
-    def output_path(self):
-        return self.__output_path
-
-    @property
-    def fieldnames(self):  # could use more efficent way of determining feildnames
-        rows = [row for row in self]
-        fieldnames = set([])
-        for row in rows:
-            fieldnames = fieldnames.union(set(row.keys()))
-        return fieldnames
-
-    @output_path.setter
-    def output_path(self, new_path):
-        if isinstance(new_path, Path):
-            new_path = str(new_path)
-
-        self.__output_path = new_path
-
     @classmethod
     def image_to_row(cls, image):
         '''Given an Image object, convert it into a list that could be
@@ -257,6 +238,40 @@ class RunCsvWriter(RunSerializer):
                 row[attr] = str(value)  # default to case to string
         return row
 
+    @property
+    def output_path(self):
+        '''Get the hidden attribute `__output_path`.
+
+        :return: Output path
+        :rtype: str
+        '''
+        return self.__output_path
+
+    @property
+    def fieldnames(self):  # could use more efficent way of determining feildnames
+        '''Get the current fieldnames bases on the data stored in the
+        `run` attribute. Currently is somewhat expensive to call since it
+        requires parsing all records in `run` in order to determine all the
+        fieldnames that should be included in order to definitely avoid
+        keyerrors later down the line.
+
+        :return: List of fieldnames (headers) for the csv data 
+        :rtype: list
+        '''
+        rows = [row for row in self]
+        fieldnames = set([])
+        for row in rows:
+            fieldnames = fieldnames.union(set(row.keys()))
+        return fieldnames
+
+    @output_path.setter
+    def output_path(self, new_path):
+        if isinstance(new_path, Path):
+            new_path = str(new_path)
+
+        self.__output_path = new_path
+
+
     def get_csv_data(self):
         '''Convert the `run` attribute to csv style data. Returns a tuple of
         headers and a list of dictionaries with each dictionary representing
@@ -276,6 +291,13 @@ class RunCsvWriter(RunSerializer):
             raise e  # pass it along will ya
 
     def write_csv(self):
+        '''Write the Run object stored in the `run` attribute as a csv file
+        to the location specified by the `output_path` attribute. 
+
+        :return: True, if csv file content was written successfully,
+                 return error thrown otherwise.
+        :rtype: Bool or Exception
+        '''
         try:
             rows = [row for row in self]
             fieldnames = set([])
@@ -408,8 +430,6 @@ class XtalWriter(RunSerializer):
         :return: The cleaned run
         :rtype: Run
         '''
-        # removes references to other runs so not to throw a
-        # json encoding error
         if self.run:
             self.run.previous_run, self.run.next_run, self.run.alt_spectrum = (
                 None, None, None)
@@ -470,7 +490,7 @@ class RunDeserializer():  # convert saved file into a run
         '''Opposite of the obj_to_dict method in XtalWriter class, this method
         takes a dictionary instance that has been previously serialized and
         attempts to convert it back into an object instance. Used as the
-        `object_hook` arguement when calling `json.loads` to read xtal files.
+        `object_hook` argument when calling `json.loads` to read xtal files.
 
         :param d: dictionary to convert back to object
         :type d: dict
@@ -480,8 +500,10 @@ class RunDeserializer():  # convert saved file into a run
         if d:
             if '__class__' in d:  # is a serialized object
                 class_name, mod_name = d.pop('__class__'), d.pop('__module__')
-                module = __import__(module_name)
+                module = __import__(mod_name)
                 class_ = getattr(module, class_name)
+
+
                 temp_d = {}
                 for key, item in d.items():
                     if '__' in key:  # deal with object properties
@@ -489,7 +511,11 @@ class RunDeserializer():  # convert saved file into a run
                     elif '_' == key[0]:
                         key = key.replace('_', '')
                     temp_d[key] = item
-                obj = class_(**d_two)
+                obj = class_(**temp_d)
+
+                if isinstance(obj, Image):  # clean up base64 encoded data
+                    if obj.bites:
+                        obj.bites = RunDeserializer.clean_base64_string(obj.bites)
             else:
                 obj = d  # just a regular dictionary to read in
             return obj
@@ -672,6 +698,20 @@ class BarTender():
 
 
 class CocktailMenuReader():
+    '''CocktailMenuReader instances should be used to read a csv file containing
+    a collection of cocktail screens. The csv file should contain cocktail
+    related formulations and assign each cocktail to a specific well in the
+    screening plate. CocktailMenuReader is essentially a wrapper around 
+    the `csv.DictReader` class. However it returns a Cocktail instance 
+    instead of returning a dictionary via when it's __iter__ method is called.
+
+    :param menu_file: Path to cocktail menu file to read. Should be csv
+                        formated
+    :type menu_file: str or Path 
+    :param delim: Seperator for menu_file; really should not need to 
+                    be changed, defaults to ','
+    :type delim: str, optional
+    '''
 
     cocktail_map = {  # map Cocktail attributes to index in menu rows
         0: 'well_assignment',
@@ -684,20 +724,6 @@ class CocktailMenuReader():
     # all other indicies are reagent names and concentrations
 
     def __init__(self, menu_file, delim=',', **kwargs):
-        '''Create a CocktailMenuReader instance, which is basically a
-        csv.reader instance with extra steps. The iterator returns Cocktail
-        instances instead or lists so when creating Menus, the csv file that
-        holds the cocktail data can be read directly ad Cocktail instances
-        instead of dealing with converting the rows to Cocktails when creating
-        Menus.
-
-        :param menu_file: Path to cocktail menu file to read. Should be csv
-                          formated
-        :type menu_file: str or Path 
-        :param delim: Seperator for menu_file; really should not need to 
-                      be changed, defaults to ','
-        :type delim: str, optional
-        '''
         self.menu_file = menu_file
         self.reader = csv.reader(self.menu_file)
         self.delim = delim
@@ -708,12 +734,12 @@ class CocktailMenuReader():
     def set_cocktail_map(cls, map):
         '''Classmethod to edit the cocktail_map. The cocktail map describes
         where Cocktail level information is stored in a given cocktail menu
-        file row. It is a dictionary that maps specific indicies in a row to
+        file row. It is a dictionary that maps specific indices in a row to
         the Cocktail attribute to set the value of the key index to.
 
         The default cocktail_map dictionary is below.
 
-        cocktail_map = {
+        >>>cocktail_map = {
         0: 'well_assignment',
         1: 'number',
         8: 'pH',
@@ -865,7 +891,7 @@ class Menu():  # holds the dictionary of cocktails
         Then uses the CocktailMenuReader instance to read the contents of
         the new_path (which should be a csv file) as Cocktail objects.
         Cocktail instances are added to the __cocktail dict by their
-        well number assignemnt.
+        well number assignment.
 
         :param new_path: [description]
         :type new_path: [type]

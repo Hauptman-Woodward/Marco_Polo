@@ -89,20 +89,19 @@ ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 
 unrar_versions = set([OS for OS in os.listdir(UNRAR)])
 platform = platform.system()
-print(unrar_versions, platform)
 if platform in unrar_versions:
     UNRAR_DIR = Path(os.path.join(UNRAR, platform))
 else:
     UNRAR_DIR = False
 
 UNRAR_EXE = [os.path.join(str(UNRAR_DIR), f) for f in os.listdir(str(UNRAR_DIR)) if f == 'unrar.exe'].pop()
-print(UNRAR_EXE)
 
-
-# is_64bits = sys.maxsize > 2**32
-# get 32 or 64 bit 
-
-
+if platform == 'Windows':
+    # get bits
+    if sys.maxsize > 2**32:  # is 64 bit version
+        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win64')
+    else:
+        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win32')
 
 
 # REGEX
