@@ -94,14 +94,16 @@ if platform in unrar_versions:
 else:
     UNRAR_DIR = False
 
-UNRAR_EXE = [os.path.join(str(UNRAR_DIR), f) for f in os.listdir(str(UNRAR_DIR)) if f == 'unrar.exe'].pop()
-
-if platform == 'Windows':
-    # get bits
-    if sys.maxsize > 2**32:  # is 64 bit version
-        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win64')
-    else:
-        UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win32')
+if UNRAR_DIR:
+    UNRAR_EXE = [os.path.join(str(UNRAR_DIR), f) for f in os.listdir(str(UNRAR_DIR)) if 'unrar' in f].pop()
+    if platform == 'Windows':
+        # get bits
+        if sys.maxsize > 2**32:  # is 64 bit version
+            UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win64')
+        else:
+            UNRAR_EXE = os.path.join(UNRAR_EXE, 'Win32')
+else:
+    UNRAR_EXE = 'unrar'
 
 
 # REGEX

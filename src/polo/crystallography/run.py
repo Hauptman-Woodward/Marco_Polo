@@ -389,6 +389,7 @@ class HWIRun(Run):
             image_path = str(image_path)
             plate_id, well_num, date, other = parse_HWI_filename_meta(
                 image_path)
+            print(self.cocktail_menu.path, min(list(self.cocktail_menu.cocktails.keys())))
             self.images[well_num-1] = Image(path=image_path,
                                             well_number=well_num,
                                             date=date, plate_id=plate_id,
