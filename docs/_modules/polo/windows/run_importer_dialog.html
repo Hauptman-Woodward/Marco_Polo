@@ -167,13 +167,16 @@
 <span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">EmptyRunNameError</span><span class="p">,</span> <span class="n">ForbiddenImageTypeError</span>
 <span class="c1"># from polo.threads.thread import LoadRunThread</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">directory_validator</span><span class="p">,</span> <span class="n">list_dir_abs</span><span class="p">,</span>
-                                 <span class="n">parse_cocktail_csv</span><span class="p">,</span> <span class="n">parse_cocktail_metadata</span><span class="p">,</span>
-                                 <span class="n">parse_hwi_dir_metadata</span><span class="p">,</span>
-                                 <span class="n">read_import_descriptors</span><span class="p">,</span> <span class="n">run_name_validator</span><span class="p">)</span>
+                                 <span class="n">parse_hwi_dir_metadata</span><span class="p">,</span> <span class="n">run_name_validator</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">polo.utils.unrar_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span>
 
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>  <span class="c1"># the bartender</span>
+
+<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 
 <span class="c1"># TODO: Downloading function and reflect files in the actual FTP server</span>
 <span class="c1"># Probably want to look into threads for downloading so not being done on</span>
@@ -182,17 +185,17 @@
 <span class="c1"># TODO clear the field if there is an error relating to that feild</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">import_descriptors</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="sd">&#39;&#39;&#39;Use HWI image import for screening runs conducted at the </span>
+<span class="n">import_descriptors</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># TODO Move this into a text file</span>
+    <span class="sd">&#39;&#39;&#39;Use HWI image import for screening runs conducted at the </span>
 <span class="sd">        Hauptman-Woodward Medical Research Insitutue High-Throughput</span>
 <span class="sd">        Crystallization Screening Center. Polo includes all current and past </span>
 <span class="sd">        crystallization cocktail menus for HWI screens and will automatically</span>
 <span class="sd">        extract metadata from your imported files based on current HWI</span>
 <span class="sd">        file naming conventions.&#39;&#39;&#39;</span><span class="p">,</span>
-        <span class="sd">&#39;&#39;&#39;Use raw image import for importing a directory of misc images into </span>
+    <span class="sd">&#39;&#39;&#39;Use raw image import for importing a directory of misc images into </span>
 <span class="sd">        Polo. Be aware that using inconsistent image sizes and types may cause</span>
 <span class="sd">        unexpected behavior from Polo.&#39;&#39;&#39;</span><span class="p">,</span>
-        <span class="sd">&#39;&#39;&#39;Use Non-HWI image import settings for crystallization images taken</span>
+    <span class="sd">&#39;&#39;&#39;Use Non-HWI image import settings for crystallization images taken</span>
 <span class="sd">        at a high-throughput facility other than the one at HWI. Currently you</span>
 <span class="sd">        cannot specify alternative metadata parsing methods or cocktail menus</span>
 <span class="sd">        outside of HWI.&#39;&#39;&#39;</span>
@@ -219,27 +222,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_Dialog</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_run</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span> <span class="o">=</span> <span class="n">test_for_working_unrar</span><span class="p">()</span>
 
         <span class="c1"># self.import_descriptors = read_import_descriptors()</span>
 
         <span class="c1"># Widget connections</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentRowChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">display_selected_run_type</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_image_directory</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_6</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_image_directory</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_5</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_image_directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_browse_request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_6</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_browse_request</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_5</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_browse_request</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_hwi_run_suggestions</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_2</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_new_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_menu_options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_menu_options</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">QItemSelectionModel</span><span class="o">.</span><span class="n">Select</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">QItemSelectionModel</span><span class="o">.</span><span class="n">Select</span><span class="p">)</span>
         <span class="c1"># self.ui.comboBox.currentIndexChanged.connect(</span>
         <span class="c1">#     self.validate_hwi_number_images_run)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">IMAGE_SPECS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_5</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_5</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">IMAGE_SPECS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">IMAGE_SPECS</span><span class="p">)</span>
 
         <span class="c1"># Widget display setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_menu_options</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Opened run importer dialog&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cannot_unrar_message</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
 
     <span class="nd">@property</span>
@@ -311,6 +322,18 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_6</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_4</span>
+
+<div class="viewcode-block" id="RunImporterDialog.cannot_unrar_message"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.cannot_unrar_message">[docs]</a>    <span class="k">def</span> <span class="nf">cannot_unrar_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;Polo was unable to find a working unrar program for</span>
+<span class="s1">            your operating system. Polo will only be able to import images</span>
+<span class="s1">            from uncompressed directories. For for information on installing</span>
+<span class="s1">            unrar for Polo please visit this link LINK HERE&#39;&#39;&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_6</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="c1"># only allow imports from dir</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_6</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;From Directory&#39;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog.get_menu_options"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.get_menu_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns a list of Menus that are available for the user to pick from</span>
@@ -393,8 +416,8 @@
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
             <span class="n">dir_data</span> <span class="o">=</span> <span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dir_data</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">show_error_message</span><span class="p">(</span><span class="s1">&#39;Selected directory does not conform to HWI naming</span><span class="se">\</span>
-<span class="s1">                    conventions. Could not make suggestions.&#39;</span><span class="p">)</span>
+                <span class="n">make_message_box</span><span class="p">(</span><span class="s1">&#39;Selected directory does not conform to HWI naming</span><span class="se">\</span>
+<span class="s1">                    conventions. Could not make suggestions.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">image_type</span><span class="p">,</span> <span class="n">plate_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">run_name</span> <span class="o">=</span> <span class="n">dir_data</span>
@@ -414,26 +437,6 @@
             <span class="c1"># make suggestion for number of images here</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span></div>
-        <span class="c1"># missing data, suggest using FTP to redownload images</span>
-        <span class="c1"># or insert place holder images</span>
-        <span class="c1"># also if suggestion is less than current number of images</span>
-
-<div class="viewcode-block" id="RunImporterDialog.set_image_directory"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.set_image_directory">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Opens a directory browser dialog and validates that directory</span>
-<span class="sd">        as meeting the requirements for import. Then calls</span>
-<span class="sd">        update_current_stack to update the lineEdit widget on the</span>
-<span class="sd">        current page to reflect the selected directory. This is conditional</span>
-<span class="sd">        on the selected directory being valid.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">dir_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_directory_browser</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">dir_path</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_directory</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_dir_path_lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="c1"># additional actions if loading in an HWI directory</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_hwi_run_suggestions</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">validate_run_name</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">text</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog.validate_hwi_number_images_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.validate_hwi_number_images_run">[docs]</a>    <span class="k">def</span> <span class="nf">validate_hwi_number_images_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -471,45 +474,84 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">import_descriptors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="RunImporterDialog.open_directory_browser"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.open_directory_browser">[docs]</a>    <span class="k">def</span> <span class="nf">open_directory_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunImporterDialog.open_run_browser"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.open_run_browser">[docs]</a>    <span class="k">def</span> <span class="nf">open_run_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Opens a QFileDialog that only allows for selecting directories.</span>
 <span class="sd">        Returns the path of the directory the user selects. Will be none</span>
 <span class="sd">        is no directory is selected.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">browser</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">browser</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">Directory</span><span class="p">)</span>
-        <span class="n">dirnames</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
-            <span class="n">filenames</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="RunImporterDialog.validate_directory"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.validate_directory">[docs]</a>    <span class="k">def</span> <span class="nf">validate_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Validates a given directory path and ensures that it meets</span>
-<span class="sd">        the requirements to be imported without causing errors in</span>
-<span class="sd">        other functions down the line. Shows error message corresponding to</span>
-<span class="sd">        validation error if directory is not valid.</span>
-
-<span class="sd">        In order for a directory to be valid it must exist, be a directory</span>
-<span class="sd">        and contain at least one image of an allowed type.</span>
-
-<span class="sd">        :param image_dir: String. Path to be validated.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">validator_result</span> <span class="o">=</span> <span class="n">directory_validator</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">validator_result</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_6</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;From Rar&#39;</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ExistingFile</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;Rar archives (*.rar)&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">validator_result</span> <span class="o">==</span> <span class="ne">NotADirectoryError</span><span class="p">:</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is not a directory. Could not complete import.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">image_dir</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">validator_result</span> <span class="o">==</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> does not exist. Could not complete import.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">image_dir</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">validator_result</span> <span class="o">==</span> <span class="n">ForbiddenImageTypeError</span><span class="p">:</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> does not contain any allowed image types&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">image_dir</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">show_error_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">DirectoryOnly</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+        <span class="n">browser</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># avoid index errors</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog.crack_open_a_rar_one"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.crack_open_a_rar_one">[docs]</a>    <span class="k">def</span> <span class="nf">crack_open_a_rar_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">rar_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">rar_path</span><span class="p">)</span>
+        <span class="n">parent_path</span> <span class="o">=</span> <span class="n">rar_path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">return</span> <span class="n">unrar_archive</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog.validate_import"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.validate_import">[docs]</a>    <span class="k">def</span> <span class="nf">validate_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">import_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">import_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">import_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">import_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
+            <span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crack_open_a_rar_one</span><span class="p">,</span>
+                                        <span class="n">rar_path</span><span class="o">=</span><span class="n">import_path</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Unpacking rar archive&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">import_path</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">def</span> <span class="nf">thread_done</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">import_thread</span><span class="o">.</span><span class="n">result</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+                <span class="n">validator_result</span> <span class="o">=</span> <span class="n">directory_validator</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">validator_result</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_dir_path_lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">stackedWidget</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># additional actions if loading in an HWI directory</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">make_hwi_run_suggestions</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">validate_run_name</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">make_message_box</span><span class="p">(</span><span class="s1">&#39;Failed to import with error </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">validator_result</span>
+                    <span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">make_message_box</span><span class="p">(</span><span class="s1">&#39;Failed to read </span><span class="si">{}</span><span class="s1"> with error </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">import_path</span><span class="p">,</span> <span class="n">r</span>
+                <span class="p">))</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+        <span class="n">import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">thread_done</span><span class="p">)</span>
+        <span class="n">import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="n">message</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog.handle_browse_request"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.handle_browse_request">[docs]</a>    <span class="k">def</span> <span class="nf">handle_browse_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_run_browser</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate_import</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog.validate_run_name"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.validate_run_name">[docs]</a>    <span class="k">def</span> <span class="nf">validate_run_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -539,15 +581,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">current_run_name_lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="RunImporterDialog.show_error_message"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.show_error_message">[docs]</a>    <span class="k">def</span> <span class="nf">show_error_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;:(&#39;</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Helper method for showing a QErrorMessage dialog to the user.</span>
+<div class="viewcode-block" id="RunImporterDialog.handle_rar_file"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.handle_rar_file">[docs]</a>    <span class="k">def</span> <span class="nf">handle_rar_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar_path</span><span class="p">):</span>
+        <span class="c1"># do stuff for rar file and then set the path to the uncompressed</span>
+        <span class="c1"># dirctory</span>
+        <span class="k">pass</span></div>
 
-<span class="sd">        :param message: String. The message text to show to the user.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QErrorMessage</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">err</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-        <span class="n">err</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+<div class="viewcode-block" id="RunImporterDialog.show_rar_popup"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.show_rar_popup">[docs]</a>    <span class="k">def</span> <span class="nf">show_rar_popup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+    <span class="c1"># add method that pops up when unrar file is imported and asks how the</span>
+    <span class="c1"># import should go down</span>
 
 <div class="viewcode-block" id="RunImporterDialog.create_new_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer_dialog.RunImporterDialog.create_new_run">[docs]</a>    <span class="k">def</span> <span class="nf">create_new_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -561,30 +603,27 @@
         <span class="n">dir_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dir_path_lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
         <span class="n">date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_dateEdit</span><span class="o">.</span><span class="n">dateTime</span><span class="p">()</span><span class="o">.</span><span class="n">toPyDateTime</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_run_name</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">run_name</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_directory</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">current_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_path</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
-                <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span>
-                    <span class="n">image_dir</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span>
-                    <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
-                    <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">cocktail_menu</span><span class="p">,</span>
-                    <span class="n">image_spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
-                    <span class="n">date</span><span class="o">=</span><span class="n">date</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO add spectrum selection for all runs</span>
-                <span class="k">if</span> <span class="n">current_index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">image_spectrum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">current_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_path</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span>
+                <span class="n">image_dir</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span>
+                <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
+                <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">cocktail_menu</span><span class="p">,</span>
+                <span class="n">image_spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+                <span class="n">date</span><span class="o">=</span><span class="n">date</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">image_spectrum</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># TODO add spectrum selection for all runs</span>
+            <span class="k">if</span> <span class="n">current_index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
 
-                <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
-                              <span class="n">image_spectrum</span><span class="o">=</span><span class="n">image_spectrum</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">new_run</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">new_run</span> <span class="o">=</span> <span class="n">new_run</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
-
-
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
+                          <span class="n">image_spectrum</span><span class="o">=</span><span class="n">image_spectrum</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_run</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_run</span> <span class="o">=</span> <span class="n">new_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

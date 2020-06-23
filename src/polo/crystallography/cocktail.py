@@ -274,7 +274,6 @@ class SignedValue():
     `make_from_string` which will use regex to pull out supported units and
     values.
     '''
-    supported_units = set(['M', 'v/v', 'w/v', 'L', 'X', 'ul', 'ml'])  # x is missing unit
     saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
 
     def __init__(self, value=None, units=None):
@@ -287,8 +286,16 @@ class SignedValue():
 
     @classmethod
     def make_from_string(cls, string):
-        '''Create a SignedValue instance from a string containing a value
-        and a supported unit
+        '''Create a SignedValue from a string containing a value and a unit.
+        Used the `unit_regex` to pull out the units. 
+
+        .. highlight:: python
+        .. code-block:: python
+
+            unit_string = '10.0 M'  # concentration of 10 molar
+            sv = SignedValue.make_from_string(unit_string)
+            # sv.value = 10 sv.units = 'M'
+
 
         :param string: The string to extract the SignedValue from
         :type string: str
@@ -317,9 +324,27 @@ class SignedValue():
         self.__value = value
 
     def scale(self, scale_key):
+        '''Scale the value of the SignedValue instance using a key character
+        in the `saved_scalers` dictionary. First converts the value to its
+        base unit and then divides by the `scale_key` value. The `scale_key`
+        can be thought of as a SI prefix for a base unit.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            # self.saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
+            v_one = SignedValue(10, 'L')  # value of 10 liters
+            v_one = v_one.scale('u')  # get v_one in microliters
+
+        :param scale_key: Character in `saved_scalers` to convert value to.
+        :type scale_key: str
+        :return: SignedValue converted to scale_key unit prefix
+        :rtype: SignedValue
+        '''
         if scale_key in self.saved_scalers:
             temp = self.to_base()  # send to base unit
-            return SignedValue(temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
+            return SignedValue(
+                temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
     
     def to_base(self):
         if self.units[0] in self.saved_scalers:

@@ -19,7 +19,7 @@ class thread(QThread):
 
     '''Very basic wrapper class around Qthread class. Should be
     inherited by a more specific class and then the `run` method
-    can be overwritten do run the code that should be execulted on the
+    can be overwritten do run the code that should be executed on the
     thread instance.
 
     :param parent: parent widget, defaults to None
@@ -41,10 +41,21 @@ class QuickThread(thread):
     '''QuickThreads are very similar
     to thread objects except instead of writing code that would be
     executed by the `run` function directly, the function to be run
-    on the thread is passed as an arguement to `job_func` and any arguements
+    on the thread is passed as an argument to `job_func` and any arguments
     that the passed function requires are passed as key word arguements.
-    When the thread is started the key word arguements are passed to the
-    job_func and the results of the call are stored in the `results` attribute
+    When the thread is started the key word arguments are passed to the
+    job_func and the results of the call are stored in the `results` attribute.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        my_func = lambda x, y: x + y
+        x, y = 40, 60
+        my_thread = QuickThread(job_func=my_func, x=x, y=y)
+        # set up the thread with my_func and the args we want to pass
+        my_thread.start()
+        # my_thread.result will = 100 (x + y)
+
 
     :param job_func: function to execute on the thread
     :type job_func: [type]

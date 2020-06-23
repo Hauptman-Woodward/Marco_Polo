@@ -220,6 +220,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <div class="viewcode-block" id="PlateInspectorWidget.set_image_count_options"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_image_count_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_count_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to be called in `__init__` that sets the options</span>
+<span class="sd">        for number of images per view.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -227,6 +230,11 @@
 
     
 <div class="viewcode-block" id="PlateInspectorWidget.set_aspect_ratio_mode"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_aspect_ratio_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_aspect_ratio_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Sets the `preserve_aspect` attribute based on the status of</span>
+<span class="sd">        the preserve aspect ratio checkbox available to the user. Preserving</span>
+<span class="sd">        aspect ratio results in displaying undistorted crystallization images </span>
+<span class="sd">        but utilizes available display space less efficiently.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">preserve_aspect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_29</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PlateInspectorWidget.set_color_comboboxs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_color_comboboxs">[docs]</a>    <span class="k">def</span> <span class="nf">set_color_comboboxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

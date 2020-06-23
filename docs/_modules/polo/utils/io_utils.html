@@ -276,6 +276,9 @@
 <span class="sd">        Given a path to an html file to serve as a jinja2 template, read the</span>
 <span class="sd">        file and create a new template object.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">template_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
+
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">template</span><span class="p">:</span>
             <span class="n">contents</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span></div>
@@ -310,11 +313,13 @@
         <span class="c1"># write a run as html file with images and classifications</span>
         <span class="c1"># and that kind of stuff</span>
         <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">encode_images</span><span class="p">:</span>
-                <span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">encoded the images to base 64</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
             <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-                <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>  
+                
             <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
                 <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
@@ -364,28 +369,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RunCsvWriter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">output_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># could use more efficent way of determining feildnames</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
-        <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-            <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-        <span class="k">return</span> <span class="n">fieldnames</span>
-
-
-    <span class="nd">@output_path</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">output_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-            <span class="n">new_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span> <span class="o">=</span> <span class="n">new_path</span>
-
 <div class="viewcode-block" id="RunCsvWriter.image_to_row"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.image_to_row">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">image_to_row</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Given an Image object, convert it into a list that could be</span>
+<span class="sd">        easily written to a csv file.</span>
+
+<span class="sd">        :param image: Image object to convert to list</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        :return: List</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Cocktail</span><span class="p">):</span>
@@ -403,8 +396,50 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># default to case to string</span>
         <span class="k">return</span> <span class="n">row</span></div>
-    
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the hidden attribute `__output_path`.</span>
+
+<span class="sd">        :return: Output path</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># could use more efficent way of determining feildnames</span>
+        <span class="sd">&#39;&#39;&#39;Get the current fieldnames bases on the data stored in the</span>
+<span class="sd">        `run` attribute. Currently is somewhat expensive to call since it</span>
+<span class="sd">        requires parsing all records in `run` in order to determine all the</span>
+<span class="sd">        fieldnames that should be included in order to definitely avoid</span>
+<span class="sd">        keyerrors later down the line.</span>
+
+<span class="sd">        :return: List of fieldnames (headers) for the csv data </span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">fieldnames</span>
+
+    <span class="nd">@output_path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">output_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">new_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span> <span class="o">=</span> <span class="n">new_path</span>
+
+
 <div class="viewcode-block" id="RunCsvWriter.get_csv_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.get_csv_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_csv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Convert the `run` attribute to csv style data. Returns a tuple of</span>
+<span class="sd">        headers and a list of dictionaries with each dictionary representing</span>
+<span class="sd">        one row of csv data.</span>
+
+<span class="sd">        :raises e: Catch all exception. TODO: Make more specific</span>
+<span class="sd">        :return: Tuple, list of headers and list of dicts</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
             <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
@@ -412,9 +447,16 @@
                 <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
             <span class="k">return</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="n">rows</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">e</span>  <span class="c1"># pass it along will ya </span></div>
+            <span class="k">raise</span> <span class="n">e</span>  <span class="c1"># pass it along will ya</span></div>
 
 <div class="viewcode-block" id="RunCsvWriter.write_csv"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.write_csv">[docs]</a>    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Write the Run object stored in the `run` attribute as a csv file</span>
+<span class="sd">        to the location specified by the `output_path` attribute. </span>
+
+<span class="sd">        :return: True, if csv file content was written successfully,</span>
+<span class="sd">                 return error thrown otherwise.</span>
+<span class="sd">        :rtype: Bool or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
             <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
@@ -427,7 +469,8 @@
                     <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught exception </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_csv</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s1">&#39;Caught exception </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_csv</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -440,8 +483,9 @@
     <span class="n">header_line</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">:</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span>
     <span class="n">file_ext</span> <span class="o">=</span> <span class="s1">&#39;.xtal&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">main_window</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">XtalWriter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -502,9 +546,11 @@
         <span class="c1"># connect to something when thread finishes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finished_save</span><span class="p">)</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XtalWriter.finished_save"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.finished_save">[docs]</a>    <span class="k">def</span> <span class="nf">finished_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>  <span class="c1"># return cursor to normal</span>
         <span class="c1"># should contain path to now saved file</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)):</span>
@@ -535,7 +581,8 @@
                         <span class="n">xtal_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">run_str</span><span class="p">)</span>
                         <span class="k">return</span> <span class="n">output_path</span>
                 <span class="k">except</span> <span class="ne">PermissionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
                     <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XtalWriter.clean_run_for_save"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.clean_run_for_save">[docs]</a>    <span class="k">def</span> <span class="nf">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -545,8 +592,6 @@
 <span class="sd">        :return: The cleaned run</span>
 <span class="sd">        :rtype: Run</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># removes references to other runs so not to throw a</span>
-        <span class="c1"># json encoding error</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -572,7 +617,7 @@
             <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">,</span>
                     <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to encode </span><span class="si">{}</span><span class="s1"> to dict. Gave </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">e</span></div></div>
 
 
@@ -603,37 +648,39 @@
             <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.dict_to_obj"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.dict_to_obj">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">dict_to_obj</span><span class="p">(</span><span class="n">our_dict</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Oposite of the obj_to_dict method in XtalWriter class, this method</span>
+    <span class="k">def</span> <span class="nf">dict_to_obj</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Opposite of the obj_to_dict method in XtalWriter class, this method</span>
 <span class="sd">        takes a dictionary instance that has been previously serialized and</span>
-<span class="sd">        attempts to convert it back into an object instance.</span>
+<span class="sd">        attempts to convert it back into an object instance. Used as the</span>
+<span class="sd">        `object_hook` argument when calling `json.loads` to read xtal files.</span>
 
-<span class="sd">        :param our_dict: dictionary to convert back to object</span>
-<span class="sd">        :type our_dict: dict</span>
+<span class="sd">        :param d: dictionary to convert back to object</span>
+<span class="sd">        :type d: dict</span>
 <span class="sd">        :return: an object</span>
 <span class="sd">        :rtype: object</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">our_dict</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;__class__&quot;</span> <span class="ow">in</span> <span class="n">our_dict</span><span class="p">:</span>
-                    <span class="n">class_name</span> <span class="o">=</span> <span class="n">our_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__class__&quot;</span><span class="p">)</span>
-                    <span class="n">module_name</span> <span class="o">=</span> <span class="n">our_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__module__&quot;</span><span class="p">)</span>
-                    <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
-                    <span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
-                    <span class="n">our_dict_two</span> <span class="o">=</span> <span class="p">{}</span>
-                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">our_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                        <span class="k">elif</span> <span class="s1">&#39;_&#39;</span> <span class="o">==</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                        <span class="n">our_dict_two</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
-                    <span class="n">obj</span> <span class="o">=</span> <span class="n">class_</span><span class="p">(</span><span class="o">**</span><span class="n">our_dict_two</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">obj</span> <span class="o">=</span> <span class="n">our_dict</span>
-                <span class="k">return</span> <span class="n">obj</span>
-            <span class="k">except</span> <span class="ne">NotADirectoryError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> attempting to create object&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;__class__&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>  <span class="c1"># is a serialized object</span>
+                <span class="n">class_name</span><span class="p">,</span> <span class="n">mod_name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;__class__&#39;</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;__module__&#39;</span><span class="p">)</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+                <span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+
+
+                <span class="n">temp_d</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># deal with object properties</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="s1">&#39;_&#39;</span> <span class="o">==</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="n">temp_d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">class_</span><span class="p">(</span><span class="o">**</span><span class="n">temp_d</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>  <span class="c1"># clean up base64 encoded data</span>
+                    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">bites</span><span class="p">:</span>
+                        <span class="n">obj</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">bites</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">d</span>  <span class="c1"># just a regular dictionary to read in</span>
+            <span class="k">return</span> <span class="n">obj</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s1">&#39;Attempted to serialize an empty dictionary at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dict_to_obj</span><span class="p">))</span>
@@ -659,53 +706,19 @@
         <span class="k">return</span> <span class="n">header_data</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.xtal_to_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_to_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Method that actually does the heavy lifting of converting the json</span>
-<span class="sd">        contents of xtal files back into Run instances. Currently is pretty</span>
-<span class="sd">        brittle and ugly so looking for a more flexible recursive solution.</span>
+        <span class="sd">&#39;&#39;&#39;Attempt to convert the file specified by the path stored in the</span>
+<span class="sd">        `xtal_path` attribute to a Run object. </span>
 
-<span class="sd">        :raises e: Error raised while reading the xtal file</span>
-<span class="sd">        :return: The contents of xtal file as a Run instance</span>
+<span class="sd">        :return: Run object encoded by an xtal file</span>
 <span class="sd">        :rtype: Run</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Attempting to load run from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">))</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">):</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_data</span><span class="p">:</span>
-                    <span class="n">header_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_header_reader</span><span class="p">(</span>
-                        <span class="n">xtal_data</span><span class="p">)</span>  <span class="c1"># must read header first</span>
-                    <span class="n">j_d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xtal_data</span><span class="p">)</span>
-                <span class="n">run</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">(</span><span class="n">j_d</span><span class="p">)</span>
-
-                <span class="n">run</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-                    <span class="n">run</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
-                    <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                    <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span>
-                        <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">bites</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-                        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
-                            <span class="n">date</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">date</span>
-                            <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-                                <span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
-                        <span class="n">reagents</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">:</span>
-                            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">[</span><span class="s1">&#39;reagents&#39;</span><span class="p">]):</span>
-                                <span class="c1"># holy mother of jank</span>
-                                <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">[</span><span class="s1">&#39;reagents&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;_Reagent__concentration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">(</span>
-                                    <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">[</span><span class="s1">&#39;reagents&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;_Reagent__concentration&#39;</span><span class="p">])</span>
-                                <span class="n">reagents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">(</span>
-                                    <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">[</span><span class="s1">&#39;reagents&#39;</span><span class="p">][</span><span class="n">j</span><span class="p">]))</span>
-                                <span class="c1"># reagents[-1].concentration = RunDeserializer.dict_to_obj(</span>
-                                <span class="c1">#     reagents[j].concentration)</span>
-                            <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">(</span>
-                                <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
-                            <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="o">.</span><span class="n">reagents</span> <span class="o">=</span> <span class="n">reagents</span>
-                <span class="k">return</span> <span class="n">run</span>  <span class="c1"># TODO Interpret the header data</span>
-        <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to read </span><span class="si">{}</span><span class="s1"> into run object at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">,</span> <span class="s1">&#39;Place Holder&#39;</span>
-            <span class="p">))</span>
-            <span class="k">return</span> <span class="n">e</span></div></div>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_data</span><span class="p">:</span>
+            <span class="n">header_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_header_reader</span><span class="p">(</span>
+                <span class="n">xtal_data</span><span class="p">)</span>  <span class="c1"># must read header first</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xtal_data</span><span class="p">,</span> <span class="c1"># update date since datetime goes right to string</span>
+                             <span class="n">object_hook</span><span class="o">=</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">datetime_converter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">r</span></div></div>
 
 
 <div class="viewcode-block" id="BarTender"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender">[docs]</a><span class="k">class</span> <span class="nc">BarTender</span><span class="p">():</span>
@@ -743,7 +756,7 @@
 <span class="sd">        :rtype: datetime</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">date_string</span> <span class="o">=</span> <span class="n">date_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">datetime_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%y&#39;</span><span class="p">]</span>
+        <span class="n">datetime_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">datetime_formats</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span>
@@ -787,9 +800,8 @@
                     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                         <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;File Name&#39;</span><span class="p">])</span>
                     <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">date_range_parser</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Dates Used&#39;</span><span class="p">])</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span>
-                        <span class="n">path</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Screen Type&#39;</span><span class="p">]</span>
-                    <span class="p">)</span></div>
+                    <span class="n">new_menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Screen Type&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_menu</span></div>
                     <span class="c1"># add new menu to menus dict path to csv file is the menu</span>
                     <span class="c1"># key</span>
 
@@ -849,6 +861,29 @@
 
 
 <div class="viewcode-block" id="CocktailMenuReader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader">[docs]</a><span class="k">class</span> <span class="nc">CocktailMenuReader</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;CocktailMenuReader instances should be used to read a csv file containing</span>
+<span class="sd">    a collection of cocktail screens. The csv file should contain cocktail</span>
+<span class="sd">    related formulations and assign each cocktail to a specific well in the</span>
+<span class="sd">    screening plate. CocktailMenuReader is essentially a wrapper around </span>
+<span class="sd">    the `csv.DictReader` class. However it returns a Cocktail instance </span>
+<span class="sd">    instead of returning a dictionary via when it&#39;s __iter__ method is called.</span>
+
+<span class="sd">    .. highlight:: python</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        cocktail_menu = &#39;path/to/my/csv&#39;</span>
+<span class="sd">        my_reader = CocktailMenuReader(cocktail_menu)</span>
+<span class="sd">        csv_cocktails = my_reader.read_menu_file()</span>
+<span class="sd">        # csv_cocktails now holds list of Cocktail objects read from</span>
+<span class="sd">        # cocktail_menu</span>
+
+<span class="sd">    :param menu_file: Path to cocktail menu file to read. Should be csv</span>
+<span class="sd">                        formated</span>
+<span class="sd">    :type menu_file: str or Path </span>
+<span class="sd">    :param delim: Seperator for menu_file; really should not need to </span>
+<span class="sd">                    be changed, defaults to &#39;,&#39;</span>
+<span class="sd">    :type delim: str, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">cocktail_map</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># map Cocktail attributes to index in menu rows</span>
         <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;well_assignment&#39;</span><span class="p">,</span>
@@ -860,37 +895,21 @@
     <span class="c1"># one is included per cocktail entry</span>
     <span class="c1"># all other indicies are reagent names and concentrations</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_file</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a CocktailMenuReader instance, which is basically a</span>
-<span class="sd">        csv.reader instance with extra steps. The iterator returns Cocktail</span>
-<span class="sd">        instances instead or lists so when creating Menus, the csv file that</span>
-<span class="sd">        holds the cocktail data can be read directly ad Cocktail instances</span>
-<span class="sd">        instead of dealing with converting the rows to Cocktails when creating</span>
-<span class="sd">        Menus.</span>
-
-<span class="sd">        :param menu_file: Path to cocktail menu file to read. Should be csv</span>
-<span class="sd">                          formated</span>
-<span class="sd">        :type menu_file: str or Path </span>
-<span class="sd">        :param delim: Seperator for menu_file; really should not need to </span>
-<span class="sd">                      be changed, defaults to &#39;,&#39;</span>
-<span class="sd">        :type delim: str, optional</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">menu_file</span> <span class="o">=</span> <span class="n">menu_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_file</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_file_path</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_file_path</span> <span class="o">=</span> <span class="n">menu_file_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delim</span> <span class="o">=</span> <span class="n">delim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__row_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CocktailMenuReader.set_cocktail_map"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader.set_cocktail_map">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_cocktail_map</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Classmethod to edit the cocktail_map. The cocktail map describes</span>
 <span class="sd">        where Cocktail level information is stored in a given cocktail menu</span>
-<span class="sd">        file row. It is a dictionary that maps specific indicies in a row to</span>
+<span class="sd">        file row. It is a dictionary that maps specific indices in a row to</span>
 <span class="sd">        the Cocktail attribute to set the value of the key index to.</span>
 
 <span class="sd">        The default cocktail_map dictionary is below.</span>
 
-<span class="sd">        cocktail_map = {</span>
+<span class="sd">        &gt;&gt;&gt; cocktail_map = {</span>
 <span class="sd">        0: &#39;well_assignment&#39;,</span>
 <span class="sd">        1: &#39;number&#39;,</span>
 <span class="sd">        8: &#39;pH&#39;,</span>
@@ -924,78 +943,41 @@
 <span class="sd">        :type pos: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">formula_pos</span> <span class="o">=</span> <span class="n">pos</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">menu_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Get the instances menu file</span>
-
-<span class="sd">        :return: the menu file path</span>
-<span class="sd">        :rtype: str or Path or IO</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__menu_file</span>
-
-    <span class="nd">@menu_file</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">menu_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Setter method for the menu_file attribute. If the value passed in</span>
-<span class="sd">        is a string will open the file, iterate over the first two lines as</span>
-<span class="sd">        these are header lines in all the HWI cocktail menu files included with</span>
-<span class="sd">        Polo and set menu_file to the IO stream.</span>
-
-<span class="sd">        :param new_file: [description]</span>
-<span class="sd">        :type new_file: [type]</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__menu_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_file</span><span class="p">)</span>
-            <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__menu_file</span><span class="p">)</span>
-            <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__menu_file</span><span class="p">)</span>  <span class="c1"># skip first two rows</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__menu_file</span> <span class="o">=</span> <span class="n">new_file</span>
-
-    <span class="c1"># need to deciede how fixed on the current header system want to be</span>
-    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># would be nice if returned a cocktail</span>
-        <span class="sd">&#39;&#39;&#39;Dictates the behavior of CocktailMenuReader objects when `next`</span>
-<span class="sd">        is called. Uses the csv.reader object stored in the reader attribute</span>
-<span class="sd">        to get the next row of the csv file in a consistent way and then</span>
-<span class="sd">        converts the information in that row to a Cocktail object.</span>
-
-<span class="sd">        :return: Cocktail instance representing the cocktail at the next row of</span>
-<span class="sd">                 the menu_file</span>
-<span class="sd">        :rtype: Cocktail</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">)</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span> <span class="n">row</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-             <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span><span class="p">}</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">Cocktail</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
-        <span class="n">reagent_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+    
+<div class="viewcode-block" id="CocktailMenuReader.read_menu_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader.read_menu_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_menu_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">menu_file</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">menu_file</span><span class="p">)</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span> <span class="c1"># skip first two rows</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span> <span class="n">row</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span><span class="p">}</span>
+                <span class="n">new_cocktail</span> <span class="o">=</span> <span class="n">Cocktail</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">new_cocktail</span><span class="o">.</span><span class="n">reagents</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># BUG: when new cocktail is intialized it contains the reagents</span>
+                <span class="c1"># of all previously initialized cocktails. For now setting</span>
+                <span class="c1"># new_cocktail.reagents to a new empty list fixes the</span>
+                <span class="c1"># problem but does not address the source</span>
+                <span class="n">reagent_positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formula_pos</span><span class="p">]</span>
-        <span class="c1"># positions that should contain reagent information. Additionally,</span>
-        <span class="c1"># reagent names and their concentrations should now be adjacent to</span>
-        <span class="c1"># each other in the list of indicies</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">reagent_pos</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-            <span class="n">chem_add</span><span class="p">,</span> <span class="n">con</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_pos</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="k">if</span> <span class="n">chem_add</span><span class="p">:</span>
-                <span class="n">con</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">add_reagent</span><span class="p">(</span>
-                    <span class="n">Reagent</span><span class="p">(</span>
-                        <span class="n">chemical_additive</span><span class="o">=</span><span class="n">chem_add</span><span class="p">,</span>
-                        <span class="n">concentration</span><span class="o">=</span><span class="n">con</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">formula_pos</span><span class="p">]:</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">reagents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">chemical_formula</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">formula_pos</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">c</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">reagent_positions</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+                    <span class="n">chem_add</span><span class="p">,</span> <span class="n">con</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+                    <span class="k">if</span> <span class="n">chem_add</span><span class="p">:</span>
+                        <span class="n">con</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+                        <span class="n">new_cocktail</span><span class="o">.</span><span class="n">add_reagent</span><span class="p">(</span>
+                            <span class="n">Reagent</span><span class="p">(</span>
+                                <span class="n">chemical_additive</span><span class="o">=</span><span class="n">chem_add</span><span class="p">,</span>
+                                <span class="n">concentration</span><span class="o">=</span><span class="n">con</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="n">cocktail_menu</span><span class="p">[</span><span class="n">new_cocktail</span><span class="o">.</span><span class="n">well_assignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_cocktail</span>
+        <span class="k">return</span> <span class="n">cocktail_menu</span></div></div>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                <span class="k">break</span></div>
-
-
+                
 <div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">():</span>  <span class="c1"># holds the dictionary of cocktails</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">cocktails</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&#39;&#39;&#39;Creates a Menu instance. Menu objects are used to organize a single</span>
 <span class="sd">        screening run plate set up. They should contain 1536 unique screening</span>
 <span class="sd">        conditions; one for each well in the HWI highthrouput plate. HWI</span>
@@ -1023,43 +1005,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span> <span class="o">=</span> <span class="n">start_date</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_date</span> <span class="o">=</span> <span class="n">end_date</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># holds all cocktails (items on the menu)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span> <span class="o">=</span> <span class="n">cocktails</span>  <span class="c1"># holds all cocktails (items on the menu)</span>
+    
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Property to return the Menu instance&#39;s cocktail dict</span>
-
-<span class="sd">        :return: cocktail attribute</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span>
+    
+    <span class="nd">@cocktails</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cocktails</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_cocktails</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">new_cocktails</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span></div>
+        
+    <span class="c1"># @property</span>
+    <span class="c1"># def path(self):</span>
+    <span class="c1">#     &#39;&#39;&#39;Property to return the Menu instance&#39;s path attribute</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Property to return the Menu instance&#39;s path attribute</span>
+    <span class="c1">#     :return: The path attribute</span>
+    <span class="c1">#     :rtype: str or IO</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     return self.__path</span>
 
-<span class="sd">        :return: The path attribute</span>
-<span class="sd">        :rtype: str or IO</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__path</span>
+    <span class="c1"># @path.setter</span>
+    <span class="c1"># def path(self, new_path):</span>
+    <span class="c1">#     &#39;&#39;&#39;Setter function for path attribute. Creates an instance of</span>
+    <span class="c1">#     a CocktailMenuReader class and passes the path attribute to it.</span>
+    <span class="c1">#     Then uses the CocktailMenuReader instance to read the contents of</span>
+    <span class="c1">#     the new_path (which should be a csv file) as Cocktail objects.</span>
+    <span class="c1">#     Cocktail instances are added to the __cocktail dict by their</span>
+    <span class="c1">#     well number assignment.</span>
 
-    <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Setter function for path attribute. Creates an instance of</span>
-<span class="sd">        a CocktailMenuReader class and passes the path attribute to it.</span>
-<span class="sd">        Then uses the CocktailMenuReader instance to read the contents of</span>
-<span class="sd">        the new_path (which should be a csv file) as Cocktail objects.</span>
-<span class="sd">        Cocktail instances are added to the __cocktail dict by their</span>
-<span class="sd">        well number assignemnt.</span>
-
-<span class="sd">        :param new_path: [description]</span>
-<span class="sd">        :type new_path: [type]</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="n">new_path</span>  <span class="c1"># set the path to the new_path</span>
-        <span class="n">cocktail_reader</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">cocktail</span> <span class="ow">in</span> <span class="n">cocktail_reader</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">[</span><span class="n">cocktail</span><span class="o">.</span><span class="n">well_assignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">cocktail</span></div>
+    <span class="c1">#     :param new_path: [description]</span>
+    <span class="c1">#     :type new_path: [type]</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     self.__path = new_path  # set the path to the new_path</span>
+    <span class="c1">#     print(&#39;new path made&#39;)</span>
+    <span class="c1">#     cocktail_reader = CocktailMenuReader(open(self.path))</span>
+    <span class="c1">#     for i, cocktail in enumerate(cocktail_reader):</span>
+    <span class="c1">#         self.cocktails[cocktail.well_assignment] = cocktail</span>
         <span class="c1"># create dictionary from cocktails, key is the well number (assignment)</span>
 
 
@@ -1088,14 +1073,6 @@
         <span class="n">screen_html</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="make_dict_from_run_via_json"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.make_dict_from_run_via_json">[docs]</a><span class="k">def</span> <span class="nf">make_dict_from_run_via_json</span><span class="p">(</span><span class="n">run</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">encoder</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="get_cocktail_number_as_int"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.get_cocktail_number_as_int">[docs]</a><span class="k">def</span> <span class="nf">get_cocktail_number_as_int</span><span class="p">(</span><span class="n">cocktail_number_string</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cocktail_number_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span></div>
-
-
 <div class="viewcode-block" id="parse_HWI_filename_meta"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_HWI_filename_meta">[docs]</a><span class="k">def</span> <span class="nf">parse_HWI_filename_meta</span><span class="p">(</span><span class="n">HWI_image_file</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    HWI images have a standard file nameing schema that gives info about when</span>
@@ -1109,35 +1086,6 @@
         <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">HWI_image_file</span><span class="p">[</span><span class="mi">14</span><span class="p">:</span><span class="mi">22</span><span class="p">],</span> <span class="s1">&#39;%Y&#39;&#39;%m&#39;&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span>
         <span class="n">HWI_image_file</span><span class="p">[</span><span class="mi">22</span><span class="p">:]</span>
     <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="export_run_to_csv"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.export_run_to_csv">[docs]</a><span class="k">def</span> <span class="nf">export_run_to_csv</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-    <span class="n">output_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-    <span class="n">csv_data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
-            <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="get_available_cocktails"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.get_available_cocktails">[docs]</a><span class="k">def</span> <span class="nf">get_available_cocktails</span><span class="p">():</span>  <span class="c1"># change this to parse metadata</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Returns a list of cocktail csv files that are included with the Polo</span>
-<span class="sd">    program. List is sorted from most recently used cocktails to least </span>
-<span class="sd">    recently used. The year the cocktails were first used are the first two</span>
-<span class="sd">    characters of the csv file name if downloaded from HWI website.</span>
-
-<span class="sd">    TODO: Inculde metadata file on available cocktails that gives when they</span>
-<span class="sd">    were used at the screening center. Add another function to read in that</span>
-<span class="sd">    metadata and create dialog so user can select cocktail that would go with</span>
-<span class="sd">    their screen.</span>
-
-<span class="sd">    NOTE: Cocktail TSV file had unicode error in it when read using UTF-8</span>
-<span class="sd">    incoding but one on webiste did not. Need to ask Bowman about that one.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">cocktail_paths</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">parse_cocktail_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">csv_path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cocktail_paths</span><span class="p">,</span>
-                                                                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))]</span></div>
-    <span class="c1"># returns list of dictionaries</span>
 
 
 <div class="viewcode-block" id="list_dir_abs"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.list_dir_abs">[docs]</a><span class="k">def</span> <span class="nf">list_dir_abs</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1154,67 +1102,6 @@
     <span class="k">return</span> <span class="n">allowed_files</span></div>
 
 
-<div class="viewcode-block" id="parse_reagents"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_reagents">[docs]</a><span class="k">def</span> <span class="nf">parse_reagents</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="n">reagents</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">formula</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="mi">9</span><span class="p">:]]</span>
-    <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">row</span> <span class="k">if</span> <span class="n">i</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-            <span class="n">con</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>  <span class="c1"># some solutions without units all have additive name</span>
-                <span class="n">reagents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reagent</span><span class="p">())</span>
-                <span class="n">reagents</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">chemical_additive</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">con</span> <span class="o">=</span> <span class="n">num_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">con</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">units</span> <span class="o">=</span> <span class="n">unit_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">units</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">reagents</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">concentration</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">formula</span><span class="p">:</span>
-            <span class="n">reagents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">chemical_formula</span> <span class="o">=</span> <span class="n">formula</span>
-
-    <span class="k">return</span> <span class="n">reagents</span></div>
-
-
-<div class="viewcode-block" id="parse_cocktail_csv"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_cocktail_csv">[docs]</a><span class="k">def</span> <span class="nf">parse_cocktail_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-    <span class="n">cocktail_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cocktails</span><span class="p">:</span>
-            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">cocktails</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">well_pos</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">commercial_code</span> <span class="o">=</span> <span class="n">row</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-                    <span class="n">well_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">well_pos</span><span class="p">)))</span>
-                    <span class="n">pH</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
-                    <span class="n">cocktail_dict</span><span class="p">[</span><span class="n">well_pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cocktail</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="n">number</span><span class="p">,</span>
-                                                       <span class="n">well_assignment</span><span class="o">=</span><span class="n">well_pos</span><span class="p">,</span>
-                                                       <span class="n">commercial_code</span><span class="o">=</span><span class="n">commercial_code</span><span class="p">,</span>
-                                                       <span class="n">pH</span><span class="o">=</span><span class="n">pH</span><span class="p">)</span>
-                    <span class="n">cocktail_dict</span><span class="p">[</span><span class="n">well_pos</span><span class="p">]</span><span class="o">.</span><span class="n">reagents</span> <span class="o">=</span> <span class="n">parse_reagents</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-                <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1"> attempting to read </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">e</span><span class="p">,</span> <span class="n">parse_cocktail_csv</span><span class="p">,</span> <span class="n">file_path</span>
-                    <span class="p">))</span>
-                    <span class="k">continue</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Successfully parsed cocktail file at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">cocktail_dict</span>
-    <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1"> attempting to open </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">e</span><span class="p">,</span> <span class="n">parse_cocktail_csv</span><span class="p">,</span> <span class="n">file_path</span>
-        <span class="p">))</span>
-        <span class="k">return</span> <span class="n">e</span></div>
-
-
-<span class="c1"># attempts to convert date string using bunch of formats</span>
-<div class="viewcode-block" id="datetime_converter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.datetime_converter">[docs]</a><span class="k">def</span> <span class="nf">datetime_converter</span><span class="p">(</span><span class="n">date_string</span><span class="p">):</span>
-    <span class="n">date_string</span> <span class="o">=</span> <span class="n">date_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">datetime_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%y&#39;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">datetime_formats</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">continue</span></div>
-
-
 <div class="viewcode-block" id="parse_hwi_dir_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_hwi_dir_metadata">[docs]</a><span class="k">def</span> <span class="nf">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">dir_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
@@ -1229,42 +1116,6 @@
             <span class="n">e</span><span class="p">,</span> <span class="n">parse_hwi_dir_metadata</span><span class="p">,</span> <span class="n">dir_name</span>
         <span class="p">))</span>
         <span class="k">return</span> <span class="n">e</span></div>
-
-
-<div class="viewcode-block" id="parse_cocktail_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_cocktail_metadata">[docs]</a><span class="k">def</span> <span class="nf">parse_cocktail_metadata</span><span class="p">():</span>
-    <span class="c1"># parse the metadata csv file into a dictionary of cocktail csv files</span>
-    <span class="n">cocktail_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">dates_header</span> <span class="o">=</span> <span class="s1">&#39;Dates Used&#39;</span>
-    <span class="n">path_header</span> <span class="o">=</span> <span class="s1">&#39;File Name&#39;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">COCKTAIL_META_DATA</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_META_DATA</span><span class="p">))</span> <span class="k">as</span> <span class="n">meta_cock</span><span class="p">:</span>
-            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">meta_cock</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
-                <span class="n">dates</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">dates_header</span><span class="p">]</span>
-                <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">start</span><span class="p">:</span>  <span class="c1"># convert dates to datetime</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">datetime_converter</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">end</span> <span class="o">=</span> <span class="n">datetime_converter</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
-                    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="n">parse_cocktail_metadata</span><span class="p">))</span>
-                <span class="n">row</span><span class="p">[</span><span class="n">dates_header</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
-                <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">path_header</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">cocktail_dict</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span>
-
-        <span class="k">return</span> <span class="n">cocktail_dict</span>
-
-    <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">parse_cocktail_metadata</span><span class="p">))</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">e</span></div>
-
-
-<div class="viewcode-block" id="read_import_descriptors"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.read_import_descriptors">[docs]</a><span class="k">def</span> <span class="nf">read_import_descriptors</span><span class="p">():</span>
-    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="directory_validator"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.directory_validator">[docs]</a><span class="k">def</span> <span class="nf">directory_validator</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>

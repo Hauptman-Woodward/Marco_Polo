@@ -163,7 +163,7 @@
 <span class="kn">import</span> <span class="nn">ftplib</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">FTPDownloadThread</span>
+<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">FTPDownloadThread</span><span class="p">,</span> <span class="n">QuickThread</span>
 
 
 <span class="c1"># TODO: Downloading function and reflect files in the actual FTP server</span>
@@ -222,6 +222,7 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+    
 
 
 <div class="viewcode-block" id="FTPDialog.connect_ftp"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.ftp_dialog.FTPDialog.connect_ftp">[docs]</a>    <span class="k">def</span> <span class="nf">connect_ftp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -235,43 +236,64 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">fileBrowser</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span> <span class="o">=</span> <span class="n">logon</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
-                             <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">,</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">home_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">pwd</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">fileBrowser</span><span class="o">.</span><span class="n">grow_tree_using_mlsd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">home_dir</span><span class="p">)</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Connected to FTP server&#39;</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Connected to </span><span class="si">{}</span><span class="s1">! They say </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">getwelcome</span><span class="p">())</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-                    <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;After connecting to </span><span class="si">{}</span><span class="s1">. This error occured </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">e</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-                    <span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="n">logon_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                <span class="n">logon</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="s1">&#39;Attempting to connect to host&#39;</span><span class="p">)</span>
             
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Connection Failed: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">),</span> <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;FTP connection failed with code </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span>
-                <span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="n">m</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">def</span> <span class="nf">fin_connection_attempt</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span> <span class="o">=</span> <span class="n">logon_thread</span><span class="o">.</span><span class="n">result</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">,</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>  <span class="c1"># connection attempt was good</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">home_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">pwd</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">fileBrowser</span><span class="o">.</span><span class="n">grow_tree_using_mlsd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">home_dir</span><span class="p">)</span>
+                        <span class="c1"># probably want to list files on new thread</span>
+                        <span class="c1"># TODO</span>
+                        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                        <span class="n">message</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Connected to FTP server&#39;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Connected to </span><span class="si">{}</span><span class="s1">! They say </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">getwelcome</span><span class="p">())</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                        <span class="n">message</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">message</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;After connecting to </span><span class="si">{}</span><span class="s1">. This error occured </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">e</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># did not connect in the first place</span>
+                    <span class="n">message</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Connection Failed: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">),</span> <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;FTP connection failed with code </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span>
+                    <span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_connection_status</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span> 
             <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
                 <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Please enter a host to connect to&#39;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        
+        <span class="n">logon_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">fin_connection_attempt</span><span class="p">)</span>
+        <span class="n">logon_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># disable interface while connecting </span>
+        <span class="n">message</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>  <span class="c1"># show the attempting connection message</span></div>
+        
+        
 
     
 <div class="viewcode-block" id="FTPDialog.set_connection_status"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.ftp_dialog.FTPDialog.set_connection_status">[docs]</a>    <span class="k">def</span> <span class="nf">set_connection_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>

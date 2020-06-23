@@ -197,23 +197,6 @@
 <div class="viewcode-block" id="get_cwd"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.ftp_utils.get_cwd">[docs]</a><span class="nd">@catch_ftp_errors</span>
 <span class="k">def</span> <span class="nf">get_cwd</span><span class="p">(</span><span class="n">ftp</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="traverse_folder"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.ftp_utils.traverse_folder">[docs]</a><span class="k">def</span> <span class="nf">traverse_folder</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">ftp</span><span class="p">):</span>
-    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
-        <span class="n">mlsd</span> <span class="o">=</span> <span class="n">ftp</span><span class="o">.</span><span class="n">mlsd</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mlsd</span><span class="p">:</span>
-            <span class="n">parent_item</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span>
-                <span class="n">recurse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="n">ftp</span><span class="p">)</span>
-                <span class="c1"># set the icon here</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">cwd</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
-                <span class="c1"># set the icon here</span>
-    <span class="n">recurse</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">ftp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tree</span></div>
-    
 </pre></div>
 
            </div>

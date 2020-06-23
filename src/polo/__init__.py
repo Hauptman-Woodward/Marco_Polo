@@ -26,9 +26,9 @@ if os.path.isdir('./data'):  # data is in same dir as __main__
     data_prefix = 'data'
     UNRAR = 'unrar'
 else:
-    #data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # spinx
+    # data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # sphinx only
     UNRAR = '../unrar/'
-    data_prefix = '../data/'
+    #data_prefix = '../data/'
 
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(

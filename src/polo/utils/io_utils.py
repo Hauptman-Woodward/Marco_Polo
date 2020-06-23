@@ -714,6 +714,15 @@ class CocktailMenuReader():
     the `csv.DictReader` class. However it returns a Cocktail instance 
     instead of returning a dictionary via when it's __iter__ method is called.
 
+    .. highlight:: python
+    .. code-block:: python
+
+        cocktail_menu = 'path/to/my/csv'
+        my_reader = CocktailMenuReader(cocktail_menu)
+        csv_cocktails = my_reader.read_menu_file()
+        # csv_cocktails now holds list of Cocktail objects read from
+        # cocktail_menu
+
     :param menu_file: Path to cocktail menu file to read. Should be csv
                         formated
     :type menu_file: str or Path 
@@ -746,7 +755,7 @@ class CocktailMenuReader():
 
         The default cocktail_map dictionary is below.
 
-        >>>cocktail_map = {
+        >>> cocktail_map = {
         0: 'well_assignment',
         1: 'number',
         8: 'pH',

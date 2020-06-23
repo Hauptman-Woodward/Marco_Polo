@@ -155,6 +155,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">platform</span>
 
 
 <span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
@@ -175,11 +176,12 @@
 
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s1">&#39;./data&#39;</span><span class="p">):</span>  <span class="c1"># data is in same dir as __main__</span>
     <span class="n">data_prefix</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+    <span class="n">UNRAR</span> <span class="o">=</span> <span class="s1">&#39;unrar&#39;</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">data_prefix</span> <span class="o">=</span> <span class="s1">&#39;/home/ethan/Documents/github/Polo_Builder/data&#39;</span>
+    <span class="n">data_prefix</span> <span class="o">=</span> <span class="s1">&#39;/home/ethan/Documents/github/Polo_Builder/data&#39;</span>  <span class="c1"># spinx</span>
+    <span class="n">UNRAR</span> <span class="o">=</span> <span class="s1">&#39;../unrar/&#39;</span>
     <span class="c1">#data_prefix = &#39;../data/&#39;</span>
-    <span class="c1"># above is temp for spinx only</span>
-    <span class="c1"># os.path.abspath(&#39;../data&#39;)  # running as python script</span>
+
 <span class="n">COCKTAIL_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;cocktail_data/&#39;</span><span class="p">))</span>
 <span class="n">COCKTAIL_META_DATA</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
     <span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;cocktail_data/cocktail_meta.csv&#39;</span><span class="p">))</span>
@@ -187,6 +189,8 @@
     <span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;images/default_images/default_image.jpg&#39;</span><span class="p">))</span>
 <span class="n">MODEL_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;savedmodel&#39;</span><span class="p">))</span>
 <span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">),</span> <span class="s1">&#39;images/default_images/blank_image.png&#39;</span><span class="p">)</span>
+
+
 
 <span class="c1"># HTML jinja2 templates</span>
 <span class="n">RUN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportRunTemplate.html&#39;</span><span class="p">)</span>
@@ -230,11 +234,36 @@
 
 <span class="n">ALLOWED_IMAGE_COUNTS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">786</span><span class="p">,</span> <span class="mi">1536</span><span class="p">]</span>
 
+<span class="n">IMAGE_SPECS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Visible&#39;</span><span class="p">,</span> <span class="s1">&#39;UV-TPEF&#39;</span><span class="p">,</span> <span class="s1">&#39;SHG&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+
+
+
+<span class="c1"># UNRAR EXE</span>
+<span class="c1"># =============================================================================</span>
+
+<span class="n">unrar_versions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">OS</span> <span class="k">for</span> <span class="n">OS</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">)])</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="n">unrar_versions</span><span class="p">:</span>
+    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">,</span> <span class="n">platform</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="n">UNRAR_DIR</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;Windows&#39;</span><span class="p">:</span>
+        <span class="c1"># get bits</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">:</span>  <span class="c1"># is 64 bit version</span>
+            <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;Win64&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;Win32&#39;</span><span class="p">)</span>
+    <span class="n">UNRAR_EXE</span> <span class="o">=</span> <span class="p">[</span><span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">UNRAR_DIR</span><span class="p">))</span> <span class="k">if</span> <span class="s1">&#39;unrar&#39;</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">UNRAR_EXE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>  <span class="c1"># pray they have it installed and in their PATH</span>
+    
 <span class="c1"># REGEX</span>
 <span class="c1"># =============================================================================</span>
 <span class="n">num_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[-+]?([0-9]*\.[0-9]+|[0-9]+)&#39;</span><span class="p">)</span>
 <span class="n">peg_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[0-9]+&#39;</span><span class="p">)</span>
-<span class="n">unit_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;v/v|w/v|M|L&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">unit_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;v/v|w/v|M|L|ml|ul&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
 <span class="n">water_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;\*[0-9]*h2o&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
 
 
@@ -269,7 +298,7 @@
 
 <span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">Cocktail</span><span class="p">,</span> <span class="n">Reagent</span><span class="p">,</span> <span class="n">SignedValue</span>
 <span class="kn">from</span> <span class="nn">polo.threads</span> <span class="kn">import</span> <span class="n">thread</span>
-<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span><span class="p">,</span> <span class="n">Menu</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 
