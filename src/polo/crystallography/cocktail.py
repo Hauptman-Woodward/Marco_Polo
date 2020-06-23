@@ -192,10 +192,11 @@ class Reagent():
         :return: molarity or False
         :rtype: SignedValue or Bool
         '''
-        if self.__concentration.units == 'M':
-            return self.concentration
-        elif self.__concentration.units == 'w/v' and self.molar_mass:
-            M = (self.__concentration.value / self.molar_mass) * 10
+        base_con = self.__concentration.to_base()
+        if base_con.units == 'M':
+            return base_con
+        elif base_con.units == 'w/v' and self.molar_mass:
+            M = (base_con.value / self.molar_mass) * 10
             return SignedValue(M, 'M')
         else:
             return False
@@ -252,9 +253,10 @@ class Reagent():
         :rtype: SignedValue or False
         '''
         # target volume in liters
+        print(self.stock_con, self.molarity, 'stock con and molarity')
         if self.stock_con and self.molarity:
             L = (self.molarity.value * target_volume.value) / \
-                self.stock_con.value
+                self.stock_con.to_base().value
             return SignedValue(L, 'L')
         else:
             return False
@@ -273,6 +275,7 @@ class SignedValue():
     values.
     '''
     supported_units = set(['M', 'v/v', 'w/v', 'L', 'X', 'ul', 'ml'])  # x is missing unit
+    saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
 
     def __init__(self, value=None, units=None):
         self.value = value
@@ -292,7 +295,10 @@ class SignedValue():
         :return: SignedValue instance
         :rtype: SignedValue
         '''
-        return cls(value=string, units=string)
+        units = unit_regex.findall(string)
+        if units:
+            units = units[0]
+        return cls(value=string, units=units)
 
     @property
     def value(self):
@@ -310,47 +316,22 @@ class SignedValue():
             value = 0.0
         self.__value = value
 
-    @property
-    def units(self):
-        return self.__units
-
-    @units.setter
-    def units(self, string):
-        r = unit_regex.findall(str(string))
-        if r and r[0]:
-            self.__units = r[0]
+    def scale(self, scale_key):
+        if scale_key in self.saved_scalers:
+            temp = self.to_base()  # send to base unit
+            return SignedValue(temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
+    
+    def to_base(self):
+        if self.units[0] in self.saved_scalers:
+            return SignedValue(
+                self.value * self.saved_scalers[self.units[0]], self.units[1:])
         else:
-            self.__units = 'X'  # missing units
+            return self
+    
+    def round(self, digits):
+        pass
+        # reduct the total number of digits so it looks nice to print
 
-    @property
-    def milli(self):
-        '''Convert the current `value` to milli scale. This assumes that the value
-        is the base unit.
-
-        :return: Value converted to milli
-        :rtype: float
-        '''
-        return SignedValue(self.value / 1e-3, 'm{}'.format(self.units))
-
-    @property
-    def micro(self):
-        '''Convert the current `value` to micro scale. This assumes that the value
-        is the base unit.
-
-        :return: Value converted to micro
-        :rtype: float
-        '''
-        return SignedValue(self.value / 1e-6, 'u{}'.format(self.units))
-
-    @property
-    def nano(self):
-        '''Convert the current `value` to nano scale. This assumes that the value
-        is the base unit.
-
-        :return: Value converted to nano
-        :rtype: float
-        '''
-        return SignedValue(self.value / 1e-6, 'n{}'.format(self.units))
 
     def __add__(self, other):
         if self.units == other.units:
@@ -364,5 +345,4 @@ class SignedValue():
         return '{} {}'.format(self.value, self.units)
 
     def __float__(self):
-        print(self.value, self.units)
         return float(self.value)

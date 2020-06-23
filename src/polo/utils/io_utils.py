@@ -122,6 +122,9 @@ class HtmlWriter(RunSerializer):
         Given a path to an html file to serve as a jinja2 template, read the
         file and create a new template object.
         '''
+        if isinstance(template_path, Path):
+            template_path = str(template_path)
+
         with open(template_path, 'r') as template:
             contents = template.read()
             return Template(contents)
@@ -156,11 +159,13 @@ class HtmlWriter(RunSerializer):
         # write a run as html file with images and classifications
         # and that kind of stuff
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
-            output_path = HtmlWriter.path_suffix_checker(output_path)
+            output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             if encode_images:
-                run.encode_images_to_base64()
+                print('\n\nencoded the images to base 64\n\n')
+                self.run.encode_images_to_base64()
             images = json.loads(json.dumps(
-                run.images, default=XtalWriter.json_encoder))
+                self.run.images, default=XtalWriter.json_encoder))  
+                
             template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
             if template:
                 html = template.render(
@@ -556,8 +561,10 @@ class RunDeserializer():  # convert saved file into a run
         with open(self.xtal_path) as xtal_data:
             header_data = self.xtal_header_reader(
                 xtal_data)  # must read header first
-            return json.load(xtal_data,
+            r = json.load(xtal_data, # update date since datetime goes right to string
                              object_hook=RunDeserializer.dict_to_obj)
+            r.date = BarTender.datetime_converter(r.date)
+            return r
 
 
 class BarTender():
@@ -595,7 +602,7 @@ class BarTender():
         :rtype: datetime
         '''
         date_string = date_string.strip()
-        datetime_formats = ['%m/%d/%Y', '%m/%d/%y', '%m-%d-%Y', '%m-%d-%y']
+        datetime_formats = ['%m/%d/%Y', '%m/%d/%y', '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
         for form in datetime_formats:
             try:
                 return datetime.strptime(date_string, form)

@@ -40,19 +40,17 @@
                     <th>Chemcial Additive</th>
                     <th>Formula</th>
                     <th>Concentration</th>
-                    <th>Units</th>
                 </tr>
-                {% for solution in image.cocktail.solutions %}
+                {% for solution in image.cocktail.reagents %}
                     {% if solution %}  
                     <tr>
                         <td>{{solution.chemical_additive}}</td>
-                        {% if solution.formula %}
-                            <td>{{solution.formula}}</td>
+                        {% if solution.chemical_formula %}
+                            <td>{{solution.chemical_formula}}</td>
                         {% else %}
                             <td>Not Available</td>
                         {% endif %}
                         <td>{{solution.concentration}}</td>
-                        <td>{{solution.concentration_units}}</td>
                     </tr>
                     {% endif %}
                 {% endfor %}

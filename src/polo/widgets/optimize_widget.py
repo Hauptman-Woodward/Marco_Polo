@@ -11,8 +11,11 @@ from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_optimizeWidget import Ui_Form
 from polo.utils.io_utils import write_screen_html
+from polo.widgets.unit_combo import UnitComboBox
 
 logger = make_default_logger(__name__)
+
+
 
 class OptimizeWidget(QtWidgets.QWidget):
 
@@ -44,23 +47,29 @@ class OptimizeWidget(QtWidgets.QWidget):
         self.ui.comboBox_12.currentTextChanged.connect(
             self.update_current_reagents
         )
-        self.ui.doubleSpinBox_6.valueChanged.connect(
-            lambda x: self.change_reagent_stock_con(x, self.y_reagent)
-        )
-        self.ui.doubleSpinBox.valueChanged.connect(
-            lambda x: self.change_reagent_stock_con(x, self.x_reagent)
-        )
+        self.set_up_unit_comboboxes()  # set up combos before connecting to signals 
+
         self.ui.comboBox_6.currentTextChanged.connect(
             self.set_reagent_stock_con
         )
-        self.ui.comboBox_13.currentTextChanged.connect(
-            self.set_reagent_stock_con
+
+        self.ui.unitComboBox.ui.doubleSpinBox.valueChanged.connect(
+            lambda: self.set_reagent_stock_con_values(x=True)
         )
-        self.ui.doubleSpinBox_7.valueChanged.connect(
-            self.change_constant_reagent_stock_con
+        self.ui.unitComboBox.ui.comboBox.currentTextChanged.connect(
+            lambda: self.set_reagent_stock_con_values(x=True)
         )
-        self.ui.listWidget_4.currentTextChanged.connect(
-            self.set_constant_reagent_stock_con
+        self.ui.unitComboBox_3.ui.doubleSpinBox.valueChanged.connect(
+            lambda: self.set_reagent_stock_con_values(y=True)
+        )
+        self.ui.unitComboBox_3.ui.comboBox.currentTextChanged.connect(
+            lambda: self.set_reagent_stock_con_values(y=True)
+        )
+        self.ui.unitComboBox_4.ui.doubleSpinBox.valueChanged.connect(
+            lambda: self.set_reagent_stock_con_values(const=True)
+        )
+        self.ui.unitComboBox_4.ui.comboBox.currentTextChanged.connect(
+            lambda: self.set_reagent_stock_con_values(const=True)
         )
         self.ui.pushButton_27.clicked.connect(self.write_optimization_screen)
         self.ui.pushButton_26.clicked.connect(self.export_screen)
@@ -70,6 +79,14 @@ class OptimizeWidget(QtWidgets.QWidget):
             QtWidgets.QHeaderView.ResizeToContents)
         self.__sider.setSectionResizeMode(
             QtWidgets.QHeaderView.ResizeToContents)
+
+        # update constant reagents when x or y reagents change
+        self.ui.comboBox_6.currentTextChanged.connect(
+            lambda: self.handle_reagent_change(x=True)
+        )
+        self.ui.comboBox_13.currentTextChanged.connect(
+            lambda: self.handle_reagent_change(y=True)
+        )
 
         self.ui.pushButton_26.setIcon(QIcon(self.HTML_ICON))
         self.ui.pushButton_27.setIcon(QIcon(self.GRID_ICON))
@@ -121,6 +138,13 @@ class OptimizeWidget(QtWidgets.QWidget):
             v = set([x, y])
             a = set(list(self.__current_reagents.values()))
             return a - v
+    
+    @property
+    def selected_constant(self):
+        sel_cont = self.ui.listWidget_4.currentItem().text()
+        if sel_cont and sel_cont in self.__current_reagents:
+            print(type(self.__current_reagents[sel_cont]))
+            return self.__current_reagents[sel_cont]
 
     @property
     def well_volume(self):
@@ -128,12 +152,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         Returns the well volume set by the user modifed by whatever well
         volume unit is currently selected.
         '''
-        v = self.ui.spinBox_4.value()
-        if self.ui.comboBox_11.currentText() == 'ul':
-            v *= 1e-6
-        elif self.ui.comboBox_11.currentText() == 'ml':
-            v *= 1e-3
-        return SignedValue(v, 'L')  # always return in liters
+        return self.ui.unitComboBox_2.get_value()
+
 
     @property
     def hit_images(self):
@@ -183,6 +203,41 @@ class OptimizeWidget(QtWidgets.QWidget):
             self.update_current_reagents()
             logger.info('Optimize run set to {}'.format(new_run))
     
+    def set_up_unit_comboboxes(self):
+        self.ui.unitComboBox.base_unit = 'M'  # x reagent stock con setter
+        self.ui.unitComboBox.scalers = UnitComboBox.saved_scalers
+        self.ui.unitComboBox_3.base_unit = self.ui.unitComboBox.base_unit
+        self.ui.unitComboBox_3.scalers = self.ui.unitComboBox.scalers
+        self.ui.unitComboBox_4.base_unit = self.ui.unitComboBox.base_unit
+        self.ui.unitComboBox_4.scalers = self.ui.unitComboBox.scalers
+        
+        self.ui.unitComboBox_2.base_unit = 'L'  # well volume selector
+        self.ui.unitComboBox_2.scalers = UnitComboBox.saved_scalers
+    
+    def handle_reagent_change(self, x=False, y=False, const=False):
+        if x or y:
+            if x and self.x_reagent:
+                self.ui.unitComboBox.set_value(self.x_reagent.stock_con)
+            elif y and self.y_reagent:
+                self.ui.unitComboBox_3.set_value(self.y_reagent.stock_con)
+            self.set_constant_reagents()
+        elif const:
+            self.ui.listWidget_4.setCurrentIndex(0)
+            if self.selected_constant:
+                self.ui.unitComboBox_4.set_value(self.selected_constant.stock_con)
+
+    def set_reagent_stock_con_values(self, x=False, y=False, const=False):
+        if x and self.x_reagent:
+            new_con = self.ui.unitComboBox.get_value()
+            self.x_reagent.stock_con = new_con
+        elif y and self.y_reagent:
+            new_con = self.ui.unitComboBox_3.get_value()
+            self.y_reagent.stock_con = new_con
+        elif const and self.selected_constant:
+            new_con = self.ui.unitComboBox_4.get_value()
+            self.selected_constant.stock_con = new_con
+
+            
     def changed_tab_update(self):
         '''Method used for when user leaves the optimize widget tab and then
         returns. Want to maintain the current screen selection but update
@@ -193,7 +248,6 @@ class OptimizeWidget(QtWidgets.QWidget):
         self.set_hit_well_choices()
         index = self.ui.comboBox_12.findText(current_hit)
         self.ui.comboBox_12.setCurrentIndex(index)
-
 
     def update(self):
         '''
@@ -261,26 +315,24 @@ class OptimizeWidget(QtWidgets.QWidget):
         :param value: new concentration in mols / liter
         :type value: float
         '''
-        if value and self.ui.listWidget_4.currentItem():
-            selected_reagent = self.ui.listWidget_4.currentItem().text()
-            if selected_reagent:
-                selected_reagent = self.__current_reagents[selected_reagent]
-                selected_reagent.stock_con = SignedValue(
-                    self.ui.doubleSpinBox_7.value(), 'M'
-                )
+        print(self.selected_constant, 'selected constant status')
+        if self.selected_constant:
+            selected_reagent = self.selected_constant
+            selected_reagent.stock_con = self.ui.unitComboBox_4.get_value()
+            print('set stock concentration of {}'.format(selected_reagent))
+
 
     def set_constant_reagent_stock_con(self):
         '''Display the currently selected constant reagent's stock
         concentration in the constant reagent double spin box widget.
         '''
-        current_reagent = self.ui.listWidget_4.currentItem()
-        if current_reagent and current_reagent.text():
-            current_reagent = self.__current_reagents[current_reagent.text()]
+        current_reagent = self.selected_constant
+        if current_reagent:
             if current_reagent.stock_con:
-                self.ui.doubleSpinBox_7.setValue(
-                    current_reagent.stock_con.value)
+                self.ui.unitComboBox_4.set_value(
+                    current_reagent.stock_con)
             else:
-                self.ui.doubleSpinBox_7.setValue(0.0)
+                self.ui.unitComboBox_4.set_zero()
 
     def set_reagent_choices(self):
         '''Set reagent choices for the x and y reagents based on the currently
@@ -302,6 +354,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             # self.ui.comboBox_6.addItem('pH')
             self.ui.comboBox_6.setCurrentIndex(0)
             self.ui.comboBox_13.setCurrentIndex(len(self.__current_reagents)-1)
+            self.set_constant_reagents()
 
     def set_reagent_stock_con(self):
         '''Sets the value of either the x or y reagent concentration double
@@ -309,15 +362,16 @@ class OptimizeWidget(QtWidgets.QWidget):
         This method is how we show the user what the current stock concentration
         of a selected reagent is.
         '''
+        def_val = SignedValue(0.0, 'M')
         if self.x_reagent and self.x_reagent.stock_con:
-            self.ui.doubleSpinBox.setValue(self.x_reagent.stock_con.value)
+            self.ui.unitComboBox.set_value(self.x_reagent.stock_con)
         else:
-            self.ui.doubleSpinBox.setValue(0.0)
+            self.ui.unitComboBox.set_zero()
         if self.y_reagent and self.y_reagent.stock_con:
-            self.ui.doubleSpinBox_6.setValue(self.y_reagent.stock_con.value)
+            self.ui.unitComboBox_3.set_value(self.y_reagent.stock_con)
         else:
-            self.ui.doubleSpinBox_6.setValue(0.0)
-        self.set_constant_reagents()
+            self.ui.unitComboBox_3.set_zero()
+        # self.set_constant_reagents()
 
     def change_reagent_stock_con(self, value, reagent):
         '''Change the stock concentration of a give reagent to a new value.
@@ -328,6 +382,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         :param reagent: The reagent who's stock con is being changed 
         :type reagent: Reagent
         '''
+
+        # look more into this now that chaning up now units are working
+
         if value and reagent:
             reagent.stock_con = SignedValue(value, 'M')
 
@@ -350,7 +407,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         :rtype: list
         '''
         if stock and reagent.stock_volume(self.well_volume):
-            c = reagent.stock_volume(self.well_volume)
+            c = reagent.stock_volume(self.well_volume.to_base())
         else:
             c = reagent.concentration
         m = math.floor(num_wells / 2)
@@ -363,6 +420,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         to the user.
         '''
         if self.error_checker():
+
             x_grad_stock, x_grad_con = (
                 self.gradient(self.x_reagent, self.x_wells,
                               self.x_step, stock=True),
@@ -374,9 +432,9 @@ class OptimizeWidget(QtWidgets.QWidget):
             )
             constants = []
             for c in self.constant_reagents:
-                stock_vol = c.stock_volume(self.well_volume)
+                stock_vol = c.stock_volume(self.well_volume.to_base())
                 if not stock_vol:
-                    stock_vol = c.concentration
+                    stock_vol = c.concentration.to_base()
                 constants.append((c.chemical_additive,
                                   c.concentration, stock_vol))
 
@@ -413,9 +471,11 @@ class OptimizeWidget(QtWidgets.QWidget):
     def adjust_unit(self, signed_value, new_unit):
         if signed_value.units == 'L':  # only convert volume for now
             if new_unit == 'ul':
-                return signed_value.micro
+                return signed_value.scale('u')
             elif new_unit == 'ml':
-                return signed_value.milli
+                return signed_value.scale('m')
+            elif new_unit == 'cl':
+                return signed_value.scale('c')
             else:
                 return signed_value
         else:
@@ -447,6 +507,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         s += template.format(self.y_reagent.chemical_additive, y_con, self.adjust_unit(y_stock, write_unit))
         for c in constants:
             a, b, d = c
+            print(a, b, d)
+            print(type(a), type(b), type(c))
             s += template.format(a, b, self.adjust_unit(d, write_unit))  # rename this so it makes sense
         s += '<h4>Volume of H20</h4>\n{}'.format(self.adjust_unit(water, write_unit))
         logger.info('Added well with contents {}'.format(s))
@@ -466,7 +528,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         elif not self.x_reagent or not self.y_reagent:
             error, message = True, 'Please select x and y reagents'
         elif not self.x_reagent.stock_con or not self.y_reagent.stock_con:
-            error, message = True, 'Please set stock concentrations for all reagents including constants'
+            error, message = True, 'Please set stock concentrations for x and y reagents'
+        elif self.selected_constant and not self.selected_constant.stock_con:
+            error, message = True, 'Please set constant reagent stock con'
         if error:
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Information)
@@ -528,10 +592,11 @@ class OptimizeWidget(QtWidgets.QWidget):
         '''
         # args should be volumes as signed value of all stuff
         max_volume, total_volume = self.well_volume, 0
+        max_volume = max_volume.to_base()
         for value in volume_list:
             if isinstance(value, SignedValue):
                 if value.units == 'L':
-                    total_volume += value.value
+                    total_volume += value.to_base().value
                 elif value.units == 'w/v':
                     pass
                     # some kind of warning here about could not convert

@@ -247,9 +247,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if export_path:
                 export_path, export_results = Path(export_path), None
                 if action == self.actionAs_HTML:
-                    export_path = export_path.with_name(
-                        export_path.name + '.html')
-                    export_results = make_run_html(self.current_run, export_path)
+                    writer = HtmlWriter(self.current_run)
+                    writer.write_complete_run_on_thread(export_path, encode_images=True)
                 elif action == self.actionAs_CSV:
                     export_path = export_path.with_suffix('.csv')
                     csv_exporter = RunCsvWriter(self.current_run, export_path)
@@ -265,7 +264,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             export_path, export_results
                         )
                     )
-                status_message.exec_()
+                # status_message.exec_()
         else:
             logger.info('User attempted to export with no current run')
             self.make_message_box(message='Please load a run first').exec_()
@@ -511,7 +510,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def open_run_updater_dialog(self):
         if self.current_run:
             run_updater = RunUpdaterDialog(self.current_run,
-            list(self.loaded_runs.keys()))
+            list(self.loaded_runs.keys()), self)
         else:
             self.make_message_box('Please load a run first.').exec_()
 

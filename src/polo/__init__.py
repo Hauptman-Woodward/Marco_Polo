@@ -82,6 +82,8 @@ COLORS = {
 
 ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 
+IMAGE_SPECS = ['Visible', 'UV-TPEF', 'SHG', 'Other']
+
 
 
 # UNRAR EXE

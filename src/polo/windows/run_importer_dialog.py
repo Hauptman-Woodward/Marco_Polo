@@ -17,7 +17,7 @@ from polo.utils.io_utils import (directory_validator, list_dir_abs,
 from polo.utils.unrar_utils import *
 from polo.utils.dialog_utils import make_message_box
 
-from polo import ALLOWED_IMAGE_COUNTS
+from polo import ALLOWED_IMAGE_COUNTS, IMAGE_SPECS
 
 from polo import tim  # the bartender
 
@@ -86,6 +86,12 @@ class RunImporterDialog(QtWidgets.QDialog):
             self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
         # self.ui.comboBox.currentIndexChanged.connect(
         #     self.validate_hwi_number_images_run)
+        self.ui.comboBox_2.clear()
+        self.ui.comboBox_2.addItems(IMAGE_SPECS)
+        self.ui.comboBox_5.clear()
+        self.ui.comboBox_5.addItems(IMAGE_SPECS)
+        self.ui.comboBox_4.clear()
+        self.ui.comboBox_4.addItems(IMAGE_SPECS)
 
         # Widget display setup
         self.set_menu_options()

@@ -155,7 +155,9 @@ class Image():
         :return: base64 encoded image
         :rtype: str
         '''
-        if os.path.exists(self.path):
+        if self.bites:
+            return self.bites
+        elif os.path.exists(self.path):
             with open(self.path, 'rb') as image:
                 return base64.b64encode(image.read())
 
