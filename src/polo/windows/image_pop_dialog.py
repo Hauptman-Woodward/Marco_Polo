@@ -42,7 +42,7 @@ class ImagePopDialog(QtWidgets.QDialog):
             lambda: self.show_alt_image(alt=True))
         self.image = image
         self.set_allowed_navigation_functions()
-        self.radioButton.toggled.connect(
+        self.ui.radioButton.toggled.connect(
             self.change_favorite_status
         )
         # must set image before any other widget population

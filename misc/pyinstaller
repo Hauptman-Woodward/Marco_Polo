@@ -2,7 +2,7 @@
 pyinstaller --add-data polo\data\;polo\data\ --add-data polo\marco\savedmodel\;polo\marco\savedmodel\ --add-data astor;astor\ Polo.py
 
 # windows command as of jun 12
-pyinstaller --add-data data;data\ --add-data src\astor;astor\ src\Polo.py 
+pyinstaller --add-data data;data\ --add-data src\astor;astor\ --add-data unrar;unrar\ src\Polo.py
 
 
 # isssues with tensorflow packaging in linux

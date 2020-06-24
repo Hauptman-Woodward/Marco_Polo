@@ -82,9 +82,9 @@ class Ui_Dialog(object):
         self.pushButton_3.setMinimumSize(QtCore.QSize(60, 60))
         self.pushButton_3.setObjectName("pushButton_3")
         self.gridLayout_4.addWidget(self.pushButton_3, 0, 1, 1, 1)
-        self.checkBox = QtWidgets.QCheckBox(self.groupBox_3)
-        self.checkBox.setObjectName("checkBox")
-        self.gridLayout_4.addWidget(self.checkBox, 2, 0, 1, 2)
+        self.radioButton = QtWidgets.QRadioButton(self.groupBox_3)
+        self.radioButton.setObjectName("radioButton")
+        self.gridLayout_4.addWidget(self.radioButton, 2, 0, 1, 1)
         self.gridLayout_6.addWidget(self.groupBox_3, 3, 1, 1, 1)
 
         self.retranslateUi(Dialog)
@@ -113,5 +113,5 @@ class Ui_Dialog(object):
         self.pushButton_3.setToolTip(_translate("Dialog", "<html><head/><body><p>Classify current image as precipitate.</p></body></html>"))
         self.pushButton_3.setText(_translate("Dialog", "Precipitate"))
         self.pushButton_3.setShortcut(_translate("Dialog", "W"))
-        self.checkBox.setText(_translate("Dialog", "Favorite?"))
+        self.radioButton.setText(_translate("Dialog", "Favorite?"))
 from polo.widgets.slideshow_viewer import PhotoViewer
