@@ -13,12 +13,14 @@ from polo.utils.math_utils import *
 
 
 class graphicsWell(QtWidgets.QGraphicsPixmapItem):
+    
 
     def __init__(self, parent=None, image=None):
         QtWidgets.QGraphicsPixmapItem.__init__(self, parent=parent)
         self.image = image  # image object
         # self.setPixmap()
         self.setToolTip()
+        self.last_pixmap = None
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
 
     def width(self):
@@ -31,11 +33,9 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
         if self.image:
             return super(graphicsWell, self).setToolTip(self.image.get_tool_tip())
 
-    def setPixmap(self, pixmap=None):
-        if pixmap:
-            return super(graphicsWell, self).setPixmap(pixmap)
-        elif self.image:
-            return super(graphicsWell, self).setPixmap(self.image.get_pixel_map())
+    def setPixmap(self):
+            return super(graphicsWell, self).setPixmap(self.image.pixmap)
+
 
     def resetOpacity(self):
         return super(graphicsWell, self).setOpacity(1)
@@ -82,6 +82,13 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
             elif alt_spec and self.image.alt_image:
                 self.image = self.image.alt_image
             self.setPixmap()
+    
+    # def pre_load_alt_images(self):
+    #     image_keywords = ['alt_image', 'next_image', 'previous_image']
+    #     image_dict = 
+    #     for keyword in image_keywords:
+            
+
 
 
 # class PlateCache():
@@ -145,12 +152,16 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
     #     except KeyError as e:
     #         return False
 
-class SceneCacher():
-    pass
+
+
+
+
+
+
 # since going from set plate sizes in the view could have it run in the
 # background caching as many views as it can while the number of images in
 # the view are still the same
-
+import time
 class plateViewer(QtWidgets.QGraphicsView):
 
     subgrid_dict = {16: (4, 4), 64: (8, 8), 96: (8, 12), 1536: (32, 48)}
@@ -270,25 +281,35 @@ class plateViewer(QtWidgets.QGraphicsView):
         for i in range(0, len(self.__graphics_wells)):  # size of plate
             plate_index = plateViewer.well_index_to_subgrid(i, r, c, p_r, p_c)
             plate_index += 1
+           
             if plate_index == self.current_page:
+                s = time.time()
                 self.__graphics_wells[i].setPixmap()
                 current_images.append(self.__graphics_wells[i])
         return current_images
 
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
+        s_a = time.time()
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.__scene = QtWidgets.QGraphicsScene(self)  # new scene
+        self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
+        s = time.time()
         self.visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]
         cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
         row_height = 0  # height of tallest image in a given row of images
+
+        if next_date or prev_date or alt_spec:
+            [well.get_alt_image(next_date, prev_date, alt_spec) for well in self.visible_wells]
+
+        s = time.time()
         for i in range(len(self.visible_wells)):
             if i % stride == 0 and i != 0:  # time for a ew row of images
                 cur_y_pos += row_height
                 row_height, cur_x_pos, = 0, 0  # reset row height for next row
                 # return x position back to origin
-            self.visible_wells[i].get_alt_image(next_date, prev_date, alt_spec)
+            s = time.time()
+            s = time.time()
             self.__scene.addItem(self.visible_wells[i])
             self.visible_wells[i].setPos(cur_x_pos, cur_y_pos)
             cur_x_pos += self.visible_wells[i].width()
@@ -328,6 +349,8 @@ class plateViewer(QtWidgets.QGraphicsView):
             pop_out = ImagePopDialog(selection[0].image)
             pop_out.setWindowModality(Qt.ApplicationModal)
             pop_out.show()
+            self.__scene.clearSelection()
+            
 
     def demphasize_filtered_images(self, image_types, human, marco):
         for each_gw in self.__graphics_wells:

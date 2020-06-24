@@ -9,8 +9,7 @@ from polo.utils.io_utils import if_dir_not_exists_make, list_dir_abs, parse_HWI_
 
 logger = make_default_logger(__name__)
 
-DEFAULT_IMAGE = Image(path=str(DEFAULT_IMAGE_PATH))
-BLANK_IMAGE = Image(path=str(BLANK_IMAGE))
+
 
 
 class Run():
@@ -35,6 +34,8 @@ class Run():
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress']
+    # DEFAULT_IMAGE = Image(path=str(DEFAULT_IMAGE_PATH))
+    # BLANK_IMAGE = Image(path=str(BLANK_IMAGE))
 
     def __init__(self, image_dir, run_name, images=None,
                  save_file_path=None, log=None, date=None,
@@ -82,6 +83,12 @@ class Run():
                 Image(path=str(image_path), spectrum=self.image_spectrum,
                       date=self.date)
             )
+            
+    # def add_image_from_path(self, image_path):
+    #     self.images.append(
+    #         Image(path=str(image_path), spectrum=self.image_spectrum,
+    #         )
+    #     )
 
     def get_images_by_classification(self, human=True):
         '''

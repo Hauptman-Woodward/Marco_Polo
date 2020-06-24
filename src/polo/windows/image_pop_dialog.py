@@ -60,7 +60,7 @@ class ImagePopDialog(QtWidgets.QDialog):
         '''Show the image stored in the `image` attribute
         '''
         if self.image:
-            self.ui.photoViewer.set_image(pixmap=self.image.get_pixel_map())
+            self.ui.photoViewer.set_image(pixmap=self.image.pixmap)
 
     def classify_image(self, crystals=False, clear=False,
                        precipitate=False, other=False):

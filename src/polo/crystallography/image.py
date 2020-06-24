@@ -6,7 +6,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 
 from polo import MODEL, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.marco.run_marco import classify_image
-
+from pathlib import Path
+import time
 
 class Image():
 
@@ -56,6 +57,7 @@ class Image():
                  favorite=False):
 
         self.path = str(path)
+        self.bites = bites
         self.human_class = human_class
         self.machine_class = machine_class
         self.well_number = well_number
@@ -67,8 +69,31 @@ class Image():
         self.previous_image = previous_image
         self.next_image = next_image
         self.alt_image = alt_image
-        self.bites = bites
         self.favorite = favorite
+        self.__pixmap = None
+    
+    @staticmethod
+    def clean_base64_string(string):
+        '''Image instances may contain byte strings that store their actual
+        crystallization image encoded as base64. Previously, these byte strings
+        were written directly into the json file as strings causing the b'
+        byte string identifier to be written along with the actual base64 data.
+        This method removes those artifacts if they are present and returns a
+        clean byte string with only the actual base64 data.
+
+        :param string: a string to interogate
+        :type string: str
+        :return: byte string with non-data artifacts removed
+        :rtype: bytes
+        '''
+        if string:
+            if isinstance(string, bytes): string = str(string, 'utf-8')
+            if string[0] == 'b':  # bytes string written directly to string
+                string = string[1:]
+            if string[-1] == "'":
+                string = string[:-1]
+            if string:
+                return bytes(string, 'utf-8')
 
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
@@ -78,7 +103,67 @@ class Image():
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
+
+    @property
+    def pixmap(self):
+        if self.__pixmap:
+            return self.__pixmap
+        else:
+            self.__pixmap = self.make_pixmap()
+            return self.__pixmap
     
+    # @pixmap.setter
+    # def pixmap(self, new_map):
+    #     if new_map
+
+
+    
+    def make_pixmap(self):
+        pm = QPixmap()
+        if os.path.exists(self.path):
+            pm.load(self.path)
+        elif isinstance(self.bites, bytes):
+            pm.loadFromData(base64.b64decode(self.bites))
+        return pm
+    
+    # @pixmap.setter
+    # def pixmap(self, new_data):
+    #     if os.path.exists(self.path):
+    #         self.__pixmap = QPixmap(new_data)
+    #     elif isinstance(new_data, bytes):
+    #         pm = QPixmap()
+    #         pm.loadFromData(new_data)
+    #         pm.loadFromData(base64.b64decode(new_data))
+    #         self.__pixmap = pm
+    #     else:
+    #         self.__pixmap = None
+    
+    @property
+    def path(self):
+        return self.__path
+    
+    @path.setter
+    def path(self, new_path):
+        if new_path:
+            if isinstance(new_path, Path):
+                self.__path = str(new_path)
+            self.__path = new_path
+        else:
+            self.__path = None
+    
+    @property
+    def bites(self):
+        return self.__bites
+    
+    @bites.setter
+    def bites(self, new_bites):
+        if isinstance(new_bites, bytes):
+            self.__bites = new_bites
+        elif isinstance(new_bites, str):
+            self.__bites = Image.clean_base64_string(new_bites)
+        else:
+            self.__bites = None
+
     @property
     def marco_class(self):
         '''Return the `__marco_class` hidden attribute.
@@ -148,7 +233,7 @@ class Image():
             self.__human_class = None
 
 
-    def encode_base64(self):
+    def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes
         that file as base64 and returns the encoded image.
 
@@ -193,21 +278,7 @@ class Image():
                    self.well_number, self.plate_id, self.date]
         for item in attribs:
             yield item
-
-    def get_pixel_map(self):
-        '''Create a pixelmap object from either the base64 encoded version
-        of the image or the actual image file if it exists. Base64 takes
-        precedence. The pixelmap is what is eventually displayed to the user.
-
-        :return: Pixelmap
-        :rtype: QPixmap
-        '''
-        if self.bites:
-            pm = QPixmap()
-            pm.loadFromData(base64.b64decode(self.bites))
-            return pm
-        elif os.path.exists(self.path):
-            return QPixmap(self.path)
+    
 
         # if path does exist and there is no base64 encoding then
         # there is goin to be an issue

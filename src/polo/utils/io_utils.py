@@ -18,10 +18,11 @@ from polo import (ALLOWED_IMAGE_TYPES, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA,
                   RUN_HTML_TEMPLATE, SCREEN_HTML_TEMPLATE, __version__,
                   make_default_logger, num_regex, unit_regex)
 from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
-from polo.threads.thread import QuickThread
+from polo.threads.thread import PixmapMakerThread, QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
+from polo.utils.dialog_utils import make_message_box
 
 logger = make_default_logger(__name__)
 
@@ -469,8 +470,9 @@ class XtalWriter(RunSerializer):
 
 class RunDeserializer():  # convert saved file into a run
 
-    def __init__(self, xtal_path):
+    def __init__(self, xtal_path, main_window):
         self.xtal_path = xtal_path
+        self.main_window = main_window
 
     @staticmethod
     def clean_base64_string(string):
@@ -487,11 +489,13 @@ class RunDeserializer():  # convert saved file into a run
         :rtype: bytes
         '''
         if string:
+            if isinstance(string, bytes): string = str(string, 'utf-8')
             if string[0] == 'b':  # bytes string written directly to string
                 string = string[1:]
             if string[-1] == "'":
                 string = string[:-1]
-            return bytes(string, 'utf-8')
+            if string:
+                return bytes(string, 'utf-8')
 
     @staticmethod
     def dict_to_obj(d):
@@ -532,6 +536,16 @@ class RunDeserializer():  # convert saved file into a run
                 'Attempted to serialize an empty dictionary at {}'.format(dict_to_obj))
             return None
 
+    def xtal_to_run_on_thread(self):
+        thread = QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
+
+        def finished():
+            self.main_window.add_loaded_run(thread.result)
+
+        thread.finished.connect(finished)
+        thread.start()
+
+
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
         called before reading the json content of an xtal file. Note than
@@ -551,14 +565,19 @@ class RunDeserializer():  # convert saved file into a run
             header_data.append(xtal_file_io.readline())
         return header_data
 
-    def xtal_to_run(self):
+    def xtal_to_run(self, **kwargs):
         '''Attempt to convert the file specified by the path stored in the
         `xtal_path` attribute to a Run object. 
 
         :return: Run object encoded by an xtal file
         :rtype: Run
         '''
-        with open(self.xtal_path) as xtal_data:
+        if 'xtal_path' in kwargs:
+            xtal_path = kwargs['xtal_path']
+        else:
+            xtal_path = self.xtal_path
+
+        with open(xtal_path) as xtal_data:
             header_data = self.xtal_header_reader(
                 xtal_data)  # must read header first
             r = json.load(xtal_data, # update date since datetime goes right to string

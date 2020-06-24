@@ -304,27 +304,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if xtal_file_path:
             xtal_file_path = file_dlg.selectedFiles()[0]
-            run_loader = RunDeserializer(xtal_file_path)
-            run = run_loader.xtal_to_run()  # attempt to load the run
+            run_loader = RunDeserializer(xtal_file_path, self)
+            run = run_loader.xtal_to_run_on_thread()
 
-            if not isinstance(run, (Run, HWIRun)):
-                error_box = self.make_message_box(
-                    message='Save file could not be read :(',
-                    icon=QtWidgets.QMessageBox.Warning,
-                    buttons=QtWidgets.QMessageBox.Ok
-                )
-                error_box.exec()
-            else:
-                self.loaded_runs[run.run_name] = run
-                for image in run.images:
-                    if image.machine_class:
-                        self.classified_runs[run.run_name] = run
-                        break
-                self.listWidget.addItem(run.run_name)
-                self.loaded_runs[run.run_name].save_file_path = xtal_file_path
+            # if not isinstance(run, (Run, HWIRun)):
+            #     error_box = self.make_message_box(
+            #         message='Save file could not be read :(',
+            #         icon=QtWidgets.QMessageBox.Warning,
+            #         buttons=QtWidgets.QMessageBox.Ok
+            #     )
+            #     error_box.exec()
+            # else:
+            #     self.loaded_runs[run.run_name] = run
+            #     for image in run.images:
+            #         if image.machine_class:
+            #             self.classified_runs[run.run_name] = run
+            #             break
+            #     self.listWidget.addItem(run.run_name)
+            #     self.loaded_runs[run.run_name].save_file_path = xtal_file_path
 
     # General Utilities
     # =========================================================================
+
+    def add_loaded_run(self, run):
+        if not isinstance(run, (Run, HWIRun)):
+            error_box = self.make_message_box(
+                message='Could not load run :(',
+                icon=QtWidgets.QMessageBox.Warning,
+                buttons=QtWidgets.QMessageBox.Ok
+            )
+            error_box.exec()
+        else:
+            self.loaded_runs[run.run_name] = run
+            for image in run.images:
+                if image.machine_class:
+                    self.classified_runs[run.run_name] = run
+                    break
+            self.listWidget.addItem(run.run_name)
+            #self.loaded_runs[run.run_name].save_file_path = xtal_file_path
+
 
     def get_widget_dims(self, widget):
         return widget.width(), widget.height()

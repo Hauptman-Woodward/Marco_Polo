@@ -13,6 +13,7 @@ from polo.utils.math_utils import get_cell_image_dims, best_aspect_ratio
 from PyQt5 import QtWidgets
 # from polo.utils.io_utils import load_run_object
 # from polo.ui.widgets.plate_viewer import graphicsWell
+from polo.crystallography.image import Image
 
 
 class thread(QThread):
@@ -75,6 +76,21 @@ class QuickThread(thread):
 
     def run(self):
         self.result = self.job_func(**self.func_args)
+
+
+class PixmapMakerThread(thread):
+
+    def __init__(self, run, parent=None):
+        super().__init__(parent)
+        self.run = run
+    
+    def run(self):
+        for image in self.run:
+            if isinstance(image, Image):
+                image.pixmap
+                self.usleep(1000)
+                print('aded image')
+
 
 class ClassificationThread(thread):
     change_value = pyqtSignal(int)

@@ -141,10 +141,12 @@ class OptimizeWidget(QtWidgets.QWidget):
     
     @property
     def selected_constant(self):
-        sel_cont = self.ui.listWidget_4.currentItem().text()
-        if sel_cont and sel_cont in self.__current_reagents:
-            print(type(self.__current_reagents[sel_cont]))
-            return self.__current_reagents[sel_cont]
+        if self.ui.listWidget_4.currentItem():
+            sel_cont = self.ui.listWidget_4.currentItem().text()
+            if sel_cont and sel_cont in self.__current_reagents:
+                return self.__current_reagents[sel_cont]
+        else:
+            return None
 
     @property
     def well_volume(self):
@@ -315,11 +317,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         :param value: new concentration in mols / liter
         :type value: float
         '''
-        print(self.selected_constant, 'selected constant status')
         if self.selected_constant:
             selected_reagent = self.selected_constant
             selected_reagent.stock_con = self.ui.unitComboBox_4.get_value()
-            print('set stock concentration of {}'.format(selected_reagent))
 
 
     def set_constant_reagent_stock_con(self):
@@ -507,8 +507,6 @@ class OptimizeWidget(QtWidgets.QWidget):
         s += template.format(self.y_reagent.chemical_additive, y_con, self.adjust_unit(y_stock, write_unit))
         for c in constants:
             a, b, d = c
-            print(a, b, d)
-            print(type(a), type(b), type(c))
             s += template.format(a, b, self.adjust_unit(d, write_unit))  # rename this so it makes sense
         s += '<h4>Volume of H20</h4>\n{}'.format(self.adjust_unit(water, write_unit))
         logger.info('Added well with contents {}'.format(s))

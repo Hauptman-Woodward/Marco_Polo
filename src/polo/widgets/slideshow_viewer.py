@@ -345,8 +345,7 @@ class SlideshowViewer(PhotoViewer):
         cur_img = self.current_image
         cur_img.alt_image
         if isinstance(cur_img, Image):
-            pixmap = cur_img.get_pixel_map()
-            self.set_image(pixmap)
+            self.set_image(cur_img.pixmap)
         else:
             logger.warning('Failed to set current image to {} at {}'.format(
                 self.current_image, self
