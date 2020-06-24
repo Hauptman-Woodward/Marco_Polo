@@ -54,7 +54,7 @@ class Image():
                  machine_class=None, prediction_dict=None,
                  plate_id=None, date=None, cocktail=None, spectrum=None,
                  previous_image=None, next_image=None, alt_image=None, 
-                 favorite=False):
+                 favorite=False, **kwargs):
 
         self.path = str(path)
         self.bites = bites
@@ -116,7 +116,10 @@ class Image():
     # def pixmap(self, new_map):
     #     if new_map
 
-
+    def encode_base64(self):
+        if not self.bites and os.path.exists(self.path):
+            with open(self.path, 'rb') as image_file:
+                self.bites = base64.b64encode(image_file.read())
     
     def make_pixmap(self):
         pm = QPixmap()

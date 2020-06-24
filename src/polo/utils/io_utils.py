@@ -447,6 +447,7 @@ class XtalWriter(RunSerializer):
                     image.previous_image, image.next_image, image.alt_image = (
                         None, None, None
                     )
+                    image.pixmap = None
         return self.run
 
     def run_to_dict(self):
@@ -512,10 +513,11 @@ class RunDeserializer():  # convert saved file into a run
         if d:
             if '__class__' in d:  # is a serialized object
                 class_name, mod_name = d.pop('__class__'), d.pop('__module__')
-                module = __import__(mod_name)
-                class_ = getattr(module, class_name)
-
-
+                try:
+                    module = __import__(mod_name)
+                    class_ = getattr(module, class_name)
+                except AttributeError:
+                    return None
                 temp_d = {}
                 for key, item in d.items():
                     if '__' in key:  # deal with object properties
