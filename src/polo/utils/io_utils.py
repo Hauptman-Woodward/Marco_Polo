@@ -162,7 +162,6 @@ class HtmlWriter(RunSerializer):
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
             output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             if encode_images:
-                print('\n\nencoded the images to base 64\n\n')
                 self.run.encode_images_to_base64()
             images = json.loads(json.dumps(
                 self.run.images, default=XtalWriter.json_encoder))  
@@ -268,6 +267,7 @@ class RunCsvWriter(RunSerializer):
         fieldnames = set([])
         for row in rows:
             fieldnames = fieldnames.union(set(row.keys()))
+            
         return fieldnames
 
     @output_path.setter
@@ -577,14 +577,14 @@ class RunDeserializer():  # convert saved file into a run
             xtal_path = kwargs['xtal_path']
         else:
             xtal_path = self.xtal_path
-
-        with open(xtal_path) as xtal_data:
-            header_data = self.xtal_header_reader(
-                xtal_data)  # must read header first
-            r = json.load(xtal_data, # update date since datetime goes right to string
-                             object_hook=RunDeserializer.dict_to_obj)
-            r.date = BarTender.datetime_converter(r.date)
-            return r
+        if RunSerializer.path_validator(xtal_path, parent=True):
+            with open(xtal_path) as xtal_data:
+                header_data = self.xtal_header_reader(
+                    xtal_data)  # must read header first
+                r = json.load(xtal_data, # update date since datetime goes right to string
+                                object_hook=RunDeserializer.dict_to_obj)
+                r.date = BarTender.datetime_converter(r.date)
+                return r
 
 
 class BarTender():

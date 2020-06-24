@@ -98,9 +98,19 @@ class TableViewer(QtWidgets.QTableWidget):
         '''
         if not image_classes:
             image_classes = IMAGE_CLASSIFICATIONS
-        if human and row['human_class'] in image_classes:
+
+        # BUG / TODO
+        # Properties of image class are being shown with underscores when read
+        # from the class __dict__ temp fix for now is to just set the key to
+        # include the __ and class name but need more robust less jank way
+        # to do this for any given attribute
+        human_key = '_Image__human_class'
+        if human_key not in row: human_key = 'human_class'
+        machine_key = 'machine_class'
+        if machine_key not in row: machine_key = '_Image__human_class'
+        if human and row[human_key] in image_classes:
             return False
-        if marco and row['machine_class'] in image_classes:
+        if marco and row[machine_key] in image_classes:
             return False
 
         return True
