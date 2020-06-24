@@ -71,7 +71,7 @@ class Run():
         '''
         for image in self.images:
             if image:
-                image.bites = image.encode_base64()
+                image.encode_base64()
 
     def add_images_from_dir(self):
         '''Adds the contents of a directory to `images` attribute.

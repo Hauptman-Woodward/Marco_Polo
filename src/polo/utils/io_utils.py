@@ -447,7 +447,6 @@ class XtalWriter(RunSerializer):
                     image.previous_image, image.next_image, image.alt_image = (
                         None, None, None
                     )
-                    image.pixmap = None
         return self.run
 
     def run_to_dict(self):

@@ -170,7 +170,7 @@ class Ui_Form(object):
         self.gridLayout_4.addWidget(self.groupBox, 2, 1, 1, 1)
 
         self.retranslateUi(Form)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

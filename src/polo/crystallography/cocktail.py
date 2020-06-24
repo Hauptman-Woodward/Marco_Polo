@@ -90,6 +90,13 @@ class Cocktail():
             cocktail_string += '{} {}\n'.format(
                 reagent.chemical_additive, reagent.concentration)
         return cocktail_string
+    
+    def chemical_distance(self, other_cocktail):
+        # pass
+        pass
+        for each_reagent in self.reagents:
+            molar_concentration = each_reagent.molarity()
+            
 
 
 class Reagent():

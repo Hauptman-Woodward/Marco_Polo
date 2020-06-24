@@ -120,6 +120,7 @@ class Image():
         if not self.bites and os.path.exists(self.path):
             with open(self.path, 'rb') as image_file:
                 self.bites = base64.b64encode(image_file.read())
+                return self.bites
     
     def make_pixmap(self):
         pm = QPixmap()
