@@ -305,7 +305,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                     HWI run but will be missing image data. You might want to redownload your\
                     images using the import from FTP function.'.format(hwi_image_dir, user_num_images)
             if error:
-                self.show_error_message(message=message)
+                make_message_box(message, parent=self).exec_()
                 return False
             else:
                 return True
