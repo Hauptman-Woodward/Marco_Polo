@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 
 from polo import MODEL, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.marco.run_marco import classify_image
+from polo import DEFAULT_IMAGE_PATH
 from pathlib import Path
 import time
 
@@ -94,6 +95,11 @@ class Image():
                 string = string[:-1]
             if string:
                 return bytes(string, 'utf-8')
+    
+    @classmethod
+    def no_image(cls):
+        # return default no images found image instance
+        return cls(path=DEFAULT_IMAGE_PATH)
 
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))

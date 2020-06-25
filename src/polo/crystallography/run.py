@@ -60,6 +60,7 @@ class Run():
             return self.images[n]
         except IndexError as e:
             return e
+    
 
     def __len__(self):
         '''Returns the number of non null Images'''
@@ -167,7 +168,7 @@ class Run():
         if images:
             return images
         else:
-            return [DEFAULT_IMAGE]
+            return [Image.no_image()]
 
     def image_filter_engine(self, image, image_types, human=False, marco=False):
         if not image_types:

@@ -55,6 +55,7 @@ class LogDialog(QtWidgets.QDialog):
         choice = msg.exec_()
         if choice == 1024:  # int code for ok button
             new_log = open(str(LOG_PATH), 'w')
+            new_log.write('')
             new_log.close()
             self.display_log_text()  # update the log view to show cleared
             # overwrite the current log contents

@@ -11,7 +11,7 @@ Welcome to Polo's documentation!
    :caption: Contents:
    
    about
-   Quickstart
+   install
    FAQS
    user_guide
    beta_testers
