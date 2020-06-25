@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -243,7 +243,14 @@
         <span class="k">for</span> <span class="n">reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
             <span class="n">cocktail_string</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">reagent</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">,</span> <span class="n">reagent</span><span class="o">.</span><span class="n">concentration</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cocktail_string</span></div>
+        <span class="k">return</span> <span class="n">cocktail_string</span>
+    
+<div class="viewcode-block" id="Cocktail.chemical_distance"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.chemical_distance">[docs]</a>    <span class="k">def</span> <span class="nf">chemical_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cocktail</span><span class="p">):</span>
+        <span class="c1"># pass</span>
+        <span class="k">pass</span>
+        <span class="k">for</span> <span class="n">each_reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
+            <span class="n">molar_concentration</span> <span class="o">=</span> <span class="n">each_reagent</span><span class="o">.</span><span class="n">molarity</span><span class="p">()</span></div></div>
+            
 
 
 <div class="viewcode-block" id="Reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent">[docs]</a><span class="k">class</span> <span class="nc">Reagent</span><span class="p">():</span>
@@ -497,7 +504,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">scale_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_base</span><span class="p">()</span>  <span class="c1"># send to base unit</span>
-            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">scale_key</span><span class="p">],</span> <span class="n">scale_key</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span>
+                <span class="n">temp</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">scale_key</span><span class="p">],</span> <span class="n">scale_key</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="SignedValue.to_base"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.to_base">[docs]</a>    <span class="k">def</span> <span class="nf">to_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>

@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -160,7 +160,9 @@
 
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">MODEL</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">make_default_logger</span>
 <span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">classify_image</span>
-
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">DEFAULT_IMAGE_PATH</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">():</span>
 
@@ -207,9 +209,10 @@
                  <span class="n">machine_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prediction_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">plate_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cocktail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">previous_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alt_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                 <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">bites</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">human_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">=</span> <span class="n">machine_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">well_number</span> <span class="o">=</span> <span class="n">well_number</span>
@@ -221,8 +224,36 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="n">previous_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">next_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">bites</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="n">favorite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="Image.clean_base64_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.clean_base64_string">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">clean_base64_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Image instances may contain byte strings that store their actual</span>
+<span class="sd">        crystallization image encoded as base64. Previously, these byte strings</span>
+<span class="sd">        were written directly into the json file as strings causing the b&#39;</span>
+<span class="sd">        byte string identifier to be written along with the actual base64 data.</span>
+<span class="sd">        This method removes those artifacts if they are present and returns a</span>
+<span class="sd">        clean byte string with only the actual base64 data.</span>
+
+<span class="sd">        :param string: a string to interogate</span>
+<span class="sd">        :type string: str</span>
+<span class="sd">        :return: byte string with non-data artifacts removed</span>
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">string</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span> <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span>  <span class="c1"># bytes string written directly to string</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">:</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">string</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Image.no_image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.no_image">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">no_image</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># return default no images found image instance</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">DEFAULT_IMAGE_PATH</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">image_string</span> <span class="o">=</span> <span class="s1">&#39;Well Num: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">))</span>
@@ -232,7 +263,71 @@
         <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">image_string</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_pixmap</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span>
     
+    <span class="c1"># @pixmap.setter</span>
+    <span class="c1"># def pixmap(self, new_map):</span>
+    <span class="c1">#     if new_map</span>
+
+<div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span></div>
+    
+<div class="viewcode-block" id="Image.make_pixmap"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.make_pixmap">[docs]</a>    <span class="k">def</span> <span class="nf">make_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pm</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">loadFromData</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pm</span></div>
+    
+    <span class="c1"># @pixmap.setter</span>
+    <span class="c1"># def pixmap(self, new_data):</span>
+    <span class="c1">#     if os.path.exists(self.path):</span>
+    <span class="c1">#         self.__pixmap = QPixmap(new_data)</span>
+    <span class="c1">#     elif isinstance(new_data, bytes):</span>
+    <span class="c1">#         pm = QPixmap()</span>
+    <span class="c1">#         pm.loadFromData(new_data)</span>
+    <span class="c1">#         pm.loadFromData(base64.b64decode(new_data))</span>
+    <span class="c1">#         self.__pixmap = pm</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         self.__pixmap = None</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__path</span>
+    
+    <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_path</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="n">new_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bites</span>
+    
+    <span class="nd">@bites</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_bites</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__bites</span> <span class="o">=</span> <span class="n">new_bites</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_bites</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__bites</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">new_bites</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__bites</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">marco_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Return the `__marco_class` hidden attribute.</span>
@@ -302,7 +397,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__human_class</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Image.encode_bytes"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">encode_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;If the `path` attribute exists and is an image file then encodes</span>
 <span class="sd">        that file as base64 and returns the encoded image.</span>
 
@@ -347,21 +442,7 @@
                    <span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">attribs</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">item</span>
-
-<div class="viewcode-block" id="Image.get_pixel_map"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_pixel_map">[docs]</a>    <span class="k">def</span> <span class="nf">get_pixel_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a pixelmap object from either the base64 encoded version</span>
-<span class="sd">        of the image or the actual image file if it exists. Base64 takes</span>
-<span class="sd">        precedence. The pixelmap is what is eventually displayed to the user.</span>
-
-<span class="sd">        :return: Pixelmap</span>
-<span class="sd">        :rtype: QPixmap</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">:</span>
-            <span class="n">pm</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
-            <span class="n">pm</span><span class="o">.</span><span class="n">loadFromData</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">pm</span>
-        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">QPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+    
 
         <span class="c1"># if path does exist and there is no base64 encoding then</span>
         <span class="c1"># there is goin to be an issue</span>

@@ -84,7 +84,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
@@ -93,11 +93,11 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.crystallography package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-crystallography-broke-module">polo.crystallography.broke module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-crystallography-cocktail-module">polo.crystallography.cocktail module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-crystallography-image-module">polo.crystallography.image module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.crystallography.cocktail">polo.crystallography.cocktail module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.crystallography.image">polo.crystallography.image module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-crystallography-make-screen-module">polo.crystallography.make_screen module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-crystallography-run-module">polo.crystallography.run module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.crystallography.run">polo.crystallography.run module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.crystallography">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
@@ -108,7 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="polo.designer.html">polo.designer package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -185,20 +185,670 @@
 <div class="section" id="polo-crystallography-broke-module">
 <h2>polo.crystallography.broke module<a class="headerlink" href="#polo-crystallography-broke-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="polo-crystallography-cocktail-module">
-<h2>polo.crystallography.cocktail module<a class="headerlink" href="#polo-crystallography-cocktail-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.crystallography.cocktail">
+<span id="polo-crystallography-cocktail-module"></span><h2>polo.crystallography.cocktail module<a class="headerlink" href="#module-polo.crystallography.cocktail" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.crystallography.cocktail.Cocktail">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.cocktail.</code><code class="sig-name descname">Cocktail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">well_assignment</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">commercial_code</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pH</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reagents</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Cocktail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Cocktail instances are used to hold a collection of reagents
+that form one chemical cocktail screen. Also hold metadata including
+their commerical code if one exists, the cocktail pH and the
+well they are assigned to. Currently, cocktails are only supported
+for HWIRuns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<em>str</em><em>, </em><em>optional</em>) – The cocktail number, defaults to None</p></li>
+<li><p><strong>well_assignment</strong> (<em>int</em><em>, </em><em>optional</em>) – Well number in plate this cocktail belongs to,         defaults to None</p></li>
+<li><p><strong>commercial_code</strong> (<em>str</em><em>, </em><em>optional</em>) – Commercial code of cocktail if supplied by         third party, defaults to None</p></li>
+<li><p><strong>pH</strong> (<em>float</em><em>, </em><em>optional</em>) – pH of cocktail, defaults to None</p></li>
+<li><p><strong>reagents</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a><em>, </em><em>optional</em>) – list of reagent instances that make up the contents         of the cocktail instance, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Cocktail.add_reagent">
+<code class="sig-name descname">add_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_reagent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Cocktail.add_reagent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.add_reagent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a reagent to the existing list of reagents stored in the
+reagents attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_reagent</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a>) – Reagent to add to this cocktail</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Cocktail.chemical_distance">
+<code class="sig-name descname">chemical_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_cocktail</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Cocktail.chemical_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.chemical_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Cocktail.cocktail_index">
+<em class="property">property </em><code class="sig-name descname">cocktail_index</code><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.cocktail_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to pull out the cocktail number from the cocktail number
+string. Dependent on consistent formating between cocktail menus that
+I have not currently varrified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cocktail number</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Cocktail.well_assignment">
+<em class="property">property </em><code class="sig-name descname">well_assignment</code><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.well_assignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current well assignment for this cocktail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>well assignment</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.crystallography.cocktail.Reagent">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.cocktail.</code><code class="sig-name descname">Reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chemical_additive</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">concentration</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chemical_formula</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stock_con</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Reagent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Reagent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Reagent instances represent one specific kind of chemical compound
+used in a screening cocktail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chemical_additive</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the reagent chemical,
+defaults to None</p></li>
+<li><p><strong>concentration</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a><em>, </em><em>optional</em>) – Concentration of the reagent in a given well,
+defaults to None</p></li>
+<li><p><strong>chemical_formula</strong> (<em>str</em><em>, </em><em>optional</em>) – Chemical formula for this reagent, defaults
+to None</p></li>
+<li><p><strong>stock_con</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a><em>, </em><em>optional</em>) – Concentration of this reagent’s stock solution,
+defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.chemical_formula">
+<em class="property">property </em><code class="sig-name descname">chemical_formula</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.chemical_formula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current chemical formula for this Reagent. It is not
+certain that a reagent will have a chemical formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Chemical formula</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>molmass.Formula</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.concentration">
+<em class="property">property </em><code class="sig-name descname">concentration</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.concentration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current concentration for this reagent. Concentration
+utimately refers back to a condition in a specific screening well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Chemical concentration</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.molar_mass">
+<em class="property">property </em><code class="sig-name descname">molar_mass</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.molar_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to calculate the molar mass of this reagent. Closely related
+to the molarity property. See its docstring for why this is not always
+possible. Return False if cannot be calculated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Molarity or False</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.molarity">
+<em class="property">property </em><code class="sig-name descname">molarity</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.molarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to calculate the molarity of this reagent at its current
+concentration. This calculation is not certain to return a molarity
+because HWI cocktail menu files use a variety of units to describe
+chemical concentrations, including %w/v or %v/v. Currently, Polo is
+not able to convert %v/v units to molarity as it would require knowing
+both the molar mass of the reagent and its density. If the reagent
+concentration cannot be converted to mols / liter then returns false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>molarity or False</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.peg_parser">
+<code class="sig-name descname">peg_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">peg_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Reagent.peg_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.peg_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to pull out a molar mass from a chemical name since the
+molar mass is often included in the name of PEG species. A string is
+considered to be a potential PEG species if it contains ‘PEG’ or
+‘Polyethylene glycol’ in it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>peg_string</strong> (<em>str</em>) – String to look for PEG species in</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>molar mass if found to be valid PEG species, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float or Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.Reagent.stock_volume">
+<code class="sig-name descname">stock_volume</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_volume</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Reagent.stock_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.stock_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to calculate the required amount of stock solution to
+produce the reagent’s set concentration in the given target_volume.
+Stock concentration is taken from the stock_con attribute. If
+stock_con is not set or the molarity of the reagent can not be
+calculated this method will return False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target_volume</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Volume in which stock will be diluted into</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Volume of stock or False</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.crystallography.cocktail.Reagent.units">
+<code class="sig-name descname">units</code><em class="property"> = ['M', '(w/v)', '(v/v)']</em><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.crystallography.cocktail.SignedValue">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.cocktail.</code><code class="sig-name descname">SignedValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SignedValues are used to help handle numbers with units. They
+are not the most robust but help to keep things more organized.
+SignedValues can be created by either passing values to the
+<cite>values</cite> and <cite>units</cite> args explicitly or by calling the classmethod
+<cite>make_from_string</cite> which will use regex to pull out supported units and
+values.</p>
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.make_from_string">
+<em class="property">classmethod </em><code class="sig-name descname">make_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.make_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.make_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a SignedValue from a string containing a value and a unit.
+Used the <cite>unit_regex</cite> to pull out the units.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">unit_string</span> <span class="o">=</span> <span class="s1">&#39;10.0 M&#39;</span>  <span class="c1"># concentration of 10 molar</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">unit_string</span><span class="p">)</span>
+<span class="c1"># sv.value = 10 sv.units = &#39;M&#39;</span>
+</pre></div>
 </div>
-<div class="section" id="polo-crystallography-image-module">
-<h2>polo.crystallography.image module<a class="headerlink" href="#polo-crystallography-image-module" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – The string to extract the SignedValue from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SignedValue instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.round">
+<code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">digits</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.round" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.crystallography.cocktail.SignedValue.saved_scalers">
+<code class="sig-name descname">saved_scalers</code><em class="property"> = {'c': 0.01, 'm': 0.001, 'u': 1e-06}</em><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.saved_scalers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.scale">
+<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale_key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the value of the SignedValue instance using a key character
+in the <cite>saved_scalers</cite> dictionary. First converts the value to its
+base unit and then divides by the <cite>scale_key</cite> value. The <cite>scale_key</cite>
+can be thought of as a SI prefix for a base unit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># self.saved_scalers = {&#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2}</span>
+<span class="n">v_one</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>  <span class="c1"># value of 10 liters</span>
+<span class="n">v_one</span> <span class="o">=</span> <span class="n">v_one</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>  <span class="c1"># get v_one in microliters</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scale_key</strong> (<em>str</em>) – Character in <cite>saved_scalers</cite> to convert value to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>SignedValue converted to scale_key unit prefix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.set_from_string">
+<code class="sig-name descname">set_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.set_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.set_from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.to_base">
+<code class="sig-name descname">to_base</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.to_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.to_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.cocktail.SignedValue.value">
+<em class="property">property </em><code class="sig-name descname">value</code><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.crystallography.image">
+<span id="polo-crystallography-image-module"></span><h2>polo.crystallography.image module<a class="headerlink" href="#module-polo.crystallography.image" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.crystallography.image.Image">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bites</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">well_number</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">machine_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prediction_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plate_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">previous_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">next_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alt_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Image objects hold the data relating to one image of a particular
+screening well in a larger run. Images encode the actual image file as
+a file path to the image if it is on the machine Polo is being run from,
+as a base64 encoded image or both.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to the actual image file, defaults to None</p></li>
+<li><p><strong>bites</strong> (<em>str</em><em> or </em><em>bytes</em><em>, </em><em>optional</em>) – Image encoded as base64, defaults to None</p></li>
+<li><p><strong>well_number</strong> (<em>int</em><em>, </em><em>optional</em>) – Well number of the image, defaults to None</p></li>
+<li><p><strong>human_class</strong> (<em>str</em><em>, </em><em>optional</em>) – Human classification of this image, defaults to None</p></li>
+<li><p><strong>machine_class</strong> (<em>str</em><em>, </em><em>optional</em>) – MARCO classification of this image, defaults to None</p></li>
+<li><p><strong>prediction_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary containing MARCO model confidence for
+all image classifications, defaults to None</p></li>
+<li><p><strong>plate_id</strong> (<em>str</em><em>, </em><em>optional</em>) – HWI given unique ID for plate this image belongs to
+, defaults to None</p></li>
+<li><p><strong>date</strong> (<em>Datetime</em><em>, </em><em>optional</em>) – Date this image was taken on, defaults to None</p></li>
+<li><p><strong>cocktail</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Cocktail" title="polo.crystallography.cocktail.Cocktail"><em>Cocktail</em></a><em>, </em><em>optional</em>) – Cocktail assigned to the well this image is of, defaults to None</p></li>
+<li><p><strong>spectrum</strong> (<em>str</em><em>, </em><em>optional</em>) – Keyword describing the imaging tech used to take the image
+, defaults to None</p></li>
+<li><p><strong>previous_image</strong> (<a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a><em>, </em><em>optional</em>) – Image of the same well and sample but taken on a previous date
+, defaults to None</p></li>
+<li><p><strong>next_image</strong> (<a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a><em>, </em><em>optional</em>) – Image of the same well and sample but taken on a future 
+date, defaults to None</p></li>
+<li><p><strong>alt_image</strong> (<a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a><em>, </em><em>optional</em>) – Image of the same well and sample but taken with a 
+different imaging tech, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.bites">
+<em class="property">property </em><code class="sig-name descname">bites</code><a class="headerlink" href="#polo.crystallography.image.Image.bites" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.classify_image">
+<code class="sig-name descname">classify_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.classify_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.classify_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify the image using the MARCO CNN model. Sets the 
+<cite>machine class</cite> and <cite>prediction_dict</cite> attributes based on the
+model results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.clean_base64_string">
+<em class="property">static </em><code class="sig-name descname">clean_base64_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.clean_base64_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.clean_base64_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image instances may contain byte strings that store their actual
+crystallization image encoded as base64. Previously, these byte strings
+were written directly into the json file as strings causing the b’
+byte string identifier to be written along with the actual base64 data.
+This method removes those artifacts if they are present and returns a
+clean byte string with only the actual base64 data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – a string to interogate</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>byte string with non-data artifacts removed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.encode_base64">
+<code class="sig-name descname">encode_base64</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.encode_base64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.encode_base64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.encode_bytes">
+<code class="sig-name descname">encode_bytes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.encode_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.encode_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the <cite>path</cite> attribute exists and is an image file then encodes
+that file as base64 and returns the encoded image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>base64 encoded image</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.get_tool_tip">
+<code class="sig-name descname">get_tool_tip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.get_tool_tip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.get_tool_tip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a string to use as a tooltip for this image instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tooltip string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p># TODO Pick a better way to add cocktail to the tooltip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.human_class">
+<em class="property">property </em><code class="sig-name descname">human_class</code><a class="headerlink" href="#polo.crystallography.image.Image.human_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <cite>__human_class</cite> hidden attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current human classification of this image</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.make_pixmap">
+<code class="sig-name descname">make_pixmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.make_pixmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.make_pixmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.marco_class">
+<em class="property">property </em><code class="sig-name descname">marco_class</code><a class="headerlink" href="#polo.crystallography.image.Image.marco_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <cite>__marco_class</cite> hidden attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current MARCO classification of this image</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.no_image">
+<em class="property">classmethod </em><code class="sig-name descname">no_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.no_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.no_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.path">
+<em class="property">property </em><code class="sig-name descname">path</code><a class="headerlink" href="#polo.crystallography.image.Image.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.pixmap">
+<em class="property">property </em><code class="sig-name descname">pixmap</code><a class="headerlink" href="#polo.crystallography.image.Image.pixmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">preserve_aspect</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.resize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes an image given x and y resolution. Copy is true will copy
+the image instead of overwriting it.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="polo-crystallography-make-screen-module">
 <h2>polo.crystallography.make_screen module<a class="headerlink" href="#polo-crystallography-make-screen-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="polo-crystallography-run-module">
-<h2>polo.crystallography.run module<a class="headerlink" href="#polo-crystallography-run-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.crystallography.run">
+<span id="polo-crystallography-run-module"></span><h2>polo.crystallography.run module<a class="headerlink" href="#module-polo.crystallography.run" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.crystallography.run.HWIRun">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.run.</code><code class="sig-name descname">HWIRun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em>, <em class="sig-param"><span class="n">run_name</span></em>, <em class="sig-param"><span class="n">cocktail_menu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">images</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">plate_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">annotations</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save_file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">num_wells</span><span class="o">=</span><span class="default_value">1536</span></em>, <em class="sig-param"><span class="n">image_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">next_run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">previous_run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alt_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">number_grid_pages</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">current_grid_page</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">journal</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">current_image_index</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">current_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.crystallography.run.Run</span></code></a></p>
+<dl class="py attribute">
+<dt id="polo.crystallography.run.HWIRun.AllOWED_PLOTS">
+<code class="sig-name descname">AllOWED_PLOTS</code><em class="property"> = ['Classification Counts', 'MARCO Accuracy', 'Classification Progress', 'Plate Heatmaps']</em><a class="headerlink" href="#polo.crystallography.run.HWIRun.AllOWED_PLOTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Child class of Run. Is used to represent runs from the HWI screening center
+as images will have additional metadata like well and cocktail information.
+Main difference is that HWIRuns will always contain 1536 images as that is
+the number of wells in a HWI crystallization plate. Each well uses a
+different chemcial cocktail which is described in the cocktail tsv file
+included in the directory of images provided by HWI in each run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to directory holding the image files</p></li>
+<li><p><strong>run_name</strong> (<em>str</em>) – Unique ID for the Run</p></li>
+<li><p><strong>cocktail_menu</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary mapping well numbers to
+Cocktail instances, defaults to None</p></li>
+<li><p><strong>images</strong> (<em>list</em><em>, </em><em>optional</em>) – List of Image instances taken for this run, defaults to []</p></li>
+<li><p><strong>plate_id</strong> (<em>str</em><em>, </em><em>optional</em>) – HWI given unique plate ID, defaults to None</p></li>
+<li><p><strong>annotations</strong> (<em>str</em><em>, </em><em>optional</em>) – Any notes relating to this run, defaults to None</p></li>
+<li><p><strong>save_file_path</strong> (<em>Path</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Path to where this Run will be saved if 
+serialized to xtal format, defaults to None</p></li>
+<li><p><strong>num_wells</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of wells (images) in this run, defaults to 1536</p></li>
+<li><p><strong>image_spectrum</strong> (<em>str</em><em>, </em><em>optional</em>) – Image tech used in this run, defaults to None</p></li>
+<li><p><strong>date</strong> (<em>Datetime</em><em>, </em><em>optional</em>) – Date images were taken on, defaults to None</p></li>
+<li><p><strong>next_run</strong> (<a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a><em>, </em><em>optional</em>) – Another Run instance that is of the same sample but 
+taken later in time, defaults to None</p></li>
+<li><p><strong>previous_run</strong> (<a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a><em>, </em><em>optional</em>) – Another Run instance that is of the same sample 
+but taken previously in time, defaults to None</p></li>
+<li><p><strong>alt_spectrum</strong> (<a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a><em>, </em><em>optional</em>) – Another Run instance that is of the same sample 
+but taken in using a different imaging technology,
+defaults to None</p></li>
+<li><p><strong>number_grid_pages</strong> (<em>DEPR</em><em>, </em><em>optional</em>) – DEPR, defaults to None</p></li>
+<li><p><strong>current_grid_page</strong> (<em>int</em><em>, </em><em>optional</em>) – DEPR, defaults to 1</p></li>
+<li><p><strong>journal</strong> (<em>DEPR</em><em>, </em><em>optional</em>) – DEPR, defaults to None</p></li>
+<li><p><strong>current_image_index</strong> (<em>int</em><em>, </em><em>optional</em>) – DEPR, defaults to 0</p></li>
+<li><p><strong>current_image</strong> (<em>DEPR</em><em>, </em><em>optional</em>) – DEPR, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.add_images_from_dir">
+<code class="sig-name descname">add_images_from_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.add_images_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.add_images_from_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the images attribute with a list of images read from the
+image_dir location. Currently is dependent on having a cocktail
+dictionary available. This is passed into the function and would
+normally come from the most recently used HWI file that is
+stored as a dictionary in the mainWindow object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.link_to_alt_images">
+<code class="sig-name descname">link_to_alt_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.link_to_alt_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.link_to_alt_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establish linked lists between this run and another run instance
+that holds images of a different imaging spectrum / technology.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other_run</strong> (<a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a>) – A different run instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.link_to_alt_spectrum">
+<code class="sig-name descname">link_to_alt_spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.link_to_alt_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.link_to_alt_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.link_to_decendent">
+<code class="sig-name descname">link_to_decendent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.link_to_decendent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.link_to_decendent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.link_to_predecessor">
+<code class="sig-name descname">link_to_predecessor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.link_to_predecessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.link_to_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.sort_current_images_by_cocktail">
+<code class="sig-name descname">sort_current_images_by_cocktail</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.sort_current_images_by_cocktail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.sort_current_images_by_cocktail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the current slideshow images by cocktail number. Allows the user
+to navigate by cocktail number and therefore similar chemical conditions
+opposed to as by well number which is proxy for physical location in
+the well. Oftentimes due to plate shape similar well numbers will be
+in different family of chemcial conditions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.crystallography.run.Run">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.run.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em>, <em class="sig-param"><span class="n">run_name</span></em>, <em class="sig-param"><span class="n">images</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save_file_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">next_run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">previous_run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alt_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">journal</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">current_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">current_image_index</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_dir</strong> – String. Path to directory containing images to         be classified.</p></li>
+<li><p><strong>run_name</strong> – String. Unique name of this run.</p></li>
+<li><p><strong>images</strong> – List. List of Image objects is images already exist         and need to be passed into a run (Unlikely).</p></li>
+<li><p><strong>current_image</strong> – Int. Index in self.current_slide_show_images         where the image that should be currently rendered into the app         can be found.</p></li>
+<li><p><strong>current_slide_show_images</strong> – List. List of indexes in self.images.         The Images at these indicies are the set of images that based         on current filters applied by the user, are         available for viewing. Works in tandem with the value stored         in self.current_image to create a chain of reference
+that recovers the actual image object stored in self.images. No
+image objects are ever stored in self.current_image or        self.current_slide_show_images.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="polo.crystallography.run.Run.AllOWED_PLOTS">
+<code class="sig-name descname">AllOWED_PLOTS</code><em class="property"> = ['Classification Counts', 'MARCO Accuracy', 'Classification Progress']</em><a class="headerlink" href="#polo.crystallography.run.Run.AllOWED_PLOTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.add_images_from_dir">
+<code class="sig-name descname">add_images_from_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.add_images_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.add_images_from_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the contents of a directory to <cite>images</cite> attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.add_journal_entry">
+<code class="sig-name descname">add_journal_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">contents</span></em>, <em class="sig-param"><span class="n">title</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.add_journal_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.add_journal_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.encode_images_to_base64">
+<code class="sig-name descname">encode_images_to_base64</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.encode_images_to_base64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.encode_images_to_base64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that encodes all images in the Run to
+base64.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.export_to_csv">
+<code class="sig-name descname">export_to_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.export_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.export_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports run classifcation data to a csv table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_cocktails">
+<code class="sig-name descname">get_cocktails</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_cocktails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_cocktails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of list of cocktails assigned to this run</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_current_hits">
+<code class="sig-name descname">get_current_hits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_current_hits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_current_hits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_current_table_data">
+<code class="sig-name descname">get_current_table_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_current_table_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_current_table_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_heap_map_data">
+<code class="sig-name descname">get_heap_map_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_heap_map_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_heap_map_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns data that will be needed to render the heatmap
+view of results</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_human_statistics">
+<code class="sig-name descname">get_human_statistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_human_statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_human_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns stats that would be shown in the stats tab of the viewer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_image_table_data">
+<code class="sig-name descname">get_image_table_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_image_table_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_image_table_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_images_by_classification">
+<code class="sig-name descname">get_images_by_classification</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_images_by_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_images_by_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary of image classifcations. Keys are
+each type of classification and values are list of
+images with classification of the key. The human
+boolean determines what classifier should be used to
+determine the image type. Human = True sets the human
+as the classifier and False sets MARCO as the classifier.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.get_table_data">
+<code class="sig-name descname">get_table_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">marco</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_table_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_table_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.image_filter_engine">
+<code class="sig-name descname">image_filter_engine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.image_filter_engine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.image_filter_engine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.image_filter_query">
+<code class="sig-name descname">image_filter_query</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.image_filter_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.image_filter_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.crystallography">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polo.crystallography" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

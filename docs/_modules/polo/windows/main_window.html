@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -284,7 +284,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Canceled remove run&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MainWindow.add_loaded_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.add_loaded_run">[docs]</a>    <span class="k">def</span> <span class="nf">add_loaded_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_loaded_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Add a run object to the loaded_runs attribute and add the run name to</span>
 <span class="sd">        the available runs listWidget so the user may select this run for</span>
@@ -297,7 +297,7 @@
         <span class="n">item</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QListWidgetItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loaded run named </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">))</span></div>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loaded run named </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">))</span>
 
 <div class="viewcode-block" id="MainWindow.open_run_import_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_run_import_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_run_import_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -458,27 +458,45 @@
 
         <span class="k">if</span> <span class="n">xtal_file_path</span><span class="p">:</span>
             <span class="n">xtal_file_path</span> <span class="o">=</span> <span class="n">file_dlg</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">run_loader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_file_path</span><span class="p">)</span>
-            <span class="n">run</span> <span class="o">=</span> <span class="n">run_loader</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>  <span class="c1"># attempt to load the run</span>
+            <span class="n">run_loader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_file_path</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">run</span> <span class="o">=</span> <span class="n">run_loader</span><span class="o">.</span><span class="n">xtal_to_run_on_thread</span><span class="p">()</span></div>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-                <span class="n">error_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Save file could not be read :(&#39;</span><span class="p">,</span>
-                    <span class="n">icon</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Warning</span><span class="p">,</span>
-                    <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span>
-                <span class="p">)</span>
-                <span class="n">error_box</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
-                <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">classified_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
-                        <span class="k">break</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span><span class="o">.</span><span class="n">save_file_path</span> <span class="o">=</span> <span class="n">xtal_file_path</span></div>
+            <span class="c1"># if not isinstance(run, (Run, HWIRun)):</span>
+            <span class="c1">#     error_box = self.make_message_box(</span>
+            <span class="c1">#         message=&#39;Save file could not be read :(&#39;,</span>
+            <span class="c1">#         icon=QtWidgets.QMessageBox.Warning,</span>
+            <span class="c1">#         buttons=QtWidgets.QMessageBox.Ok</span>
+            <span class="c1">#     )</span>
+            <span class="c1">#     error_box.exec()</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     self.loaded_runs[run.run_name] = run</span>
+            <span class="c1">#     for image in run.images:</span>
+            <span class="c1">#         if image.machine_class:</span>
+            <span class="c1">#             self.classified_runs[run.run_name] = run</span>
+            <span class="c1">#             break</span>
+            <span class="c1">#     self.listWidget.addItem(run.run_name)</span>
+            <span class="c1">#     self.loaded_runs[run.run_name].save_file_path = xtal_file_path</span>
 
     <span class="c1"># General Utilities</span>
     <span class="c1"># =========================================================================</span>
+
+<div class="viewcode-block" id="MainWindow.add_loaded_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.add_loaded_run">[docs]</a>    <span class="k">def</span> <span class="nf">add_loaded_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
+            <span class="n">error_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Could not load run :(&#39;</span><span class="p">,</span>
+                <span class="n">icon</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Warning</span><span class="p">,</span>
+                <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span>
+            <span class="p">)</span>
+            <span class="n">error_box</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
+            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">classified_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
+                    <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span></div>
+            <span class="c1">#self.loaded_runs[run.run_name].save_file_path = xtal_file_path</span>
+
 
 <div class="viewcode-block" id="MainWindow.get_widget_dims"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.get_widget_dims">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">widget</span><span class="o">.</span><span class="n">height</span><span class="p">()</span></div>

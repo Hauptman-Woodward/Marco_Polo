@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -252,9 +252,19 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">image_classes</span><span class="p">:</span>
             <span class="n">image_classes</span> <span class="o">=</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
-        <span class="k">if</span> <span class="n">human</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;human_class&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">image_classes</span><span class="p">:</span>
+
+        <span class="c1"># BUG / TODO</span>
+        <span class="c1"># Properties of image class are being shown with underscores when read</span>
+        <span class="c1"># from the class __dict__ temp fix for now is to just set the key to</span>
+        <span class="c1"># include the __ and class name but need more robust less jank way</span>
+        <span class="c1"># to do this for any given attribute</span>
+        <span class="n">human_key</span> <span class="o">=</span> <span class="s1">&#39;_Image__human_class&#39;</span>
+        <span class="k">if</span> <span class="n">human_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span> <span class="n">human_key</span> <span class="o">=</span> <span class="s1">&#39;human_class&#39;</span>
+        <span class="n">machine_key</span> <span class="o">=</span> <span class="s1">&#39;machine_class&#39;</span>
+        <span class="k">if</span> <span class="n">machine_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span> <span class="n">machine_key</span> <span class="o">=</span> <span class="s1">&#39;_Image__human_class&#39;</span>
+        <span class="k">if</span> <span class="n">human</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">human_key</span><span class="p">]</span> <span class="ow">in</span> <span class="n">image_classes</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">marco</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;machine_class&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">image_classes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">marco</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">machine_key</span><span class="p">]</span> <span class="ow">in</span> <span class="n">image_classes</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>

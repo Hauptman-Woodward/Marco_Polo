@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -295,10 +295,12 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">sel_cont</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget_4</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">sel_cont</span> <span class="ow">and</span> <span class="n">sel_cont</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_reagents</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__current_reagents</span><span class="p">[</span><span class="n">sel_cont</span><span class="p">]))</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_reagents</span><span class="p">[</span><span class="n">sel_cont</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget_4</span><span class="o">.</span><span class="n">currentItem</span><span class="p">():</span>
+            <span class="n">sel_cont</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget_4</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">sel_cont</span> <span class="ow">and</span> <span class="n">sel_cont</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_reagents</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_reagents</span><span class="p">[</span><span class="n">sel_cont</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">well_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -469,11 +471,9 @@
 <span class="sd">        :param value: new concentration in mols / liter</span>
 <span class="sd">        :type value: float</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_constant</span><span class="p">,</span> <span class="s1">&#39;selected constant status&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_constant</span><span class="p">:</span>
             <span class="n">selected_reagent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_constant</span>
-            <span class="n">selected_reagent</span><span class="o">.</span><span class="n">stock_con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">unitComboBox_4</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set stock concentration of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">selected_reagent</span><span class="p">))</span></div>
+            <span class="n">selected_reagent</span><span class="o">.</span><span class="n">stock_con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">unitComboBox_4</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="OptimizeWidget.set_constant_reagent_stock_con"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget.set_constant_reagent_stock_con">[docs]</a>    <span class="k">def</span> <span class="nf">set_constant_reagent_stock_con</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -661,8 +661,6 @@
         <span class="n">s</span> <span class="o">+=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_reagent</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">,</span> <span class="n">y_con</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_unit</span><span class="p">(</span><span class="n">y_stock</span><span class="p">,</span> <span class="n">write_unit</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
             <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_unit</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">write_unit</span><span class="p">))</span>  <span class="c1"># rename this so it makes sense</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;&lt;h4&gt;Volume of H20&lt;/h4&gt;</span><span class="se">\n</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjust_unit</span><span class="p">(</span><span class="n">water</span><span class="p">,</span> <span class="n">write_unit</span><span class="p">))</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added well with contents </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>

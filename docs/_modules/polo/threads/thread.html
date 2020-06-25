@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -167,6 +167,7 @@
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
 <span class="c1"># from polo.utils.io_utils import load_run_object</span>
 <span class="c1"># from polo.ui.widgets.plate_viewer import graphicsWell</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 
 
 <div class="viewcode-block" id="thread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.thread">[docs]</a><span class="k">class</span> <span class="nc">thread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
@@ -229,6 +230,21 @@
 
 <div class="viewcode-block" id="QuickThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.QuickThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_func</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">func_args</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PixmapMakerThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PixmapMakerThread">[docs]</a><span class="k">class</span> <span class="nc">PixmapMakerThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+    
+<div class="viewcode-block" id="PixmapMakerThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PixmapMakerThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">pixmap</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;aded image&#39;</span><span class="p">)</span></div></div>
+
 
 <div class="viewcode-block" id="ClassificationThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.ClassificationThread">[docs]</a><span class="k">class</span> <span class="nc">ClassificationThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
     <span class="n">change_value</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>

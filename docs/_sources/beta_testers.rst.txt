@@ -12,25 +12,12 @@ you find.
 Getting Polo Beta Version
 -----------------------------
 
-Visit the Downloads page to see all current releases. Download the most
-current one for your operating system. You also might want to skim over
-the About page to get a better idea of what Polo's use cases are.
-
-
-Test Data
---------------------------
-Test images are available for download from the
-`SourceForge page here  <https://sourceforge.net/projects/marco-polo/files/test_data/>`_.
-Ideally you should download one file from the *file* from the xtal_files folder
-and one *folder* from the test_images folder. The difference between the two
-formats is xtal is a file format used by Polo to store images, annotations,
-and classifications all in one place while the folder is more similar to
-what a new user would download directly from HWI's FTP server when their
-screening images are available.
-
-Once you have the test data downloaded and Polo installed on your machine
-you are ready to start testing. The next section will outline a couple of
-basic tasks to get you started.
+Visit the :ref:`Installation Guide` to learn more about getting the latest
+Polo release for your system. For test releases test data will be packaged
+along with the installer to help you start using Polo. You also might want to 
+skim over the :ref:`Background` section of the About page to get a better idea
+of what Polo's use cases are. The :ref:`User's Guide` goes into more detail
+about the specific functions of each tool included in Polo. 
 
 
 What Now?

@@ -5,6 +5,34 @@ pyinstaller --add-data polo\data\;polo\data\ --add-data polo\marco\savedmodel\;p
 pyinstaller --add-data data;data\ --add-data src\astor;astor\ --add-data unrar;unrar\ src\Polo.py
 
 
+# linux command as of Jun 25
+cd /home/ethan/Documents/github/Polo_Builder/ && pyinstaller --add-data data:data/ --add-data src/astor:astor/ --add-data unrar:unrar/ src/Polo.py && cd /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/ && find ./ -name *.so |xargs -i cp --parents {} /home/ethan/Documents/github/Polo_Builder/dist/Polo/tensorflow/&& cd /home/ethan/Documents/github/Polo_Builder/dist/Polo/ && ./Polo
+
+# mac command as of Jun 25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+find /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib \ 
+-name "*.so" -exec cp {} tensorflow/contrib/util \;
+
+
+cd /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/ && find ./ -name *.so |xargs -i cp --parents {} /home/ethan/Documents/github/Polo_Builder/dist/Polo/tensorflow/&& find ./ -name *.so |xargs -i cp --parents {} /home/ethan/Documents/github/Polo_Builder/dist/tensorflow
+
+
 # isssues with tensorflow packaging in linux
 # pyinstaller not picking up the required files
 
@@ -12,6 +40,11 @@ pyinstaller --add-data data:data/ --add-data /home/ethan/Documents/github/Polo_B
 
 
 tensorflow/contrib/seq2seq/python/ops/
+
+
+# run after making linux
+find /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/contrib \ -name "*.so" -exec cp {} -r tensorflow/contrib/util \;
+
 
 
 

@@ -82,7 +82,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Polo Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -167,12 +167,14 @@
 
 
 <div class="viewcode-block" id="graphicsWell"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell">[docs]</a><span class="k">class</span> <span class="nc">graphicsWell</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsPixmapItem</span><span class="p">):</span>
+    
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsPixmapItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>  <span class="c1"># image object</span>
         <span class="c1"># self.setPixmap()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_pixmap</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setFlag</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>
 
 <div class="viewcode-block" id="graphicsWell.width"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.width">[docs]</a>    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -185,11 +187,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_tool_tip</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="graphicsWell.setPixmap"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.setPixmap">[docs]</a>    <span class="k">def</span> <span class="nf">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixmap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">pixmap</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">())</span></div>
+<div class="viewcode-block" id="graphicsWell.setPixmap"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.setPixmap">[docs]</a>    <span class="k">def</span> <span class="nf">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">pixmap</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="graphicsWell.resetOpacity"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.graphicsWell.resetOpacity">[docs]</a>    <span class="k">def</span> <span class="nf">resetOpacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">graphicsWell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
@@ -236,6 +236,13 @@
             <span class="k">elif</span> <span class="n">alt_spec</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span></div></div>
+    
+    <span class="c1"># def pre_load_alt_images(self):</span>
+    <span class="c1">#     image_keywords = [&#39;alt_image&#39;, &#39;next_image&#39;, &#39;previous_image&#39;]</span>
+    <span class="c1">#     image_dict = </span>
+    <span class="c1">#     for keyword in image_keywords:</span>
+            
+
 
 
 <span class="c1"># class PlateCache():</span>
@@ -299,12 +306,16 @@
     <span class="c1">#     except KeyError as e:</span>
     <span class="c1">#         return False</span>
 
-<div class="viewcode-block" id="SceneCacher"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.SceneCacher">[docs]</a><span class="k">class</span> <span class="nc">SceneCacher</span><span class="p">():</span>
-    <span class="k">pass</span></div>
+
+
+
+
+
+
 <span class="c1"># since going from set plate sizes in the view could have it run in the</span>
 <span class="c1"># background caching as many views as it can while the number of images in</span>
 <span class="c1"># the view are still the same</span>
-
+<span class="kn">import</span> <span class="nn">time</span>
 <div class="viewcode-block" id="plateViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer">[docs]</a><span class="k">class</span> <span class="nc">plateViewer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="p">):</span>
 
     <span class="n">subgrid_dict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">16</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">64</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="mi">96</span><span class="p">:</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="mi">1536</span><span class="p">:</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">)}</span>
@@ -424,25 +435,35 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">)):</span>  <span class="c1"># size of plate</span>
             <span class="n">plate_index</span> <span class="o">=</span> <span class="n">plateViewer</span><span class="o">.</span><span class="n">well_index_to_subgrid</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">p_r</span><span class="p">,</span> <span class="n">p_c</span><span class="p">)</span>
             <span class="n">plate_index</span> <span class="o">+=</span> <span class="mi">1</span>
+           
             <span class="k">if</span> <span class="n">plate_index</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
                 <span class="n">current_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">current_images</span></div>
 
 <div class="viewcode-block" id="plateViewer.tile_graphics_wells"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.tile_graphics_wells">[docs]</a>    <span class="k">def</span> <span class="nf">tile_graphics_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                             <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">s_a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># new scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># new scene\</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_visible_wells</span><span class="p">()</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subgrid_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">]</span>
         <span class="n">cur_x_pos</span><span class="p">,</span> <span class="n">cur_y_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># position to place image in pixels</span>
         <span class="n">row_height</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># height of tallest image in a given row of images</span>
+
+        <span class="k">if</span> <span class="n">next_date</span> <span class="ow">or</span> <span class="n">prev_date</span> <span class="ow">or</span> <span class="n">alt_spec</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">well</span><span class="o">.</span><span class="n">get_alt_image</span><span class="p">(</span><span class="n">next_date</span><span class="p">,</span> <span class="n">prev_date</span><span class="p">,</span> <span class="n">alt_spec</span><span class="p">)</span> <span class="k">for</span> <span class="n">well</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">stride</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># time for a ew row of images</span>
                 <span class="n">cur_y_pos</span> <span class="o">+=</span> <span class="n">row_height</span>
                 <span class="n">row_height</span><span class="p">,</span> <span class="n">cur_x_pos</span><span class="p">,</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># reset row height for next row</span>
                 <span class="c1"># return x position back to origin</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get_alt_image</span><span class="p">(</span><span class="n">next_date</span><span class="p">,</span> <span class="n">prev_date</span><span class="p">,</span> <span class="n">alt_spec</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">cur_x_pos</span><span class="p">,</span> <span class="n">cur_y_pos</span><span class="p">)</span>
             <span class="n">cur_x_pos</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible_wells</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
@@ -481,7 +502,9 @@
         <span class="k">if</span> <span class="n">selection</span><span class="p">:</span>
             <span class="n">pop_out</span> <span class="o">=</span> <span class="n">ImagePopDialog</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
             <span class="n">pop_out</span><span class="o">.</span><span class="n">setWindowModality</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationModal</span><span class="p">)</span>
-            <span class="n">pop_out</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+            <span class="n">pop_out</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__scene</span><span class="o">.</span><span class="n">clearSelection</span><span class="p">()</span></div>
+            
 
 <div class="viewcode-block" id="plateViewer.demphasize_filtered_images"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.demphasize_filtered_images">[docs]</a>    <span class="k">def</span> <span class="nf">demphasize_filtered_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">each_gw</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graphics_wells</span><span class="p">:</span>
