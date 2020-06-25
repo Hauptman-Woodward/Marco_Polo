@@ -34,13 +34,13 @@ def excepthook(exec_type, exec_value, exec_tb):
     m = QtWidgets.QMessageBox()
     m.setIcon(QtWidgets.QMessageBox.Critical)
     m.setText(message)
-    # m.exec_()
+    m.exec_()
     QtWidgets.QApplication.quit()
 
 def main():
 
     # Run the app
-    #sys.excepthook = excepthook
+    sys.excepthook = excepthook
     logger.info('Started Polo version {}'.format(__version__))
     multiprocessing.freeze_support()
     app = QtWidgets.QApplication(sys.argv)
