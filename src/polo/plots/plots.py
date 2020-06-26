@@ -82,9 +82,9 @@ class StaticCanvas(MplCanvas):
                       'Clear': [0, 0], 'Other': [0, 0]}
         # two lists tuple for each bar
         for image in current_run.images:
-            if image.machine_class:  # could be None
+            if image.machine_class in class_dict:  # could be None
                 class_dict[image.machine_class][1] += 1
-            if image.human_class:
+            if image.human_class in class_dict:
                 class_dict[image.machine_class][0] += 1
 
         bar_values = [class_dict[x][0] for x in class_dict.keys(
@@ -125,16 +125,19 @@ class StaticCanvas(MplCanvas):
         self.fig.add_subplot(223)
         self.fig.add_subplot(224)
 
+        # DANGER plot is dependent on haveing a pull 1536 well plate
+        # should adjust for the given number of plates 
+
         for k, image_type in enumerate(['Crystals', 'Precipitate', 'Clear', 'Other']):
             data = []
             for i, image in enumerate(current_run.images):
-                if image:
+                if image and image.prediction_dict:
                     confidence = image.prediction_dict[image_type]
                     if image.well_number:
                         data.append(confidence)
                 else:
                     data.append(0)
-            data = np.reshape(data, (48, 32))
+            data = np.reshape(data, (48, 32))  # DANGER Assumes 1536 images
             data = data.astype(np.float)
             im = self.fig.get_axes()[k].imshow(data, cmap='hot')
             self.fig.get_axes()[k].set_title(

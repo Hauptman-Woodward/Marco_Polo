@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_unitCombo(object):
     def setupUi(self, unitCombo):
         unitCombo.setObjectName("unitCombo")
-        unitCombo.resize(186, 49)
+        unitCombo.resize(225, 48)
         self.gridLayout = QtWidgets.QGridLayout(unitCombo)
         self.gridLayout.setObjectName("gridLayout")
         self.doubleSpinBox = QtWidgets.QDoubleSpinBox(unitCombo)
