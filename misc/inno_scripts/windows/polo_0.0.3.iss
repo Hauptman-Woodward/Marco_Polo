@@ -20,7 +20,7 @@ LicenseFile=C:\Users\User\Desktop\marco_polo\Marco_Polo\LICENSE
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\Users\User\Desktop\marco_polo\installers
+OutputDir=C:\Users\User\Desktop\marco_3\marco_polo\installers
 OutputBaseFilename=polo_setup
 SetupIconFile=C:\Users\User\Desktop\polo_zvV_icon.ico
 Compression=lzma
@@ -36,8 +36,7 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\User\Desktop\marco_polo\Marco_Polo\dist\Polo\Polo.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\User\Desktop\marco_polo\Marco_Polo\dist\Polo\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\User\Desktop\marco_3\Marco_Polo\dist\Polo.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
