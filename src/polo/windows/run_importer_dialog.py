@@ -413,16 +413,19 @@ class RunImporterDialog(QtWidgets.QDialog):
         :param text: String. The run name to be validated.
         '''
         validator_result = run_name_validator(text, self.current_run_names)
+        message = None
         if validator_result == UnicodeError:
-            self.show_error_message('Run name is not UTF-8 Compliant')
-            self.current_run_name_lineEdit.setText('')
+            message = 'Run name is not UTF-8 Compliant'
         elif validator_result == TypeError:
-            self.show_error_message('Run name must not be empty.')
+            message = 'Run name must not be empty.'
         elif not validator_result:  # result is false already exists
-            self.show_error_message(
-                message='Run name already exists, please pick a unique name.')
-            self.current_run_name_lineEdit.setText('')
+            message = 'Run name already exists, please pick a unique name.'
             # TODO option to overwrite the run of that same name
+        
+        if message:
+            make_message_box(message).exec_()
+            self.current_run_name_lineEdit.setText('')
+            return False
         else:
             self.current_run_name_lineEdit.setText(text)
             return True

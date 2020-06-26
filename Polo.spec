@@ -1,7 +1,14 @@
 # -*- mode: python ; coding: utf-8 -*-
+
+# Spec script to build exe files via pyinstaller
+# Pass arg "F" at end of pyinstaller call to run in one file mode
+
+block_cipher = None
+
 import os
 from pathlib import Path
 import platform
+import sys
 block_cipher = None
 
 
@@ -22,9 +29,14 @@ tensorflow_location = {
 polo_locations = {  # paths to polo directory on each system 
   'Linux': '/home/ethan/Documents/github/Polo_Builder',
   'Darwin': '~/Documents/Marco_Polo/',
-  'Windows': r'C:\Users\User\Desktop\marco_2\Marco_Polo'
+  'Windows': r'C:\Users\User\Desktop\marco_3\Marco_Polo'
 }
 
+polo_dir = polo_locations[OS]
+polo_logo = Path(polo_dir).joinpath('src/polo.png')
+polo_logo = str(polo_logo)  # use path to avoid issues on windows
+print('Added logo at {}'.format(polo_logo))
+print(sys.argv)
 
 tensorflow_location = tensorflow_location[OS]
 print('tensorflow location set to {}'.format(tensorflow_location))
@@ -42,11 +54,12 @@ if tensorflow_location:  # do only for mac and linux working without
 
 print('Collected {} tensorflow_binaries'.format(len(tensorflow_binaries)))
 
+
 a = Analysis(['src/Polo.py'],
-             pathex=[polo_locations[OS]],
-             binaries=[],
-             datas=[('data', 'data/'), ('src/astor', 'astor/'),
-                    ('unrar', 'unrar/')] + tensorflow_binaries,
+             pathex=[polo_dir],
+             binaries=[(polo_logo, '.')],
+             datas=[('src/data', 'data/'), ('src/astor', 'astor/'),
+                    ('src/unrar', 'unrar/')] + tensorflow_binaries,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -57,17 +70,40 @@ a = Analysis(['src/Polo.py'],
              noarchive=False)
 pyz = PYZ(a.pure, a.zipped_data,
           cipher=block_cipher)
-exe = EXE(pyz,
-          a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
-          [],
-          name='Polo',
-          debug=False,
-          bootloader_ignore_signals=False,
-          strip=False,
-          upx=True,
-          upx_exclude=[],
-          runtime_tmpdir=None,
-          console=True)
+  
+
+if len(sys.argv) > 0 and sys.argv[-1] == 'F':  # make ony file mode
+  exe = EXE(pyz,
+            a.scripts,
+            a.binaries,
+            a.zipfiles,
+            a.datas,
+            [],
+            name='Polo',
+            debug=False,
+            bootloader_ignore_signals=False,
+            strip=False,
+            upx=True,
+            upx_exclude=[],
+            runtime_tmpdir=None,
+            console=True)
+else:  # make as dir
+  exe = EXE(pyz,
+            a.scripts,
+            [],
+            exclude_binaries=True,
+            name='Polo',
+            debug=False,
+            bootloader_ignore_signals=False,
+            strip=False,
+            upx=True,
+            console=True)
+
+  coll = COLLECT(exe,
+                a.binaries,
+                a.zipfiles,
+                a.datas,
+                strip=False,
+                upx=True,
+                upx_exclude=[],
+                name='Polo')

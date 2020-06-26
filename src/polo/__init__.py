@@ -11,6 +11,7 @@ from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
 __version__ = '0.0.2'
+dirname = Path(os.path.dirname(__file__)).parent
 
 # CONSTANT FILE PATHS
 # =============================================================================
@@ -22,13 +23,12 @@ APP_ICON = Path('polo.png')
 # as data is stored in. This is not the case when running from
 # a non-exe file
 
-if os.path.isdir('./data'):  # data is in same dir as __main__
-    data_prefix = 'data'
-    UNRAR = 'unrar'
-else:
+# if os.path.isdir('./data'):  # data is in same dir as __main__
+data_prefix = os.path.join(str(dirname), 'data')
+UNRAR = os.path.join(str(dirname), 'unrar')
     # data_prefix = '/home/ethan/Documents/github/Polo_Builder/data'  # sphinx only
-    UNRAR = '../unrar/'
-    data_prefix = '../data/'
+    # UNRAR = '../unrar/'
+    # data_prefix = '../data/'
 
 COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
 COCKTAIL_META_DATA = Path(os.path.join(
@@ -38,12 +38,10 @@ DEFAULT_IMAGE_PATH = Path(os.path.join(
 MODEL_PATH = Path(os.path.join(data_prefix, 'savedmodel'))
 BLANK_IMAGE = Path(os.path.join(data_prefix), 'images/default_images/blank_image.png')
 
-
-
 # HTML jinja2 templates
 RUN_HTML_TEMPLATE = Path('polo/templates/exportRunTemplate.html')
 SCREEN_HTML_TEMPLATE = Path('polo/templates/exportPlatesTemplate.html')
-BLANK_IMAGE = Path('../data/images/default_images/blank_image.png')
+BLANK_IMAGE = Path('data/images/default_images/blank_image.png')
 # templates are not found when Polo not run from src directory
 
 # image icons

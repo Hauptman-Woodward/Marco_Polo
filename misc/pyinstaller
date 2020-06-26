@@ -6,8 +6,8 @@ pyinstaller --add-data data;data\ --add-data src\astor;astor\ --add-data unrar;u
 
 
 # linux command as of Jun 25
-cd /home/ethan/Documents/github/Polo_Builder/ && pyinstaller --add-data data:data/ --add-data src/astor:astor/ --add-data unrar:unrar/ src/Polo.py && cd /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/ && find ./ -name *.so |xargs -i cp --parents {} /home/ethan/Documents/github/Polo_Builder/dist/Polo/tensorflow/&& cd /home/ethan/Documents/github/Polo_Builder/dist/Polo/ && ./Polo
-
+cd /home/ethan/Documents/github/Polo_Builder/ && /dist/Polo/ && ./Polo
+pyinstaller --add-data data:data/ --add-data src/astor:astor/ --add-data unrar:unrar/ src/Polo.py && cd /home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow/ && find ./ -name *.so |xargs -i cp --parents {} /home/ethan/Documents/github/Polo_Builder/dist/Polo/tensorflow/&& cd /home/ethan/Documents/github/Polo_Builder
 # mac command as of Jun 25
 
 
