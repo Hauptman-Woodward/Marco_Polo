@@ -29,7 +29,7 @@ tensorflow_location = {
 }
 polo_locations = {  # paths to polo directory on each system 
   'Linux': '/home/ethan/Documents/github/Polo_Builder',
-  'Darwin': '~/Documents/Marco_Polo/',
+  'Darwin': '/Users/michelleholleman/Documents/Marco_Polo/',
   'Windows': r'C:\Users\User\Desktop\marco_3\Marco_Polo'
 }
 
