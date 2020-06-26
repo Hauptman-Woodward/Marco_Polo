@@ -23,8 +23,9 @@ OS = platform.system()
 tensorflow_binaries = []
 tensorflow_location = {
   'Linux': '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow',
-  'Darwin': '',
+  'Darwin': '/Users/michelleholleman/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow',
   'Windows': None
+  # thanks for letting me borrow the mac Mom
 }
 polo_locations = {  # paths to polo directory on each system 
   'Linux': '/home/ethan/Documents/github/Polo_Builder',
@@ -35,6 +36,9 @@ polo_locations = {  # paths to polo directory on each system
 polo_dir = polo_locations[OS]
 polo_logo = Path(polo_dir).joinpath('src/polo.png')
 polo_logo = str(polo_logo)  # use path to avoid issues on windows
+
+polo_icon = str(Path(polo_dir).joinpath('src/data/images/icons/polo.ico'))
+
 print('Added logo at {}'.format(polo_logo))
 print(sys.argv)
 
@@ -86,7 +90,8 @@ if len(sys.argv) > 0 and sys.argv[-1] == 'F':  # make ony file mode
             upx=True,
             upx_exclude=[],
             runtime_tmpdir=None,
-            console=True)
+            console=True,
+            icon=polo_icon)
 else:  # make as dir
   exe = EXE(pyz,
             a.scripts,
@@ -97,7 +102,8 @@ else:  # make as dir
             bootloader_ignore_signals=False,
             strip=False,
             upx=True,
-            console=True)
+            console=True,
+            icon=polo_icon)
 
   coll = COLLECT(exe,
                 a.binaries,
