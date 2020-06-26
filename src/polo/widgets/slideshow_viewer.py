@@ -343,7 +343,6 @@ class SlideshowViewer(PhotoViewer):
         :returns: None
         '''
         cur_img = self.current_image
-        cur_img.alt_image
         if isinstance(cur_img, Image):
             self.set_image(cur_img.pixmap)
         else:

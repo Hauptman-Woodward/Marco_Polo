@@ -96,7 +96,7 @@ class Cocktail():
         pass
         for each_reagent in self.reagents:
             molar_concentration = each_reagent.molarity()
-            
+            pass
 
 
 class Reagent():
@@ -260,7 +260,6 @@ class Reagent():
         :rtype: SignedValue or False
         '''
         # target volume in liters
-        print(self.stock_con, self.molarity, 'stock con and molarity')
         if self.stock_con and self.molarity:
             L = (self.molarity.value * target_volume.value) / \
                 self.stock_con.to_base().value
@@ -354,6 +353,12 @@ class SignedValue():
                 temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
     
     def to_base(self):
+        '''Converts the value to the base unit, if it is not already in the
+        base unit.
+
+        :return: SignedValue converted to base unit of called SignedValue instance
+        :rtype: SignedValue
+        '''
         if self.units[0] in self.saved_scalers:
             return SignedValue(
                 self.value * self.saved_scalers[self.units[0]], self.units[1:])

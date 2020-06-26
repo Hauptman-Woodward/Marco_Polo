@@ -273,24 +273,23 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     def get_visible_wells(self):
         current_images = []
-        # need to know the plate size starting with want page we are on
-        r, c = self.subgrid_dict[self.images_per_page]
-        # dims of grid to show
-        p_r, p_c = self.subgrid_dict[len(self.__graphics_wells)]
-        # dims of entire plate
-        for i in range(0, len(self.__graphics_wells)):  # size of plate
-            plate_index = plateViewer.well_index_to_subgrid(i, r, c, p_r, p_c)
-            plate_index += 1
-           
-            if plate_index == self.current_page:
-                s = time.time()
-                self.__graphics_wells[i].setPixmap()
-                current_images.append(self.__graphics_wells[i])
-        return current_images
+        if self.__graphics_wells:
+            # need to know the plate size starting with want page we are on
+            r, c = self.subgrid_dict[self.images_per_page]
+            # dims of grid to show
+            p_r, p_c = self.subgrid_dict[len(self.__graphics_wells)]
+            # dims of entire plate
+            for i in range(0, len(self.__graphics_wells)):  # size of plate
+                plate_index = plateViewer.well_index_to_subgrid(i, r, c, p_r, p_c)
+                plate_index += 1
+            
+                if plate_index == self.current_page:
+                    self.__graphics_wells[i].setPixmap()
+                    current_images.append(self.__graphics_wells[i])
+            return current_images
 
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
-        s_a = time.time()
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
         self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
         s = time.time()
@@ -302,23 +301,21 @@ class plateViewer(QtWidgets.QGraphicsView):
         if next_date or prev_date or alt_spec:
             [well.get_alt_image(next_date, prev_date, alt_spec) for well in self.visible_wells]
 
-        s = time.time()
-        for i in range(len(self.visible_wells)):
-            if i % stride == 0 and i != 0:  # time for a ew row of images
-                cur_y_pos += row_height
-                row_height, cur_x_pos, = 0, 0  # reset row height for next row
-                # return x position back to origin
-            s = time.time()
-            s = time.time()
-            self.__scene.addItem(self.visible_wells[i])
-            self.visible_wells[i].setPos(cur_x_pos, cur_y_pos)
-            cur_x_pos += self.visible_wells[i].width()
-            if self.visible_wells[i].height() > row_height:
-                row_height = self.visible_wells[i].height()
-        self.__scene.selectionChanged.connect(self.pop_out_selected_well)
-        self.setScene(self.__scene)   # actually set the scene
-        # cram in into the current view
-        self.fitInView(self.__scene, self.preserve_aspect)
+        if self.visible_wells:  # make sure wells is not empty (no run loaded)
+            for i in range(len(self.visible_wells)):
+                if i % stride == 0 and i != 0:  # time for a ew row of images
+                    cur_y_pos += row_height
+                    row_height, cur_x_pos, = 0, 0  # reset row height for next row
+                    # return x position back to origin
+                self.__scene.addItem(self.visible_wells[i])
+                self.visible_wells[i].setPos(cur_x_pos, cur_y_pos)
+                cur_x_pos += self.visible_wells[i].width()
+                if self.visible_wells[i].height() > row_height:
+                    row_height = self.visible_wells[i].height()
+            self.__scene.selectionChanged.connect(self.pop_out_selected_well)
+            self.setScene(self.__scene)   # actually set the scene
+            # cram in into the current view
+            self.fitInView(self.__scene, self.preserve_aspect)
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def fitInView(self, scene, preserve_aspect=False):

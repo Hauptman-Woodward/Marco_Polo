@@ -193,14 +193,17 @@ class RunImporterDialog(QtWidgets.QDialog):
             menus = self.membrane_menus
         else:
             menus = self.soluble_menus
+
         return sorted(menus, key=lambda menu: menu.start_date, reverse=True)
+
 
     def set_menu_options(self):
         '''Set the menu selection comboBox items to the available menu options
         '''
         options = self.get_menu_options()  # menu instances
         self.ui.comboBox_3.clear()
-        self.ui.comboBox_3.addItems([menu.path for menu in options])
+        self.ui.comboBox_3.addItems(
+            [os.path.basename(str(menu.path)) for menu in options])
 
     def get_menu_index_by_path(self, menu_path):
         '''Retrieve the index of a combobox item representing a Menu object
@@ -214,8 +217,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         return self.ui.comboBox_3.findText(menu_path)
 
     def set_current_menu(self, menu):
-        menu_index = self.get_menu_index_by_path(menu.path)
-        if menu_index:
+        menu_index = self.get_menu_index_by_path(os.path.basename(str(menu.path)))
+        if menu_index >= 0:
             return self.ui.comboBox_3.setCurrentIndex(menu_index)
 
     def set_hwi_image_type(self, image_type):
@@ -430,15 +433,6 @@ class RunImporterDialog(QtWidgets.QDialog):
             self.current_run_name_lineEdit.setText(text)
             return True
 
-    def handle_rar_file(self, rar_path):
-        # do stuff for rar file and then set the path to the uncompressed
-        # dirctory
-        pass
-
-    def show_rar_popup(self):
-        pass
-    # add method that pops up when unrar file is imported and asks how the
-    # import should go down
 
     def create_new_run(self):
         '''
@@ -453,7 +447,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         date = self.current_dateEdit.dateTime().toPyDateTime()
 
         if current_index == 0:
-            cocktail_menu = tim.get_menu_by_path(
+            cocktail_menu = tim.get_menu_by_basename(
                 self.ui.comboBox_3.currentText())
             new_run = HWIRun(
                 image_dir=dir_name,

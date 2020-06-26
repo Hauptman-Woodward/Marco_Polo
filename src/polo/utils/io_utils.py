@@ -538,6 +538,12 @@ class RunDeserializer():  # convert saved file into a run
             return None
 
     def xtal_to_run_on_thread(self):
+        '''Wrapper method around `xtal_to_run` method. Does the exact same thing
+        except creates a `QuickThread` instance and runs `xtal_to_run` on the
+        thread. When finished adds the newly created run to the main window's
+        loaded_run dictionary to signify that the run has been loaded and is
+        ready for further operations.
+        '''
         thread = QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
         def finished():
@@ -724,6 +730,11 @@ class BarTender():
         '''
         if path in self.menus:
             return self.menus[path]
+    
+    def get_menu_by_basename(self, basename):
+        for menu_key in self.menus:  # self.menus is dictionary
+            if os.path.basename(menu_key) == basename:
+                return self.menus[menu_key]
 
 
 class CocktailMenuReader():
@@ -811,6 +822,17 @@ class CocktailMenuReader():
         cls.formula_pos = pos
     
     def read_menu_file(self):
+        '''Read the contents of cocktail menu csv file. The menu file path
+        is read from the `menu_file_path` attribute. The first **two** lines
+        of all the cocktail menu files included in Polo are header lines and
+        so the reader will skip the first two lines before actually reading
+        in any data. Each row is converted to a `Cocktail` object and then
+        added to a dictionary based on the cocktail's well assignment.
+
+        :return: Dictionary of Cocktail instances. Key value is the Cocktail's
+                 well assignment in the screening plate (base 1).
+        :rtype: dict
+        '''
         cocktail_menu = {}
         with open(self.menu_file_path, 'r') as menu_file:
             reader = csv.reader(menu_file)
@@ -828,7 +850,8 @@ class CocktailMenuReader():
                 reagent_positions = [i for i in range(
             len(row)) if i not in self.cocktail_map and i != self.formula_pos]
                 for i in range(0, len(reagent_positions), 2):
-                    chem_add, con = row[reagent_positions[i]], row[reagent_positions[i+1]]
+                    chem_add, con = (row[reagent_positions[i]], 
+                                     row[reagent_positions[i+1]])
                     if chem_add:
                         con = SignedValue.make_from_string(con)
                         new_cocktail.add_reagent(
@@ -912,6 +935,15 @@ class Menu():  # holds the dictionary of cocktails
     #     for i, cocktail in enumerate(cocktail_reader):
     #         self.cocktails[cocktail.well_assignment] = cocktail
         # create dictionary from cocktails, key is the well number (assignment)
+
+
+
+class BulkImporter():
+
+    def __init__(self, image_dir):
+        self.image_dir = image_dir
+    
+    # or potentially use a file browser to do this one and put it in a wdiget 
 
 
 # orphan functions that have not made it into a class yet

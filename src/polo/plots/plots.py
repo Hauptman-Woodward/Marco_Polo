@@ -43,6 +43,13 @@ class StaticCanvas(MplCanvas):
         self.fig.clf()
     
 
+    def peg_plot(self, run):
+        # create image heat map of the plot or something like that
+        # first need to collect all the PEGS and get their weight
+        pass
+
+    
+
     def plot_current_map_view(self, plate_rows, plate_cols, current_wells):
         self.clear_axis()
         self.fig.add_subplot(111)
@@ -75,10 +82,10 @@ class StaticCanvas(MplCanvas):
                       'Clear': [0, 0], 'Other': [0, 0]}
         # two lists tuple for each bar
         for image in current_run.images:
-            if image:
+            if image.machine_class:  # could be None
                 class_dict[image.machine_class][1] += 1
-                if image.human_class:
-                    class_dict[image.machine_class][0] += 1
+            if image.human_class:
+                class_dict[image.machine_class][0] += 1
 
         bar_values = [class_dict[x][0] for x in class_dict.keys(
         )], [class_dict[x][1] for x in class_dict.keys()], list(class_dict.keys())
@@ -93,7 +100,6 @@ class StaticCanvas(MplCanvas):
         ax.bar(labels, unclass_values, color='grey')
         ax.bar(labels, classified_values, color='lightblue')
         ax.set_title('Classification Progress By MARCO Designation')
-
         self.draw()
 
     def plot_meta_stats(self, current_run):
