@@ -61,7 +61,7 @@ print('Collected {} tensorflow_binaries'.format(len(tensorflow_binaries)))
 
 a = Analysis(['src/Polo.py'],
              pathex=[polo_dir],
-             binaries=[(polo_logo, '.')],
+             binaries=[],
              datas=[('src/data', 'data/'), ('src/astor', 'astor/'),
                     ('src/unrar', 'unrar/')] + tensorflow_binaries,
              hiddenimports=[],
