@@ -3,8 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
-from polo import (ALLOWED_IMAGE_COUNTS, COLORS, DEFAULT_TABLE_HEADERS,
-                  IMAGE_CLASSIFICATIONS)
+from polo import (ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS)
 from polo.crystallography.cocktail import SignedValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run

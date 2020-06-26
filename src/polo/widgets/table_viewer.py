@@ -2,7 +2,7 @@ import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from polo import DEFAULT_TABLE_HEADERS, IMAGE_CLASSIFICATIONS
+from polo import IMAGE_CLASSIFICATIONS
 from polo.crystallography.cocktail import SignedValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run

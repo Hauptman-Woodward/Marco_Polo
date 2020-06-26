@@ -163,6 +163,7 @@
 <span class="kn">from</span> <span class="nn">tensorflow.contrib.predictor</span> <span class="kn">import</span> <span class="n">from_saved_model</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.0.2&#39;</span>
+<span class="n">dirname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span>
 
 <span class="c1"># CONSTANT FILE PATHS</span>
 <span class="c1"># =============================================================================</span>
@@ -174,12 +175,11 @@
 <span class="c1"># as data is stored in. This is not the case when running from</span>
 <span class="c1"># a non-exe file</span>
 
-<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s1">&#39;./data&#39;</span><span class="p">):</span>  <span class="c1"># data is in same dir as __main__</span>
-    <span class="n">data_prefix</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
-    <span class="n">UNRAR</span> <span class="o">=</span> <span class="s1">&#39;unrar&#39;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">data_prefix</span> <span class="o">=</span> <span class="s1">&#39;/home/ethan/Documents/github/Polo_Builder/data&#39;</span>  <span class="c1"># sphinx only</span>
-    <span class="n">UNRAR</span> <span class="o">=</span> <span class="s1">&#39;../unrar/&#39;</span>
+<span class="c1"># if os.path.isdir(&#39;./data&#39;):  # data is in same dir as __main__</span>
+<span class="n">data_prefix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dirname</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">UNRAR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dirname</span><span class="p">),</span> <span class="s1">&#39;unrar&#39;</span><span class="p">)</span>
+    <span class="c1"># data_prefix = &#39;/home/ethan/Documents/github/Polo_Builder/data&#39;  # sphinx only</span>
+    <span class="c1"># UNRAR = &#39;../unrar/&#39;</span>
     <span class="c1"># data_prefix = &#39;../data/&#39;</span>
 
 <span class="n">COCKTAIL_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;cocktail_data/&#39;</span><span class="p">))</span>
@@ -190,12 +190,10 @@
 <span class="n">MODEL_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">,</span> <span class="s1">&#39;savedmodel&#39;</span><span class="p">))</span>
 <span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">),</span> <span class="s1">&#39;images/default_images/blank_image.png&#39;</span><span class="p">)</span>
 
-
-
 <span class="c1"># HTML jinja2 templates</span>
 <span class="n">RUN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportRunTemplate.html&#39;</span><span class="p">)</span>
 <span class="n">SCREEN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportPlatesTemplate.html&#39;</span><span class="p">)</span>
-<span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../data/images/default_images/blank_image.png&#39;</span><span class="p">)</span>
+<span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data/images/default_images/blank_image.png&#39;</span><span class="p">)</span>
 <span class="c1"># templates are not found when Polo not run from src directory</span>
 
 <span class="c1"># image icons</span>

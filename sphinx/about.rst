@@ -1,6 +1,13 @@
 About
 ==========================================
 
+.. image:: ./images/lysozyme.png
+   :alt: lysozyme
+   :width: 400
+
+`X-ray Crystal Structure of Lysozyme Protein`
+
+
 Background
 -------------------------
 

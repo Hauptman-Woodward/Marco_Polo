@@ -327,6 +327,11 @@ locations in the HWI file universe Polo runs across.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.utils.io_utils.BarTender.get_menu_by_basename">
+<code class="sig-name descname">get_menu_by_basename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.get_menu_by_basename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.get_menu_by_basename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.get_menu_by_date">
 <code class="sig-name descname">get_menu_by_date</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date</span></em>, <em class="sig-param"><span class="n">type_</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.get_menu_by_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.get_menu_by_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a menu instance who’s usage dates include the given date and
@@ -389,6 +394,12 @@ characters should be passed to <cite>type_</cite>.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="polo.utils.io_utils.BulkImporter">
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">BulkImporter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BulkImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BulkImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
 <dt id="polo.utils.io_utils.CocktailMenuReader">
 <em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">CocktailMenuReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">menu_file_path</span></em>, <em class="sig-param"><span class="n">delim</span><span class="o">=</span><span class="default_value">','</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#CocktailMenuReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.CocktailMenuReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -428,7 +439,22 @@ be changed, defaults to ‘,’</p></li>
 <dl class="py method">
 <dt id="polo.utils.io_utils.CocktailMenuReader.read_menu_file">
 <code class="sig-name descname">read_menu_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#CocktailMenuReader.read_menu_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.CocktailMenuReader.read_menu_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Read the contents of cocktail menu csv file. The menu file path
+is read from the <cite>menu_file_path</cite> attribute. The first <strong>two</strong> lines
+of all the cocktail menu files included in Polo are header lines and
+so the reader will skip the first two lines before actually reading
+in any data. Each row is converted to a <cite>Cocktail</cite> object and then
+added to a dictionary based on the cocktail’s well assignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of Cocktail instances. Key value is the Cocktail’s
+well assignment in the screening plate (base 1).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.CocktailMenuReader.set_cocktail_map">
@@ -717,7 +743,12 @@ throw an error.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">
 <code class="sig-name descname">xtal_to_run_on_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunDeserializer.xtal_to_run_on_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Wrapper method around <cite>xtal_to_run</cite> method. Does the exact same thing
+except creates a <cite>QuickThread</cite> instance and runs <cite>xtal_to_run</cite> on the
+thread. When finished adds the newly created run to the main window’s
+loaded_run dictionary to signify that the run has been loaded and is
+ready for further operations.</p>
+</dd></dl>
 
 </dd></dl>
 

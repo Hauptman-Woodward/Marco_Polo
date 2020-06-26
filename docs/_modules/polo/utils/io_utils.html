@@ -692,6 +692,12 @@
             <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.xtal_to_run_on_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_to_run_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper method around `xtal_to_run` method. Does the exact same thing</span>
+<span class="sd">        except creates a `QuickThread` instance and runs `xtal_to_run` on the</span>
+<span class="sd">        thread. When finished adds the newly created run to the main window&#39;s</span>
+<span class="sd">        loaded_run dictionary to signify that the run has been loaded and is</span>
+<span class="sd">        ready for further operations.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">finished</span><span class="p">():</span>
@@ -877,7 +883,12 @@
 <span class="sd">        :rtype: Menu</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span></div></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="BarTender.get_menu_by_basename"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_basename">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">menu_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">:</span>  <span class="c1"># self.menus is dictionary</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu_key</span><span class="p">)</span> <span class="o">==</span> <span class="n">basename</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">menu_key</span><span class="p">]</span></div></div>
 
 
 <div class="viewcode-block" id="CocktailMenuReader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader">[docs]</a><span class="k">class</span> <span class="nc">CocktailMenuReader</span><span class="p">():</span>
@@ -965,6 +976,17 @@
         <span class="bp">cls</span><span class="o">.</span><span class="n">formula_pos</span> <span class="o">=</span> <span class="n">pos</span></div>
     
 <div class="viewcode-block" id="CocktailMenuReader.read_menu_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader.read_menu_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_menu_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Read the contents of cocktail menu csv file. The menu file path</span>
+<span class="sd">        is read from the `menu_file_path` attribute. The first **two** lines</span>
+<span class="sd">        of all the cocktail menu files included in Polo are header lines and</span>
+<span class="sd">        so the reader will skip the first two lines before actually reading</span>
+<span class="sd">        in any data. Each row is converted to a `Cocktail` object and then</span>
+<span class="sd">        added to a dictionary based on the cocktail&#39;s well assignment.</span>
+
+<span class="sd">        :return: Dictionary of Cocktail instances. Key value is the Cocktail&#39;s</span>
+<span class="sd">                 well assignment in the screening plate (base 1).</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">menu_file</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">menu_file</span><span class="p">)</span>
@@ -982,7 +1004,8 @@
                 <span class="n">reagent_positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_map</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formula_pos</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">reagent_positions</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-                    <span class="n">chem_add</span><span class="p">,</span> <span class="n">con</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+                    <span class="n">chem_add</span><span class="p">,</span> <span class="n">con</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> 
+                                     <span class="n">row</span><span class="p">[</span><span class="n">reagent_positions</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
                     <span class="k">if</span> <span class="n">chem_add</span><span class="p">:</span>
                         <span class="n">con</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
                         <span class="n">new_cocktail</span><span class="o">.</span><span class="n">add_reagent</span><span class="p">(</span>
@@ -1066,6 +1089,15 @@
     <span class="c1">#     for i, cocktail in enumerate(cocktail_reader):</span>
     <span class="c1">#         self.cocktails[cocktail.well_assignment] = cocktail</span>
         <span class="c1"># create dictionary from cocktails, key is the well number (assignment)</span>
+
+
+
+<div class="viewcode-block" id="BulkImporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BulkImporter">[docs]</a><span class="k">class</span> <span class="nc">BulkImporter</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span> <span class="o">=</span> <span class="n">image_dir</span></div>
+    
+    <span class="c1"># or potentially use a file browser to do this one and put it in a wdiget </span>
 
 
 <span class="c1"># orphan functions that have not made it into a class yet</span>

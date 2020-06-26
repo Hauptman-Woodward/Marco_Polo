@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
-from polo import DEFAULT_TABLE_HEADERS, ICON_DICT, IMAGE_CLASSIFICATIONS, make_default_logger
+from polo import ICON_DICT, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.cocktail import SignedValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run

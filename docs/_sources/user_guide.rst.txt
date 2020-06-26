@@ -80,7 +80,7 @@ One of the advantages of Polo is the introduction of the .xtal file format.
 Xtal is a json like file that can store all the data relating to an individual
 screening run in a single file with no other dependencies. Xtal files store
 images, classifications, cocktail data and other annotations made while using
-the Polo program.
+the Polo program. For more information you can visit :ref:`Xtal File Format`.
 
 If you have xtal file ready for import you can load it into Polo by navigating
 to the menu bar and selecting **Import** -> **Images** -> **From Saved Run**.
