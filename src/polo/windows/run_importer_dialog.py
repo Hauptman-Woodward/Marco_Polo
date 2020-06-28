@@ -432,6 +432,15 @@ class RunImporterDialog(QtWidgets.QDialog):
         else:
             self.current_run_name_lineEdit.setText(text)
             return True
+    
+    def read_xml_data(self, dir_path):
+        # read xml data from HWI uncompressed rar files
+        reader = XtalReader(dir_path)
+        plate_data = reader.find_and_read_plate_data(dir_path)
+        if isinstance(plate_data, dict) and plate_data:
+            return plate_data
+        else:
+            return {}  # empty dict so always safe to pass to update method
 
 
     def create_new_run(self):
@@ -449,13 +458,16 @@ class RunImporterDialog(QtWidgets.QDialog):
         if current_index == 0:
             cocktail_menu = tim.get_menu_by_basename(
                 self.ui.comboBox_3.currentText())
+            plate_data = self.read_xml_data(dir_name)
             new_run = HWIRun(
                 image_dir=dir_name,
                 run_name=run_name,
                 cocktail_menu=cocktail_menu,
                 image_spectrum=self.ui.comboBox_2.currentText(),
-                date=date
+                date=date,
+                **plate_data  # update dict via kwargs
             )
+
         else:
             image_spectrum = None  # TODO add spectrum selection for all runs
             if current_index == 2:

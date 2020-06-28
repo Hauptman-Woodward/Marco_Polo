@@ -48,7 +48,12 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
         self.image_type_checkboxes = dict(zip(IMAGE_CLASSIFICATIONS,
         [self.ui.checkBox_23, self.ui.checkBox_24, self.ui.checkBox_25,
-        self.ui.checkBox_26]))
+        self.ui.checkBox_26]))  # define checkboxes that determine image
+        # classification filters and zip with the image classifications
+        # doesnt matter what is assigned to what as long as order in
+        # image classificaions list does not change
+
+
         self.ui.pushButton_19.clicked.connect(self.apply_plate_settings)
         self.ui.plateViewer.preserve_aspect = self.ui.checkBox_29.isChecked()
         self.ui.checkBox_29.stateChanged.connect(self.set_aspect_ratio_mode)

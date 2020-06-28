@@ -54,6 +54,7 @@ class Run():
         self.next_run = next_run
         self.previous_run = previous_run
         self.alt_spectrum = alt_spectrum
+        self.__dict__.update(kwargs)
 
     def __getitem__(self, n):
         try:
@@ -305,6 +306,8 @@ class HWIRun(Run):
         self.cocktail_menu = cocktail_menu
         self.plate_id = plate_id
         self.num_wells = num_wells
+        self.__dict__.update(kwargs)
+
 
     def link_to_predecessor(self, other_run):
         if type(other_run) == HWIRun:

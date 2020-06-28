@@ -6,6 +6,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 from dateutil.parser import parse
 from PyQt5 import QtWidgets
@@ -164,8 +165,8 @@ class HtmlWriter(RunSerializer):
             if encode_images:
                 self.run.encode_images_to_base64()
             images = json.loads(json.dumps(
-                self.run.images, default=XtalWriter.json_encoder))  
-                
+                self.run.images, default=XtalWriter.json_encoder))
+
             template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
             if template:
                 html = template.render(
@@ -267,7 +268,7 @@ class RunCsvWriter(RunSerializer):
         fieldnames = set([])
         for row in rows:
             fieldnames = fieldnames.union(set(row.keys()))
-            
+
         return fieldnames
 
     @output_path.setter
@@ -276,7 +277,6 @@ class RunCsvWriter(RunSerializer):
             new_path = str(new_path)
 
         self.__output_path = new_path
-
 
     def get_csv_data(self):
         '''Convert the `run` attribute to csv style data. Returns a tuple of
@@ -489,7 +489,8 @@ class RunDeserializer():  # convert saved file into a run
         :rtype: bytes
         '''
         if string:
-            if isinstance(string, bytes): string = str(string, 'utf-8')
+            if isinstance(string, bytes):
+                string = str(string, 'utf-8')
             if string[0] == 'b':  # bytes string written directly to string
                 string = string[1:]
             if string[-1] == "'":
@@ -528,7 +529,8 @@ class RunDeserializer():  # convert saved file into a run
 
                 if isinstance(obj, Image):  # clean up base64 encoded data
                     if obj.bites:
-                        obj.bites = RunDeserializer.clean_base64_string(obj.bites)
+                        obj.bites = RunDeserializer.clean_base64_string(
+                            obj.bites)
             else:
                 obj = d  # just a regular dictionary to read in
             return obj
@@ -551,7 +553,6 @@ class RunDeserializer():  # convert saved file into a run
 
         thread.finished.connect(finished)
         thread.start()
-
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -587,8 +588,8 @@ class RunDeserializer():  # convert saved file into a run
             with open(xtal_path) as xtal_data:
                 header_data = self.xtal_header_reader(
                     xtal_data)  # must read header first
-                r = json.load(xtal_data, # update date since datetime goes right to string
-                                object_hook=RunDeserializer.dict_to_obj)
+                r = json.load(xtal_data,  # update date since datetime goes right to string
+                              object_hook=RunDeserializer.dict_to_obj)
                 r.date = BarTender.datetime_converter(r.date)
                 return r
 
@@ -628,7 +629,8 @@ class BarTender():
         :rtype: datetime
         '''
         date_string = date_string.strip()
-        datetime_formats = ['%m/%d/%Y', '%m/%d/%y', '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
+        datetime_formats = ['%m/%d/%Y', '%m/%d/%y',
+                            '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
         for form in datetime_formats:
             try:
                 return datetime.strptime(date_string, form)
@@ -730,7 +732,7 @@ class BarTender():
         '''
         if path in self.menus:
             return self.menus[path]
-    
+
     def get_menu_by_basename(self, basename):
         for menu_key in self.menus:  # self.menus is dictionary
             if os.path.basename(menu_key) == basename:
@@ -820,7 +822,7 @@ class CocktailMenuReader():
         :type pos: int
         '''
         cls.formula_pos = pos
-    
+
     def read_menu_file(self):
         '''Read the contents of cocktail menu csv file. The menu file path
         is read from the `menu_file_path` attribute. The first **two** lines
@@ -837,7 +839,7 @@ class CocktailMenuReader():
         with open(self.menu_file_path, 'r') as menu_file:
             reader = csv.reader(menu_file)
             next(reader)
-            next(reader) # skip first two rows
+            next(reader)  # skip first two rows
             for row in reader:
                 d = {self.cocktail_map[index]: row[index]
                      for index in self.cocktail_map}
@@ -848,9 +850,9 @@ class CocktailMenuReader():
                 # new_cocktail.reagents to a new empty list fixes the
                 # problem but does not address the source
                 reagent_positions = [i for i in range(
-            len(row)) if i not in self.cocktail_map and i != self.formula_pos]
+                    len(row)) if i not in self.cocktail_map and i != self.formula_pos]
                 for i in range(0, len(reagent_positions), 2):
-                    chem_add, con = (row[reagent_positions[i]], 
+                    chem_add, con = (row[reagent_positions[i]],
                                      row[reagent_positions[i+1]])
                     if chem_add:
                         con = SignedValue.make_from_string(con)
@@ -863,7 +865,65 @@ class CocktailMenuReader():
                 cocktail_menu[new_cocktail.well_assignment] = new_cocktail
         return cocktail_menu
 
+
+class XmlReader():
+
+    platedef_key = 'platedef'  # keyword that is always in plate definition
+    # xml file names
+
+    def __init__(self, xml_path, xml_files=[]):
+        '''XmlReader class can be used to read the xml metadata files that are
+        included in HWI screening run rar archives. Currently, is primarily ment
+        to extract metadata about the plate and the sample in that plate
+
+        :param xml_path: File path to xml file
+        :type xml_path: str or Path
+        :param xml_files: list of xml file paths, defaults to []
+        :type xml_files: list, optional
+        '''
+        self.xml_path = xml_path
+        self.xml_files = xml_files
+
+    @staticmethod
+    def get_data_from_xml_element(xml_element):
+        return {elem.tag: elem.text for elem in xml_element
+                if elem.tag and elem.text}
+
+    def read_plate_data_xml(self, xml_path=None):
+        if not xml_path:
+            xml_path = self.xml_file
+        xml_path = str(xml_path)
+        try:
+            tree = ET.parse(xml_path)
+            root = tree.getroot()
+
+            return XmlReader.get_data_from_xml_element(root[0]).update(
+                XmlReader.get_data_from_xml_element(root[1])
+            )
                 
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            return e
+
+    def discover_xml_files(self, parent_dir):
+        parent_dir = Path(str(parent_dir))
+        try:
+            file_paths = [parent_dir.joinpath(f)
+                          for f in os.listdir(str(parent_dir))]
+            xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
+            return xmls
+        except (PermissionError, FileNotFoundError) as e:
+            return e
+
+    def find_and_read_plate_data(self, parent_dir):
+        xml_files = self.discover_xml_files(parent_dir)
+        if isinstance(xml_files, list):
+            for xml_file in xml_files:
+                if self.platedef_key in str(xml_file):
+                    return self.read_plate_data_xml(xml_file)
+        else:
+            return None
+
+
 class Menu():  # holds the dictionary of cocktails
 
     def __init__(self, path, start_date, end_date, type_, cocktails={}):
@@ -896,18 +956,18 @@ class Menu():  # holds the dictionary of cocktails
         self.type_ = type_
         self.path = path
         self.cocktails = cocktails  # holds all cocktails (items on the menu)
-    
+
     @property
     def cocktails(self):
         return self.__cocktails
-    
+
     @cocktails.setter
     def cocktails(self, new_cocktails):
         if new_cocktails:
             self.__cocktails = new_cocktails
         else:
             self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
-        
+
     # @property
     # def path(self):
     #     '''Property to return the Menu instance's path attribute
@@ -937,13 +997,12 @@ class Menu():  # holds the dictionary of cocktails
         # create dictionary from cocktails, key is the well number (assignment)
 
 
-
 class BulkImporter():
 
     def __init__(self, image_dir):
         self.image_dir = image_dir
-    
-    # or potentially use a file browser to do this one and put it in a wdiget 
+
+    # or potentially use a file browser to do this one and put it in a wdiget
 
 
 # orphan functions that have not made it into a class yet

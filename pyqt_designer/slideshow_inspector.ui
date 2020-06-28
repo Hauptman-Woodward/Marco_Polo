@@ -1095,9 +1095,9 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Navigate images by date of imaging or by photographic technology. Go to Advanced Settings to enable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
-      <string>Advanced Navigation</string>
+      <string>Advanced</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_8">
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <widget class="QPushButton" name="pushButton_9">
         <property name="enabled">
@@ -1134,6 +1134,20 @@
         </property>
         <property name="shortcut">
          <string>Down, Up</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBox_9">
+        <property name="text">
+         <string>Show All Dates</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBox_10">
+        <property name="text">
+         <string>Show All Spectrums</string>
         </property>
        </widget>
       </item>

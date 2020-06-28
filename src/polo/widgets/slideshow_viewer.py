@@ -182,12 +182,19 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         if pixmap:
             self.__empty = False
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+            print(type(self.__photo))
             self.__photo.setPixmap(pixmap)
         else:
             self.__empty = True
             self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
             self.__photo.setPixmap(QtGui.QPixmap())
         self.fitInView()
+    
+    def set_scene(self, graphics_scene=None):
+        pass
+    # method for showing an entire graphics scene instead of just a single
+    # pixmap 
+
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -278,6 +285,7 @@ class SlideshowViewer(PhotoViewer):
             logger.info('Failed to set {} as __run attribute of {}'.format(
                 new_run, self
             ))
+
     def set_current_image_by_well_number(self, well_number):
         if self.run:
             try:
@@ -334,6 +342,10 @@ class SlideshowViewer(PhotoViewer):
             logger.info('Applied filters {} human: {} marco: {} to {}'.format(
                 image_types, human, marco, self
             ))
+    
+    def show_image_all_dates(self):
+        pass
+
 
     def display_current_image(self):
         '''

@@ -83,85 +83,7 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
                 self.image = self.image.alt_image
             self.setPixmap()
     
-    # def pre_load_alt_images(self):
-    #     image_keywords = ['alt_image', 'next_image', 'previous_image']
-    #     image_dict = 
-    #     for keyword in image_keywords:
-            
 
-
-
-# class PlateCache():
-
-#     def __init__(self, plateViewer):
-#         self.plateViewer = plateViewer
-#         self.cache = {}
-
-#     @property
-#     def run(self):
-#         if self.plateViewer:
-#             return self.plateViewer.run
-
-#     @property
-#     def current_page(self):
-#         if self.plateViewer:
-#             return self.plateViewer.current_page
-
-#     @property
-#     def images_per_page(self):
-#         if self.plateViewer:
-#             return self.plateViewer.images_per_page
-
-#     @property
-#     def scene(self):
-#         if self.plateViewer:
-#             return self.plateViewer.scene
-
-#     def add_scene(self, num_images, page_num):
-#         pass
-
-#     def cache_current_scene(self):
-
-#         run_name = self.run.run_name
-#         self.add_to_cache(self.run, self.current_page,
-#                           self.images_per_page, self.scene)
-
-#     def erase_current_scene(self):
-#         try:
-#             self.cache[self.run.run_name][self.current_page][self.images_per_page] = None
-#         except KeyError as e:
-#             return False
-
-#     def add_to_cache(self, run=None, current_page=None, images_per_page=None, scene=None):
-#         try:
-#             self.cache[run.run_name][current_page][images_per_page] = scene
-#         except KeyError:
-#             if run:
-#                 if run.run_name not in self.cache:
-#                     self.cache[run.run_name] = {}
-#                 if current_page:
-#                     if current_page not in self.cache[run.run_name]:
-#                         self.cache[run.run_name][current_page] = {}
-#                     if images_per_page:
-#                         if images_per_page not in self.cache[run.run_name][current_page]:
-#                             self.cache[run.run_name][current_page][images_per_page] = scene
-
-    # def check_for_current_scene(self):
-    #     try:
-    #         return self.cache[self.run.run_name][self.current_page][self.images_per_page]
-    #     except KeyError as e:
-    #         return False
-
-
-
-
-
-
-
-# since going from set plate sizes in the view could have it run in the
-# background caching as many views as it can while the number of images in
-# the view are still the same
-import time
 class plateViewer(QtWidgets.QGraphicsView):
 
     subgrid_dict = {16: (4, 4), 64: (8, 8), 96: (8, 12), 1536: (32, 48)}
@@ -292,7 +214,6 @@ class plateViewer(QtWidgets.QGraphicsView):
                             prev_date=False, alt_spec=False):
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
         self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
-        s = time.time()
         self.visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]
         cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
@@ -370,3 +291,15 @@ class plateViewer(QtWidgets.QGraphicsView):
         for each_gw in self.__graphics_wells:
             if each_gw:
                 each_gw.set_color(None)
+    
+    def export_current_view(self):
+        if self.__scene:
+            export_path = QtWidgets.QFileDialog.getSaveFile()
+            # something like that to get save file
+            if export_path:
+                image = QImage(self.__scene.rect(), Format_ARGB32_Premultiplied)
+                painter = QPainter(image)
+                self.__scene.render(painter, image.rect(), self.__scene.rect())
+                painter.end()
+                image.save(export_path)
+        # TODO Needs testing no idea if this will work
