@@ -42,6 +42,11 @@ def main():
     # Run the app
     sys.excepthook = excepthook
     logger.info('Started Polo version {}'.format(__version__))
+    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+        PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+        PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
     multiprocessing.freeze_support()
     app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon(str(APP_ICON)))
