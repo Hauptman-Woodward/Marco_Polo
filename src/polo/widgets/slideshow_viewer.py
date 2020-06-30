@@ -22,7 +22,7 @@ class Slide():
     '''
 
     def __init__(self, image, next_slide=None, prev_slide=None, slide_number=None):
-        
+
         self.image = image  # image object holds well data
         self.next_slide = next_slide
         self.prev_slide = prev_slide
@@ -164,7 +164,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
             self.setSceneRect(rect)
-            # self.setScene(self.__scene)  # possibly do this instead or in addition to line above 
+            # self.setScene(self.__scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
                 self.scale(1 / unity.width(), 1 / unity.height())
@@ -174,7 +174,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self.__zoom = 0
-    
+
     def set_scene(self, graphics_scene):
         # should do same thing as set_image but with a graphics scene
         if graphics_scene:
@@ -185,7 +185,8 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         else:
             self.__empty = True
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-            self.__scene = QtWidgets.QGraphicsScene(self)  # reset the graphics scene
+            self.__scene = QtWidgets.QGraphicsScene(
+                self)  # reset the graphics scene
         self.fitInView()
 
     # def set_image(self, pixmap=None):
@@ -205,7 +206,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     #         self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
     #         self.__photo.setPixmap(QtGui.QPixmap())
     #     self.fitInView()
-
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -245,7 +245,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         if self.__photo.isUnderMouse():
             self.photoClicked.emit(self.mapToScene(event.pos()).toPoint())
         super(PhotoViewer, self).mousePressEvent(event)
-    
+
 
 class SlideshowViewer(PhotoViewer):
     photoClicked = QtCore.pyqtSignal(QtCore.QPoint)
@@ -269,7 +269,7 @@ class SlideshowViewer(PhotoViewer):
         self.current_image = current_image
         self.__carousel = Carousel()
         logger.info('Made {}'.format(self))
-        
+
     @property
     def run(self):
         return self.__run
@@ -302,7 +302,8 @@ class SlideshowViewer(PhotoViewer):
             try:
                 self.current_image = self.run.images[well_number-1]
             except IndexError:
-                logger.warning('Attempted to set current image to non-existant well number')
+                logger.warning(
+                    'Attempted to set current image to non-existant well number')
 
     def carousel_controls(self, next_image=False, previous_image=False):
         '''
@@ -347,16 +348,15 @@ class SlideshowViewer(PhotoViewer):
                 image_types, human, marco))
             if favorite:  # probably move this to image filter query soon
                 images = [i for i in images if i.favorite]
-            
+
             self.__carousel.add_slides(images)
             self.current_image = self.__carousel.current_slide.image
             logger.info('Applied filters {} human: {} marco: {} to {}'.format(
                 image_types, human, marco, self
             ))
-    
+
     def show_image_all_dates(self):
         pass
-    
 
     def make_all_dates_scene(self, image):
         pass
@@ -375,7 +375,7 @@ class SlideshowViewer(PhotoViewer):
             # check for next image date if exists go down that path
             # once reach the end call again but go in reverse until no
             # more images have previous image linked to them
-    
+
     images = []  # assume this is list of images now
 
     images = sorted(images, key=lambda i: i.date)  # sort the images by date
@@ -398,7 +398,6 @@ class SlideshowViewer(PhotoViewer):
         # if on image label then add image details directly onto the image
         scene.addText(each_image.date, )  # add the date onto the image
 
-
     def display_current_image(self):
         '''
         Renders the Image instance currently stored in the current_image\
@@ -411,11 +410,10 @@ class SlideshowViewer(PhotoViewer):
 
             # need to make the graphics scene here
 
-            # add flag attributes which tell how should display the image 
+            # add flag attributes which tell how should display the image
             # could just be the image or could be with all dates organized
             # into one image or with all spectrums or with all dates and
-            # with all spectrums which would be the super view 
-
+            # with all spectrums which would be the super view
 
             self.set_image(cur_img.pixmap)
         else:

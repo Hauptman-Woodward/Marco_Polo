@@ -8,7 +8,6 @@ from datetime import datetime
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from dateutil.parser import parse
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
