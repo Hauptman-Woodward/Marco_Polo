@@ -4,7 +4,7 @@ from polo.crystallography.image import Image
 from polo.crystallography.run import Run, HWIRun
 from polo import make_default_logger
 import copy
-from polo.widgets.plate_viewer import graphicsWell
+from polo.widgets.graphics_well import graphicsWell
 
 logger = make_default_logger(__name__)
 
@@ -130,11 +130,12 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
     def __init__(self, parent):
         super(PhotoViewer, self).__init__(parent)
+        self.show_all_dates = False
+        self.show_all_specs = False
         self.__zoom = 0
         self.__empty = True
         self.__scene = QtWidgets.QGraphicsScene(self)
         #  self.__photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
-        self.__scene.addItem(self.__photo)
         self.setScene(self.__scene)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -145,16 +146,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
     # current image will be an actual image to show to the screen
     # slideshow images are images in the que that are ready to go
-
-    def display_current_image(self):
-        '''
-        Renders the Image instance currently stored in the current_image\
-            attribute.
-
-        :returns: None
-        '''
-        self.__empty = False
-        # self.set_image(self.__photo)  need to use scene here
+    # self.set_image(self.__photo)  need to use scene here
 
     def hasPhoto(self):
         return not self.__empty
@@ -163,8 +155,9 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         rect = self.__scene.itemsBoundingRect()
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
-            self.setSceneRect(rect)
-            # self.setScene(self.__scene)  # possibly do this instead or in addition to line above
+            # self.setSceneRect(rect)
+            print('st the scene ')
+            self.setScene(self.__scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
                 self.scale(1 / unity.width(), 1 / unity.height())
@@ -174,15 +167,20 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self.__zoom = 0
+        else:
+            print('did not set the scene')
 
     def set_scene(self, graphics_scene):
         # should do same thing as set_image but with a graphics scene
+        print(graphics_scene, 'scene at set scene')
         if graphics_scene:
+            print('set scene true')
             self.__empty = False
             self.__scene = graphics_scene
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
         # call fit in view
         else:
+            print('set scene false')
             self.__empty = True
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
             self.__scene = QtWidgets.QGraphicsScene(
@@ -242,8 +240,8 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         :param event: Mouse press event
         :type event: QEvent
         '''
-        if self.__photo.isUnderMouse():
-            self.photoClicked.emit(self.mapToScene(event.pos()).toPoint())
+        # if self.__scene.isUnderMouse():
+        self.photoClicked.emit(self.mapToScene(event.pos()).toPoint())
         super(PhotoViewer, self).mousePressEvent(event)
 
 
@@ -357,46 +355,50 @@ class SlideshowViewer(PhotoViewer):
 
     def show_image_all_dates(self):
         pass
+    
 
-    def make_all_dates_scene(self, image):
-        pass
-    # traverse all the dates to get the images by date sort them by date and
-    # create a graphics scene
 
-        def get_all_imaging_dates(self, image, on_image_label=True):  # recursive
-            if image.path == start_image.path:
-                return  # break out back at start
-            # not sure if linked list is connected or not dont think it is currently
-            # should write a solution that works for both
-            # if not connected once reaches end of linked list needs to go back
-            # and get all the images that are linked behind it
-            # may require going passed the start image twice
+    def arrange_multi_image_scene(self, image_list):
+        x, y = 0, 0  # set starting cords
+        print(image_list)
+        scene = QtWidgets.QGraphicsScene(self)
+        for item in image_list:
+            if isinstance(item, (list, tuple)):  # 2D list
+                pass
+                list_midpoint = math.floor(len(item) / 2)
+                for sub_item in item:
+                    if isinstance(item, Image):
+                        pass
+            elif isinstance(item, Image):
+                 well = graphicsWell(image=item)
+                 well.setPixmap()
+                 scene.addItem(well)
+                 well.setPos(x, y)
+                 well.setToolTip()
+                 x += well.width()
+        return scene
 
-            # check for next image date if exists go down that path
-            # once reach the end call again but go in reverse until no
-            # more images have previous image linked to them
 
-    images = []  # assume this is list of images now
+    def set_all_dates_scene(self, image):
+        if isinstance(image, Image):
+            all_dates = image.get_linked_images_by_date()
+            scene = self.arrange_multi_image_scene(all_dates)
+            self.set_scene(scene)
+    
+    def set_all_spectrums_scene(self, image):
+        if isinstance(image, Image):
+            all_specs = image.get_linked_images_by_spectrum()
+            scene = self.arrange_multi_image_scene(all_specs)
+            self.set_scene(scene)
+    
+    def set_single_image_scene(self, image):
+        if isinstance(image, Image):
+            scene = QtWidgets.QGraphicsScene(self)
+            well = graphicsWell(image=image)
+            well.setPixmap()
+            scene.addItem(well)
+            self.set_scene(scene)
 
-    images = sorted(images, key=lambda i: i.date)  # sort the images by date
-    scene = QtWidgets.QGraphicsScene(self)
-    x, y = 0, 0
-    for each image in images:
-        # need to make each image into a graphics item first
-        # I think look into the graphics item class in plate_viewer
-        # might want to use that instead of base graphicsItem
-        well = graphicsWell(scene, iamge=each_image)
-        scene.addItem(well)
-        well.setPos(x, y)
-        x += well.width()  # increase x by the width of the image
-        if on_image_label:
-            pass
-            label = QtWidgets.QGraphicsTextItem(scene)
-            label.addText(each_image.date)
-            scene.addItem(label)
-            label.setPos(x, y)  # probably have to adjust where this is placed
-        # if on image label then add image details directly onto the image
-        scene.addText(each_image.date, )  # add the date onto the image
 
     def display_current_image(self):
         '''
@@ -407,15 +409,14 @@ class SlideshowViewer(PhotoViewer):
         '''
         cur_img = self.current_image
         if isinstance(cur_img, Image):
+            # parse the flags on how to display the image here
+            if self.show_all_dates:
+                self.set_all_dates_scene(cur_img)
+            elif self.show_all_specs:
+                self.set_all_spectrums_scene(cur_img)
+            else:
+                self.set_single_image_scene(cur_img)
 
-            # need to make the graphics scene here
-
-            # add flag attributes which tell how should display the image
-            # could just be the image or could be with all dates organized
-            # into one image or with all spectrums or with all dates and
-            # with all spectrums which would be the super view
-
-            self.set_image(cur_img.pixmap)
         else:
             logger.warning('Failed to set current image to {} at {}'.format(
                 self.current_image, self

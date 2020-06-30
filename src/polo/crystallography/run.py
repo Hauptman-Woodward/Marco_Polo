@@ -324,13 +324,12 @@ class HWIRun(Run):
             for current_image, dec_image in zip(self.images, other_run.images):
                 if current_image:
                     current_image.next_image = dec_image
-                    if not current_image.previous_image:
-                        current_image.previous_image = current_image
+                    # if not current_image.previous_image:
+                    #     current_image.previous_image = current_image
                 if dec_image:
                     dec_image.previous_image = current_image
-                    if not dec_image.next_image:
-                        dec_image.next_image = dec_image
-
+                    # if not dec_image.next_image:
+                    #     dec_image.next_image = dec_image
             self.next_run = other_run
             other_run.previous_run = self
 

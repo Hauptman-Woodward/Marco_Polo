@@ -304,8 +304,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if xtal_file_path:
             xtal_file_path = file_dlg.selectedFiles()[0]
-            run_loader = RunDeserializer(xtal_file_path, self)
-            run = run_loader.xtal_to_run_on_thread()
+            if os.path.isfile(xtal_file_path):
+                run_loader = RunDeserializer(xtal_file_path, self)
+                run = run_loader.xtal_to_run_on_thread()
 
             # if not isinstance(run, (Run, HWIRun)):
             #     error_box = self.make_message_box(

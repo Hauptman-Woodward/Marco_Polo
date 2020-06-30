@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/ethan/Documents/github/Polo_Builder/pyqt_designer/slideshow_inspector.ui'
+# Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/slideshow_inspector.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -381,20 +381,26 @@ class Ui_slideshowInspector(object):
         self.groupBox_18 = QtWidgets.QGroupBox(slideshowInspector)
         self.groupBox_18.setEnabled(True)
         self.groupBox_18.setObjectName("groupBox_18")
-        self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_18)
-        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.gridLayout_4 = QtWidgets.QGridLayout(self.groupBox_18)
+        self.gridLayout_4.setObjectName("gridLayout_4")
         self.pushButton_9 = QtWidgets.QPushButton(self.groupBox_18)
         self.pushButton_9.setEnabled(False)
         self.pushButton_9.setObjectName("pushButton_9")
-        self.gridLayout_8.addWidget(self.pushButton_9, 0, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButton_9, 0, 0, 1, 1)
         self.pushButton_10 = QtWidgets.QPushButton(self.groupBox_18)
         self.pushButton_10.setEnabled(False)
         self.pushButton_10.setObjectName("pushButton_10")
-        self.gridLayout_8.addWidget(self.pushButton_10, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButton_10, 0, 1, 1, 1)
         self.pushButton_12 = QtWidgets.QPushButton(self.groupBox_18)
         self.pushButton_12.setEnabled(False)
         self.pushButton_12.setObjectName("pushButton_12")
-        self.gridLayout_8.addWidget(self.pushButton_12, 1, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.pushButton_12, 1, 0, 1, 2)
+        self.checkBox_9 = QtWidgets.QCheckBox(self.groupBox_18)
+        self.checkBox_9.setObjectName("checkBox_9")
+        self.gridLayout_4.addWidget(self.checkBox_9, 2, 0, 1, 2)
+        self.checkBox_10 = QtWidgets.QCheckBox(self.groupBox_18)
+        self.checkBox_10.setObjectName("checkBox_10")
+        self.gridLayout_4.addWidget(self.checkBox_10, 3, 0, 1, 2)
         self.gridLayout_2.addWidget(self.groupBox_18, 3, 0, 1, 1)
         self.groupBox_3 = QtWidgets.QGroupBox(slideshowInspector)
         self.groupBox_3.setMaximumSize(QtCore.QSize(16777215, 200))
@@ -644,13 +650,15 @@ class Ui_slideshowInspector(object):
         self.pushButton_11.setToolTip(_translate("slideshowInspector", "Apply your currently selected filters"))
         self.pushButton_11.setText(_translate("slideshowInspector", "Submit Filters"))
         self.groupBox_18.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Navigate images by date of imaging or by photographic technology. Go to Advanced Settings to enable.</p></body></html>"))
-        self.groupBox_18.setTitle(_translate("slideshowInspector", "Advanced Navigation"))
+        self.groupBox_18.setTitle(_translate("slideshowInspector", "Advanced"))
         self.pushButton_9.setText(_translate("slideshowInspector", "Previous Date"))
         self.pushButton_9.setShortcut(_translate("slideshowInspector", "Ctrl+Left"))
         self.pushButton_10.setText(_translate("slideshowInspector", "Next Date"))
         self.pushButton_10.setShortcut(_translate("slideshowInspector", "Ctrl+Right"))
         self.pushButton_12.setText(_translate("slideshowInspector", "Swap Spectrum"))
         self.pushButton_12.setShortcut(_translate("slideshowInspector", "Down, Up"))
+        self.checkBox_9.setText(_translate("slideshowInspector", "Show All Dates"))
+        self.checkBox_10.setText(_translate("slideshowInspector", "Show All Spectrums"))
         self.groupBox_3.setTitle(_translate("slideshowInspector", "Navigation"))
         self.groupBox_10.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Display image at a given well number. If run is not HWI then will navigate images in the order they were loaded into the program.</p></body></html>"))
         self.groupBox_10.setTitle(_translate("slideshowInspector", "By Well Number"))

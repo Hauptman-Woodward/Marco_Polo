@@ -864,6 +864,12 @@ class CocktailMenuReader():
                 cocktail_menu[new_cocktail.well_assignment] = new_cocktail
         return cocktail_menu
 
+class BulkRunImporter():
+
+    def __init__(self, run_directory, *args):
+        pass
+
+
 
 class XmlReader():
 

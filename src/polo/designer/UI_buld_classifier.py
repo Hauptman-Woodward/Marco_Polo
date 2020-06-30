@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/ethan/Documents/github/Polo_Builder/pyqt_designer/buld_classifier.ui'
+# Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/buld_classifier.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 

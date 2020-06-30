@@ -16,6 +16,7 @@ from polo.utils.io_utils import (directory_validator, list_dir_abs,
                                  parse_hwi_dir_metadata, run_name_validator)
 from polo.utils.unrar_utils import *
 from polo.utils.dialog_utils import make_message_box
+from polo.utils.io_utils import XmlReader
 
 from polo import ALLOWED_IMAGE_COUNTS, IMAGE_SPECS
 
@@ -435,7 +436,7 @@ class RunImporterDialog(QtWidgets.QDialog):
     
     def read_xml_data(self, dir_path):
         # read xml data from HWI uncompressed rar files
-        reader = XtalReader(dir_path)
+        reader = XmlReader(dir_path)
         plate_data = reader.find_and_read_plate_data(dir_path)
         if isinstance(plate_data, dict) and plate_data:
             return plate_data

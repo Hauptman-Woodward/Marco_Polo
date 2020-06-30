@@ -1098,16 +1098,10 @@
       <string>Advanced</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton_9">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBox_10">
         <property name="text">
-         <string>Previous Date</string>
-        </property>
-        <property name="shortcut">
-         <string>Ctrl+Left</string>
+         <string>Show All Spectrums</string>
         </property>
        </widget>
       </item>
@@ -1124,6 +1118,26 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBox_9">
+        <property name="text">
+         <string>Show All Dates</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="pushButton_9">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Previous Date</string>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+Left</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0" colspan="2">
        <widget class="QPushButton" name="pushButton_12">
         <property name="enabled">
@@ -1137,17 +1151,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="checkBox_9">
+      <item row="4" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_7">
         <property name="text">
-         <string>Show All Dates</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QCheckBox" name="checkBox_10">
-        <property name="text">
-         <string>Show All Spectrums</string>
+         <string>Save View</string>
         </property>
        </widget>
       </item>
