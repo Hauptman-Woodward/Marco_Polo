@@ -865,10 +865,64 @@ class CocktailMenuReader():
         return cocktail_menu
 
 
-class BulkRunImporter():
+class RunImporter():
 
-    def __init__(self, run_directory, *args):
+    def __init__(self, *args):
+        runs = args  # runs to be imported could be dirs rars or mixes
+    
+    def crack_open_a_rar_one(self, rar_path):
+        if not isinstance(rar_path, Path):
+            rar_path = Path(rar_path)
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    def validate_run_name(self, text=None):
+        '''
+        Validates a given run name to ensure it can be used safely. Shows
+        an error message to the user if the run name is not valid and clears
+        the run name lineEdit widget.
+
+        In order for a run name to be valid it must contain only UTF-8
+        codable characters and not already be in use by another
+        run object. This is because the run name is used as a key to refer
+        to the run object in other functions.
+
+        :param text: String. The run name to be validated.
+        '''
+        validator_result = run_name_validator(text, self.current_run_names)
+        message = None
+        if validator_result == UnicodeError:
+            message = 'Run name is not UTF-8 Compliant'
+        elif validator_result == TypeError:
+            message = 'Run name must not be empty.'
+        elif not validator_result:  # result is false already exists
+            message = 'Run name already exists, please pick a unique name.'
+            # TODO option to overwrite the run of that same name
+        
+        if message:
+            return make_message_box(message).exec_()
+        else:
+            return True
+
+        def read_xml_data(self, dir_path):
+            # read xml data from HWI uncompressed rar files
+            reader = XmlReader(dir_path)
+            plate_data = reader.find_and_read_plate_data(dir_path)
+            if isinstance(plate_data, dict) and plate_data:
+                return plate_data
+            else:
+                return {}  # empty dict so always safe to pass to update method
+
+
+class PreRun():
+
+    def __init__(self, data_location, date=None, cocktail_menu=None):
         pass
+    # could do something like this where date is set in this way 
+        
+
+
+
 
 
 class RunLinker():
@@ -876,10 +930,32 @@ class RunLinker():
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
 
-    def check_for_date_links(self):
+    def check_for_date_links(self, runs_list):
         # determine links by first looking at sample names assume these
         # sample names to be unique
+
+        # sort the runs by their samples
+        # or for now assume they are of all the same sample and go from there
         pass
+
+    def link_runs_by_date(self, runs_list):
+        runs_list = sorted(runs_list, key=lambda run: run.date)
+        for i in range(len(runs_list)-1)):
+            runs_list[i].link_to_decendent(runs_list[i+1])
+    
+    def link_runs_by_spectrum(self, runs_list):
+        runs_list = sorted(runs_list, key=lambda run: len(run.image_spectrum))
+        # for consistent ordering
+        for i in range(len(runs_list)-1):
+            runs_list[i].link_to_alt_spectrum(run_list[i+1])
+        first_run, last_run = (
+            runs_list[0],
+            runs_list[-1]
+        )
+        last_run.link_to_alt_spectrum(first_run)
+    
+
+        
 
 
 class XmlReader():

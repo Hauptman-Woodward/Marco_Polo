@@ -9,14 +9,35 @@ from pathlib import PurePosixPath
 from PyQt5.QtWidgets import QApplication
 
 from polo.crystallography.run import Run, HWIRun
+from polo.utils.io_utils import RunLinker
 
 
 
 class RunOrganizer(QtWidgets.QTreeWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, loaded_runs={},
+                classified_runs={}, auto_link_runs=True):
+
         super(RunOrganizer, self).__init__(parent)
-        tree_dict = {}
+        self.auto_link_runs = auto_link_runs  # allow for turn off in settings
+        self.loaded_runs = loaded_runs
+        self.current_run = None
+
+        self.itemDoubleClicked.connect(self.handle_opening_run)
+    
+
+    def handle_opening_run(item, self):
+        pass
+
+    def handle_dup_run_import(self):
+        pass
+    
+    def import_saved_run(self):
+        pass
+
+    def import_new_run(self):
+        pass
+    
     
     def add_sample(self, sample_name, *args):
         parent_item = QtWidgets.QTreeWidgetItem(self)
@@ -31,9 +52,22 @@ class RunOrganizer(QtWidgets.QTreeWidget):
         new_node.setToolTip(0, run.get_tooltip())
 
         return new_node
-
     
-    def add_run(self, new_run):
+    def link_to_sample(self, new_run):
+        sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
+        if sample_node:
+            sample_node = sample_node.pop()
+
+        # probalby would make more sense to move loaded runs here
+        # instead of haveing in the main window
+    
+    def classify_all_loaded_runs(self):
+        pass
+
+    def classify_run(self)
+
+
+    def add_run_to_tree(self, new_run):
         if isinstance(new_run, HWIRun):
             if hasattr(new_run, 'sampleName'):
                 sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
@@ -49,6 +83,7 @@ class RunOrganizer(QtWidgets.QTreeWidget):
                 else:
                     orphan_runs = QtWidgets.QTreeWidgetItem(self)
                     orphan_runs.setText(0, 'Sampleless Runs')
+                new_run.sampleName = 'Sampleless Runs'
                 self.add_run_node(orphan_runs, new_run)
 
         elif isinstance(new_run, Run):
@@ -58,6 +93,7 @@ class RunOrganizer(QtWidgets.QTreeWidget):
             else:
                 non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
                 non_hwi_runs.setText(0, 'Non-HWI Runs')
+                new_run.sampleName = 'Non-HWI Runs'
             self.add_run_node(non_hwi_runs, new_run)
 
 
