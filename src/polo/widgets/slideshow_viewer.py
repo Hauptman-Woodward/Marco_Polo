@@ -4,6 +4,7 @@ from polo.crystallography.image import Image
 from polo.crystallography.run import Run, HWIRun
 from polo import make_default_logger
 import copy
+from polo.widgets.plate_viewer import graphicsWell
 
 logger = make_default_logger(__name__)
 
@@ -132,7 +133,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self.__zoom = 0
         self.__empty = True
         self.__scene = QtWidgets.QGraphicsScene(self)
-        self.__photo = QtWidgets.QGraphicsPixmapItem()
+        #  self.__photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
         self.__scene.addItem(self.__photo)
         self.setScene(self.__scene)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -153,15 +154,17 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         :returns: None
         '''
         self.__empty = False
-        self.set_image(self.__photo)
+        # self.set_image(self.__photo)  need to use scene here
 
     def hasPhoto(self):
         return not self.__empty
 
     def fitInView(self, scale=True):
-        rect = QtCore.QRectF(self.__photo.pixmap().rect())
+        rect = self.__scene.itemsBoundingRect()
+        #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
             self.setSceneRect(rect)
+            # self.setScene(self.__scene)  # possibly do this instead or in addition to line above 
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
                 self.scale(1 / unity.width(), 1 / unity.height())
@@ -171,29 +174,37 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self.__zoom = 0
-
-    def set_image(self, pixmap=None):
-        '''Sets a pixelmap as the current photo and fits into view.
-
-        :param pixmap: Pixelmap to display, defaults to None
-        :type pixmap: Pixmap, optional
-        '''
-        self.__zoom = 0
-        if pixmap:
+    
+    def set_scene(self, graphics_scene):
+        # should do same thing as set_image but with a graphics scene
+        if graphics_scene:
             self.__empty = False
+            self.__scene = graphics_scene
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-            print(type(self.__photo))
-            self.__photo.setPixmap(pixmap)
+        # call fit in view
         else:
             self.__empty = True
-            self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-            self.__photo.setPixmap(QtGui.QPixmap())
+            self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+            self.__scene = QtWidgets.QGraphicsScene(self)  # reset the graphics scene
         self.fitInView()
-    
-    def set_scene(self, graphics_scene=None):
-        pass
-    # method for showing an entire graphics scene instead of just a single
-    # pixmap 
+
+    # def set_image(self, pixmap=None):
+    #     '''Sets a pixelmap as the current photo and fits into view.
+
+    #     :param pixmap: Pixelmap to display, defaults to None
+    #     :type pixmap: Pixmap, optional
+    #     '''
+    #     self.__zoom = 0
+    #     if pixmap:
+    #         self.__empty = False
+    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+    #         print(type(self.__photo))
+    #         self.__photo.setPixmap(pixmap)
+    #     else:
+    #         self.__empty = True
+    #         self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
+    #         self.__photo.setPixmap(QtGui.QPixmap())
+    #     self.fitInView()
 
 
     def wheelEvent(self, event):
@@ -345,6 +356,47 @@ class SlideshowViewer(PhotoViewer):
     
     def show_image_all_dates(self):
         pass
+    
+
+    def make_all_dates_scene(self, image):
+        pass
+    # traverse all the dates to get the images by date sort them by date and
+    # create a graphics scene
+
+        def get_all_imaging_dates(self, image, on_image_label=True):  # recursive
+            if image.path == start_image.path:
+                return  # break out back at start
+            # not sure if linked list is connected or not dont think it is currently
+            # should write a solution that works for both
+            # if not connected once reaches end of linked list needs to go back
+            # and get all the images that are linked behind it
+            # may require going passed the start image twice
+
+            # check for next image date if exists go down that path
+            # once reach the end call again but go in reverse until no
+            # more images have previous image linked to them
+    
+    images = []  # assume this is list of images now
+
+    images = sorted(images, key=lambda i: i.date)  # sort the images by date
+    scene = QtWidgets.QGraphicsScene(self)
+    x, y = 0, 0
+    for each image in images:
+        # need to make each image into a graphics item first
+        # I think look into the graphics item class in plate_viewer
+        # might want to use that instead of base graphicsItem
+        well = graphicsWell(scene, iamge=each_image)
+        scene.addItem(well)
+        well.setPos(x, y)
+        x += well.width()  # increase x by the width of the image
+        if on_image_label:
+            pass
+            label = QtWidgets.QGraphicsTextItem(scene)
+            label.addText(each_image.date)
+            scene.addItem(label)
+            label.setPos(x, y)  # probably have to adjust where this is placed
+        # if on image label then add image details directly onto the image
+        scene.addText(each_image.date, )  # add the date onto the image
 
 
     def display_current_image(self):
@@ -356,6 +408,15 @@ class SlideshowViewer(PhotoViewer):
         '''
         cur_img = self.current_image
         if isinstance(cur_img, Image):
+
+            # need to make the graphics scene here
+
+            # add flag attributes which tell how should display the image 
+            # could just be the image or could be with all dates organized
+            # into one image or with all spectrums or with all dates and
+            # with all spectrums which would be the super view 
+
+
             self.set_image(cur_img.pixmap)
         else:
             logger.warning('Failed to set current image to {} at {}'.format(
