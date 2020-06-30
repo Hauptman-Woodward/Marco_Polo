@@ -77,7 +77,7 @@ IMAGE_SPECS = ['Visible', 'UV-TPEF', 'SHG', 'Other']
 unrar_versions = set([OS for OS in os.listdir(str(UNRAR))])
 platform = platform.system()
 if platform in unrar_versions:
-    UNRAR_DIR = Path(os.path.join(UNRAR, platform))
+    UNRAR_DIR = Path(os.path.join(str(UNRAR), platform))
 else:
     UNRAR_DIR = False
 
