@@ -742,10 +742,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         def clean_marco_thread():
             self.classified_runs[run_name] = self.loaded_runs[run_name]
-            #self.listWidget.setEnabled(True)
+            self.runOrganizer.setEnabled(True)
             self.set_run_linking(disabled=False)
 
-        #self.listWidget.setEnabled(False)  # disable loading runs
+        self.runOrganizer.setEnabled(False)  # disable loading runs
         # while a thread is open
 
         # self.progressBar.setMaximum(len(self.current_run))

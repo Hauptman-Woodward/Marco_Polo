@@ -68,7 +68,6 @@ class RunOrganizer(QtWidgets.QTreeWidget):
         pass
     
 
-
 class fileBrowser(QtWidgets.QTreeWidget):
 
     DATA_INDEX = 5
