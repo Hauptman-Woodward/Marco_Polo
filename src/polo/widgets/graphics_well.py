@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
 
+
 class graphicsWell(QtWidgets.QGraphicsPixmapItem):
 
     def __init__(self, parent=None, image=None):
@@ -28,8 +29,7 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
             return super(graphicsWell, self).setToolTip(self.image.get_tool_tip())
 
     def setPixmap(self):
-            return super(graphicsWell, self).setPixmap(self.image.pixmap)
-
+        return super(graphicsWell, self).setPixmap(self.image.pixmap)
 
     def resetOpacity(self):
         return super(graphicsWell, self).setOpacity(1)

@@ -16,7 +16,7 @@ logger = make_default_logger(__name__)
 
 class PlateInspectorWidget(QtWidgets.QWidget):
 
-    images_per_page = [16, 64, 96]
+    images_per_page = [16, 64, 96, 1536]
 
 
     def __init__(self, parent, run=None):

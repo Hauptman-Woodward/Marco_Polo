@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1134, 302)
+        MainWindow.resize(1134, 644)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -315,26 +315,25 @@ class Ui_MainWindow(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
         self.groupBox_28.setPalette(palette)
         self.groupBox_28.setObjectName("groupBox_28")
-        self.gridLayout_28 = QtWidgets.QGridLayout(self.groupBox_28)
-        self.gridLayout_28.setObjectName("gridLayout_28")
-        self.listWidget = QtWidgets.QListWidget(self.groupBox_28)
-        self.listWidget.setAcceptDrops(True)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout_28.addWidget(self.listWidget, 0, 0, 1, 2)
+        self.gridLayout = QtWidgets.QGridLayout(self.groupBox_28)
+        self.gridLayout.setObjectName("gridLayout")
+        self.runOrganizer = RunOrganizer(self.groupBox_28)
+        self.runOrganizer.setObjectName("runOrganizer")
+        self.gridLayout.addWidget(self.runOrganizer, 0, 0, 1, 2)
         self.label_31 = QtWidgets.QLabel(self.groupBox_28)
         self.label_31.setObjectName("label_31")
-        self.gridLayout_28.addWidget(self.label_31, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.label_31, 1, 0, 1, 2)
         self.progressBar = QtWidgets.QProgressBar(self.groupBox_28)
         self.progressBar.setToolTip("")
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
-        self.gridLayout_28.addWidget(self.progressBar, 2, 0, 1, 2)
+        self.gridLayout.addWidget(self.progressBar, 2, 0, 1, 1)
         self.label_30 = QtWidgets.QLabel(self.groupBox_28)
         self.label_30.setObjectName("label_30")
-        self.gridLayout_28.addWidget(self.label_30, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_30, 3, 0, 1, 1)
         self.label_32 = QtWidgets.QLabel(self.groupBox_28)
         self.label_32.setObjectName("label_32")
-        self.gridLayout_28.addWidget(self.label_32, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_32, 3, 1, 1, 1)
         self.horizontalLayout_2.addWidget(self.groupBox_28)
         self.run_interface = QtWidgets.QTabWidget(self.centralwidget)
         self.run_interface.setEnabled(True)
@@ -718,7 +717,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Polo: The MARCO Companion"))
         self.groupBox_28.setToolTip(_translate("MainWindow", "<html><head/><body><p>List of available runs. Double clicking a new run will classify it. Double clicking again will open it in the run viewer. </p></body></html>"))
         self.groupBox_28.setTitle(_translate("MainWindow", "Loaded Runs"))
-        self.listWidget.setToolTip(_translate("MainWindow", "List of currently available runs. Double click to open a run listed here."))
+        self.runOrganizer.headerItem().setText(0, _translate("MainWindow", "Samples"))
         self.label_31.setText(_translate("MainWindow", "Classification Progress"))
         self.label_30.setText(_translate("MainWindow", "Est Time"))
         self.label_32.setText(_translate("MainWindow", "0"))
@@ -803,6 +802,7 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionBeta_Tester_s_Guide.setText(_translate("MainWindow", "Beta Tester\'s Guide"))
         self.actionEdit_Current_Run_Data.setText(_translate("MainWindow", "Edit Current Run Data"))
+from polo.widgets.file_browser import RunOrganizer
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.widgets.slideshow_inspector import slideshowInspector

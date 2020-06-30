@@ -66,6 +66,11 @@ class Run():
     def __len__(self):
         '''Returns the number of non null Images'''
         return sum([1 for i in self.images if i != None])
+    
+    def get_tooltip(self):
+        return 'Spectrum: {}\nDate: {}\nNum Images: {}'.format(
+            self.image_spectrum, str(self.date), len(self)
+        )
 
     def encode_images_to_base64(self):
         '''Helper method that encodes all images in the Run to
@@ -307,6 +312,16 @@ class HWIRun(Run):
         self.plate_id = plate_id
         self.num_wells = num_wells
         self.__dict__.update(kwargs)
+    
+    def get_tooltip(self):
+        if 'plateName' in self.__dict__:
+            platename = self.__dict__['plateName']
+        else:
+            platename = self.plate_id
+
+        return super().get_tooltip() + '\nCocktail Version: {}\nPlate ID: {}'.format(
+            os.path.basename(str(self.cocktail_menu.path)), str(platename)
+        )
 
 
     def link_to_predecessor(self, other_run):

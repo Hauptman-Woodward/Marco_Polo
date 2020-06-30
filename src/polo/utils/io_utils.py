@@ -864,11 +864,22 @@ class CocktailMenuReader():
                 cocktail_menu[new_cocktail.well_assignment] = new_cocktail
         return cocktail_menu
 
+
 class BulkRunImporter():
 
     def __init__(self, run_directory, *args):
         pass
 
+
+class RunLinker():
+
+    def __init__(self, loaded_runs):
+        self.loaded_runs = loaded_runs
+
+    def check_for_date_links(self):
+        # determine links by first looking at sample names assume these
+        # sample names to be unique
+        pass
 
 
 class XmlReader():
@@ -901,11 +912,14 @@ class XmlReader():
         try:
             tree = ET.parse(xml_path)
             root = tree.getroot()
+            print(root)
 
-            return XmlReader.get_data_from_xml_element(root[0]).update(
+            d = XmlReader.get_data_from_xml_element(root[0])
+            d.update(
                 XmlReader.get_data_from_xml_element(root[1])
             )
-                
+            return d
+
         except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
             return e
 

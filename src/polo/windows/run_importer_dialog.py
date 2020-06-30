@@ -254,6 +254,8 @@ class RunImporterDialog(QtWidgets.QDialog):
             menu_type = self.current_menu_type
 
         return tim.get_menu_by_date(image_date, menu_type)
+    
+
 
     def make_hwi_run_suggestions(self):
         '''Wrapper method that can be used to call all methods involved in
@@ -438,6 +440,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         # read xml data from HWI uncompressed rar files
         reader = XmlReader(dir_path)
         plate_data = reader.find_and_read_plate_data(dir_path)
+        print(plate_data, 'data at read xml data')
         if isinstance(plate_data, dict) and plate_data:
             return plate_data
         else:
@@ -460,6 +463,8 @@ class RunImporterDialog(QtWidgets.QDialog):
             cocktail_menu = tim.get_menu_by_basename(
                 self.ui.comboBox_3.currentText())
             plate_data = self.read_xml_data(dir_name)
+            print(dir_name, 'dir name')
+            print(plate_data)
             new_run = HWIRun(
                 image_dir=dir_name,
                 run_name=run_name,
@@ -468,6 +473,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                 date=date,
                 **plate_data  # update dict via kwargs
             )
+            print(list(new_run.__dict__.keys()))
 
         else:
             image_spectrum = None  # TODO add spectrum selection for all runs

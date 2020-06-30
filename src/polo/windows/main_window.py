@@ -73,7 +73,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuExport.triggered[QAction].connect(self.handle_export)
         self.menuHelp.triggered[QAction].connect(self.handle_help_menu)
         self.menuFile.triggered[QAction].connect(self.handle_file_menu)
-        self.listWidget.itemDoubleClicked.connect(self.handle_opening_run)
+        self.runOrganizer.itemDoubleClicked.connect(self.handle_opening_run)
         # self.pushButton_7.clicked.connect(self.update_table_view)
         # self.pushButton_8.clicked.connect(self.uncheck_all_filters)
         self.run_interface.currentChanged.connect(self.on_changed_tab)
@@ -142,7 +142,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.loaded_runs[run.run_name] = run
         item = QtWidgets.QListWidgetItem(self.listWidget)
         item.setText(run.run_name)
-        self.listWidget.addItem(item)
+        # self.listWidget.addItem(item)
         logging.info('Loaded run named {}'.format(run.run_name))
 
     def open_run_import_dialog(self):
@@ -214,7 +214,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         :param q: QListItem. Run selection from listWidget made by user.
         '''
-        run_name = q.text()
+        run_name = q.text(0)
         if run_name in self.classified_runs:
             self.current_run = self.loaded_runs[run_name]
             # self.update_run_data_tab()
@@ -228,7 +228,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # enable nav by time if has linked runs
             logger.info('Loaded new run named {}'.format(
                 self.current_run.run_name))
-        else:
+        elif run_name in self.loaded_runs:
             run = self.loaded_runs[run_name]
             if run.image_spectrum == 'Visible':
                 # TODO only classify runs in the visible spectrum
@@ -341,9 +341,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if image.machine_class:
                     self.classified_runs[run.run_name] = run
                     break
-            self.listWidget.addItem(run.run_name)
-            #self.loaded_runs[run.run_name].save_file_path = xtal_file_path
-
+            self.runOrganizer.add_run(run)
+    
 
     def get_widget_dims(self, widget):
         return widget.width(), widget.height()
@@ -743,10 +742,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         def clean_marco_thread():
             self.classified_runs[run_name] = self.loaded_runs[run_name]
-            self.listWidget.setEnabled(True)
+            #self.listWidget.setEnabled(True)
             self.set_run_linking(disabled=False)
 
-        self.listWidget.setEnabled(False)  # disable loading runs
+        #self.listWidget.setEnabled(False)  # disable loading runs
         # while a thread is open
 
         # self.progressBar.setMaximum(len(self.current_run))
