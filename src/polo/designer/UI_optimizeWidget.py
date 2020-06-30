@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/ethan/Documents/github/Polo_Builder/pyqt_designer/optimizeWidget.ui'
+# Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/optimizeWidget.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(513, 615)
+        Form.resize(685, 615)
         self.gridLayout_4 = QtWidgets.QGridLayout(Form)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.tableWidget = QtWidgets.QTableWidget(Form)

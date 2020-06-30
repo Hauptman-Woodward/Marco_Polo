@@ -1,7 +1,7 @@
 import base64
 import os
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
 
 from polo import MODEL, IMAGE_CLASSIFICATIONS, make_default_logger
@@ -95,6 +95,14 @@ class Image():
                 string = string[:-1]
             if string:
                 return bytes(string, 'utf-8')
+
+    @classmethod
+    def to_graphics_scene(cls, image):
+        scene = QtWidgets.QGraphicsScene()
+        well = graphicsWell(image=image)
+        well.setPixmap()
+        scene.addItem(well)
+        return scene
     
     @classmethod
     def no_image(cls):
@@ -136,17 +144,6 @@ class Image():
             pm.loadFromData(base64.b64decode(self.bites))
         return pm
     
-    # @pixmap.setter
-    # def pixmap(self, new_data):
-    #     if os.path.exists(self.path):
-    #         self.__pixmap = QPixmap(new_data)
-    #     elif isinstance(new_data, bytes):
-    #         pm = QPixmap()
-    #         pm.loadFromData(new_data)
-    #         pm.loadFromData(base64.b64decode(new_data))
-    #         self.__pixmap = pm
-    #     else:
-    #         self.__pixmap = None
     
     @property
     def path(self):
@@ -277,11 +274,10 @@ class Image():
             cocktail = self.cocktail.number
         else:
             cocktail = None
-        return 'Well: {}\nCocktail: {}\nMARCO Class: {}\nHuman Class: {}'.format(
-            str(self.well_number), cocktail, str(self.machine_class),
+        return 'Well: {}\nCocktail: {}\nDate: {} \nMARCO Class: {}\nHuman Class: {}'.format(
+            str(self.well_number), cocktail, str(self.date), str(self.machine_class),
             str(self.human_class)
         )
-
 
     def __iter__(self):
         attribs = [self.path, self.human_class, self.machine_class,
@@ -289,9 +285,57 @@ class Image():
         for item in attribs:
             yield item
     
+    def get_linked_images_by_date(self):
+        linked_images = [self]
 
-        # if path does exist and there is no base64 encoding then
-        # there is goin to be an issue
+        if self.next_image:
+            start_image = self
+            while start_image.next_image:
+                linked_images.append(start_image.next_image)
+                start_image = start_image.next_image
+        if self.previous_image:
+            start_image = self
+            while start_image.previous_image:
+                linked_images.append(start_image.previous_image)
+                start_image = start_image.previous_image
+
+        return sorted(linked_images, key=lambda i: i.date)
+    
+    def get_linked_images_by_spectrum(self):
+        linked_images = [self]
+
+        if self.alt_image:
+            start_image = self.alt_image
+            while start_image.path != self.path:
+                linked_images.append(start_image)
+                start_image = start_image.alt_image
+
+        return sorted(linked_images, key=lambda i: len(i.spectrum))
+
+
+        # def get_all_imaging_dates(image, next_date=True):  # recursive
+        #     if image.path == start_image.path:
+        #         return  # break out back at start
+        #     elif next_date:
+        #         if isinstance(image.next_image, Image):
+        #             linked_images.append(image.next_image)
+        #             get_all_imaging_dates(image.next_image, next_date=next_date)
+        #         else:
+        #             return # run out of images
+        #     elif not next_date:
+        #         if isinstance(image.previous_image, Image):
+        #             linked_images.append(image.previous_image)
+        #             get_all_imaging_dates(image.previous_image, next_date=next_date)
+        #         else:
+        #             return
+        # if self.next_image:
+        #     get_all_imaging_dates(start_image.next_image)
+        # if self.previous_image:
+        #     get_all_imaging_dates(start_image.previous_image, next_date=False)
+
+        # return sorted(linked_images, key=lambda i: i.date)
+    
+
 
     def classify_image(self):
         '''Classify the image using the MARCO CNN model. Sets the 
@@ -308,4 +352,6 @@ class Image():
         # at some point probably want an image that is a default image not found
         # and can have a warning pop up if import from HWIrun and there are
         # still null images in run.images
+
+from polo.widgets.graphics_well import graphicsWell
 

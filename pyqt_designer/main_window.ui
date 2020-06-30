@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1134</width>
-    <height>302</height>
+    <height>644</height>
    </rect>
   </property>
   <property name="palette">
@@ -467,7 +467,7 @@
      <widget class="QGroupBox" name="groupBox_28">
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>400</width>
         <height>16777215</height>
        </size>
       </property>
@@ -919,15 +919,14 @@
       <property name="title">
        <string>Loaded Runs</string>
       </property>
-      <layout class="QGridLayout" name="gridLayout_28">
+      <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0" colspan="2">
-        <widget class="QListWidget" name="listWidget">
-         <property name="acceptDrops">
-          <bool>true</bool>
-         </property>
-         <property name="toolTip">
-          <string>List of currently available runs. Double click to open a run listed here.</string>
-         </property>
+        <widget class="RunOrganizer" name="runOrganizer">
+         <column>
+          <property name="text">
+           <string>Samples</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item row="1" column="0" colspan="2">
@@ -937,7 +936,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0">
         <widget class="QProgressBar" name="progressBar">
          <property name="toolTip">
           <string/>
@@ -1918,6 +1917,11 @@
    <extends>QWidget</extends>
    <header>polo/widgets/table_inspector.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RunOrganizer</class>
+   <extends>QTreeWidget</extends>
+   <header>polo/widgets/file_browser</header>
   </customwidget>
  </customwidgets>
  <resources/>

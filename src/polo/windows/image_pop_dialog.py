@@ -86,7 +86,7 @@ class ImagePopDialog(QtWidgets.QDialog):
         '''Show the image stored in the `image` attribute
         '''
         if self.image:
-            self.ui.photoViewer.set_image(pixmap=self.image.pixmap)
+            self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image))
             self.set_groupbox_title()
             self.set_cocktail_details()
             self.set_image_details()

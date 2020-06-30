@@ -13,7 +13,7 @@ from polo.utils.math_utils import get_cell_image_dims, best_aspect_ratio
 from PyQt5 import QtWidgets
 # from polo.utils.io_utils import load_run_object
 # from polo.ui.widgets.plate_viewer import graphicsWell
-from polo.crystallography.image import Image
+from polo.widgets.graphics_well import Image
 
 
 class thread(QThread):

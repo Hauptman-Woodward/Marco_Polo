@@ -538,52 +538,124 @@ class CocktailMenuReader():
 
         #return c
         
-from pathlib import Path
-from datetime import datetime
-import os
-import csv
+# from pathlib import Path
+# from datetime import datetime
+# import os
+# import csv
 
         
 
 
-class Menu():  # holds the dictionary of cocktails
+# class Menu():  # holds the dictionary of cocktails
     
-    def __init__(self, path, start_date, end_date, type_):
-        self.start_date = start_date
-        self.end_date = end_date
-        self.type_ = type_
-        self.__cocktails = {}  # holds all cocktails (items on the menu)
-        self.path = path
+#     def __init__(self, path, start_date, end_date, type_):
+#         self.start_date = start_date
+#         self.end_date = end_date
+#         self.type_ = type_
+#         self.__cocktails = {}  # holds all cocktails (items on the menu)
+#         self.path = path
     
-    @property
-    def cocktails(self):
-        return self.__cocktails
+#     @property
+#     def cocktails(self):
+#         return self.__cocktails
 
-    @property
-    def path(self):
-        return self.__path
+#     @property
+#     def path(self):
+#         return self.__path
     
-    @path.setter
-    def path(self, new_path):
-        self.__path = new_path  # set the path to the new_path
-        cocktail_reader = CocktailMenuReader(self.path)
-        for cocktail in cocktail_reader:
-            self.cocktails[cocktail.well_assignment] = cocktail
-        # create dictionary from cocktails, key is the well number (assignment)
+#     @path.setter
+#     def path(self, new_path):
+#         self.__path = new_path  # set the path to the new_path
+#         cocktail_reader = CocktailMenuReader(self.path)
+#         for cocktail in cocktail_reader:
+#             self.cocktails[cocktail.well_assignment] = cocktail
+#         # create dictionary from cocktails, key is the well number (assignment)
     
-from pathlib import Path
-from datetime import datetime
-import os
+# from pathlib import Path
+# from datetime import datetime
+# import os
+# import csv
+
+# data_prefix = 'data/'
+
+# COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
+# COCKTAIL_META_DATA = Path(os.path.join(data_prefix, 'cocktail_data/cocktail_meta.csv'))
+
+# tim = BarTender(COCKTAIL_DATA_PATH, COCKTAIL_META_DATA)
+# tim.add_menus_from_metadata()
+# c = (tim.menus['data/cocktail_data/12_C1536.csv'].cocktails)
+
+# f = tim.get_menu_by_date(datetime.strptime('12/31/2012', '%m/%d/%Y'), type_='s')
+# print(type(f), f.path)
+
+import base64
 import csv
+import json
+import os
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+import xml.etree.ElementTree as ET
 
-data_prefix = 'data/'
+class XmlReader():
 
-COCKTAIL_DATA_PATH = Path(os.path.join(data_prefix, 'cocktail_data/'))
-COCKTAIL_META_DATA = Path(os.path.join(data_prefix, 'cocktail_data/cocktail_meta.csv'))
+    platedef_key = 'platedef'  # keyword that is always in plate definition
+    # xml file names
 
-tim = BarTender(COCKTAIL_DATA_PATH, COCKTAIL_META_DATA)
-tim.add_menus_from_metadata()
-c = (tim.menus['data/cocktail_data/12_C1536.csv'].cocktails)
+    def __init__(self, xml_path, xml_files=[]):
+        '''XmlReader class can be used to read the xml metadata files that are
+        included in HWI screening run rar archives. Currently, is primarily ment
+        to extract metadata about the plate and the sample in that plate
 
-f = tim.get_menu_by_date(datetime.strptime('12/31/2012', '%m/%d/%Y'), type_='s')
-print(type(f), f.path)
+        :param xml_path: File path to xml file
+        :type xml_path: str or Path
+        :param xml_files: list of xml file paths, defaults to []
+        :type xml_files: list, optional
+        '''
+        self.xml_path = xml_path
+        self.xml_files = xml_files
+
+    @staticmethod
+    def get_data_from_xml_element(xml_element):
+        return {elem.tag: elem.text for elem in xml_element
+                if elem.tag and elem.text}
+
+    def read_plate_data_xml(self, xml_path=None):
+        if not xml_path:
+            xml_path = self.xml_file
+        xml_path = str(xml_path)
+        try:
+            tree = ET.parse(xml_path)
+            root = tree.getroot()
+            print(root)
+
+            d = XmlReader.get_data_from_xml_element(root[0])
+            d.update(
+                XmlReader.get_data_from_xml_element(root[1])
+            )
+            return d
+
+                
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            return e
+
+    def discover_xml_files(self, parent_dir):
+        parent_dir = Path(str(parent_dir))
+        try:
+            file_paths = [parent_dir.joinpath(f)
+                          for f in os.listdir(str(parent_dir))]
+            xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
+            return xmls
+        except (PermissionError, FileNotFoundError) as e:
+            return e
+
+    def find_and_read_plate_data(self, parent_dir):
+        xml_files = self.discover_xml_files(parent_dir)
+        if isinstance(xml_files, list):
+            for xml_file in xml_files:
+                if self.platedef_key in str(xml_file):
+                    return self.read_plate_data_xml(xml_file)
+        else:
+            return None
+

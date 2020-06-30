@@ -60,6 +60,29 @@ class slideshowInspector(QtWidgets.QWidget):
         self.ui.checkBox_7.stateChanged.connect(
             self.mark_current_image_as_favorite
         )
+        self.ui.checkBox_9.stateChanged.connect(
+            lambda x: self.set_slideshow_mode(show_all_dates=x)
+        )
+        self.ui.checkBox_10.stateChanged.connect(
+            lambda x: self.set_slideshow_mode(show_all_specs=x)
+        )
+    
+    def set_slideshow_mode(self, show_all_dates=False, show_all_specs=False):
+        if show_all_dates:
+            self.ui.slideshowViewer.show_all_dates = True
+            if self.run:
+                self.display_current_image()
+            print('set show all dates to true')
+        else:
+            self.ui.slideshowViewer.show_all_dates = False
+            print('set all dates to false')
+        if show_all_specs:
+            self.ui.slideshowViewer.show_all_specs = True
+            if self.run:
+                self.display_current_image()
+        else:
+            self.ui.slideshowViewer.show_all_specs = False
+
 
 
     def set_classification_button_labels(self):
