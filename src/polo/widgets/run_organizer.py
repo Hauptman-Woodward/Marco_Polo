@@ -1,301 +1,153 @@
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
-from PyQt5.QtWidgets import QAction, QGridLayout
-import os
-from polo import ICON_DICT
 import ftplib
-from pathlib import PurePosixPath
-from PyQt5.QtWidgets import QApplication
+import os
+from pathlib import Path, PurePosixPath
 
-from polo.crystallography.run import Run, HWIRun
-from polo.utils.io_utils import RunLinker
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
+
+from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
+from polo.crystallography.run import HWIRun, Run
+from polo.designer.UI_run_organizer import Ui_runOrganizer
+from polo.threads.thread import *
 from polo.utils.dialog_utils import make_message_box
+from polo.utils.io_utils import RunDeserializer, RunLinker
+from polo.utils.unrar_utils import test_for_working_unrar
 from polo.windows.ftp_dialog import FTPDialog
+from polo.windows.run_importer_dialog import RunImporter, RunImporterDialog
 
 # run organizer should be the outer class and
 # run tree should be the inner calss widget
 
+class RunOrganizer(QtWidgets.QWidget):
 
-class RunTree(QtWidgets.QTreeWidget):
-
-    def __init__(self, parent=None):
-        super(RunOrganizer, self).__init__(parent)
-
-    def add_sample(self, sample_name, *args):
-        parent_item = QtWidgets.QTreeWidgetItem(self)
-        parent_item.setText(0, sample_name)
-        for run in args:
-            if isinstance(run, (Run, HWIRun)):
-                self.add_run_node(run, parent_item)
-
-
-    def add_run_node(self, run, tree=None):
-        if not tree: tree = self
-        new_node = QtWidgets.QTreeWidgetItem(tree)
-        new_node.setText(0, run.run_name)
-        new_node.setToolTip(0, run.get_tooltip())
-        self.added_runs_counter += 1  # could be used to insure unique
-        if run.run_name in self.loaded_runs:
-            self.handle_dup_run_import()
-        else:
-            self.loaded_runs[run.run_name] = run
-        return new_node
-
-    def add_run_to_tree(self, new_run):
-        if isinstance(new_run, HWIRun):
-            if hasattr(new_run, 'sampleName'):
-                sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
-                if sample_node:
-                    sample_node = sample_node.pop()  # returned as a list
-                    self.add_run_node(sample_node, new_run)
-                else:
-                    self.add_sample(new_run.sampleName, new_run)
-            else:
-                orphan_runs = self.findItems('Sampleless Runs', Qt.MatchExactly, column=0)
-                if orphan_runs:
-                    orphan_runs = orphan_runs.pop()
-                else:
-                    orphan_runs = QtWidgets.QTreeWidgetItem(self)
-                    orphan_runs.setText(0, 'Sampleless Runs')
-                new_run.sampleName = 'Sampleless Runs'
-                self.add_run_node(orphan_runs, new_run)
-
-        elif isinstance(new_run, Run):
-            non_hwi_runs = self.findItems('Non-HWI Runs', Qt.MatchExactly, column=0)
-            if non_hwi_runs:
-                    non_hwi_runs = non_hwi_runs.pop()
-            else:
-                non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
-                non_hwi_runs.setText(0, 'Non-HWI Runs')
-                new_run.sampleName = 'Non-HWI Runs'
-            self.add_run_node(non_hwi_runs, new_run)
-
-
-    
-    def add_sample(self):
-        pass
-
-    def add_run(self):
-        pass
-
-    def remove_run(self, run):
-        pass
-
-    def remove_sample(self, sample):
-        pass
-
-    def handle_duplicate_run(self):
-        pass
-
-
-
-class RunOrganizer(QtWidgets.QTreeWidget):
+    opening_run = pyqtSignal(list)
+    classify_run = pyqtSignal(list)
 
     def __init__(self, parent=None, loaded_runs={},
-                classified_runs={}, auto_link_runs=True):
+                 classified_runs={}, auto_link_runs=True):
 
         super(RunOrganizer, self).__init__(parent)
+        self.ui = Ui_runOrganizer()
+        self.ui.setupUi(self)
         self.auto_link_runs = auto_link_runs  # allow for turn off in settings
-        self.loaded_runs = loaded_runs
         self.current_run = None
         self.added_runs_counter = 0
-        self.itemDoubleClicked.connect(self.handle_opening_run)
+        self.classified_runs = {}
 
-    def add_run_node(self, run, tree=None):
-        if not tree: tree = self
-        new_node = QtWidgets.QTreeWidgetItem(tree)
-        new_node.setText(0, run.run_name)
-        new_node.setToolTip(0, run.get_tooltip())
-        self.added_runs_counter += 1  # could be used to insure unique
-        if run.run_name in self.loaded_runs:
-            self.handle_dup_run_import()
+        self.ui.runTree.itemDoubleClicked.connect(self.handle_opening_run)
+
+    def handle_opening_run(self, *args):
+        # get the selected item
+        selected_runname = self.ui.runTree.currentItem().text(0)
+        if selected_runname in self.ui.runTree.classified_runs:
+            selected_run = self.ui.runTree.classified_runs[selected_runname]
+            self.opening_run.emit([selected_run])
         else:
-            self.loaded_runs[run.run_name] = run
-        return new_node
-
-    def add_sample(self, sample_name, *args):
-        parent_item = QtWidgets.QTreeWidgetItem(self)
-        parent_item.setText(0, sample_name)
-        for run in args:
-            if isinstance(run, (Run, HWIRun)):
-                self.add_run_node(run, parent_item)
-    
-
-    def handle_opening_run(item, self):
-
-        current_item = self.currentItem().text(0)
-        if current_item in self.classified_runs:
-            self.current_run = self.classified_runs[current_item]
-            return self.current_run
-        elif current_item in self.loaded_runs:
-            self.current_run = self.loaded_runs[current_item]
-            if self.current_run.image_spectrum == 'Visible':  # classify visible images
-                pass
+            if selected_runname in self.ui.runTree.loaded_runs:
+                selected_run = self.ui.runTree.loaded_runs[selected_runname]
+                if selected_run.image_spectrum == IMAGE_SPECS[0]:  # visible
+                    # self.classify_run.emit([selected_run])
+                    self.open_classification_thread(selected_run)
+                else:
+                    self.ui.runTree.add_classified_run(selected_run)
+                    self.opening_run.emit([selected_run])
             else:
-                self.loaded_runs.pop(current_item)
-                self.classified_runs[current_item] = self.current_run
-                return self.current_run  # got straight into it mate
-                # so dont need to double click twice
+                pass
 
-        # get currently selected item see if in classified runs and then
-        # decide what to do from here
-    
-    def open_classification_thread(self, run=None):
-        if not run and self.current_run:
-            self.run = self.current_run
-        else:
-            return False
-        
-        # should create a new widget so can have easy access to the good shit
-        
-            def open_classification_thread(self, run_name):
-        '''
-        Updates the mainwindow progress bar based on number of images in the
-        current_run and opens a new ClassificationThread which then works to
-        classify all images in the current_run. Progress bar is then connected
-        to the ClassificationThread method change_value which updates the bar
-        status as images are classified. Finally, adds the current run to the
-        classified runs dictionary.
-
-        :param run_name: Unique run name to open classification thread on
-        :type run_name: str
-        '''
-        def clean_marco_thread():
-            self.classified_runs[run_name] = self.loaded_runs[run_name]
-            self.runOrganizer.setEnabled(True)
-            self.set_run_linking(disabled=False)
-
-        self.runOrganizer.setEnabled(False)  # disable loading runs
-        # while a thread is open
-
-        # self.progressBar.setMaximum(len(self.current_run))
-        self.set_run_linking(disabled=True)  # disable to prevent partial links
-        self.progressBar.setMaximum(len(self.loaded_runs[run_name]))
-        self.progressBar.setValue(1)  # reset the bar to 0
-        self.thread = ClassificationThread(self.loaded_runs[run_name])
-        self.thread.change_value.connect(self.set_progress_value)
-        self.thread.estimated_time.connect(
+    def open_classification_thread(self, run):
+        self.ui.progressBar.setMaximum(len(run))
+        self.ui.progressBar.setValue(1)  # reset the bar to 0
+        self.classification_thread = ClassificationThread(run)
+        self.classification_thread.change_value.connect(
+            self.set_progress_value)
+        self.classification_thread.estimated_time.connect(
             self.set_estimated_classification_time)
-        self.thread.finished.connect(clean_marco_thread)
-        self.thread.start()
-        logger.info('Started classification thread for {}'.format(
-            self.loaded_runs[run_name]
-        ))
 
+        def classification_cleanup():
+            self.ui.runTree.setEnabled(True)
+            self.ui.runTree.add_classified_run(run)
 
-        run_name = item.text(0)
-        self.current_run = self.loaded_runs[run_name]
-        if self.current_run in self.classified_runs:
-            return self.current_run
+        self.classification_thread.finished.connect(classification_cleanup)
+        self.ui.runTree.setEnabled(False)
+        self.classification_thread.start()
+
+    def set_progress_value(self, val):
+        self.ui.progressBar.setValue(val)
+
+    def set_estimated_classification_time(self, time, num_images_remain):
+        time = time*num_images_remain
+        if time >= 60:
+            time_string = '{} mins'.format(round(time/60, 2))
         else:
-            # do some classification here
-            pass
-        # need a method in main window that if it gets back a run from this
-        # call then sets everything up with that run 
-        
+            time_string = '{} secs'.format(round(time))
+        self.ui.label_32.setText(time_string)
 
-    def handle_dup_run_import(self):
-        pass
-    
+    def import_from_saved_run(self):
 
-    # how could connect ftp download directly into add from run
-    # in some way
+        xtal_dialog = RunImporter.make_xtal_file_dialog()
+        xtal_dialog.exec_()
+        xtal_file = xtal_dialog.selectedFiles()
+        if xtal_file:
+            xtal_file = xtal_file[0]
+            self.new_run_thread = RunDeserializer(
+                xtal_file).xtal_to_run_on_thread()
 
-    def import_from_ftp(self):
-        ftp_browser = FTPDialog()
+            def finished_import():
+                result = self.new_run_thread.result
+                if isinstance(result, (Run, HWIRun)):
+                    self.ui.runTree.add_run_to_tree(result)
+                    self.ui.runTree.add_classified_run(result)
+                else:
+                    pass
+                # shoe error message
+            self.new_run_thread.finished.connect(finished_import)
+            self.new_run_thread.start()
+
+    def import_run_from_dialog(self):
+        run_importer_dialog = RunImporterDialog(
+            current_run_names=self.ui.runTree.current_run_names,
+            parent=self)
+        if (
+            hasattr(run_importer_dialog, 'new_run')
+            and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
+        ):
+            self.ui.runTree.add_run_to_tree(run_importer_dialog.new_run)
+
+    def import_run_from_ftp(self):
+        if not test_for_working_unrar:
+            msg = make_message_box(
+                message='No working unrar installtion found. If you download files via FTP you will have to unrar and import them manually')
+            msg.exec_()
+        ftp_browser = FTPDialog(parent=self)
         if ftp_browser.ftp and ftp_browser.download_files and ftp_browser.save_dir:
             self.ftp_download_thread = FTPDownloadThread(
-                dialog.ftp, dialog.download_files, dialog.save_dir
+                ftp_browser.ftp, ftp_browser.download_files, ftp_browser.save_dir
             )
-    
-    def finished_ftp_download(self):
-        pass
-        
+            self.ftp_download_thread.download_path.connect(
+                self.handle_ftp_download)
+            self.ftp_download_thread.start()
 
-            # might make sense to create a run importer class
-            # that is seperate from the dialog so can be used here as well
+    def handle_ftp_download(self, file_path):
 
-
-
-
-
-    
-    def import_saved_run(self):
-        pass
-    # should add it directly to the classified runs
-    # possible add some option that would allow for reclassifiction of runs
-
-    def import_new_run(self):
-        pass
-    
-    
-    def add_sample(self, sample_name, *args):
-        parent_item = QtWidgets.QTreeWidgetItem(self)
-        parent_item.setText(0, sample_name)
-        for run in args:
-            if isinstance(run, (Run, HWIRun)):
-                self.add_run_node(run, parent_item)
-    
-    def add_run_node(self, run, tree=None):
-        if not tree: tree = self
-        new_node = QtWidgets.QTreeWidgetItem(tree)
-        new_node.setText(0, run.run_name)
-        new_node.setToolTip(0, run.get_tooltip())
-        self.added_runs_counter += 1  # could be used to insure unique
-        if run.run_name in self.loaded_runs:
-            self.handle_dup_run_import()
+        if test_for_working_unrar:
+            print(file_path, 'filepath at handle_ftp_download')
+            unpacker = RunImporter.unpack_rar_archive_thread(file_path)
+            if unpacker:
+                unpacker.finished.connect(lambda: self.add_run_from_directory(
+                    str(Path(file_path).with_suffix(''))  # remove rar suffix
+                ))
+                unpacker.start()
         else:
-            self.loaded_runs[run.run_name] = run
-        return new_node
-    
-    def link_to_sample(self, new_run):
-        sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
-        if sample_node:
-            sample_node = sample_node.pop()
+            pass
+        # do something to tell the user that they need to unpack their files
 
-        # probalby would make more sense to move loaded runs here
-        # instead of haveing in the main window
-    
-    def classify_all_loaded_runs(self):
-        pass
-
-    def classify_run(self):
-        pass
+    def add_run_from_directory(self, dir_path):
+        # use run importer class to make the run
+        new_run = RunImporter.import_run_from_directory(str(dir_path))
+        if isinstance(new_run, (Run, HWIRun)):
+            self.ui.runTree.add_run_to_tree(new_run)
+        # message box failed to import?
 
 
-    def add_run_to_tree(self, new_run):
-        if isinstance(new_run, HWIRun):
-            if hasattr(new_run, 'sampleName'):
-                sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
-                if sample_node:
-                    sample_node = sample_node.pop()  # returned as a list
-                    self.add_run_node(sample_node, new_run)
-                else:
-                    self.add_sample(new_run.sampleName, new_run)
-            else:
-                orphan_runs = self.findItems('Sampleless Runs', Qt.MatchExactly, column=0)
-                if orphan_runs:
-                    orphan_runs = orphan_runs.pop()
-                else:
-                    orphan_runs = QtWidgets.QTreeWidgetItem(self)
-                    orphan_runs.setText(0, 'Sampleless Runs')
-                new_run.sampleName = 'Sampleless Runs'
-                self.add_run_node(orphan_runs, new_run)
-
-        elif isinstance(new_run, Run):
-            non_hwi_runs = self.findItems('Non-HWI Runs', Qt.MatchExactly, column=0)
-            if non_hwi_runs:
-                    non_hwi_runs = non_hwi_runs.pop()
-            else:
-                non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
-                non_hwi_runs.setText(0, 'Non-HWI Runs')
-                new_run.sampleName = 'Non-HWI Runs'
-            self.add_run_node(non_hwi_runs, new_run)
-
-
-    def remove_sample(self, sample_name):
-        pass
-
-    def remove_run(self, smaple_name, run_name):
-        pass

@@ -109,11 +109,13 @@ class ClassificationThread(thread):
             self.change_value.emit(i+1)
             if i % 5 == 0:
                 self.estimated_time.emit(e-s, len(self.classification_run.images)-(i+1))
+                print('hello', i)
 
             # emit signal so know to move progress par forward
 
 class FTPDownloadThread(thread):
     file_downloaded = pyqtSignal(int)
+    download_path = pyqtSignal(str)
     
     def __init__(self, ftp_connection, file_paths, save_dir_path):
         thread.__init__(self)
@@ -134,10 +136,8 @@ class FTPDownloadThread(thread):
                     status = self.ftp.retrbinary(cmd, local_file.write)
             print('downloaded file ', remote_file_path)
             self.file_downloaded.emit(i)
+            self.download_path.emit(local_file_path)
             
-
-
-
 
 class GraphThread(thread):
 

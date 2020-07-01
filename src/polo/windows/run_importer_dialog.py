@@ -12,15 +12,14 @@ from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_run_importer import Ui_Dialog
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 # from polo.threads.thread import LoadRunThread
-from polo.utils.io_utils import (directory_validator, list_dir_abs,
-                                 parse_hwi_dir_metadata, run_name_validator)
+from polo.utils.io_utils import (list_dir_abs, run_name_validator, RunDeserializer)
 from polo.utils.unrar_utils import *
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import XmlReader
 
 from polo import ALLOWED_IMAGE_COUNTS, IMAGE_SPECS
 
-from polo import tim  # the bartender
+from polo import tim, IMAGE_SPECS, SPEC_KEYS  # the bartender
 
 from polo.threads.thread import QuickThread
 from PyQt5.QtWidgets import QApplication
@@ -47,6 +46,171 @@ import_descriptors = [  # TODO Move this into a text file
         cannot specify alternative metadata parsing methods or cocktail menus
         outside of HWI.'''
 ]
+class RunImporter():
+
+    def __init__(self, *args):
+        self.runs = args  # runs to be imported could be dirs rars or mixes
+
+    @staticmethod
+    def directory_validator(dir_path):
+        if os.path.exists(dir_path):
+            if os.path.isdir(dir_path):
+                files = list_dir_abs(dir_path, allowed=True)
+                if files:
+                    return True
+                else:
+                    e = ForbiddenImageTypeError
+                    logger.warning('Directory validation failed with {}'.format(e))
+                    return e
+            else:
+                e = NotADirectoryError
+                logger.warning('Directory validation failed with {}'.format(e))
+                return e
+        else:
+            e = FileNotFoundError
+            logger.warning('Directory validation failed with {}'.format(e))
+            return FileNotFoundError
+    
+    @staticmethod
+    def parse_HWI_filename_meta(HWI_image_file):
+        '''
+        HWI images have a standard file nameing schema that gives info about when
+        they are taken and well number and that kind of thing. This function returns
+        that data
+        '''
+        HWI_image_file = os.path.basename(HWI_image_file)
+        return (
+            HWI_image_file[:10],
+            int(HWI_image_file[10:14].lstrip('0')),
+            datetime.strptime(HWI_image_file[14:22], '%Y''%m''%d'),
+            HWI_image_file[22:]
+        )
+
+    @staticmethod
+    def parse_hwi_dir_metadata(dir_name):
+        try:
+            dir_name = os.path.basename(dir_name)
+            image_type = dir_name.split('-')[-1]
+            if image_type in SPEC_KEYS:
+                image_type = SPEC_KEYS[image_type]
+            else:
+                image_type = IMAGE_SPECS[0]  # default to visible
+            plate_id = dir_name[:10]
+            date = datetime.strptime(dir_name[10:].split('-')[0],
+                                    '%Y''%m''%d''%H''%M')
+            
+            return image_type, plate_id, date, dir_name  # last is suggeseted run name
+        except (ValueError, IndexError) as e:
+            logger.error('Caught {} at {} attempting to parse {}'.format(
+                e, parse_hwi_dir_metadata, dir_name
+            ))
+            return False
+    
+    @staticmethod
+    def crack_open_a_rar_one(rar_path):
+        if not isinstance(rar_path, Path):
+            rar_path = Path(rar_path)
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    @staticmethod
+    def import_from_xtal_thread(xtal_path):
+        reader = RunDeserializer(xtal_path)
+        if os.path.isfile(xtal_path):
+            return reader.make_read_xtal_thread()
+    
+    @staticmethod
+    def make_xtal_file_dialog(parent=None):
+        file_dlg = QtWidgets.QFileDialog(parent=parent)
+        file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
+        return file_dlg
+    
+    @staticmethod
+    def unpack_rar_archive_thread(archive_path):
+        archive_path = str(archive_path)
+        if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
+            return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
+
+    @staticmethod
+    def import_run_from_directory(data_dir, **kwargs):
+        hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
+        if isinstance(hwi_import_attempt, HWIRun):
+            return hwi_import_attempt
+        else:
+            return RunImporter.import_general_run(data_dir, **kwargs)
+
+    @staticmethod
+    def import_hwi_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            from polo import tim
+            metadata = XmlReader().find_and_read_plate_data(data_dir)
+            file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
+
+            if metadata and file_name_data:
+                image_type, plate_id, date, run_name = file_name_data
+                menu = tim.get_menu_by_date(date, 's')
+                new_run = HWIRun(
+                    image_dir=data_dir, run_name=run_name, cocktail_menu=menu,
+                    image_spectrum=image_type, date=date
+                )
+                new_run.__dict__.update(metadata)  # from xml data
+                new_run.__dict__.update(kwargs)  # for user supplied data
+                # that could overwrite what is in metadata
+                new_run.add_images_from_dir()
+                return new_run
+        else:
+            return False
+
+    @staticmethod
+    def import_general_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            # add some rule if does not have run name and spectru
+            new_run = Run(image_dir=data_dir, **kwargs)
+            new_run.add_images_from_dir()
+            return new_run
+
+
+
+    def make_run():
+        pass
+
+    @staticmethod
+    def validate_run_name(text=None):
+        '''
+        Validates a given run name to ensure it can be used safely. Shows
+        an error message to the user if the run name is not valid and clears
+        the run name lineEdit widget.
+
+        In order for a run name to be valid it must contain only UTF-8
+        codable characters and not already be in use by another
+        run object. This is because the run name is used as a key to refer
+        to the run object in other functions.
+
+        :param text: String. The run name to be validated.
+        '''
+        validator_result = run_name_validator(text, self.current_run_names)
+        message = None
+        if validator_result == UnicodeError:
+            message = 'Run name is not UTF-8 Compliant'
+        elif validator_result == TypeError:
+            message = 'Run name must not be empty.'
+        elif not validator_result:  # result is false already exists
+            message = 'Run name already exists, please pick a unique name.'
+            # TODO option to overwrite the run of that same name
+        
+        if message:
+            return make_message_box(message).exec_()
+        else:
+            return True
+
+        def read_xml_data(self, dir_path):
+            # read xml data from HWI uncompressed rar files
+            reader = XmlReader(dir_path)
+            plate_data = reader.find_and_read_plate_data(dir_path)
+            if isinstance(plate_data, dict) and plate_data:
+                return plate_data
+            else:
+                return {}  # empty dict so always safe to pass to update method
 
 
 class RunImporterDialog(QtWidgets.QDialog):
@@ -55,7 +219,7 @@ class RunImporterDialog(QtWidgets.QDialog):
     directories of images.
     '''
 
-    def __init__(self, current_run_names):
+    def __init__(self, current_run_names, parent=None):
         '''Create instance of RunImporterDialog. Used to import screening
         images from an uncompressed directory of images.
 
@@ -63,7 +227,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             current Polo session (Run names should be unique)
         :type current_run_names: list or set
         '''
-        QtWidgets.QDialog.__init__(self)
+        super(RunImporterDialog, self).__init__(parent)
         self.current_run_names = current_run_names
         # Data and UI setup
         self.ui = Ui_Dialog()
@@ -266,7 +430,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         '''
         dir_path = self.ui.lineEdit.text()
         if os.path.exists(dir_path):
-            dir_data = parse_hwi_dir_metadata(dir_path)
+            dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
             if isinstance(dir_data, ValueError):
                 make_message_box('Selected directory does not conform to HWI naming\
                     conventions. Could not make suggestions.').exec_()
@@ -376,7 +540,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             QApplication.restoreOverrideCursor()
             r = import_thread.result
             if isinstance(r, Path):
-                validator_result = directory_validator(str(r))
+                validator_result = RunImporter.directory_validator(str(r))
                 if validator_result:
                     self.current_dir_path_lineEdit.setText(str(r))
                     if self.ui.stackedWidget.currentIndex() == 0:
@@ -440,7 +604,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         # read xml data from HWI uncompressed rar files
         reader = XmlReader(dir_path)
         plate_data = reader.find_and_read_plate_data(dir_path)
-        print(plate_data, 'data at read xml data')
         if isinstance(plate_data, dict) and plate_data:
             return plate_data
         else:
@@ -458,31 +621,57 @@ class RunImporterDialog(QtWidgets.QDialog):
         run_name = self.current_run_name_lineEdit.text()
         dir_name = self.current_dir_path_lineEdit.text()
         date = self.current_dateEdit.dateTime().toPyDateTime()
+        
 
+        kwargs = {
+            'run_name': run_name, 'date': date
+        }
         if current_index == 0:
-            cocktail_menu = tim.get_menu_by_basename(
+            # add cocktail selection
+            kwargs['cocktail_menu'] = tim.get_menu_by_basename(
                 self.ui.comboBox_3.currentText())
-            plate_data = self.read_xml_data(dir_name)
-            print(dir_name, 'dir name')
-            print(plate_data)
-            new_run = HWIRun(
-                image_dir=dir_name,
-                run_name=run_name,
-                cocktail_menu=cocktail_menu,
-                image_spectrum=self.ui.comboBox_2.currentText(),
-                date=date,
-                **plate_data  # update dict via kwargs
-            )
-            print(list(new_run.__dict__.keys()))
-
+            kwargs['image_spectrum'] = self.ui.comboBox_2.currentText()
+        elif current_index == 2:
+            kwargs['image_spectrum'] = self.ui.comboBox_4.currentText()
         else:
-            image_spectrum = None  # TODO add spectrum selection for all runs
-            if current_index == 2:
-                image_spectrum = self.ui.comboBox_4.currentText()
+            kwargs['image_spectrum'] = IMAGE_SPECS[0]
+            # default to visible TODO make this less ugly
 
-            new_run = Run(image_dir=dir_name, run_name=run_name,
-                          image_spectrum=image_spectrum, date=date)
-        if new_run != None:
-            new_run.add_images_from_dir()
+        new_run = RunImporter.import_run_from_directory(
+            dir_name, **kwargs
+        )
+
+        if isinstance(new_run, (Run, HWIRun)):
             self.new_run = new_run
             self.close()
+        else:
+            print(type(new_run))
+
+
+
+        #     cocktail_menu = tim.get_menu_by_basename(
+        #         self.ui.comboBox_3.currentText())
+        #     plate_data = self.read_xml_data(dir_name)
+        #     print(dir_name, 'dir name')
+        #     print(plate_data)
+        #     new_run = HWIRun(
+        #         image_dir=dir_name,
+        #         run_name=run_name,
+        #         cocktail_menu=cocktail_menu,
+        #         image_spectrum=self.ui.comboBox_2.currentText(),
+        #         date=date,
+        #         **plate_data  # update dict via kwargs
+        #     )
+        #     print(list(new_run.__dict__.keys()))
+
+        # else:
+        #     image_spectrum = None  # TODO add spectrum selection for all runs
+        #     if current_index == 2:
+        #         image_spectrum = self.ui.comboBox_4.currentText()
+
+        #     new_run = Run(image_dir=dir_name, run_name=run_name,
+        #                   image_spectrum=image_spectrum, date=date)
+        # if new_run != None:
+        #     new_run.add_images_from_dir()
+        #     self.new_run = new_run
+        #     self.close()

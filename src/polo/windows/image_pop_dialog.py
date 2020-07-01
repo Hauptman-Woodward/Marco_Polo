@@ -117,11 +117,11 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.close()
 
     def show_alt_image(self, next_date=False, prev_date=False, alt=False):
-        if next_date:
+        if next_date and self.image.next_image:
             self.image = self.image.next_image
-        elif prev_date:
+        elif prev_date and self.image.prev_date:
             self.image = self.image.prev_date
-        elif alt:
+        elif alt and self.image.alt_image:
             self.image = self.image.alt_image
 
     def set_allowed_navigation_functions(self):

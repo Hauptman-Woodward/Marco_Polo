@@ -23,6 +23,9 @@ from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
 from polo.utils.dialog_utils import make_message_box
+from polo.utils.unrar_utils import unrar_archive
+from polo import SPEC_KEYS, IMAGE_SPECS
+
 
 logger = make_default_logger(__name__)
 
@@ -150,7 +153,7 @@ class HtmlWriter(RunSerializer):
         '''
         result = str(self.thread.result)
         print(result)
-        # creating message on thread possibly be causing an issue 
+        # creating message on thread possibly be causing an issue
         # if os.path.exists(result):
         #     message = 'Export to {} was successful'.format(result)
         # else:
@@ -471,9 +474,8 @@ class XtalWriter(RunSerializer):
 
 class RunDeserializer():  # convert saved file into a run
 
-    def __init__(self, xtal_path, main_window):
+    def __init__(self, xtal_path):
         self.xtal_path = xtal_path
-        self.main_window = main_window
 
     @staticmethod
     def clean_base64_string(string):
@@ -547,13 +549,16 @@ class RunDeserializer():  # convert saved file into a run
         loaded_run dictionary to signify that the run has been loaded and is
         ready for further operations.
         '''
-        thread = QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
+        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
-        def finished():
-            self.main_window.add_loaded_run(thread.result)
+        # def finished():
+        #     self.main_window.add_loaded_run(thread.result)
 
-        thread.finished.connect(finished)
+        # thread.finished.connect(finished)
         thread.start()
+
+    def make_read_xtal_thread(self):
+        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -867,97 +872,54 @@ class CocktailMenuReader():
         return cocktail_menu
 
 
-class RunImporter():
-
-    def __init__(self, *args):
-        runs = args  # runs to be imported could be dirs rars or mixes
-    
-    def crack_open_a_rar_one(self, rar_path):
-        if not isinstance(rar_path, Path):
-            rar_path = Path(rar_path)
-        parent_path = rar_path.parent
-        return unrar_archive(rar_path, parent_path)
-    
-    def validate_run_name(self, text=None):
-        '''
-        Validates a given run name to ensure it can be used safely. Shows
-        an error message to the user if the run name is not valid and clears
-        the run name lineEdit widget.
-
-        In order for a run name to be valid it must contain only UTF-8
-        codable characters and not already be in use by another
-        run object. This is because the run name is used as a key to refer
-        to the run object in other functions.
-
-        :param text: String. The run name to be validated.
-        '''
-        validator_result = run_name_validator(text, self.current_run_names)
-        message = None
-        if validator_result == UnicodeError:
-            message = 'Run name is not UTF-8 Compliant'
-        elif validator_result == TypeError:
-            message = 'Run name must not be empty.'
-        elif not validator_result:  # result is false already exists
-            message = 'Run name already exists, please pick a unique name.'
-            # TODO option to overwrite the run of that same name
-        
-        if message:
-            return make_message_box(message).exec_()
-        else:
-            return True
-
-        def read_xml_data(self, dir_path):
-            # read xml data from HWI uncompressed rar files
-            reader = XmlReader(dir_path)
-            plate_data = reader.find_and_read_plate_data(dir_path)
-            if isinstance(plate_data, dict) and plate_data:
-                return plate_data
-            else:
-                return {}  # empty dict so always safe to pass to update method
-
-
-class PreRun():
-
-    def __init__(self, data_location, date=None, cocktail_menu=None):
-        pass
-    # could do something like this where date is set in this way 
-        
-
-
-
-
-
 class RunLinker():
 
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
 
-    def check_for_date_links(self, runs_list):
-        # determine links by first looking at sample names assume these
-        # sample names to be unique
+    def the_big_link(self):
+        self.link_runs_by_date()
+        self.link_runs_by_spectrum()
 
-        # sort the runs by their samples
-        # or for now assume they are of all the same sample and go from there
-        pass
+    def link_runs_by_date(self):
+        for run in self.loaded_runs:
+            if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
+                continue
+            else:
+                print('hipdpdfpdfpdfp')
+                return False
+        runs = [r for r in sorted(
+            self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
+        # only visible runs liked by date
+        if runs:
+            for i in range(0, len(runs)-1):
+                runs[i].link_to_decendent(runs[i+1])
+        return runs
 
-    def link_runs_by_date(self, runs_list):
-        runs_list = sorted(runs_list, key=lambda run: run.date)
-        for i in range(len(runs_list)-1):
-            runs_list[i].link_to_decendent(runs_list[i+1])
-    
-    def link_runs_by_spectrum(self, runs_list):
-        runs_list = sorted(runs_list, key=lambda run: len(run.image_spectrum))
-        # for consistent ordering
-        for i in range(len(runs_list)-1):
-            runs_list[i].link_to_alt_spectrum(run_list[i+1])
-        first_run, last_run = (
-            runs_list[0],
-            runs_list[-1]
-        )
-        last_run.link_to_alt_spectrum(first_run)
-    
+    def link_runs_by_spectrum(self):
+        for run in self.loaded_runs:
+            if hasattr(run, 'link_to_alt_spectrum'):
+                continue
+            else:
+                return False
+        visible, other = [], []
+        for run in self.loaded_runs:
+            if run.image_spectrum == IMAGE_SPECS[0]:
+                visible.append(run)
+            else:
+                other.append(run)
+        # now have sorted by spectrums
+        if other and visible:
+            print(other, visible)
+            for v_run in visible:  # all in visible spectrum
+                if v_run:
+                    spec_list = sorted(other.append(
+                        v_run), key=lambda r: len(str(r.image_spectrum)))
+                    for i in range(0, len(spec_list)):
+                        spec_list[i].link_to_alt_spectrum(spec_list[i+1])
 
-        
+                    spec_list[-1].link_to_alt_spectrum(spec_list[0])
+                # ties the head and tail together
 
 
 class XmlReader():
@@ -965,7 +927,7 @@ class XmlReader():
     platedef_key = 'platedef'  # keyword that is always in plate definition
     # xml file names
 
-    def __init__(self, xml_path, xml_files=[]):
+    def __init__(self, xml_path=None, xml_files=[]):
         '''XmlReader class can be used to read the xml metadata files that are
         included in HWI screening run rar archives. Currently, is primarily ment
         to extract metadata about the plate and the sample in that plate
@@ -1064,34 +1026,6 @@ class Menu():  # holds the dictionary of cocktails
             self.__cocktails = new_cocktails
         else:
             self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
-
-    # @property
-    # def path(self):
-    #     '''Property to return the Menu instance's path attribute
-
-    #     :return: The path attribute
-    #     :rtype: str or IO
-    #     '''
-    #     return self.__path
-
-    # @path.setter
-    # def path(self, new_path):
-    #     '''Setter function for path attribute. Creates an instance of
-    #     a CocktailMenuReader class and passes the path attribute to it.
-    #     Then uses the CocktailMenuReader instance to read the contents of
-    #     the new_path (which should be a csv file) as Cocktail objects.
-    #     Cocktail instances are added to the __cocktail dict by their
-    #     well number assignment.
-
-    #     :param new_path: [description]
-    #     :type new_path: [type]
-    #     '''
-    #     self.__path = new_path  # set the path to the new_path
-    #     print('new path made')
-    #     cocktail_reader = CocktailMenuReader(open(self.path))
-    #     for i, cocktail in enumerate(cocktail_reader):
-    #         self.cocktails[cocktail.well_assignment] = cocktail
-        # create dictionary from cocktails, key is the well number (assignment)
 
 
 class BulkImporter():

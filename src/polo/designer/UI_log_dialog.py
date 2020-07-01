@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/eholl/Documents/Github/Marco_Polo/pyqt_designer/log_dialog.ui'
+# Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/log_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #

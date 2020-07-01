@@ -6,7 +6,6 @@ from polo import *
 from polo.crystallography.image import Image
 # from polo.utils.io_utils import list_dir_abs, parse_HWI_filename_meta
 from polo.utils.io_utils import if_dir_not_exists_make, list_dir_abs, parse_HWI_filename_meta
-
 logger = make_default_logger(__name__)
 
 
@@ -324,14 +323,14 @@ class HWIRun(Run):
         )
 
 
-    def link_to_predecessor(self, other_run):
-        if type(other_run) == HWIRun:
-            logger.info('Linking {} to {}'.format(self, other_run))
-            for current_image, pred_image in zip(self.images, other_run.images):
-                if current_image:
-                    current_image.previous_image = pred_image
-                if pred_image:
-                    pred_image.next_image = current_image
+    # def link_to_predecessor(self, other_run):
+    #     if type(other_run) == HWIRun:
+    #         logger.info('Linking {} to {}'.format(self, other_run))
+    #         for current_image, pred_image in zip(self.images, other_run.images):
+    #             if current_image:
+    #                 current_image.previous_image = pred_image
+    #             if pred_image:
+    #                 pred_image.next_image = current_image
 
     def link_to_decendent(self, other_run):
         if type(other_run) == HWIRun:
@@ -422,4 +421,3 @@ class HWIRun(Run):
         logger.info('Added {} images from {} to {}'.format(
             len(self.images), self.image_dir, self
         ))
-        print(type(self.cocktail_menu), 'MENU \n\n\n')
