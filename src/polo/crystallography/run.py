@@ -89,12 +89,9 @@ class Run():
                 Image(path=str(image_path), spectrum=self.image_spectrum,
                       date=self.date)
             )
-            
-    # def add_image_from_path(self, image_path):
-    #     self.images.append(
-    #         Image(path=str(image_path), spectrum=self.image_spectrum,
-    #         )
-    #     )
+    
+    def unload_all_pixmaps(self):
+        [image.unload_pixmap() for image in self.images if image]
 
     def get_images_by_classification(self, human=True):
         '''

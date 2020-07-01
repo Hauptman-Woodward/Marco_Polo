@@ -24,6 +24,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     opening_run = pyqtSignal(list)
     classify_run = pyqtSignal(list)
+    ftp_download_status(bool)
 
     def __init__(self, parent=None, loaded_runs={},
                  classified_runs={}, auto_link_runs=True):
@@ -35,6 +36,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.current_run = None
         self.added_runs_counter = 0
         self.classified_runs = {}
+        self.shown_unrar_message = False
 
         self.ui.runTree.itemDoubleClicked.connect(self.handle_opening_run)
 
@@ -116,10 +118,20 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ui.runTree.add_run_to_tree(run_importer_dialog.new_run)
 
     def import_run_from_ftp(self):
-        if not test_for_working_unrar:
+        if not test_for_working_unrar() and not self.shown_unrar_message:
             msg = make_message_box(
-                message='No working unrar installtion found. If you download files via FTP you will have to unrar and import them manually')
+                message='No working unrar installtion found. If you download files via FTP you will have to unrar and import them manually',
+                parent=self)
+            self.shown_unrar_message = True
             msg.exec_()
+        if hasattr(self, 'ftp_download_thread') and self.ftp_download_thread.isRunning():
+            msg = make_message_box(
+                message='FTP download already in progress.',
+                parent=self
+            )
+            msg.exec_()
+            return
+            
         ftp_browser = FTPDialog(parent=self)
         if ftp_browser.ftp and ftp_browser.download_files and ftp_browser.save_dir:
             self.ftp_download_thread = FTPDownloadThread(
@@ -127,11 +139,15 @@ class RunOrganizer(QtWidgets.QWidget):
             )
             self.ftp_download_thread.download_path.connect(
                 self.handle_ftp_download)
+            self.ftp_dowload_thread.finished.connect(
+                lambda: self.ftp_download_status.emit(False)
+            )
+            self.ftp_download_status.emit(True)
             self.ftp_download_thread.start()
 
     def handle_ftp_download(self, file_path):
 
-        if test_for_working_unrar:
+        if test_for_working_unrar():
             print(file_path, 'filepath at handle_ftp_download')
             unpacker = RunImporter.unpack_rar_archive_thread(file_path)
             if unpacker:

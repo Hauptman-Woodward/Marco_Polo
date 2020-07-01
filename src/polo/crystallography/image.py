@@ -117,6 +117,9 @@ class Image():
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
+    
+    def unload_pixmap(self):  # used to save memory
+        self.__pixmap = None
 
     @property
     def pixmap(self):

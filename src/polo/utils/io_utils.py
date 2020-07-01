@@ -913,9 +913,10 @@ class RunLinker():
             print(other, visible)
             for v_run in visible:  # all in visible spectrum
                 if v_run:
-                    spec_list = sorted(other.append(
-                        v_run), key=lambda r: len(str(r.image_spectrum)))
-                    for i in range(0, len(spec_list)):
+                    other.append(v_run)
+                    print(other)
+                    spec_list = sorted(other, key=lambda r: len(str(r.image_spectrum)))
+                    for i in range(0, len(spec_list)-1):
                         spec_list[i].link_to_alt_spectrum(spec_list[i+1])
 
                     spec_list[-1].link_to_alt_spectrum(spec_list[0])

@@ -102,7 +102,7 @@ class RunImporter():
             return image_type, plate_id, date, dir_name  # last is suggeseted run name
         except (ValueError, IndexError) as e:
             logger.error('Caught {} at {} attempting to parse {}'.format(
-                e, parse_hwi_dir_metadata, dir_name
+                e, RunImporter.parse_hwi_dir_metadata, dir_name
             ))
             return False
     
