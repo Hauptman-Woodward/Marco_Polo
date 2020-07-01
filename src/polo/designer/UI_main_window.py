@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/main_window.ui'
+# Form implementation generated from reading ui file '/home/eholl/Documents/Github/Marco_Polo/pyqt_designer/main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.groupBox_28 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_28.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.groupBox_28.setMaximumSize(QtCore.QSize(400, 16777215))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -802,8 +802,8 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionBeta_Tester_s_Guide.setText(_translate("MainWindow", "Beta Tester\'s Guide"))
         self.actionEdit_Current_Run_Data.setText(_translate("MainWindow", "Edit Current Run Data"))
-from polo.widgets.file_browser import RunOrganizer
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
+from polo.widgets.run_organizer import RunOrganizer
 from polo.widgets.slideshow_inspector import slideshowInspector
 from polo.widgets.table_inspector import TableInspector

@@ -149,12 +149,14 @@ class HtmlWriter(RunSerializer):
         anything other than a Qthread instance.
         '''
         result = str(self.thread.result)
-        if os.path.exists(result):
-            message = 'Export to {} was successful'.format(result)
-        else:
-            message = 'Export to HTML file failed. Returned {}'.format(result)
-        logger.info('Html write attempt status: {}'.format(message))
-        HtmlWriter.make_message_box(message=message).exec_()
+        print(result)
+        # creating message on thread possibly be causing an issue 
+        # if os.path.exists(result):
+        #     message = 'Export to {} was successful'.format(result)
+        # else:
+        #     message = 'Export to HTML file failed. Returned {}'.format(result)
+        # logger.info('Html write attempt status: {}'.format(message))
+        # HtmlWriter.make_message_box(message=message).exec_()
 
     def write_complete_run(self, output_path, encode_images=True):
         # write a run as html file with images and classifications
@@ -802,7 +804,7 @@ class CocktailMenuReader():
                     attributes
         :type map: dict
         '''
-        cls.cocktail_map = cocktail_map
+        cls.cocktail_map = map
 
     @classmethod
     def set_formula_pos(cls, pos):
@@ -940,7 +942,7 @@ class RunLinker():
 
     def link_runs_by_date(self, runs_list):
         runs_list = sorted(runs_list, key=lambda run: run.date)
-        for i in range(len(runs_list)-1)):
+        for i in range(len(runs_list)-1):
             runs_list[i].link_to_decendent(runs_list[i+1])
     
     def link_runs_by_spectrum(self, runs_list):

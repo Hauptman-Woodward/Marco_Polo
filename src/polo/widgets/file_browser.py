@@ -64,7 +64,8 @@ class RunOrganizer(QtWidgets.QTreeWidget):
     def classify_all_loaded_runs(self):
         pass
 
-    def classify_run(self)
+    def classify_run(self):
+        pass
 
 
     def add_run_to_tree(self, new_run):

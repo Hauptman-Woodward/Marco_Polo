@@ -2774,3 +2774,146 @@ Error Message: Traceback (most recent call last): File "/home/ethan/Documents/gi
 Value: 'str' object has no attribute 'run_name'
  Error Type: <class 'AttributeError'>
 
+INFO:2020-06-30 19:53:31,564:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 19:53:32,697:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f50dc60cb88>
+INFO:2020-06-30 19:53:32,697:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f50dc60cb88>
+INFO:2020-06-30 19:53:32,793:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 19:53:32,891:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f50dc3d6af8>
+INFO:2020-06-30 19:53:33,281:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 19:54:04,852:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 19:54:04,911:polo.utils.dialog_utils:17:Made message box with message "Polo was unable to find a working unrar program for
+            your operating system. Polo will only be able to import images
+            from uncompressed directories. For for information on installing
+            unrar for Polo please visit this link LINK HERE"
+INFO:2020-06-30 19:55:47,705:polo.windows.main_window:269:User attempted to export with no current run
+INFO:2020-06-30 19:55:47,708:polo.windows.main_window:396:Made message box with message "Please load a run first"
+INFO:2020-06-30 20:02:54,343:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:02:54,437:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2861a2eb88>
+INFO:2020-06-30 20:02:54,438:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2861a2eb88>
+INFO:2020-06-30 20:02:54,445:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:02:54,452:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f2858f6daf8>
+INFO:2020-06-30 20:02:54,457:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:03:05,217:polo.windows.ftp_dialog:42:Opened FTP Dialog
+INFO:2020-06-30 20:03:27,935:polo.windows.ftp_dialog:101:Connected to FTP server
+INFO:2020-06-30 20:03:52,620:polo.windows.ftp_dialog:182:Attempting to download over FTP to /home/eholl/Pictures
+INFO:2020-06-30 20:09:15,837:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:09:15,838:polo.utils.dialog_utils:17:Made message box with message "Polo was unable to find a working unrar program for
+            your operating system. Polo will only be able to import images
+            from uncompressed directories. For for information on installing
+            unrar for Polo please visit this link LINK HERE"
+INFO:2020-06-30 20:10:18,893:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:10:31,350:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:10:33,760:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281214-jpg to <polo.crystallography.run.HWIRun object at 0x7f2845bbffd0>
+CRITICAL:2020-06-30 20:10:33,764:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 187, in handle_image_import
+    self.open_run_import_dialog() File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 159, in open_run_import_dialog
+    self.add_loaded_run(importer_dialog.new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 344, in add_loaded_run
+    self.runOrganizer.add_run(run) AttributeError: 'RunOrganizer' object has no attribute 'add_run'
+Value: 'RunOrganizer' object has no attribute 'add_run'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-06-30 20:14:03,947:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:14:04,040:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5da94e0b88>
+INFO:2020-06-30 20:14:04,040:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5da94e0b88>
+INFO:2020-06-30 20:14:04,047:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:14:04,054:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f5d9c3dcaf8>
+INFO:2020-06-30 20:14:04,060:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:14:10,583:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:14:17,972:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:14:20,017:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7f5d708d5f98>
+CRITICAL:2020-06-30 20:14:20,019:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 187, in handle_image_import
+    self.open_run_import_dialog() File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 159, in open_run_import_dialog
+    self.add_loaded_run(importer_dialog.new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 344, in add_loaded_run
+    self.runOrganizer.add_run_node(run) TypeError: add_run_node() missing 1 required positional argument: 'run'
+Value: add_run_node() missing 1 required positional argument: 'run'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-06-30 20:14:36,867:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:14:36,960:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fcc5e6deb88>
+INFO:2020-06-30 20:14:36,960:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fcc5e6deb88>
+INFO:2020-06-30 20:14:36,968:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:14:36,974:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fcc48d7caf8>
+INFO:2020-06-30 20:14:36,980:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:14:41,594:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:14:46,799:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:14:55,807:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7fcc25277f98>
+CRITICAL:2020-06-30 20:14:55,809:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 187, in handle_image_import
+    self.open_run_import_dialog() File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 159, in open_run_import_dialog
+    self.add_loaded_run(importer_dialog.new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 344, in add_loaded_run
+    self.runOrganizer.add_run_node(run) TypeError: add_run_node() missing 1 required positional argument: 'run'
+Value: add_run_node() missing 1 required positional argument: 'run'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-06-30 20:16:16,645:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:16:16,774:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc74ec9db88>
+INFO:2020-06-30 20:16:16,774:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc74ec9db88>
+INFO:2020-06-30 20:16:16,788:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:16:16,801:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fc7399d6af8>
+INFO:2020-06-30 20:16:16,810:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:16:20,582:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:16:25,648:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:16:34,121:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7fc715ed3f98>
+CRITICAL:2020-06-30 20:16:34,123:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 187, in handle_image_import
+    self.open_run_import_dialog() File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 159, in open_run_import_dialog
+    self.add_loaded_run(importer_dialog.new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 344, in add_loaded_run
+    self.runOrganizer.add_run_node(run) TypeError: add_run_node() missing 1 required positional argument: 'run'
+Value: add_run_node() missing 1 required positional argument: 'run'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-06-30 20:41:54,119:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:41:54,211:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5b9e2fd4c8>
+INFO:2020-06-30 20:41:54,212:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5b9e2fd4c8>
+INFO:2020-06-30 20:41:54,219:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:41:54,226:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f5b9e4dd438>
+INFO:2020-06-30 20:41:54,231:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:41:58,339:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:42:06,703:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:42:16,133:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7f5b6d8ddf98>
+CRITICAL:2020-06-30 20:42:31,001:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/widgets/run_organizer.py", line 31, in handle_opening_run
+    run_name = item.text(0) AttributeError: 'RunOrganizer' object has no attribute 'text'
+Value: 'RunOrganizer' object has no attribute 'text'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-06-30 20:42:38,429:polo.windows.main_window:384:Set run linked tools enabled to True
+INFO:2020-06-30 20:42:38,431:polo.windows.main_window:762:Started classification thread for <polo.crystallography.run.HWIRun object at 0x7f5b6d8ddf98>
+INFO:2020-06-30 20:44:07,696:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:44:07,793:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fce183204c8>
+INFO:2020-06-30 20:44:07,793:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fce183204c8>
+INFO:2020-06-30 20:44:07,802:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:44:07,811:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fcdf00a3438>
+INFO:2020-06-30 20:44:07,818:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:44:16,180:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:44:22,176:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:44:31,067:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7fcdc773ef98>
+CRITICAL:2020-06-30 20:44:31,082:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 187, in handle_image_import
+    self.open_run_import_dialog() File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 159, in open_run_import_dialog
+    self.add_loaded_run(importer_dialog.new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/windows/main_window.py", line 344, in add_loaded_run
+    self.runOrganizer.add_run_to_tree(run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/widgets/run_organizer.py", line 119, in add_run_to_tree
+    self.add_sample(new_run.sampleName, new_run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/widgets/run_organizer.py", line 82, in add_sample
+    self.add_run_node(parent_item, run) File "/home/eholl/Documents/Github/Marco_Polo/src/polo/widgets/run_organizer.py", line 86, in add_run_node
+    new_node = QtWidgets.QTreeWidgetItem(tree) TypeError: index 0 has type 'Image' but 'str' is expected
+Value: index 0 has type 'Image' but 'str' is expected
+ Error Type: <class 'TypeError'>
+
+INFO:2020-06-30 20:47:16,724:__main__:46:Started Polo version 0.0.1
+INFO:2020-06-30 20:47:16,822:polo.widgets.slideshow_viewer:295:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f20167b14c8>
+INFO:2020-06-30 20:47:16,822:polo.widgets.slideshow_viewer:269:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f20167b14c8>
+INFO:2020-06-30 20:47:16,830:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96, 1536]
+INFO:2020-06-30 20:47:16,837:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f1ff5e16438>
+INFO:2020-06-30 20:47:16,843:polo.windows.main_window:97:Created mainWindow object
+INFO:2020-06-30 20:47:25,357:polo.windows.run_importer_dialog:99:Opened run importer dialog
+INFO:2020-06-30 20:47:30,652:polo.utils.dialog_utils:17:Made message box with message "Unpacking rar archive"
+INFO:2020-06-30 20:47:39,700:polo.crystallography.run:423:Added 1536 images from /home/eholl/Pictures/X000015810202004281134-jpg to <polo.crystallography.run.HWIRun object at 0x7f1fd45a5f98>
+CRITICAL:2020-06-30 20:48:11,847:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/eholl/Documents/Github/Marco_Polo/src/polo/widgets/run_organizer.py", line 31, in handle_opening_run
+    run_name = item.text(0) AttributeError: 'RunOrganizer' object has no attribute 'text'
+Value: 'RunOrganizer' object has no attribute 'text'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-06-30 20:51:09,870:polo.windows.main_window:384:Set run linked tools enabled to True
+INFO:2020-06-30 20:51:09,872:polo.windows.main_window:762:Started classification thread for <polo.crystallography.run.HWIRun object at 0x7f1fd45a5f98>

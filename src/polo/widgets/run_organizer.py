@@ -28,6 +28,11 @@ class RunOrganizer(QtWidgets.QTreeWidget):
     
 
     def handle_opening_run(item, self):
+
+        # get currently selected item see if in classified runs and then
+        # decide what to do from here
+
+
         run_name = item.text(0)
         self.current_run = self.loaded_runs[run_name]
         if self.current_run in classified_runs:
@@ -54,6 +59,7 @@ class RunOrganizer(QtWidgets.QTreeWidget):
             )
     
     def finished_ftp_download(self):
+        pass
         
 
             # might make sense to create a run importer class
@@ -78,9 +84,10 @@ class RunOrganizer(QtWidgets.QTreeWidget):
         parent_item.setText(0, sample_name)
         for run in args:
             if isinstance(run, (Run, HWIRun)):
-                self.add_run_node(parent_item, run)
+                self.add_run_node(run, parent_item)
     
-    def add_run_node(self, tree, run):
+    def add_run_node(self, run, tree=None):
+        if not tree: tree = self
         new_node = QtWidgets.QTreeWidgetItem(tree)
         new_node.setText(0, run.run_name)
         new_node.setToolTip(0, run.get_tooltip())
@@ -102,7 +109,8 @@ class RunOrganizer(QtWidgets.QTreeWidget):
     def classify_all_loaded_runs(self):
         pass
 
-    def classify_run(self)
+    def classify_run(self):
+        pass
 
 
     def add_run_to_tree(self, new_run):

@@ -341,7 +341,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if image.machine_class:
                     self.classified_runs[run.run_name] = run
                     break
-            self.runOrganizer.add_run(run)
+            self.runOrganizer.add_run_to_tree(run)
     
 
     def get_widget_dims(self, widget):
