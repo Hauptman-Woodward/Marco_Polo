@@ -72,10 +72,8 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.slideshowViewer.show_all_dates = True
             if self.run:
                 self.display_current_image()
-            print('set show all dates to true')
         else:
             self.ui.slideshowViewer.show_all_dates = False
-            print('set all dates to false')
         if show_all_specs:
             self.ui.slideshowViewer.show_all_specs = True
             if self.run:

@@ -2,7 +2,7 @@ import ftplib
 import os
 from pathlib import Path, PurePosixPath
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
@@ -19,6 +19,7 @@ class RunTree(QtWidgets.QTreeWidget):
         self.loaded_runs = {}
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
+        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
     @property
     def current_run_names(self):
@@ -38,7 +39,6 @@ class RunTree(QtWidgets.QTreeWidget):
         elif isinstance(run, (Run, HWIRun)) and run.run_name in self.loaded_runs:
             self.classified_runs[run.run_name] = self.loaded_runs.pop(
                 run.run_name)
-            print('added classified run')
 
     def add_sample(self, sample_name, *args):
         parent_item = QtWidgets.QTreeWidgetItem(self)

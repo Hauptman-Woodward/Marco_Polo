@@ -200,7 +200,7 @@ class HtmlWriter(RunSerializer):
         :type run_name: str, optional
         '''
         if HtmlWriter.path_validator(output_path, parent=True):
-            output_path = HtmlWriter.path_suffix_checker(ouput_path, '.html')
+            output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             template = HtmlWriter.make_template(SCREEN_HTML_TEMPLATE)
             if not run_name:
                 run_name = self.run.run_name
@@ -891,12 +891,13 @@ class RunLinker():
         runs = [r for r in sorted(
             self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
         # only visible runs liked by date
-        if runs:
+        if runs and len(runs) > 1:  # if length is only one will be linked to self
             for i in range(0, len(runs)-1):
                 runs[i].link_to_decendent(runs[i+1])
         return runs
 
     def link_runs_by_spectrum(self):
+        # for now this links all runs of the sample to the alt spectrums when
         for run in self.loaded_runs:
             if hasattr(run, 'link_to_alt_spectrum'):
                 continue
@@ -904,22 +905,20 @@ class RunLinker():
                 return False
         visible, other = [], []
         for run in self.loaded_runs:
-            if run.image_spectrum == IMAGE_SPECS[0]:
+            if run.image_spectrum == IMAGE_SPECS[0]:  # visible images only
                 visible.append(run)
             else:
                 other.append(run)
         # now have sorted by spectrums
         if other and visible:
-            print(other, visible)
             for v_run in visible:  # all in visible spectrum
                 if v_run:
                     other.append(v_run)
-                    print(other)
                     spec_list = sorted(other, key=lambda r: len(str(r.image_spectrum)))
                     for i in range(0, len(spec_list)-1):
                         spec_list[i].link_to_alt_spectrum(spec_list[i+1])
-
                     spec_list[-1].link_to_alt_spectrum(spec_list[0])
+                    other.pop()  # remove visible run added to other
                 # ties the head and tail together
 
 

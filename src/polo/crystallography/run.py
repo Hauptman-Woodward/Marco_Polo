@@ -67,8 +67,8 @@ class Run():
         return sum([1 for i in self.images if i != None])
     
     def get_tooltip(self):
-        return 'Spectrum: {}\nDate: {}\nNum Images: {}'.format(
-            self.image_spectrum, str(self.date), len(self)
+        return 'Run Name: {}Spectrum: {}\nDate: {}\nNum Images: {}'.format(
+            self.run_name, self.image_spectrum, str(self.date), len(self)
         )
 
     def encode_images_to_base64(self):
@@ -91,7 +91,8 @@ class Run():
             )
     
     def unload_all_pixmaps(self):
-        [image.unload_pixmap() for image in self.images if image]
+        for image in self.images:
+            del image.pixmap
 
     def get_images_by_classification(self, human=True):
         '''
@@ -318,7 +319,6 @@ class HWIRun(Run):
         return super().get_tooltip() + '\nCocktail Version: {}\nPlate ID: {}'.format(
             os.path.basename(str(self.cocktail_menu.path)), str(platename)
         )
-
 
     # def link_to_predecessor(self, other_run):
     #     if type(other_run) == HWIRun:

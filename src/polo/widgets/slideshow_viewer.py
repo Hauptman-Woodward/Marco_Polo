@@ -1,9 +1,11 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from polo import IMAGE_CLASSIFICATIONS
-from polo.crystallography.image import Image
-from polo.crystallography.run import Run, HWIRun
-from polo import make_default_logger
 import copy
+import math
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from polo import IMAGE_CLASSIFICATIONS, make_default_logger
+from polo.crystallography.image import Image
+from polo.crystallography.run import HWIRun, Run
 from polo.widgets.graphics_well import graphicsWell
 
 logger = make_default_logger(__name__)
@@ -156,7 +158,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
             # self.setSceneRect(rect)
-            print('st the scene ')
             self.setScene(self.__scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
@@ -167,43 +168,20 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self.__zoom = 0
-        else:
-            print('did not set the scene')
 
     def set_scene(self, graphics_scene):
         # should do same thing as set_image but with a graphics scene
-        print(graphics_scene, 'scene at set scene')
         if graphics_scene:
-            print('set scene true')
             self.__empty = False
             self.__scene = graphics_scene
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
         # call fit in view
         else:
-            print('set scene false')
             self.__empty = True
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
             self.__scene = QtWidgets.QGraphicsScene(
                 self)  # reset the graphics scene
         self.fitInView()
-
-    # def set_image(self, pixmap=None):
-    #     '''Sets a pixelmap as the current photo and fits into view.
-
-    #     :param pixmap: Pixelmap to display, defaults to None
-    #     :type pixmap: Pixmap, optional
-    #     '''
-    #     self.__zoom = 0
-    #     if pixmap:
-    #         self.__empty = False
-    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-    #         print(type(self.__photo))
-    #         self.__photo.setPixmap(pixmap)
-    #     else:
-    #         self.__empty = True
-    #         self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-    #         self.__photo.setPixmap(QtGui.QPixmap())
-    #     self.fitInView()
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -360,7 +338,6 @@ class SlideshowViewer(PhotoViewer):
 
     def arrange_multi_image_scene(self, image_list):
         x, y = 0, 0  # set starting cords
-        print(image_list)
         scene = QtWidgets.QGraphicsScene(self)
         for item in image_list:
             if isinstance(item, (list, tuple)):  # 2D list
