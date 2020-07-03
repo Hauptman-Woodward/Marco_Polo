@@ -43,3 +43,54 @@ labeling software such as `MacroscopeJ <https://hwi.buffalo.edu/wp-content/uploa
 to create a GUI targeted for HWI and other high-throughput crystallization screening
 users that incorporates all the tools needed to go from raw crystallization images
 to designing optimization screens without the need to install any dependencies. 
+
+Features
+----------------
+
+Automatic Image Classification
+++++++++++++++++++++++++++
+Using the MARCO model Polo can cut down the time you spend looking 
+through your crystallization images by identifying wells likely to 
+contain a protein crystal. This can reduce the total number of 
+images that need to be considered from thousands to hundreds.
+
+Multiple Image View Modes
++++++++++++++++++++++++
+Polo allows you to view your crystallization images in a variety of 
+ways that make it easier to identify true crystal hits. Images can be 
+viewed individually or in grids of up to 96. 
+If a sample has been imaged at multiple points in time it is easy 
+to create timeline views that allow you to assess the effectiveness 
+of a screening condition over time. Additionally, if your samples 
+have been imaged with photographic technologies outside of visible 
+light microscopy it is easy to compare these images to verify 
+the presence of protein crystals.
+
+Integrated FTP Browser
++++++++++++++++++++++++++++
+Polo includes an simple FTP browser that allows you to download image 
+files from a remote server directly into Polo without then need to 
+install other software such as FileZilla. Polo is also packaged with 
+unrar for Windows and Mac.
+
+Data Management
+++++++++++++++++++++++
+
+Your image classifications are easily saved and managed via the xtal file format. Xtal files are similar to mso files created by MacroscopeJ and encode your image classifications, MARCO classifications, cocktail formulation and other metadata. In addition, xtal files increase portability 
+by encoding your screening images directly into the file along side your 
+metadata. This allows your classifications to be easily shared with 
+one file to anyone else with Polo on their computer. 
+
+Polo also has options to export your runs to csv files without 
+encoding your screening images or to HTML reports for a more 
+visual way to share your results with those who do not use Polo.
+
+Open Source Code Base
+++++++++++++++++++++++
+
+Polo is written in Python and is licensed under the 
+GNU 3.X license. This allows for modification and use of any of the 
+Polo source code. If you wish to change modify or extend any of 
+Polo’s functionality you are free to do so. Additionally, 
+documentation is available at THIS LINK. 
+
