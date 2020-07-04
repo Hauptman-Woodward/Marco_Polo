@@ -3,17 +3,18 @@ import os
 import time
 from pathlib import Path
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger)
 from polo.marco.run_marco import classify_image
+from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 
 
-class Image():
+class Image(QtGui.QPixmap):
 
     '''Image objects hold the data relating to one image of a particular
     screening well in a larger run. Images encode the actual image file as
@@ -58,8 +59,9 @@ class Image():
                  machine_class=None, prediction_dict=None,
                  plate_id=None, date=None, cocktail=None, spectrum=None,
                  previous_image=None, next_image=None, alt_image=None,
-                 favorite=False, **kwargs):
-
+                 favorite=False, parent=None, **kwargs):
+        
+        super(Image, self).__init__(parent)
         self.path = str(path)
         self.bites = bites
         self.human_class = human_class
@@ -113,6 +115,31 @@ class Image():
         # return default no images found image instance
         return cls(path=DEFAULT_IMAGE_PATH)
 
+    def setPixmap(self):
+        if os.path.exists(self.path):
+            self.load(self.path)
+        elif isinstance(self.bites, bytes):
+            self.loadFromData(base64.b64decode(self.bites))
+    
+    def delete_pixmap_data(self):
+        self.swap(QPixmap())  # swap with null pixel map
+
+    
+
+    def height(self):
+        return self.size().height()
+    
+    def width(self):
+        return self.size().width()
+
+    
+    def set_color(self, QColor, strength=0.5):
+        effect = QGraphicsColorizeEffect()
+        effect.setColor(QColor)
+        effect.setStrength(strength)
+        self.setGraphicsEffect(effect)
+
+
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
         image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
@@ -122,21 +149,21 @@ class Image():
 
         return image_string
 
-    @property
-    def pixmap(self):
-        if not self.__pixmap:
-            self.__pixmap = self.make_pixmap()
-            print('made new pixelmap')
-        return self.__pixmap
+    # @property
+    # def pixmap(self):
+    #     if not self.__pixmap:
+    #         self.__pixmap = self.make_pixmap()
+    #         print('made new pixelmap')
+    #     return self.__pixmap
 #            return self.make_pixmap()
 # need to make graphics wells referecne this pixmap
 
-    @pixmap.deleter
-    def pixmap(self):
-        if self.__pixmap:
-            self.__pixmap.clear()
-            del self.__pixmap
-            self.__pixmap = None
+    # @pixmap.deleter
+    # def pixmap(self):
+    #     if self.__pixmap:
+    #         self.__pixmap.clear()
+    #         del self.__pixmap
+    #         self.__pixmap = None
 
     @property
     def path(self):
@@ -238,14 +265,14 @@ class Image():
                 self.bites = base64.b64encode(image_file.read())
                 return self.bites
 
-    def make_pixmap(self):
-        pm = QPixmap()
-        if os.path.exists(self.path):
-            pm.load(self.path)
-        elif isinstance(self.bites, bytes):
-            pm.loadFromData(base64.b64decode(self.bites))
-        pm.scaled(int(pm.height() * 0.5), int(pm.width() * 0.5), Qt.KeepAspectRatio)
-        return pm
+    # def make_pixmap(self):
+    #     pm = QPixmap()
+    #     if os.path.exists(self.path):
+    #         pm.load(self.path)
+    #     elif isinstance(self.bites, bytes):
+    #         pm.loadFromData(base64.b64decode(self.bites))
+    #     pm.scaled(int(pm.height() * 0.5), int(pm.width() * 0.5), Qt.KeepAspectRatio)
+    #     return pm
 
     def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes
@@ -260,14 +287,14 @@ class Image():
             with open(self.path, 'rb') as image:
                 return base64.b64encode(image.read())
 
-    def resize(self, x, y, preserve_aspect=True):
-        '''
-        Resizes an image given x and y resolution. Copy is true will copy
-        the image instead of overwriting it.
-        '''
-        pixel_map = self.get_pixel_map()
-        if preserve_aspect:
-            return pixel_map.scaled(x, y, QtCore.Qt.KeepAspectRatio)
+    # def resize(self, x, y, preserve_aspect=True):
+    #     '''
+    #     Resizes an image given x and y resolution. Copy is true will copy
+    #     the image instead of overwriting it.
+    #     '''
+    #     pixel_map = self.get_pixel_map()
+    #     if preserve_aspect:
+    #         return pixel_map.scaled(x, y, QtCore.Qt.KeepAspectRatio)
 
     def get_tool_tip(self):
         '''Format a string to use as a tooltip for this image instance.

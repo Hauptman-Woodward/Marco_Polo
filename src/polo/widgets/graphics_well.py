@@ -8,11 +8,14 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
 
 
+
+
+
 class graphicsWell(QtWidgets.QGraphicsPixmapItem):
 
-    def __init__(self, parent=None, image=None):
+    def __init__(self, pixmap, parent=None, **kwargs):
         QtWidgets.QGraphicsPixmapItem.__init__(self, parent=parent)
-        self.image = image  # image object
+        
         # self.setPixmap()
         self.setToolTip()
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)

@@ -7626,3 +7626,1402 @@ INFO:2020-07-02 18:28:35,281:polo.widgets.optimize_widget:173:Identified 0 hit i
 INFO:2020-07-02 18:28:35,281:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f22abd07f98>
 INFO:2020-07-02 18:28:35,282:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f22dc642288> run to <polo.crystallography.run.HWIRun object at 0x7f22abd07f98>
 INFO:2020-07-02 18:28:35,282:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 12:44:37,368:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:44:37,605:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7fa25865e8>
+INFO:2020-07-04 12:44:37,605:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7fa25865e8>
+INFO:2020-07-04 12:44:37,620:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:44:37,628:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f7fa25b3558>
+INFO:2020-07-04 12:44:37,636:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:44:49,391:polo.widgets.slideshow_viewer:267:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7fa25865e8> set to <polo.crystallography.run.HWIRun object at 0x7f7f6853cd68>
+INFO:2020-07-04 12:44:49,397:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f7fa25969e8>
+INFO:2020-07-04 12:44:49,398:polo.widgets.slideshow_viewer:331:Applied filters {'Precipitate', 'Crystals', 'Clear', 'Other'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7fa25865e8>
+CRITICAL:2020-07-04 12:44:49,398:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 207, in handle_opening_run
+    self.slideshowInspector.run = self.current_run File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 115, in run
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 395, in display_current_image
+    self.set_single_image_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 374, in set_single_image_scene
+    well = graphicsWell(image=image) TypeError: __init__() missing 1 required positional argument: 'pixmap'
+Value: __init__() missing 1 required positional argument: 'pixmap'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 12:45:12,309:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:45:12,386:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe41f0a75e8>
+INFO:2020-07-04 12:45:12,387:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe41f0a75e8>
+INFO:2020-07-04 12:45:12,394:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:45:12,399:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fe404c95558>
+INFO:2020-07-04 12:45:12,403:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:45:21,389:polo.widgets.slideshow_viewer:267:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe41f0a75e8> set to <polo.crystallography.run.HWIRun object at 0x7fe3e4343240>
+INFO:2020-07-04 12:45:21,400:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7fe41f0b5e80>
+INFO:2020-07-04 12:45:21,400:polo.widgets.slideshow_viewer:331:Applied filters {'Other', 'Crystals', 'Precipitate', 'Clear'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe41f0a75e8>
+CRITICAL:2020-07-04 12:45:21,402:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 207, in handle_opening_run
+    self.slideshowInspector.run = self.current_run File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 115, in run
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 395, in display_current_image
+    self.set_single_image_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 374, in set_single_image_scene
+    well = graphicsWell(image=image) TypeError: __init__() missing 1 required positional argument: 'pixmap'
+Value: __init__() missing 1 required positional argument: 'pixmap'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 12:45:57,013:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:45:57,088:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fce936735e8>
+INFO:2020-07-04 12:45:57,088:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fce936735e8>
+INFO:2020-07-04 12:45:57,096:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:45:57,101:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fce81cd3558>
+INFO:2020-07-04 12:45:57,105:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:46:03,619:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fce59384390>.units
+INFO:2020-07-04 12:46:03,655:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fce59384390>.units
+INFO:2020-07-04 12:46:03,675:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:46:03,675:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fce59384390>
+INFO:2020-07-04 12:46:03,675:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fce81cc6168> run to <polo.crystallography.run.HWIRun object at 0x7fce59384390>
+INFO:2020-07-04 12:46:03,675:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 12:46:06,247:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 167, in tile_graphics_wells
+    if item.height() > row_height: AttributeError: 'Image' object has no attribute 'height'
+Value: 'Image' object has no attribute 'height'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 12:47:27,184:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:47:27,269:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f168c82e708>
+INFO:2020-07-04 12:47:27,269:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f168c82e708>
+INFO:2020-07-04 12:47:27,280:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:47:27,286:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f1682e10678>
+INFO:2020-07-04 12:47:27,290:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:47:34,060:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f16601ec5c0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:47:34,076:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f16601ec5c0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:47:34,090:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:47:34,090:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f16601ec5c0>
+INFO:2020-07-04 12:47:34,090:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f1682e01288> run to <polo.crystallography.run.HWIRun object at 0x7f16601ec5c0>
+INFO:2020-07-04 12:47:34,090:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 12:48:18,286:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 47, in <lambda>
+    lambda: self.navigate_plateview(prev_page=True) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 180, in navigate_plateview
+    self.ui.plateViewer.tile_graphics_wells() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 164, in tile_graphics_wells
+    item.setPixmap() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 124, in setPixmap
+    super(Image, self).setPixmap(pm) RuntimeError: wrapped C/C++ object of type Image has been deleted
+Value: wrapped C/C++ object of type Image has been deleted
+ Error Type: <class 'RuntimeError'>
+
+INFO:2020-07-04 12:50:01,252:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:50:01,328:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7faec299f708>
+INFO:2020-07-04 12:50:01,328:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7faec299f708>
+INFO:2020-07-04 12:50:01,336:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:50:01,341:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fae98fe4678>
+INFO:2020-07-04 12:50:01,345:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:50:08,894:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fae88698438>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:50:08,912:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fae88698438>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:50:08,925:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:50:08,926:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fae88698438>
+INFO:2020-07-04 12:50:08,926:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fae98fd4288> run to <polo.crystallography.run.HWIRun object at 0x7fae88698438>
+INFO:2020-07-04 12:50:08,926:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 12:53:42,066:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 216, in apply_plate_settings
+    self.ui.plateViewer.emphasize_all_images() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 250, in emphasize_all_images
+    each_gw.resetOpacity() AttributeError: 'Image' object has no attribute 'resetOpacity'
+Value: 'Image' object has no attribute 'resetOpacity'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 12:54:17,362:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:54:17,438:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c25f91708>
+INFO:2020-07-04 12:54:17,438:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c25f91708>
+INFO:2020-07-04 12:54:17,446:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:54:17,451:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f4bed709678>
+INFO:2020-07-04 12:54:17,455:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:54:25,574:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4bd0dbf3c8>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:54:25,624:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4bd0dbf3c8>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 12:54:25,643:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:54:25,643:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f4bd0dbf3c8>
+INFO:2020-07-04 12:54:25,643:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f4bed6f9288> run to <polo.crystallography.run.HWIRun object at 0x7f4bd0dbf3c8>
+INFO:2020-07-04 12:54:25,643:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 12:55:50,869:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:55:50,943:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe8c8ccc708>
+INFO:2020-07-04 12:55:50,943:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe8c8ccc708>
+INFO:2020-07-04 12:55:50,950:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:55:50,955:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fe8bcc7e678>
+INFO:2020-07-04 12:55:50,960:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:55:58,975:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe890329400>.units
+INFO:2020-07-04 12:55:59,026:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe890329400>.units
+INFO:2020-07-04 12:55:59,044:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:55:59,045:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fe890329400>
+INFO:2020-07-04 12:55:59,045:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fe8bcc6e288> run to <polo.crystallography.run.HWIRun object at 0x7fe890329400>
+INFO:2020-07-04 12:55:59,045:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 12:58:48,851:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 12:58:48,928:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f03ebb72708>
+INFO:2020-07-04 12:58:48,928:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f03ebb72708>
+INFO:2020-07-04 12:58:48,935:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 12:58:48,940:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f03c597d678>
+INFO:2020-07-04 12:58:48,945:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 12:59:02,825:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f03a9030470>.units
+INFO:2020-07-04 12:59:02,873:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f03a9030470>.units
+INFO:2020-07-04 12:59:02,892:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 12:59:02,892:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f03a9030470>
+INFO:2020-07-04 12:59:02,892:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f03c596e288> run to <polo.crystallography.run.HWIRun object at 0x7f03a9030470>
+INFO:2020-07-04 12:59:02,892:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 12:59:17,272:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 237, in show_current_plate
+    self.apply_plate_settings() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 216, in apply_plate_settings
+    self.ui.plateViewer.emphasize_all_images() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 252, in emphasize_all_images
+    each_gw.resetOpacity() AttributeError: 'Image' object has no attribute 'resetOpacity'
+Value: 'Image' object has no attribute 'resetOpacity'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 13:00:20,598:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:00:20,673:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdd208ad708>
+INFO:2020-07-04 13:00:20,673:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdd208ad708>
+INFO:2020-07-04 13:00:20,681:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:00:20,686:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fdcef842678>
+INFO:2020-07-04 13:00:20,690:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:00:28,635:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fdce2ef1438>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:00:28,651:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fdce2ef1438>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:00:28,664:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:00:28,664:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fdce2ef1438>
+INFO:2020-07-04 13:00:28,664:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fdcef833288> run to <polo.crystallography.run.HWIRun object at 0x7fdce2ef1438>
+INFO:2020-07-04 13:00:28,664:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:02:43,217:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:02:43,291:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f8f435f5708>
+INFO:2020-07-04 13:02:43,291:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f8f435f5708>
+INFO:2020-07-04 13:02:43,299:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:02:43,304:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f8f22407678>
+INFO:2020-07-04 13:02:43,308:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:02:50,848:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f8f09ab3400>.units
+INFO:2020-07-04 13:02:50,864:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f8f09ab3400>.units
+INFO:2020-07-04 13:02:50,877:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:02:50,877:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f8f09ab3400>
+INFO:2020-07-04 13:02:50,878:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f8f223f7288> run to <polo.crystallography.run.HWIRun object at 0x7f8f09ab3400>
+INFO:2020-07-04 13:02:50,878:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:04:57,646:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:04:57,721:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe2c588c708>
+INFO:2020-07-04 13:04:57,721:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe2c588c708>
+INFO:2020-07-04 13:04:57,728:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:04:57,733:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fe2849e6678>
+INFO:2020-07-04 13:04:57,737:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:05:05,346:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe258097438>.units
+INFO:2020-07-04 13:05:05,361:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe258097438>.units
+INFO:2020-07-04 13:05:05,376:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:05:05,376:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fe258097438>
+INFO:2020-07-04 13:05:05,376:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fe2849d6288> run to <polo.crystallography.run.HWIRun object at 0x7fe258097438>
+INFO:2020-07-04 13:05:05,376:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:05:25,172:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 47, in <lambda>
+    lambda: self.navigate_plateview(prev_page=True) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 180, in navigate_plateview
+    self.ui.plateViewer.tile_graphics_wells() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 163, in tile_graphics_wells
+    if item.pixmap().isNull(): RuntimeError: wrapped C/C++ object of type Image has been deleted
+Value: wrapped C/C++ object of type Image has been deleted
+ Error Type: <class 'RuntimeError'>
+
+INFO:2020-07-04 13:05:35,334:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:05:35,410:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7feb4d72c708>
+INFO:2020-07-04 13:05:35,410:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7feb4d72c708>
+INFO:2020-07-04 13:05:35,418:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:05:35,424:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7feb38ddb678>
+INFO:2020-07-04 13:05:35,428:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:05:44,772:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:05:44,847:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1dc7322708>
+INFO:2020-07-04 13:05:44,847:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f1dc7322708>
+INFO:2020-07-04 13:05:44,855:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:05:44,860:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f1dae103678>
+INFO:2020-07-04 13:05:44,864:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:05:52,829:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f1d8d7b9470>.units
+INFO:2020-07-04 13:05:52,881:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f1d8d7b9470>.units
+INFO:2020-07-04 13:05:52,899:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:05:52,900:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f1d8d7b9470>
+INFO:2020-07-04 13:05:52,900:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f1dae0f2288> run to <polo.crystallography.run.HWIRun object at 0x7f1d8d7b9470>
+INFO:2020-07-04 13:05:52,900:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:10:36,927:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:10:37,002:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2a3b235708>
+INFO:2020-07-04 13:10:37,002:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2a3b235708>
+INFO:2020-07-04 13:10:37,009:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:10:37,014:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f2a331f9678>
+INFO:2020-07-04 13:10:37,019:polo.windows.main_window:85:Created mainWindow object
+CRITICAL:2020-07-04 13:10:42,677:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/threads/thread.py", line 75, in run
+    self.result = self.job_func(**self.func_args) File "/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py", line 598, in xtal_to_run
+    object_hook=RunDeserializer.dict_to_obj) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 268, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 332, in loads
+    return cls(**kw).decode(s) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end()) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/decoder.py", line 355, in raw_decode
+    obj, end = self.scan_once(s, idx) File "/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py", line 531, in dict_to_obj
+    obj = class_(**temp_d) File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 64, in __init__
+    QtWidgets.QGraphicsPixmapItem.__init__(self, parent=parent) TypeError: 'parent' is an unknown keyword argument
+Value: 'parent' is an unknown keyword argument
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 13:11:27,038:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:11:27,113:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe11914d708>
+INFO:2020-07-04 13:11:27,113:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe11914d708>
+INFO:2020-07-04 13:11:27,121:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:11:27,125:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fe10d0e3678>
+INFO:2020-07-04 13:11:27,130:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:11:34,451:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe0e07f1e48>.units
+INFO:2020-07-04 13:11:34,467:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fe0e07f1e48>.units
+INFO:2020-07-04 13:11:34,480:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:11:34,480:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fe0e07f1e48>
+INFO:2020-07-04 13:11:34,480:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fe10d0d3288> run to <polo.crystallography.run.HWIRun object at 0x7fe0e07f1e48>
+INFO:2020-07-04 13:11:34,481:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:11:39,552:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 162, in tile_graphics_wells
+    if item.pixmap().isNull(): AttributeError: 'Image' object has no attribute 'pixmap'
+Value: 'Image' object has no attribute 'pixmap'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 13:12:37,765:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:12:37,840:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fbb340cb708>
+INFO:2020-07-04 13:12:37,840:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fbb340cb708>
+INFO:2020-07-04 13:12:37,848:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:12:37,853:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fbb02c07678>
+INFO:2020-07-04 13:12:37,857:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:12:59,452:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fbaf5b23cc0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:12:59,501:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fbaf5b23cc0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:12:59,519:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:12:59,519:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fbaf5b23cc0>
+INFO:2020-07-04 13:12:59,519:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fbb02bf6288> run to <polo.crystallography.run.HWIRun object at 0x7fbaf5b23cc0>
+INFO:2020-07-04 13:12:59,519:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:13:03,139:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 199, in handle_opening_run
+    if self.current_run: self.current_run.unload_all_pixmaps() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py", line 95, in unload_all_pixmaps
+    del image.pixmap AttributeError: pixmap
+Value: pixmap
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 13:13:09,661:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:13:09,737:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0280a5a708>
+INFO:2020-07-04 13:13:09,737:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0280a5a708>
+INFO:2020-07-04 13:13:09,744:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:13:09,749:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f027c114678>
+INFO:2020-07-04 13:13:09,754:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:13:19,846:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f026c266be0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:13:19,861:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f026c266be0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:13:19,876:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:13:19,876:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f026c266be0>
+INFO:2020-07-04 13:13:19,876:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f027c105288> run to <polo.crystallography.run.HWIRun object at 0x7f026c266be0>
+INFO:2020-07-04 13:13:19,876:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:13:21,732:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 168, in tile_graphics_wells
+    if item.height() > row_height: File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 126, in height
+    return self.height() RecursionError: maximum recursion depth exceeded
+Value: maximum recursion depth exceeded
+ Error Type: <class 'RecursionError'>
+
+INFO:2020-07-04 13:14:53,664:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:14:53,746:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f67ba7f0708>
+INFO:2020-07-04 13:14:53,746:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f67ba7f0708>
+INFO:2020-07-04 13:14:53,757:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:14:53,762:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f67b1f62678>
+INFO:2020-07-04 13:14:53,766:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:15:01,044:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f67898ace10>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:15:01,094:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f67898ace10>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:15:01,113:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:15:01,113:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f67898ace10>
+INFO:2020-07-04 13:15:01,113:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f67b1f54288> run to <polo.crystallography.run.HWIRun object at 0x7f67898ace10>
+INFO:2020-07-04 13:15:01,113:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:18:06,307:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:18:06,386:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f54d36f4708>
+INFO:2020-07-04 13:18:06,386:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f54d36f4708>
+INFO:2020-07-04 13:18:06,395:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:18:06,402:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f54cad33678>
+INFO:2020-07-04 13:18:06,407:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:18:14,820:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f54c015dc88>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:18:14,836:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f54c015dc88>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:18:14,850:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:18:14,850:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f54c015dc88>
+INFO:2020-07-04 13:18:14,850:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f54cad23288> run to <polo.crystallography.run.HWIRun object at 0x7f54c015dc88>
+INFO:2020-07-04 13:18:14,850:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:34:09,702:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:34:09,778:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7ffa86a13828>
+INFO:2020-07-04 13:34:09,778:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7ffa86a13828>
+INFO:2020-07-04 13:34:09,785:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:34:09,790:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7ffa869bd798>
+INFO:2020-07-04 13:34:09,794:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:34:21,227:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7ffa49723128>.units
+INFO:2020-07-04 13:34:21,277:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7ffa49723128>.units
+INFO:2020-07-04 13:34:21,296:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:34:21,296:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7ffa49723128>
+INFO:2020-07-04 13:34:21,296:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7ffa869ac3a8> run to <polo.crystallography.run.HWIRun object at 0x7ffa49723128>
+INFO:2020-07-04 13:34:21,296:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:34:24,641:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 169, in tile_graphics_wells
+    self.apply_scene_settings(item)  # TODO apply the settings here TypeError: apply_scene_settings() takes 1 positional argument but 2 were given
+Value: apply_scene_settings() takes 1 positional argument but 2 were given
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 13:34:48,689:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:34:48,764:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f131ba73828>
+INFO:2020-07-04 13:34:48,764:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f131ba73828>
+INFO:2020-07-04 13:34:48,772:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:34:48,777:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f12f70ff798>
+INFO:2020-07-04 13:34:48,781:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:35:00,516:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f12ea803e10>.units
+INFO:2020-07-04 13:35:00,532:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f12ea803e10>.units
+INFO:2020-07-04 13:35:00,545:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:35:00,546:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f12ea803e10>
+INFO:2020-07-04 13:35:00,546:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f12f70ef3a8> run to <polo.crystallography.run.HWIRun object at 0x7f12ea803e10>
+INFO:2020-07-04 13:35:00,546:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:36:15,336:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:36:15,411:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0e852ef798>
+INFO:2020-07-04 13:36:15,411:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0e852ef798>
+INFO:2020-07-04 13:36:15,419:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:36:15,423:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f0e778dd708>
+INFO:2020-07-04 13:36:15,428:polo.windows.main_window:85:Created mainWindow object
+CRITICAL:2020-07-04 13:36:26,802:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 156, in tile_graphics_wells
+    for i, well in enumerate(visible_wells): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 134, in get_visible_wells
+    p_r, p_c = self.subgrid_dict[len(self.run)] TypeError: object of type 'NoneType' has no len()
+Value: object of type 'NoneType' has no len()
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 13:36:56,978:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:36:57,058:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2b34d6f798>
+INFO:2020-07-04 13:36:57,058:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2b34d6f798>
+INFO:2020-07-04 13:36:57,066:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:36:57,071:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f2b2ab83708>
+INFO:2020-07-04 13:36:57,075:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:37:04,981:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f2b1a4edcc0>.units
+INFO:2020-07-04 13:37:04,997:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f2b1a4edcc0>.units
+INFO:2020-07-04 13:37:05,010:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:37:05,011:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f2b1a4edcc0>
+INFO:2020-07-04 13:37:05,011:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f2b2ab73318> run to <polo.crystallography.run.HWIRun object at 0x7f2b1a4edcc0>
+INFO:2020-07-04 13:37:05,011:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+CRITICAL:2020-07-04 13:37:07,783:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 199, in handle_opening_run
+    if self.current_run: self.current_run.unload_all_pixmaps() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py", line 95, in unload_all_pixmaps
+    del image.pixmap AttributeError: pixmap
+Value: pixmap
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-04 13:37:13,415:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:37:13,490:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fba9556d798>
+INFO:2020-07-04 13:37:13,490:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fba9556d798>
+INFO:2020-07-04 13:37:13,498:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:37:13,503:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fba7fb4a708>
+INFO:2020-07-04 13:37:13,507:polo.windows.main_window:85:Created mainWindow object
+CRITICAL:2020-07-04 13:37:17,147:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 156, in tile_graphics_wells
+    for i, well in enumerate(visible_wells): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 134, in get_visible_wells
+    p_r, p_c = self.subgrid_dict[len(self.run)] TypeError: object of type 'NoneType' has no len()
+Value: object of type 'NoneType' has no len()
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-04 13:37:23,154:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:37:23,229:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5b59bad798>
+INFO:2020-07-04 13:37:23,229:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f5b59bad798>
+INFO:2020-07-04 13:37:23,237:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:37:23,242:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f5b2dbb7708>
+INFO:2020-07-04 13:37:23,246:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:37:31,041:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f5b212bdc88>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:37:31,057:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f5b212bdc88>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-04 13:37:31,070:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:37:31,070:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f5b212bdc88>
+INFO:2020-07-04 13:37:31,070:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f5b2dba6318> run to <polo.crystallography.run.HWIRun object at 0x7f5b212bdc88>
+INFO:2020-07-04 13:37:31,070:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-04 13:38:42,487:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-04 13:38:42,563:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fad18044828>
+INFO:2020-07-04 13:38:42,563:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fad18044828>
+INFO:2020-07-04 13:38:42,570:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-04 13:38:42,575:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7face25a3798>
+INFO:2020-07-04 13:38:42,580:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-04 13:38:51,083:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>.units
+INFO:2020-07-04 13:38:51,100:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>.units
+INFO:2020-07-04 13:38:51,114:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-04 13:38:51,114:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>
+INFO:2020-07-04 13:38:51,114:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7face25923a8> run to <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>
+INFO:2020-07-04 13:38:51,114:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt

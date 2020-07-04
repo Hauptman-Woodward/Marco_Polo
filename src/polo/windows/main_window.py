@@ -204,7 +204,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
-            self.slideshowInspector.run = self.current_run
+            #self.slideshowInspector.run = self.current_run
             self.tableInspector.run = self.current_run
             self.tableInspector.update_table_view()
             self.optimizeWidget.run = self.current_run

@@ -335,7 +335,6 @@ class SlideshowViewer(PhotoViewer):
         pass
     
 
-
     def arrange_multi_image_scene(self, image_list):
         x, y = 0, 0  # set starting cords
         scene = QtWidgets.QGraphicsScene(self)
@@ -347,12 +346,11 @@ class SlideshowViewer(PhotoViewer):
                     if isinstance(item, Image):
                         pass
             elif isinstance(item, Image):
-                 well = graphicsWell(image=item)
-                 well.setPixmap()
-                 scene.addItem(well)
-                 well.setPos(x, y)
-                 well.setToolTip()
-                 x += well.width()
+                if item.isNull():
+                    item.setPixmap()
+                scene_item = scene.addPixMap(item)
+                scene_item.setToolTip(item.get_tool_tip())
+                x += well.width()
         return scene
 
 
@@ -371,11 +369,10 @@ class SlideshowViewer(PhotoViewer):
     def set_single_image_scene(self, image):
         if isinstance(image, Image):
             scene = QtWidgets.QGraphicsScene(self)
-            well = graphicsWell(image=image)
-            well.setPixmap()
-            scene.addItem(well)
+            if image.isNull():
+                image.setPixmap()
+            scene.addPixmap(image)
             self.set_scene(scene)
-
 
     def display_current_image(self):
         '''

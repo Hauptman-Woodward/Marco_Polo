@@ -141,14 +141,16 @@ class plateViewer(QtWidgets.QGraphicsView):
 
 # use pixel map instead of image object might help
 
-
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
         self.__scene.clear()
-        self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
-
+        # self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
         # memory leak somewhere pixelmaps not being derefenced and garbage collected
+        for i in self.run.images:
+            i.delete_pixmap_data()  # do this if do not want to have
+            # cached pixmaps ready to go
+
 
         visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]
@@ -156,53 +158,29 @@ class plateViewer(QtWidgets.QGraphicsView):
         row_height = 0  # height of tallest image in a given row of images
 
         for i, well in enumerate(visible_wells):
-            print(i, well)
             if i % stride == 0 and i != 0:
                 cur_y_pos += row_height
                 row_height, cur_x_pos, = 0, 0  # reset row height for next row
-            item = graphicsWell(
-                image=self.run.images[well]
-            )
-            item.setPixmap()
-            self.__scene.addItem(item)
+            image=self.run.images[well]
+            if image.isNull():
+                image.setPixmap()
+            item = self.__scene.addPixmap(image)    
             item.setPos(cur_x_pos, cur_y_pos)
-            if item.height() > row_height:
-                row_height = item.height()
+            self.apply_scene_settings(item)  # TODO apply the settings here
+            if image.height() > row_height:
+                row_height = image.height()
+            cur_x_pos += image.width()
         
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.setScene(self.__scene)
         self.fitInView(self.__scene, self.preserve_aspect)
         QtWidgets.QApplication.restoreOverrideCursor()
-
-
     
+    def apply_scene_settings(self, item):
+        pass
+    # modifies the scene item before it is displayed 
 
 
-
-        # self.visible_wells = self.get_visible_wells()
-        # _, stride = self.subgrid_dict[self.images_per_page]
-        # cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
-        # row_height = 0  # height of tallest image in a given row of images
-
-        # if next_date or prev_date or alt_spec:
-        #     [well.get_alt_image(next_date, prev_date, alt_spec) for well in self.visible_wells]
-
-        # if self.visible_wells:  # make sure wells is not empty (no run loaded)
-        #     for i in range(len(self.visible_wells)):
-        #         if i % stride == 0 and i != 0:  # time for a ew row of images
-        #             cur_y_pos += row_height
-        #             row_height, cur_x_pos, = 0, 0  # reset row height for next row
-        #             # return x position back to origin
-        #         self.__scene.addItem(self.visible_wells[i])
-        #         self.visible_wells[i].setPos(cur_x_pos, cur_y_pos)
-        #         cur_x_pos += self.visible_wells[i].width()
-        #         if self.visible_wells[i].height() > row_height:
-        #             row_height = self.visible_wells[i].height()
-        #     self.__scene.selectionChanged.connect(self.pop_out_selected_well)
-        #     self.setScene(self.__scene)   # actually set the scene
-        #     # cram in into the current view
-        #     self.fitInView(self.__scene, self.preserve_aspect)
-        # QtWidgets.QApplication.restoreOverrideCursor()
 
     def fitInView(self, scene, preserve_aspect=False):
         if preserve_aspect:
