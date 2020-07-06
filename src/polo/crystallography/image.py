@@ -377,7 +377,3 @@ class Image(QtGui.QPixmap):
                     return True # set no filters so return True
         else:
             return False 
-                
-
-
-from polo.widgets.graphics_well import graphicsWell

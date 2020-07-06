@@ -6,7 +6,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from polo import IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
-from polo.widgets.graphics_well import graphicsWell
 
 logger = make_default_logger(__name__)
 
@@ -176,23 +175,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def add_pixmap(self, pixmap):
         self.scene.addPixmap(pixmap)
 
-    # def set_scene(self, graphics_scene=None):
-    #     # should do same thing as set_image but with a graphics scene
-        
-
-
-    #     if graphics_scene:
-    #         self.__empty = False
-    #         self.scene = graphics_scene
-    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-    #     # call fit in view
-    #     else:
-    #         self.__empty = True
-    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-    #         self.scene = QtWidgets.QGraphicsScene(
-    #             self)  # reset the graphics scene
-    #     self.fitInView()
-    #     print('fit in view')
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -331,7 +313,6 @@ class SlideshowViewer(PhotoViewer):
         :type marco: bool
         '''
         if self.run:
-            print(marco, 'update slides from filters')
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
             self.__carousel.add_slides(images)

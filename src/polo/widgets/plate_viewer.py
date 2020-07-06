@@ -10,7 +10,6 @@ from polo.crystallography.run import HWIRun, Run
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.utils.math_utils import *
 from polo.widgets.slideshow_viewer import PhotoViewer
-from polo.widgets.graphics_well import graphicsWell
 
 
     
@@ -27,13 +26,12 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.__graphics_wells = None
         self.__current_page = 1
         self.__scene = QtWidgets.QGraphicsScene(self)
-        # self.__cache = PlateCache(self)
-        self.setScene(self.__scene)
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.__zoom = 0
         self.__scene_map = {}
         self.__view_cache = {}
         self.setInteractive(True)
+        self.setScene(self.__scene)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -148,17 +146,15 @@ class plateViewer(QtWidgets.QGraphicsView):
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
 
         [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
-
+        # for now delete all previous pixmap data from ram
 
         visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]
         cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
         row_height = 0  # height of tallest image in a given row of images
 
-
         images = [self.run.images[i] for i in self.get_visible_wells()]
         _, stride = self.subgrid_dict[self.images_per_page]
-
         self.__scene.clear()
 
         for i, image in enumerate(images):
@@ -173,7 +169,6 @@ class plateViewer(QtWidgets.QGraphicsView):
             item.setPos(cur_x_pos, cur_y_pos)
             item.setData(0, image)
             self.set_prerender_info(item, image)
-            #self.apply_scene_settings(item)  # TODO apply the settings here
             if image.height() > row_height:
                 row_height = image.height()
             cur_x_pos += image.width() 
@@ -183,10 +178,6 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.fitInView(self.__scene, self.preserve_aspect)
         QtWidgets.QApplication.restoreOverrideCursor()
             
-    
-    # modifies the scene item before it is displayed
-
-
     def set_prerender_info(self, item, image):
         item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
         item.setToolTip(image.get_tool_tip())  # pixmap is Image
@@ -196,14 +187,11 @@ class plateViewer(QtWidgets.QGraphicsView):
     def set_scene_opacity_from_filters(self, image_types, human=False, marco=False, filtered_opacity=0.2):
         for item in self.__scene.items():
             image = item.data(0)
-            print(image_types, image.machine_class)
             if image.standard_filter(image_types, human, marco):
                 item.setOpacity(1)
-                print('set opacity to 1')
             else:
                 # did not meet the filtered criteria
                 item.setOpacity(filtered_opacity)
-                print('set opacity to filtered opacity', filtered_opacity)
     
     def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
         for item in self.__scene.items():
@@ -250,19 +238,6 @@ class plateViewer(QtWidgets.QGraphicsView):
             pop_out.show()
             self.__scene.clearSelection()
             
-
-    # def demphasize_filtered_images(self, image_types, human, marco):
-    #     for each_gw in self.__scene.items():
-    #         if each_gw:
-    #             each_gw.setOpacity(0.25, image_types=image_types,
-    #                                human=human, marco=marco)
-
-    # def color_images(self, color_mapping, strength=0.5, human=False):
-    #     for each_gw in self.__scene.items():
-    #         if each_gw:
-    #             each_gw.set_color(color_mapping, strength=strength,
-    #                               by_human_class=human)
-
     def emphasize_all_images(self):
         for each_gw in self.__scene.items():
             if each_gw:

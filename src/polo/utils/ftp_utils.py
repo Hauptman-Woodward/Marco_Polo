@@ -1,6 +1,6 @@
 import ftplib
-from pathlib import Path
 import os
+from pathlib import Path
 
 
 def catch_ftp_errors(funct):

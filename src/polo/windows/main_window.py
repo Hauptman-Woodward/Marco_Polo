@@ -23,7 +23,8 @@ from polo.designer.UI_main_window import Ui_MainWindow
 from polo.plots.plots import MplCanvas, MplWidget, StaticCanvas
 from polo.utils.io_utils import *
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
-from polo.widgets.plate_viewer import graphicsWell, plateViewer
+from polo.utils.dialog_utils import make_message_box
+from polo.widgets.plate_viewer import plateViewer
 from polo.widgets.slideshow_viewer import SlideshowViewer
 # from polo.windows.exporter_dialog import exporterDialog
 from polo.windows.ftp_dialog import FTPDialog
@@ -56,14 +57,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cached_plate_scenes = {}
         self.runOrganizer.opening_run.connect(self.handle_opening_run)
         self.menuImport.triggered[QAction].connect(self.handle_image_import)
+
         #self.menuAdvanced_Tools.triggered[QAction].connect(
         #    self.handle_advanced_tools)
+        # TODO make new run linker interface
+
         self.menuExport.triggered[QAction].connect(self.handle_export)
         self.menuHelp.triggered[QAction].connect(self.handle_help_menu)
         self.menuFile.triggered[QAction].connect(self.handle_file_menu)
-        # self.runOrganizer.itemDoubleClicked.connect(self.handle_opening_run)
-        # self.pushButton_7.clicked.connect(self.update_table_view)
-        # self.pushButton_8.clicked.connect(self.uncheck_all_filters)
         self.run_interface.currentChanged.connect(self.on_changed_tab)
         self.menuBeta_Testers.triggered[QAction].connect(
             lambda: webbrowser.open(BETA))
@@ -102,21 +103,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # remove the current run add dialog that asks if they are sure they want to
     # drop the run
 
-    def remove_run(self):
-        # NOTE IN PROGRESS
-        message = 'Are you sure you want to remove run {}.'.format(
-            self.current_run.run_name)
-        warning = self.make_message_box(
-            message, icon=QtWidgets.QMessageBox.Warning,
-            buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
-        )
-        choice = warning.exec_()
-        if choice == 1024:
-            self.loaded_runs.pop(self.current_run.run_name)
-            if self.current_run.run_name in self.classified_runs:
-                self.classified_runs.pop(self.current_run.run_name)
-        else:
-            logging.info('Canceled remove run')
+    # def remove_run(self):
+    #     # NOTE IN PROGRESS
+    #     message = 'Are you sure you want to remove run {}.'.format(
+    #         self.current_run.run_name)
+    #     warning = self.make_message_box(
+    #         message, icon=QtWidgets.QMessageBox.Warning,
+    #         buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
+    #     )
+    #     choice = warning.exec_()
+    #     if choice == 1024:
+    #         self.loaded_runs.pop(self.current_run.run_name)
+    #         if self.current_run.run_name in self.classified_runs:
+    #             self.classified_runs.pop(self.current_run.run_name)
+    #     else:
+    #         logging.info('Canceled remove run')
 
     def add_loaded_run(self, run):
         '''
@@ -160,7 +161,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         selection_text = selection.text()
         if selection == self.actionFrom_FTP:
-            # check if an ftp download thread is already running TODO 
             self.runOrganizer.import_run_from_ftp()
         elif selection == self.actionFrom_Saved_Run_3:
             self.runOrganizer.import_from_saved_run()
@@ -177,9 +177,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not isinstance(self.current_run, HWIRun):
             # need to disable stuff that requires cocktails
             self.tab_10.setEnabled(False)
-            self.make_message_box(
-                'Looks like you imported a non-HWI Run. For now optimization screening is disabled.',
-                buttons=QtWidgets.QMessageBox.Ok).exec_()
+            make_message_box(
+                parent=self,
+                message='Looks like you imported a non-HWI Run. For now optimization screening is disabled.'
+                ).exec_()
 
     def handle_opening_run(self, q):
         '''
@@ -236,7 +237,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     export_results = csv_exporter.write_csv()
         else:
             logger.info('User attempted to export with no current run')
-            self.make_message_box(message='Please load a run first').exec_()
+            make_message_box(
+                parent=self,
+                message='Please load a run first'
+                ).exec_()
 
     def handle_file_menu(self, selection):
         '''
@@ -260,35 +264,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if save_path:  # double check wonky stuff happening in save dialog
                 current_run_saver.write_xtal_file_on_thread(save_path)
             else:
-                self.make_message_box(
-                    message='No suitable filepath was given.',
-                    buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
-                )
+                make_message_box(
+                    parent=self,
+                    message='No suitable filepath was given.'
+                    ).exec_()
+
 
     # General Utilities
     # =========================================================================    
 
     def get_widget_dims(self, widget):
+        '''Returns the width and height as a tuple of a given widget.
+
+        :param widget: QWidget
+        :type widget: QWidget
+        :return: width and height of the widget
+        :rtype: tuple
+        '''
         return widget.width(), widget.height()
-
-
-    def make_message_box(self, message, icon=QtWidgets.QMessageBox.Information,
-                         buttons=QtWidgets.QMessageBox.Ok,
-                         connected_function=None):
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(icon)
-        msg.setText(message)
-        msg.setStandardButtons(buttons)
-        if connected_function:
-            msg.buttonClicked.connect(connected_function)
-
-        logger.info('Made message box with message "{}"'.format(message))
-        return msg
 
     def layout_widget_lister(self, layout):
         return (layout.itemAt(i) for i in range(layout.count()))
     
-
     def handle_help_menu(self, action):
         if action == self.actionQuickstart_Guide:
             webbrowser.open(QUICKSTART)
@@ -300,7 +297,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             webbrowser.open(USER_GUIDE)
         elif action == self.actionAbout:
             webbrowser.open(ABOUT)
-
 
     # Plot Window Methods
     # =========================================================================
@@ -342,7 +338,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             'title': self.lineEdit_2.text(),
             'x_lab': self.lineEdit_3.text(),
             'y_lab': self.lineEdit_4.text()
-
         }
 
     def apply_plot_selection_logic(self):
@@ -393,7 +388,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             run_updater = RunUpdaterDialog(self.current_run,
             list(self.loaded_runs.keys()), self)
         else:
-            self.make_message_box('Please load a run first.').exec_()
+            make_message_box(
+                parent=self,
+                message='Please load a run first.'
+                ).exec_()
 
     def open_spectra_dialog(self):
         spec_dialog = SpectrumDialog(loaded_runs=self.loaded_runs)
@@ -440,34 +438,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def open_log_dialog(self):
         log_dialog = LogDialog()
 
-    def open_secure_save_dialog(self, file_path, mode):
-        ss = SecureSaveDialog(file_path, decrypt=mode)
-
-
-    # Run Data Tab
-    # =========================================================================
-
-    def update_classification_progress(self):
-        # BUG THIS METHOD DOES NOT ACTUALLY WORK
-        if self.current_run:
-            progress = self.current_run.get_images_by_classification()
-            total_images = len(self.current_run)
-            for key in progress:
-                if key == 'Crystals':
-                    self.progressBar_2.setValue(
-                        round(len(progress[key]) / total_images))
-                elif key == 'Clear':
-                    self.progressBar_3.setValue(
-                        round(len(progress[key]) / total_images))
-                elif key == 'Precipitate':
-                    self.progressBar_4.setValue(
-                        round(len(progress[key]) / total_images))
-                elif key == 'Other':
-                    self.progressBar_5.setValue(
-                        round(len(progress[key]) / total_images))
 
     # Inter Tab Controls and Other
-    # ==========================================================================
+    # =========================================================================
 
     def on_changed_tab(self, i):
         '''
@@ -486,8 +459,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.current_run.annotations = self.plainTextEdit.toPlainText()
             elif i == 4:
                 self.optimizeWidget.update()
-                # self.populate_hit_combo()
-                # need better way of updating
 
 
     def show_error_message(self, message='Error :('):
@@ -496,26 +467,4 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         error_dlg.exec()
 
     # Depreciated Methods
-    # ==========================================================================
-
-    def render_bar_graph(self, image=None, bar_spacing=8, x_offset=80):
-        '''
-        Renders a bar graph of prediction confidencse into the mainwindow
-        based on the prediction dict of a given image.
-        '''
-        if not image:
-            image = self.current_run.get_current_image()
-
-        self.marco_bars.canvas.fig.clear()
-        #self.marco_bars = MplWidget(self.graphicsView_2, 1, 1, 100)
-        self.marco_bars.single_image_confidence(image)
-        self.marco_bars.canvas.draw()  # need to fix this up
-        # Summary Stats Methods
-    # ==========================================================================
-
-    def render_summary_stats(self, run=None):
-        self.summary_polo.plots.canvas.fig.clear()
-        if not run:  # allow passing of other run outside of current
-            run = self.current_run
-        self.summary_polo.plots.meta_stats(self.current_run)
-        self.summary_polo.plots.canvas.draw()
+    # =========================================================================
