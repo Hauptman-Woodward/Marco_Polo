@@ -13,9 +13,6 @@ from polo.threads.thread import FTPDownloadThread, QuickThread
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.ftp_utils import list_dir, logon
 
-# TODO: Downloading function and reflect files in the actual FTP server
-# Probably want to look into threads for downloading so not being done on
-# the GUI thread
 
 logger = make_default_logger(__name__)
 
@@ -34,10 +31,12 @@ class FTPDialog(QtWidgets.QDialog):
         self.ui.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         self.ui.pushButton_2.clicked.connect(self.download_selected_files)
         self.ui.pushButton.clicked.connect(self.connect_ftp)
+        self.ui.pushButton_3.clicked.connect(self.close)
         self.ftp = ftp_connection
         self.download_files = None
         self.save_dir = None
         self.home_dir = None
+    
 
         self.ui.pushButton_2.setIcon(QIcon(self.DOWNLOAD_ICON))
 
@@ -79,7 +78,7 @@ class FTPDialog(QtWidgets.QDialog):
         files this can take a while. If the connection fails show the user
         the error code thrown by ftplib.
         '''
-        if self.host:
+        if self.host and self.username:
             self.ui.fileBrowser.clear()
             QApplication.setOverrideCursor(Qt.WaitCursor)
 
@@ -131,16 +130,20 @@ class FTPDialog(QtWidgets.QDialog):
                     ))
                     self.set_connection_status(connected=False)
                     m.exec_()
+            
+
+            logon_thread.finished.connect(fin_connection_attempt)
+            logon_thread.start()
+            self.setEnabled(False)
+            message.exec_()
+
         else:
+            self.setEnabled(True)
             QApplication.restoreOverrideCursor()
             make_message_box(
-                message='Please enter a host to connect to', parent=self
+                message='Please enter a host and username to connect to', parent=self
             ).exec_()
 
-        logon_thread.finished.connect(fin_connection_attempt)
-        logon_thread.start()
-        self.setEnabled(False)  # disable interface while connecting
-        message.exec_()  # show the attempting connection message
 
     def set_connection_status(self, connected=False):
         '''Change the Qlabel that displays the current connection status

@@ -8,12 +8,13 @@ import time
 import webbrowser
 from pathlib import Path
 
+import gc
 
 from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
+from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from polo import *
@@ -195,7 +196,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param q: QListItem. Run selection from listWidget made by user.
         '''
         if isinstance(q, list) and len(q) > 0:
-            if self.current_run: self.current_run.unload_all_pixmaps()
+            if self.current_run:
+                self.current_run.unload_all_pixmaps()
+                QPixmapCache.clear()
+
             # only keep the pixmaps for the current run loaded
             # other pixmaps from other runs will be loaded if the user
             # switches between dates or spectrums though
@@ -223,24 +227,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if export_path:
                 export_path, export_results = Path(export_path), None
                 if action == self.actionAs_HTML:
-                    writer = HtmlWriter(self.current_run)
-                    writer.write_complete_run_on_thread(export_path, encode_images=True)
+                    self.writer = HtmlWriter(self.current_run)
+                    self.writer.write_complete_run_on_thread(
+                        export_path, encode_images=True)
                 elif action == self.actionAs_CSV:
                     export_path = export_path.with_suffix('.csv')
                     csv_exporter = RunCsvWriter(self.current_run, export_path)
                     export_results = csv_exporter.write_csv()
-                
-                if export_results == True:
-                    status_message = self.make_message_box(
-                        message='Current run exported to {}'.format(export_path)
-                    )
-                else:
-                    status_message = self.make_message_box(
-                        message='Export to {} failed with error {}'.format(
-                            export_path, export_results
-                        )
-                    )
-                # status_message.exec_()
         else:
             logger.info('User attempted to export with no current run')
             self.make_message_box(message='Please load a run first').exec_()
@@ -271,7 +264,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     message='No suitable filepath was given.',
                     buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
                 )
-
 
     # General Utilities
     # =========================================================================    
@@ -311,7 +303,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     # Plot Window Methods
-    # ==========================================================================
+    # =========================================================================
 
       # clears the current plot and draws an empty figure in theory
 

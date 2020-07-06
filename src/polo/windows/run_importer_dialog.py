@@ -90,7 +90,7 @@ class RunImporter():
     def parse_hwi_dir_metadata(dir_name):
         try:
             dir_name = os.path.basename(dir_name)
-            image_type = dir_name.split('-')[-1]
+            image_type = dir_name.split('-')[-1].strip()
             if image_type in SPEC_KEYS:
                 image_type = SPEC_KEYS[image_type]
             else:
@@ -393,13 +393,17 @@ class RunImporterDialog(QtWidgets.QDialog):
         :param image_type: Image spectrum keyword
         :type image_type: str
         '''
-        if image_type == 'uvt':
+        if image_type in SPEC_KEYS:
+            image_type = SPEC_KEYS[image_type]
+            # last ditch convert to image descrip
+
+        if image_type == IMAGE_SPECS[1]:  # uvt
             self.ui.comboBox_2.setCurrentIndex(1)
-        elif image_type == 'jpg':
+        elif image_type == IMAGE_SPECS[0]:  # visible
             self.ui.comboBox_2.setCurrentIndex(0)
-        elif image_type == 'shg':
+        elif image_type == IMAGE_SPECS[3]:  # shg
             self.ui.comboBox_2.setCurrentIndex(2)
-        else:
+        else:  # other
             self.ui.comboBox_2.setCurrentIndex(3)
 
     def suggest_menu_by_date(self, image_date, menu_type=None):
@@ -429,7 +433,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         :rtype: Bool
         '''
         dir_path = self.ui.lineEdit.text()
-        if os.path.exists(dir_path):
+        if os.path.exists(dir_path) and os.path.isdir:
             dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
             if isinstance(dir_data, ValueError):
                 make_message_box('Selected directory does not conform to HWI naming\
@@ -444,6 +448,8 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self.set_current_menu(suggested_menu)
                 self.ui.dateEdit_2.setDate(date)
                 return True
+        else:
+            self.ui.lineEdit.clear()
 
     def detect_missing_images(self, image_dir):
         # first check the number of images specified
@@ -621,8 +627,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         run_name = self.current_run_name_lineEdit.text()
         dir_name = self.current_dir_path_lineEdit.text()
         date = self.current_dateEdit.dateTime().toPyDateTime()
-        
-
         kwargs = {
             'run_name': run_name, 'date': date
         }
@@ -640,38 +644,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         new_run = RunImporter.import_run_from_directory(
             dir_name, **kwargs
         )
-
         if isinstance(new_run, (Run, HWIRun)):
             self.new_run = new_run
             self.close()
-        else:
-            print(type(new_run))
-
-
-
-        #     cocktail_menu = tim.get_menu_by_basename(
-        #         self.ui.comboBox_3.currentText())
-        #     plate_data = self.read_xml_data(dir_name)
-        #     print(dir_name, 'dir name')
-        #     print(plate_data)
-        #     new_run = HWIRun(
-        #         image_dir=dir_name,
-        #         run_name=run_name,
-        #         cocktail_menu=cocktail_menu,
-        #         image_spectrum=self.ui.comboBox_2.currentText(),
-        #         date=date,
-        #         **plate_data  # update dict via kwargs
-        #     )
-        #     print(list(new_run.__dict__.keys()))
-
-        # else:
-        #     image_spectrum = None  # TODO add spectrum selection for all runs
-        #     if current_index == 2:
-        #         image_spectrum = self.ui.comboBox_4.currentText()
-
-        #     new_run = Run(image_dir=dir_name, run_name=run_name,
-        #                   image_spectrum=image_spectrum, date=date)
-        # if new_run != None:
-        #     new_run.add_images_from_dir()
-        #     self.new_run = new_run
-        #     self.close()

@@ -10,38 +10,39 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_runOrganizer(object):
-    def setupUi(self, runOrganizer):
-        runOrganizer.setObjectName("runOrganizer")
-        runOrganizer.resize(177, 580)
-        self.gridLayout = QtWidgets.QGridLayout(runOrganizer)
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(318, 580)
+        self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
-        self.runTree = RunTree(runOrganizer)
+        self.runTree = RunTree(Form)
+        self.runTree.setMinimumSize(QtCore.QSize(0, 0))
         self.runTree.setObjectName("runTree")
         self.gridLayout.addWidget(self.runTree, 0, 0, 1, 2)
-        self.label_31 = QtWidgets.QLabel(runOrganizer)
+        self.label_31 = QtWidgets.QLabel(Form)
         self.label_31.setObjectName("label_31")
         self.gridLayout.addWidget(self.label_31, 1, 0, 1, 2)
-        self.progressBar = QtWidgets.QProgressBar(runOrganizer)
+        self.progressBar = QtWidgets.QProgressBar(Form)
         self.progressBar.setToolTip("")
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.gridLayout.addWidget(self.progressBar, 2, 0, 1, 2)
-        self.label_30 = QtWidgets.QLabel(runOrganizer)
+        self.label_30 = QtWidgets.QLabel(Form)
         self.label_30.setObjectName("label_30")
         self.gridLayout.addWidget(self.label_30, 3, 0, 1, 1)
-        self.label_32 = QtWidgets.QLabel(runOrganizer)
+        self.label_32 = QtWidgets.QLabel(Form)
         self.label_32.setObjectName("label_32")
         self.gridLayout.addWidget(self.label_32, 3, 1, 1, 1)
 
-        self.retranslateUi(runOrganizer)
-        QtCore.QMetaObject.connectSlotsByName(runOrganizer)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, runOrganizer):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        runOrganizer.setWindowTitle(_translate("runOrganizer", "Form"))
-        self.runTree.headerItem().setText(0, _translate("runOrganizer", "Samples"))
-        self.label_31.setText(_translate("runOrganizer", "Classification Progress"))
-        self.label_30.setText(_translate("runOrganizer", "Est Time"))
-        self.label_32.setText(_translate("runOrganizer", "0"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.runTree.headerItem().setText(0, _translate("Form", "Samples"))
+        self.label_31.setText(_translate("Form", "Classification Progress"))
+        self.label_30.setText(_translate("Form", "Est Time"))
+        self.label_32.setText(_translate("Form", "0"))
 from polo.widgets.run_tree import RunTree

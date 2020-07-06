@@ -8,16 +8,23 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
 
 
+
+
+
 class graphicsWell(QtWidgets.QGraphicsPixmapItem):
 
-    def __init__(self, parent=None, image=None):
+    def __init__(self, pixmap, parent=None, **kwargs):
         QtWidgets.QGraphicsPixmapItem.__init__(self, parent=parent)
-        self.image = image  # image object
+        
         # self.setPixmap()
         self.setToolTip()
-        self.last_pixmap = None
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
+    
 
+    
+    def delete_pixmap(self):
+        super(graphicsWell, self).setPixmap(QPixmap())
+    
     def width(self):
         return self.pixmap().width()
 
@@ -26,13 +33,13 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
 
     def setToolTip(self):
         if self.image:
-            return super(graphicsWell, self).setToolTip(self.image.get_tool_tip())
+            super(graphicsWell, self).setToolTip(self.image.get_tool_tip())
 
     def setPixmap(self):
-        return super(graphicsWell, self).setPixmap(self.image.pixmap)
+        super(graphicsWell, self).setPixmap(self.image.pixmap)
 
     def resetOpacity(self):
-        return super(graphicsWell, self).setOpacity(1)
+        super(graphicsWell, self).setOpacity(1)
 
     def setOpacity(self, filtered_opacity, image_types, human=False, marco=False):
         set_visible = False
