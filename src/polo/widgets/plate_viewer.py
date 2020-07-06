@@ -143,40 +143,40 @@ class plateViewer(QtWidgets.QGraphicsView):
     
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
-        QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+        if self.run:
+            QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
+            # for now delete all previous pixmap data from ram
 
-        [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
-        # for now delete all previous pixmap data from ram
+            visible_wells = self.get_visible_wells()
+            _, stride = self.subgrid_dict[self.images_per_page]
+            cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
+            row_height = 0  # height of tallest image in a given row of images
 
-        visible_wells = self.get_visible_wells()
-        _, stride = self.subgrid_dict[self.images_per_page]
-        cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
-        row_height = 0  # height of tallest image in a given row of images
+            images = [self.run.images[i] for i in self.get_visible_wells()]
+            _, stride = self.subgrid_dict[self.images_per_page]
+            self.__scene.clear()
 
-        images = [self.run.images[i] for i in self.get_visible_wells()]
-        _, stride = self.subgrid_dict[self.images_per_page]
-        self.__scene.clear()
-
-        for i, image in enumerate(images):
-            if i % stride == 0 and i != 0:
-                cur_y_pos += row_height
-                row_height, cur_x_pos, = 0, 0  # reset row height for next row
+            for i, image in enumerate(images):
+                if i % stride == 0 and i != 0:
+                    cur_y_pos += row_height
+                    row_height, cur_x_pos, = 0, 0  # reset row height for next row
+                
+                if image.isNull():
+                    image.setPixmap()
+                
+                item = self.__scene.addPixmap(image)
+                item.setPos(cur_x_pos, cur_y_pos)
+                item.setData(0, image)
+                self.set_prerender_info(item, image)
+                if image.height() > row_height:
+                    row_height = image.height()
+                cur_x_pos += image.width() 
             
-            if image.isNull():
-                image.setPixmap()
-            
-            item = self.__scene.addPixmap(image)
-            item.setPos(cur_x_pos, cur_y_pos)
-            item.setData(0, image)
-            self.set_prerender_info(item, image)
-            if image.height() > row_height:
-                row_height = image.height()
-            cur_x_pos += image.width() 
-        
-        self.__scene.selectionChanged.connect(self.pop_out_selected_well)
-        self.setScene(self.__scene)
-        self.fitInView(self.__scene, self.preserve_aspect)
-        QtWidgets.QApplication.restoreOverrideCursor()
+            self.__scene.selectionChanged.connect(self.pop_out_selected_well)
+            self.setScene(self.__scene)
+            self.fitInView(self.__scene, self.preserve_aspect)
+            QtWidgets.QApplication.restoreOverrideCursor()
             
     def set_prerender_info(self, item, image):
         item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)

@@ -262,6 +262,7 @@ class SlideshowViewer(PhotoViewer):
                 image_types=set([]), human=False, marco=False
             )
         else:
+            self.__run = None
             logger.info('Failed to set {} as __run attribute of {}'.format(
                 new_run, self
             ))

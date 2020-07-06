@@ -211,7 +211,6 @@ class slideshowInspector(QtWidgets.QWidget):
         so the current slideshow contents can be adjusted to reflect the
         new filters. Displays the current image after filtering.
         '''
-        print(self.marco)
         self.ui.slideshowViewer.update_slides_from_filters(
             self.selected_classifications, self.human, self.marco, self.favorites
         )

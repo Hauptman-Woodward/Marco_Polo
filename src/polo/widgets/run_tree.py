@@ -14,7 +14,6 @@ from polo.crystallography.run import HWIRun, Run
 class RunTree(QtWidgets.QTreeWidget):
 
     def __init__(self, parent=None, auto_link=True):
-        print(type(parent))
         self.classified_runs = {}
         self.loaded_runs = {}
         self.auto_link = auto_link

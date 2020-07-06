@@ -71,6 +71,17 @@ ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 IMAGE_SPECS = ['Visible', 'UV-TPEF', 'SHG', 'Other']
 SPEC_KEYS = dict(zip(['jpg', 'uvt', 'shg', ''], IMAGE_SPECS))
 
+MSO_DICT = {  # translate between marco encodings and mso encodings
+    IMAGE_CLASSIFICATIONS[0]: 90,  # xtal
+    #IMAGE_CLASSIFICATIONS[3]: 60,  # skin
+    IMAGE_CLASSIFICATIONS[2]: 50,  # precipitate
+    #IMAGE_CLASSIFICATIONS[2]: 25,  # phase
+    IMAGE_CLASSIFICATIONS[1]: 10,  # clear
+    #IMAGE_CLASSIFICATIONS[3]: 5,   # garbage
+    IMAGE_CLASSIFICATIONS[3]: 0    # unsure
+}
+
+
 
 # UNRAR EXE
 # =============================================================================

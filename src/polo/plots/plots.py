@@ -42,13 +42,10 @@ class StaticCanvas(MplCanvas):
     def clear_axis(self):
         self.fig.clf()
     
-
     def peg_plot(self, run):
         # create image heat map of the plot or something like that
         # first need to collect all the PEGS and get their weight
         pass
-
-    
 
     def plot_current_map_view(self, plate_rows, plate_cols, current_wells):
         self.clear_axis()
@@ -58,7 +55,6 @@ class StaticCanvas(MplCanvas):
             if i in current_wells:
                 plate[i] = 1
         plate = plate.reshape(plate_rows, plate_cols)
-        print(plate)
         axis = self.fig.get_axes()[0]
         axis.get_xaxis().set_visible(False)
         axis.get_yaxis().set_visible(False)
@@ -260,7 +256,6 @@ class StaticCanvas(MplCanvas):
         additives_index_dict = {additive: n for n, additive in enumerate(unique_additives)}
 
         additive_dict = {additive: np.zeros(num_additives) for additive in unique_additives}
-        print(additive_dict)
                 # seems like there is issue with being cast to strings here
         for xtal in crystal_images:
             for additive in xtal.cocktail.solutions:

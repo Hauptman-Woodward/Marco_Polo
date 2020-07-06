@@ -8,13 +8,11 @@ import time
 import webbrowser
 from pathlib import Path
 
-import gc
-
 from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from polo import *
@@ -26,13 +24,13 @@ from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.utils.dialog_utils import make_message_box
 from polo.widgets.plate_viewer import plateViewer
 from polo.widgets.slideshow_viewer import SlideshowViewer
-# from polo.windows.exporter_dialog import exporterDialog
+
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
 from polo.windows.run_importer_dialog import RunImporterDialog
 from polo.windows.run_updater_dialog import RunUpdaterDialog
-# from polo.windows.secure_dave_dailog import SecureSaveDialog
+
 from polo.windows.spectrum_dialog import SpectrumDialog
 from polo.windows.time_res_dialog import TimeResDialog
 
@@ -235,6 +233,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     export_path = export_path.with_suffix('.csv')
                     csv_exporter = RunCsvWriter(self.current_run, export_path)
                     export_results = csv_exporter.write_csv()
+                elif action == self.actionAs_MSO:
+                    writer = MsoWriter(self.current_run, export_path)
+                    writer.write_mso_file()
+
         else:
             logger.info('User attempted to export with no current run')
             make_message_box(

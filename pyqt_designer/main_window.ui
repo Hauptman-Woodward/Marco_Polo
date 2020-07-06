@@ -939,7 +939,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="toolTip">
@@ -1126,10 +1126,7 @@
     </property>
     <addaction name="actionAs_HTML"/>
     <addaction name="actionAs_CSV"/>
-    <addaction name="separator"/>
-    <addaction name="actionRun_Journal"/>
-    <addaction name="separator"/>
-    <addaction name="actionOptimization_Screens"/>
+    <addaction name="actionAs_MSO"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1406,6 +1403,11 @@
   <action name="actionEdit_Current_Run_Data">
    <property name="text">
     <string>Edit Current Run Data</string>
+   </property>
+  </action>
+  <action name="actionAs_MSO">
+   <property name="text">
+    <string>As MSO</string>
    </property>
   </action>
  </widget>

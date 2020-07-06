@@ -18,13 +18,13 @@ from polo import (ALLOWED_IMAGE_TYPES, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA,
                   RUN_HTML_TEMPLATE, SCREEN_HTML_TEMPLATE, __version__,
                   make_default_logger, num_regex, unit_regex)
 from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
-from polo.threads.thread import PixmapMakerThread, QuickThread
+from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.unrar_utils import unrar_archive
-from polo import SPEC_KEYS, IMAGE_SPECS
+from polo import SPEC_KEYS, IMAGE_SPECS, MSO_DICT, IMAGE_CLASSIFICATIONS
 
 
 logger = make_default_logger(__name__)
@@ -152,7 +152,6 @@ class HtmlWriter(RunSerializer):
         anything other than a Qthread instance.
         '''
         result = str(self.thread.result)
-        print(result)
         # creating message on thread possibly be causing an issue
         # if os.path.exists(result):
         #     message = 'Export to {} was successful'.format(result)
@@ -327,6 +326,63 @@ class RunCsvWriter(RunSerializer):
     def __iter__(self):
         for image in self.run.images:
             yield RunCsvWriter.image_to_row(image)
+
+
+class MsoWriter(RunSerializer):
+
+    mso_version = 'msoversion2'
+
+    def __init__(self, run, output_path):
+        self.run = run
+        self.output_path = output_path
+
+    @staticmethod
+    def row_formater(cocktail_row):
+        # well number should be first index in the list
+        # total list length should be 18 last item is the mso code
+        print(type(cocktail_row)) 
+        return cocktail_row + ([''] * (len(cocktail_row) - 17))
+
+    
+    @property
+    def first_line(self):
+        return [
+            self.run.run_name, self.mso_version
+        ]
+    
+
+    def get_cocktail_csv_data(self):
+        cocktail_menu = self.run.cocktail_menu.path
+        with open(cocktail_menu, 'r') as menu_file:
+            next(menu_file)  # skip first row
+            return [row for row in csv.reader(menu_file)]
+
+    def write_mso_file(self, use_marco_classifications=False):
+        cocktail_data = self.get_cocktail_csv_data()
+        self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
+        with open(self.output_path, 'w') as mso_file:
+            writer = csv.writer(mso_file, delimiter='\t')
+            writer.writerow(self.first_line)
+            writer.writerow(cocktail_data.pop(0))  # header row
+            for row in cocktail_data:
+                row = MsoWriter.row_formater(row)
+                well_num = int(float(row[0]))
+
+                image = self.run.images[well_num-1]
+                if image and image.human_class:
+                    row.append(MSO_DICT[image.human_class])
+                elif use_marco_classifications and image.machine_class:
+                    row.append(MSO_DICT[image.machine_class])
+                else:
+                    row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
+                writer.writerow(row)
+                    # default to other image classification
+            
+
+    
+    
+
+
 
 
 class XtalWriter(RunSerializer):
@@ -597,6 +653,7 @@ class RunDeserializer():  # convert saved file into a run
                 r = json.load(xtal_data,  # update date since datetime goes right to string
                               object_hook=RunDeserializer.dict_to_obj)
                 r.date = BarTender.datetime_converter(r.date)
+                r.save_file_path = xtal_path
                 return r
 
 
@@ -886,7 +943,6 @@ class RunLinker():
             if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
                 continue
             else:
-                print('hipdpdfpdfpdfp')
                 return False
         runs = [r for r in sorted(
             self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]

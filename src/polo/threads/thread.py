@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 
 from polo import BLANK_IMAGE
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
-from polo.widgets.graphics_well import Image
+from polo.crystallography.image import Image
 
 
 class thread(QThread):
@@ -75,20 +75,6 @@ class QuickThread(thread):
         self.result = self.job_func(**self.func_args)
 
 
-class PixmapMakerThread(thread):
-
-    def __init__(self, run, parent=None):
-        super().__init__(parent)
-        self.run = run
-
-    def run(self):
-        for image in self.run:
-            if isinstance(image, Image):
-                image.pixmap
-                self.usleep(1000)
-                print('aded image')
-
-
 class ClassificationThread(thread):
     change_value = pyqtSignal(int)
     estimated_time = pyqtSignal(float, int)
@@ -122,7 +108,6 @@ class FTPDownloadThread(thread):
 
     def run(self):
         for i, remote_file_path in enumerate(self.file_paths):
-            print('downloading', remote_file_path)
             if self.ftp:
                 local_file_path = os.path.join(
                     str(self.save_dir_path),
@@ -131,7 +116,6 @@ class FTPDownloadThread(thread):
                 with open(local_file_path, 'wb') as local_file:
                     cmd = 'RETR {}'.format(remote_file_path)
                     status = self.ftp.retrbinary(cmd, local_file.write)
-            print('downloaded file ', remote_file_path)
             self.file_downloaded.emit(i)
             self.download_path.emit(local_file_path)
 
