@@ -69,6 +69,14 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
         self.ui.plateViewer.images_per_page = self.images_per_page[0]
 
+        self.ui.comboBox_7.currentIndexChanged.connect(self.set_images_per_page)
+    
+
+    def set_images_per_page(self):
+        self.ui.plateViewer.images_per_page = self.images_per_page[
+                self.ui.comboBox_7.currentIndex()]
+
+
     def set_image_count_options(self):
         '''Helper method to be called in `__init__` that sets the options
         for number of images per view.

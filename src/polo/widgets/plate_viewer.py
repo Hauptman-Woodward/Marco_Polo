@@ -32,6 +32,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.__zoom = 0
         self.__scene_map = {}
+        self.__view_cache = {}
         self.setInteractive(True)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -125,10 +126,12 @@ class plateViewer(QtWidgets.QGraphicsView):
             new_page_number = self.total_pages
         self.__current_page = new_page_number
 
-    def get_visible_wells(self):
+    def get_visible_wells(self, page=None):
 # return just the indices of the wells and then create the graphics wells
 # and delete the scene afterwards 
         current_images = []
+        if not page:
+            page = self.current_page
 
         r, c = self.subgrid_dict[self.images_per_page]
         # dims of grid to show
@@ -137,19 +140,15 @@ class plateViewer(QtWidgets.QGraphicsView):
         for i in range(0, len(self.run)):  # size of plate
             plate_index = plateViewer.well_index_to_subgrid(i, r, c, p_r, p_c)
             plate_index += 1
-            if plate_index == self.current_page:
+            if plate_index == page:
                 yield i
-
-# use pixel map instead of image object might help
-
+    
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-        # self.__scene.clear()
-        # self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
-        # memory leak somewhere pixelmaps not being derefenced and garbage collected
 
-        # if some condition
+        [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
+
 
         visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]

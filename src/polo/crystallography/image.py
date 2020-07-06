@@ -329,7 +329,9 @@ class Image(QtGui.QPixmap):
                 linked_images.append(start_image)
                 start_image = start_image.alt_image
 
-        return sorted(linked_images, key=lambda i: len(i.spectrum))
+            return sorted(linked_images, key=lambda i: len(i.spectrum))
+        else:
+            return linked_images
 
     def classify_image(self):
         '''Classify the image using the MARCO CNN model. Sets the 
@@ -343,7 +345,7 @@ class Image(QtGui.QPixmap):
             return e
     
 
-    def standard_filter(self, image_types, human, marco):
+    def standard_filter(self, image_types, human, marco, favorite):
         '''Method that determines if this image should be included in a set
         of filtered images based on given image types and a classifier: human,
         marco or both. 
@@ -357,21 +359,24 @@ class Image(QtGui.QPixmap):
         :return: [description]
         :rtype: [type]
         '''
-        if image_types:  # have specificed some image types
-            if human and self.human_class in image_types:
-                return True
-            elif marco and self.machine_class in image_types:
-                return True
-            else:
-                return False
-        else:
-            if human or marco:  # set at least one classifier filter
-                if (human and self.human_class) or marco and self.machine_class:
+        if favorite == self.favorite:
+            if image_types:  # have specificed some image types
+                if human and self.human_class in image_types:
+                    return True
+                elif marco and self.machine_class in image_types:
                     return True
                 else:
-                    return False 
+                    return False
             else:
-                return True # set no filters so return True 
+                if human or marco:  # set at least one classifier filter
+                    if (human and self.human_class) or (marco and self.machine_class):
+                        return True
+                    else:
+                        return False 
+                else:
+                    return True # set no filters so return True
+        else:
+            return False 
                 
 
 

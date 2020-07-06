@@ -172,6 +172,9 @@ class PhotoViewer(QtWidgets.QGraphicsView):
             self.__zoom = 0
         else:
             self.__empty = True
+    
+    def add_pixmap(self, pixmap):
+        self.scene.addPixmap(pixmap)
 
     # def set_scene(self, graphics_scene=None):
     #     # should do same thing as set_image but with a graphics scene
@@ -274,7 +277,7 @@ class SlideshowViewer(PhotoViewer):
             logger.info(
                 'Run attribute of {} set to {}'.format(self, self.__run))
             self.update_slides_from_filters(
-                image_types=set(IMAGE_CLASSIFICATIONS), human=False, marco=False
+                image_types=set([]), human=False, marco=False
             )
         else:
             logger.info('Failed to set {} as __run attribute of {}'.format(
@@ -328,11 +331,9 @@ class SlideshowViewer(PhotoViewer):
         :type marco: bool
         '''
         if self.run:
+            print(marco, 'update slides from filters')
             images = list(self.run.image_filter_query(
-                image_types, human, marco))
-            if favorite:  # probably move this to image filter query soon
-                images = [i for i in images if i.favorite]
-
+                image_types, human, marco, favorite))
             self.__carousel.add_slides(images)
             self.current_image = self.__carousel.current_slide.image
             logger.info('Applied filters {} human: {} marco: {} to {}'.format(

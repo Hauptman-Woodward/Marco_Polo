@@ -9,8 +9,6 @@ from polo.utils.io_utils import if_dir_not_exists_make, list_dir_abs, parse_HWI_
 logger = make_default_logger(__name__)
 
 
-
-
 class Run():
     '''
     :param image_dir: String. Path to directory containing images to \
@@ -60,12 +58,11 @@ class Run():
             return self.images[n]
         except IndexError as e:
             return e
-    
 
     def __len__(self):
         '''Returns the number of non null Images'''
         return sum([1 for i in self.images if i != None])
-    
+
     def get_tooltip(self):
         return 'Run Name: {}Spectrum: {}\nDate: {}\nNum Images: {}'.format(
             self.run_name, self.image_spectrum, str(self.date), len(self)
@@ -89,15 +86,17 @@ class Run():
                 Image(path=str(image_path), spectrum=self.image_spectrum,
                       date=self.date)
             )
-    
-    def unload_all_pixmaps(self, s=None, e=None):  # reduce memory usage
+
+    def unload_all_pixmaps(self, s=None, e=None, r=False):  # reduce memory usage
         if isinstance(s, int) and isinstance(e, int):
             images = self.images[s:e]
         else:
             images = self.images
-            
         for image in images:
-            image.delete_pixmap_data()
+            if r:
+                image.recursive_delete_pixmap_data()
+            else:
+                image.delete_pixmap_data()
 
     def get_images_by_classification(self, human=True):
         '''
@@ -133,78 +132,14 @@ class Run():
                 row_dict[arg] = None
         return row_dict
 
-    def get_table_data(self, image_types, human, marco):
-        logger.info('Getting table data for {} with image types {}'.format(
-            self, image_types
-        ))
-        headers = ['path', 'well_number', 'date',
-                   'machine_class', 'human_class', 'spectrum']
 
-        header_dict = {header: i for i, header in enumerate(headers)}
-        images = self.image_filter_query(image_types, human, marco)
-        table_data = {}
-        row = 1
-        for image_index in images:
-            image = self.images[image_index]
-            image_dict = self.get_image_table_data(image, headers)
-            for header in image_dict:
-                col = header_dict[header]
-                table_data[(row, col)] = image_dict[header]
-            row += 1
-
-        for header in header_dict:
-            # add header values to first row
-            table_data[(0, header_dict[header])] = header
-
-        self.current_table_data = table_data
-        logger.info('Returned table with {} rows and {} columns'.format(
-            row, len(headers)
-        ))
-        return row, len(headers)
-
-    def get_current_table_data(self, image_types, human=True, marco=False):
-        images = self.image_filter_query(image_types, human, marco)
-        return self.get_table_data(images)
-
-    def image_filter_query(self, image_types, human=False, marco=False):
-        images = []
-        for i, image in enumerate(self.images):
-            filter_result = self.image_filter_engine(
-                image, image_types, human, marco)
-            if filter_result:
-                images.append(filter_result)
-        if images:
-            return images
-        else:
-            return [Image.no_image()]
-
-    def image_filter_engine(self, image, image_types, human=False, marco=False):
-        if not image_types:
-            image_types == IMAGE_CLASSIFICATIONS
-        if not human and not marco:
-            if image.spectrum == 'Visible':
-                human, marco = True, True
-            else:
-                return image
-        if isinstance(image, Image):  # is an image
-            if human and image.human_class:  # human classification precidence over marco
-                if image.human_class in image_types:
-                    return image
-            if marco and image.machine_class:
-                if image.machine_class in image_types:
-                    return image
-            # non visible spectrum needs no classificaion
-            # IDEA if has a connected spectrum than image
-            # filtering is done based on the images
-            # in the visible spectrum and the well
-            # numbers of this spectrum are returned
-
-    def add_journal_entry(self, contents, title):
-        entry_datetime = datetime.now()
-        self.journal[str(entry_datetime)] = (title, contents)
-        logger.info('Add entry with title {} to journal'.format(title))
-        # jounal is doulbe dict first key is title and second is datetime
-        # of when the entry was added
+    def image_filter_query(self, image_types, human, marco, favorite):
+        images = [i for i in self.images if i and i.standard_filter(
+            image_types, human, marco, favorite
+        )]
+        if not images:
+            images.append(Image.no_image())
+        return images
 
     def get_human_statistics(self):
         '''
@@ -233,7 +168,8 @@ class Run():
 
     def get_current_hits(self):
         # hits are classified as images with human crystal designation
-        return [image for image in self.images if image and image.human_class == 'Crystals']
+        return [image for image in self.images
+                if image and image.human_class == 'Crystals']
 
 
 class HWIRun(Run):
@@ -314,7 +250,7 @@ class HWIRun(Run):
         self.plate_id = plate_id
         self.num_wells = num_wells
         self.__dict__.update(kwargs)
-    
+
     def get_tooltip(self):
         if 'plateName' in self.__dict__:
             platename = self.__dict__['plateName']

@@ -89,7 +89,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def import_from_saved_run(self):
 
-        xtal_dialog = RunImporter.make_xtal_file_dialog()
+        xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
         xtal_dialog.exec_()
         xtal_file = xtal_dialog.selectedFiles()
         if xtal_file:  # returned as a list
