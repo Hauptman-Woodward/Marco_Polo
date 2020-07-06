@@ -72,10 +72,8 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.slideshowViewer.show_all_dates = True
             if self.run:
                 self.display_current_image()
-            print('set show all dates to true')
         else:
             self.ui.slideshowViewer.show_all_dates = False
-            print('set all dates to false')
         if show_all_specs:
             self.ui.slideshowViewer.show_all_specs = True
             if self.run:
@@ -130,8 +128,6 @@ class slideshowInspector(QtWidgets.QWidget):
         for each_checkbox in self.class_checkboxs:
             if each_checkbox.isChecked():
                 selected_classes.append(each_checkbox.text())
-        if not selected_classes:  # no classes selected
-            selected_classes = IMAGE_CLASSIFICATIONS  # add all
         return selected_classes
 
     @property
@@ -215,6 +211,7 @@ class slideshowInspector(QtWidgets.QWidget):
         so the current slideshow contents can be adjusted to reflect the
         new filters. Displays the current image after filtering.
         '''
+        print(self.marco)
         self.ui.slideshowViewer.update_slides_from_filters(
             self.selected_classifications, self.human, self.marco, self.favorites
         )

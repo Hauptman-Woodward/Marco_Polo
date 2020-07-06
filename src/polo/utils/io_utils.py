@@ -23,6 +23,9 @@ from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
 from polo.utils.dialog_utils import make_message_box
+from polo.utils.unrar_utils import unrar_archive
+from polo import SPEC_KEYS, IMAGE_SPECS
+
 
 logger = make_default_logger(__name__)
 
@@ -149,12 +152,14 @@ class HtmlWriter(RunSerializer):
         anything other than a Qthread instance.
         '''
         result = str(self.thread.result)
-        if os.path.exists(result):
-            message = 'Export to {} was successful'.format(result)
-        else:
-            message = 'Export to HTML file failed. Returned {}'.format(result)
-        logger.info('Html write attempt status: {}'.format(message))
-        HtmlWriter.make_message_box(message=message).exec_()
+        print(result)
+        # creating message on thread possibly be causing an issue
+        # if os.path.exists(result):
+        #     message = 'Export to {} was successful'.format(result)
+        # else:
+        #     message = 'Export to HTML file failed. Returned {}'.format(result)
+        # logger.info('Html write attempt status: {}'.format(message))
+        # HtmlWriter.make_message_box(message=message).exec_()
 
     def write_complete_run(self, output_path, encode_images=True):
         # write a run as html file with images and classifications
@@ -195,7 +200,7 @@ class HtmlWriter(RunSerializer):
         :type run_name: str, optional
         '''
         if HtmlWriter.path_validator(output_path, parent=True):
-            output_path = HtmlWriter.path_suffix_checker(ouput_path, '.html')
+            output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             template = HtmlWriter.make_template(SCREEN_HTML_TEMPLATE)
             if not run_name:
                 run_name = self.run.run_name
@@ -469,9 +474,8 @@ class XtalWriter(RunSerializer):
 
 class RunDeserializer():  # convert saved file into a run
 
-    def __init__(self, xtal_path, main_window):
+    def __init__(self, xtal_path):
         self.xtal_path = xtal_path
-        self.main_window = main_window
 
     @staticmethod
     def clean_base64_string(string):
@@ -545,13 +549,16 @@ class RunDeserializer():  # convert saved file into a run
         loaded_run dictionary to signify that the run has been loaded and is
         ready for further operations.
         '''
-        thread = QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
+        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
-        def finished():
-            self.main_window.add_loaded_run(thread.result)
+        # def finished():
+        #     self.main_window.add_loaded_run(thread.result)
 
-        thread.finished.connect(finished)
+        # thread.finished.connect(finished)
         thread.start()
+
+    def make_read_xtal_thread(self):
+        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -802,7 +809,7 @@ class CocktailMenuReader():
                     attributes
         :type map: dict
         '''
-        cls.cocktail_map = cocktail_map
+        cls.cocktail_map = map
 
     @classmethod
     def set_formula_pos(cls, pos):
@@ -865,21 +872,54 @@ class CocktailMenuReader():
         return cocktail_menu
 
 
-class BulkRunImporter():
-
-    def __init__(self, run_directory, *args):
-        pass
-
-
 class RunLinker():
 
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
 
-    def check_for_date_links(self):
-        # determine links by first looking at sample names assume these
-        # sample names to be unique
-        pass
+    def the_big_link(self):
+        self.link_runs_by_date()
+        self.link_runs_by_spectrum()
+
+    def link_runs_by_date(self):
+        for run in self.loaded_runs:
+            if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
+                continue
+            else:
+                print('hipdpdfpdfpdfp')
+                return False
+        runs = [r for r in sorted(
+            self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
+        # only visible runs liked by date
+        if runs and len(runs) > 1:  # if length is only one will be linked to self
+            for i in range(0, len(runs)-1):
+                runs[i].link_to_decendent(runs[i+1])
+        return runs
+
+    def link_runs_by_spectrum(self):
+        # for now this links all runs of the sample to the alt spectrums when
+        for run in self.loaded_runs:
+            if hasattr(run, 'link_to_alt_spectrum'):
+                continue
+            else:
+                return False
+        visible, other = [], []
+        for run in self.loaded_runs:
+            if run.image_spectrum == IMAGE_SPECS[0]:  # visible images only
+                visible.append(run)
+            else:
+                other.append(run)
+        # now have sorted by spectrums
+        if other and visible:
+            for v_run in visible:  # all in visible spectrum
+                if v_run:
+                    other.append(v_run)
+                    spec_list = sorted(other, key=lambda r: len(str(r.image_spectrum)))
+                    for i in range(0, len(spec_list)-1):
+                        spec_list[i].link_to_alt_spectrum(spec_list[i+1])
+                    spec_list[-1].link_to_alt_spectrum(spec_list[0])
+                    other.pop()  # remove visible run added to other
+                # ties the head and tail together
 
 
 class XmlReader():
@@ -887,7 +927,7 @@ class XmlReader():
     platedef_key = 'platedef'  # keyword that is always in plate definition
     # xml file names
 
-    def __init__(self, xml_path, xml_files=[]):
+    def __init__(self, xml_path=None, xml_files=[]):
         '''XmlReader class can be used to read the xml metadata files that are
         included in HWI screening run rar archives. Currently, is primarily ment
         to extract metadata about the plate and the sample in that plate
@@ -986,34 +1026,6 @@ class Menu():  # holds the dictionary of cocktails
             self.__cocktails = new_cocktails
         else:
             self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
-
-    # @property
-    # def path(self):
-    #     '''Property to return the Menu instance's path attribute
-
-    #     :return: The path attribute
-    #     :rtype: str or IO
-    #     '''
-    #     return self.__path
-
-    # @path.setter
-    # def path(self, new_path):
-    #     '''Setter function for path attribute. Creates an instance of
-    #     a CocktailMenuReader class and passes the path attribute to it.
-    #     Then uses the CocktailMenuReader instance to read the contents of
-    #     the new_path (which should be a csv file) as Cocktail objects.
-    #     Cocktail instances are added to the __cocktail dict by their
-    #     well number assignment.
-
-    #     :param new_path: [description]
-    #     :type new_path: [type]
-    #     '''
-    #     self.__path = new_path  # set the path to the new_path
-    #     print('new path made')
-    #     cocktail_reader = CocktailMenuReader(open(self.path))
-    #     for i, cocktail in enumerate(cocktail_reader):
-    #         self.cocktails[cocktail.well_assignment] = cocktail
-        # create dictionary from cocktails, key is the well number (assignment)
 
 
 class BulkImporter():

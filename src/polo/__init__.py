@@ -39,8 +39,8 @@ MODEL_PATH = DATA_DIR.joinpath('savedmodel')
 
 
 # HTML jinja2 templates
-RUN_HTML_TEMPLATE = Path('polo/templates/exportRunTemplate.html')
-SCREEN_HTML_TEMPLATE = Path('polo/templates/exportPlatesTemplate.html')
+RUN_HTML_TEMPLATE = dirname.joinpath('polo/templates/exportRunTemplate.html')
+SCREEN_HTML_TEMPLATE = dirname.joinpath('polo/templates/exportPlatesTemplate.html')
 BLANK_IMAGE = Path('data/images/default_images/blank_image.png')
 
 # icons for tabs and buttons of the GUI
@@ -69,6 +69,7 @@ COLORS = {
 ALLOWED_IMAGE_COUNTS = [24, 96, 192, 384, 786, 1536]
 
 IMAGE_SPECS = ['Visible', 'UV-TPEF', 'SHG', 'Other']
+SPEC_KEYS = dict(zip(['jpg', 'uvt', 'shg', ''], IMAGE_SPECS))
 
 
 # UNRAR EXE

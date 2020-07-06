@@ -86,7 +86,8 @@ class ImagePopDialog(QtWidgets.QDialog):
         '''Show the image stored in the `image` attribute
         '''
         if self.image:
-            self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image))
+            self.ui.photoViewer.add_pixmap(self.image)
+            self.ui.photoViewer.fitInView()
             self.set_groupbox_title()
             self.set_cocktail_details()
             self.set_image_details()
@@ -117,11 +118,11 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.close()
 
     def show_alt_image(self, next_date=False, prev_date=False, alt=False):
-        if next_date:
+        if next_date and self.image.next_image:
             self.image = self.image.next_image
-        elif prev_date:
+        elif prev_date and self.image.prev_date:
             self.image = self.image.prev_date
-        elif alt:
+        elif alt and self.image.alt_image:
             self.image = self.image.alt_image
 
     def set_allowed_navigation_functions(self):

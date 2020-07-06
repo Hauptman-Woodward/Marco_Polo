@@ -1,16 +1,20 @@
 import base64
 import os
+import time
+from pathlib import Path
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 
-from polo import MODEL, IMAGE_CLASSIFICATIONS, make_default_logger
+from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
+                  make_default_logger)
 from polo.marco.run_marco import classify_image
-from polo import DEFAULT_IMAGE_PATH
-from pathlib import Path
-import time
+from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
-class Image():
+
+
+class Image(QtGui.QPixmap):
 
     '''Image objects hold the data relating to one image of a particular
     screening well in a larger run. Images encode the actual image file as
@@ -54,9 +58,10 @@ class Image():
     def __init__(self, path=None, bites=None, well_number=None, human_class=None,
                  machine_class=None, prediction_dict=None,
                  plate_id=None, date=None, cocktail=None, spectrum=None,
-                 previous_image=None, next_image=None, alt_image=None, 
-                 favorite=False, **kwargs):
-
+                 previous_image=None, next_image=None, alt_image=None,
+                 favorite=False, parent=None, **kwargs):
+        
+        super(Image, self).__init__(parent)
         self.path = str(path)
         self.bites = bites
         self.human_class = human_class
@@ -72,7 +77,7 @@ class Image():
         self.alt_image = alt_image
         self.favorite = favorite
         self.__pixmap = None
-    
+
     @staticmethod
     def clean_base64_string(string):
         '''Image instances may contain byte strings that store their actual
@@ -88,7 +93,8 @@ class Image():
         :rtype: bytes
         '''
         if string:
-            if isinstance(string, bytes): string = str(string, 'utf-8')
+            if isinstance(string, bytes):
+                string = str(string, 'utf-8')
             if string[0] == 'b':  # bytes string written directly to string
                 string = string[1:]
             if string[-1] == "'":
@@ -99,15 +105,40 @@ class Image():
     @classmethod
     def to_graphics_scene(cls, image):
         scene = QtWidgets.QGraphicsScene()
-        well = graphicsWell(image=image)
-        well.setPixmap()
-        scene.addItem(well)
+        if image.isNull():
+            image.setPixmap()
+        scene.addPixmap(image)
         return scene
-    
+
     @classmethod
     def no_image(cls):
         # return default no images found image instance
         return cls(path=DEFAULT_IMAGE_PATH)
+
+    def setPixmap(self, scaling=None):
+        if os.path.exists(self.path):
+            self.load(self.path)
+        elif isinstance(self.bites, bytes):
+            self.loadFromData(base64.b64decode(self.bites))
+        if isinstance(scaling, float):
+            self.scaled(self.width*scaling, self.height*scaling, Qt.KeepAspectRatio)
+    
+    def delete_pixmap_data(self):
+        self.swap(QPixmap())  # swap with null pixel map
+    
+    def recursive_delete_pixmap_data(self):
+        for i in self.get_linked_images_by_date():
+            i.delete_pixmap_data()
+        for i in self.get_linked_images_by_spectrum():
+            i.delete_pixmap_data()
+
+    
+    def height(self):
+        return self.size().height()
+    
+    def width(self):
+        return self.size().width()
+
 
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
@@ -119,36 +150,9 @@ class Image():
         return image_string
 
     @property
-    def pixmap(self):
-        if self.__pixmap:
-            return self.__pixmap
-        else:
-            self.__pixmap = self.make_pixmap()
-            return self.__pixmap
-    
-    # @pixmap.setter
-    # def pixmap(self, new_map):
-    #     if new_map
-
-    def encode_base64(self):
-        if not self.bites and os.path.exists(self.path):
-            with open(self.path, 'rb') as image_file:
-                self.bites = base64.b64encode(image_file.read())
-                return self.bites
-    
-    def make_pixmap(self):
-        pm = QPixmap()
-        if os.path.exists(self.path):
-            pm.load(self.path)
-        elif isinstance(self.bites, bytes):
-            pm.loadFromData(base64.b64decode(self.bites))
-        return pm
-    
-    
-    @property
     def path(self):
         return self.__path
-    
+
     @path.setter
     def path(self, new_path):
         if new_path:
@@ -157,11 +161,11 @@ class Image():
             self.__path = new_path
         else:
             self.__path = None
-    
+
     @property
     def bites(self):
         return self.__bites
-    
+
     @bites.setter
     def bites(self, new_bites):
         if isinstance(new_bites, bytes):
@@ -179,7 +183,7 @@ class Image():
         :rtype: str
         '''
         return self.__marco_class
-    
+
     @marco_class.setter
     def marco_class(self, new_class):
         '''Setter method for `__marco_class`. If this image has alt images
@@ -201,10 +205,10 @@ class Image():
                 alt_image = self.alt_image
                 while alt_image.path and alt_image.path != self.path:
                     alt_image.__marco_class = new_class
-                    alt_image = alt_image.alt_image       
+                    alt_image = alt_image.alt_image
         else:
             self.__marco_class = None
-    
+
     @property
     def human_class(self):
         '''Return the `__human_class` hidden attribute
@@ -213,7 +217,7 @@ class Image():
         :rtype: str
         '''
         return self.__human_class
-    
+
     @human_class.setter
     def human_class(self, new_class):
         '''Change the human classification of this image and any alternative
@@ -235,10 +239,24 @@ class Image():
                     alt_image.__human_class = new_class
                     # assign directly to hidden attr to avoid creating an
                     # endless recursive call loop
-                    alt_image = alt_image.alt_image        
+                    alt_image = alt_image.alt_image
         else:
             self.__human_class = None
 
+    def encode_base64(self):
+        if not self.bites and os.path.exists(self.path):
+            with open(self.path, 'rb') as image_file:
+                self.bites = base64.b64encode(image_file.read())
+                return self.bites
+
+    # def make_pixmap(self):
+    #     pm = QPixmap()
+    #     if os.path.exists(self.path):
+    #         pm.load(self.path)
+    #     elif isinstance(self.bites, bytes):
+    #         pm.loadFromData(base64.b64decode(self.bites))
+    #     pm.scaled(int(pm.height() * 0.5), int(pm.width() * 0.5), Qt.KeepAspectRatio)
+    #     return pm
 
     def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes
@@ -253,15 +271,15 @@ class Image():
             with open(self.path, 'rb') as image:
                 return base64.b64encode(image.read())
 
-    def resize(self, x, y, preserve_aspect=True):
-        '''
-        Resizes an image given x and y resolution. Copy is true will copy
-        the image instead of overwriting it.
-        '''
-        pixel_map = self.get_pixel_map()
-        if preserve_aspect:
-            return pixel_map.scaled(x, y, QtCore.Qt.KeepAspectRatio)
-    
+    # def resize(self, x, y, preserve_aspect=True):
+    #     '''
+    #     Resizes an image given x and y resolution. Copy is true will copy
+    #     the image instead of overwriting it.
+    #     '''
+    #     pixel_map = self.get_pixel_map()
+    #     if preserve_aspect:
+    #         return pixel_map.scaled(x, y, QtCore.Qt.KeepAspectRatio)
+
     def get_tool_tip(self):
         '''Format a string to use as a tooltip for this image instance.
 
@@ -275,7 +293,8 @@ class Image():
         else:
             cocktail = None
         return 'Well: {}\nCocktail: {}\nDate: {} \nMARCO Class: {}\nHuman Class: {}'.format(
-            str(self.well_number), cocktail, str(self.date), str(self.machine_class),
+            str(self.well_number), cocktail, str(
+                self.date), str(self.machine_class),
             str(self.human_class)
         )
 
@@ -284,7 +303,7 @@ class Image():
                    self.well_number, self.plate_id, self.date]
         for item in attribs:
             yield item
-    
+
     def get_linked_images_by_date(self):
         linked_images = [self]
 
@@ -300,7 +319,7 @@ class Image():
                 start_image = start_image.previous_image
 
         return sorted(linked_images, key=lambda i: i.date)
-    
+
     def get_linked_images_by_spectrum(self):
         linked_images = [self]
 
@@ -310,32 +329,9 @@ class Image():
                 linked_images.append(start_image)
                 start_image = start_image.alt_image
 
-        return sorted(linked_images, key=lambda i: len(i.spectrum))
-
-
-        # def get_all_imaging_dates(image, next_date=True):  # recursive
-        #     if image.path == start_image.path:
-        #         return  # break out back at start
-        #     elif next_date:
-        #         if isinstance(image.next_image, Image):
-        #             linked_images.append(image.next_image)
-        #             get_all_imaging_dates(image.next_image, next_date=next_date)
-        #         else:
-        #             return # run out of images
-        #     elif not next_date:
-        #         if isinstance(image.previous_image, Image):
-        #             linked_images.append(image.previous_image)
-        #             get_all_imaging_dates(image.previous_image, next_date=next_date)
-        #         else:
-        #             return
-        # if self.next_image:
-        #     get_all_imaging_dates(start_image.next_image)
-        # if self.previous_image:
-        #     get_all_imaging_dates(start_image.previous_image, next_date=False)
-
-        # return sorted(linked_images, key=lambda i: i.date)
-    
-
+            return sorted(linked_images, key=lambda i: len(i.spectrum))
+        else:
+            return linked_images
 
     def classify_image(self):
         '''Classify the image using the MARCO CNN model. Sets the 
@@ -347,11 +343,41 @@ class Image():
                                                                       self.path)
         except AttributeError as e:
             return e
-        # exception in case there is not image stored for that well. Maybe it
-        # got deleted for something
-        # at some point probably want an image that is a default image not found
-        # and can have a warning pop up if import from HWIrun and there are
-        # still null images in run.images
+    
+
+    def standard_filter(self, image_types, human, marco, favorite):
+        '''Method that determines if this image should be included in a set
+        of filtered images based on given image types and a classifier: human,
+        marco or both. 
+
+        :param image_types: [description]
+        :type image_types: [type]
+        :param human: [description]
+        :type human: [type]
+        :param marco: [description]
+        :type marco: [type]
+        :return: [description]
+        :rtype: [type]
+        '''
+        if favorite == self.favorite:
+            if image_types:  # have specificed some image types
+                if human and self.human_class in image_types:
+                    return True
+                elif marco and self.machine_class in image_types:
+                    return True
+                else:
+                    return False
+            else:
+                if human or marco:  # set at least one classifier filter
+                    if (human and self.human_class) or (marco and self.machine_class):
+                        return True
+                    else:
+                        return False 
+                else:
+                    return True # set no filters so return True
+        else:
+            return False 
+                
+
 
 from polo.widgets.graphics_well import graphicsWell
-

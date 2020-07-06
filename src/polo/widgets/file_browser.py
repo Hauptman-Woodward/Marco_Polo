@@ -9,64 +9,8 @@ from pathlib import PurePosixPath
 from PyQt5.QtWidgets import QApplication
 
 from polo.crystallography.run import Run, HWIRun
+from polo.utils.io_utils import RunLinker
 
-
-
-class RunOrganizer(QtWidgets.QTreeWidget):
-
-    def __init__(self, parent=None):
-        super(RunOrganizer, self).__init__(parent)
-        tree_dict = {}
-    
-    def add_sample(self, sample_name, *args):
-        parent_item = QtWidgets.QTreeWidgetItem(self)
-        parent_item.setText(0, sample_name)
-        for run in args:
-            if isinstance(run, (Run, HWIRun)):
-                self.add_run_node(parent_item, run)
-    
-    def add_run_node(self, tree, run):
-        new_node = QtWidgets.QTreeWidgetItem(tree)
-        new_node.setText(0, run.run_name)
-        new_node.setToolTip(0, run.get_tooltip())
-
-        return new_node
-
-    
-    def add_run(self, new_run):
-        if isinstance(new_run, HWIRun):
-            if hasattr(new_run, 'sampleName'):
-                sample_node = self.findItems(new_run.sampleName, Qt.MatchExactly, column=0)
-                if sample_node:
-                    sample_node = sample_node.pop()  # returned as a list
-                    self.add_run_node(sample_node, new_run)
-                else:
-                    self.add_sample(new_run.sampleName, new_run)
-            else:
-                orphan_runs = self.findItems('Sampleless Runs', Qt.MatchExactly, column=0)
-                if orphan_runs:
-                    orphan_runs = orphan_runs.pop()
-                else:
-                    orphan_runs = QtWidgets.QTreeWidgetItem(self)
-                    orphan_runs.setText(0, 'Sampleless Runs')
-                self.add_run_node(orphan_runs, new_run)
-
-        elif isinstance(new_run, Run):
-            non_hwi_runs = self.findItems('Non-HWI Runs', Qt.MatchExactly, column=0)
-            if non_hwi_runs:
-                    non_hwi_runs = non_hwi_runs.pop()
-            else:
-                non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
-                non_hwi_runs.setText(0, 'Non-HWI Runs')
-            self.add_run_node(non_hwi_runs, new_run)
-
-
-    def remove_sample(self, sample_name):
-        pass
-
-    def remove_run(self, smaple_name, run_name):
-        pass
-    
 
 class fileBrowser(QtWidgets.QTreeWidget):
 

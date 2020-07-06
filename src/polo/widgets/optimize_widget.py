@@ -575,7 +575,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                 plate_list = self.make_plate_list()
                 write_screen_html(plate_list, well_number, run_name,
                                   self.x_reagent, self.y_reagent,
-                                  self.well_volume, export_path)
+                                  self.well_volume, export_path, )
 
     def check_for_overflow(self, volume_list):
         ''' Check to see if the volume of reagents in a given well exceeds

@@ -36,6 +36,8 @@ def excepthook(exec_type, exec_value, exec_tb):
     m.setText(message)
     m.exec_()
     QtWidgets.QApplication.quit()
+    # in future add something to try and tell if we really need
+    # to quit the application or not
 
 def main():
 
