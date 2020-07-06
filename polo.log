@@ -9025,3 +9025,600 @@ INFO:2020-07-04 13:38:51,114:polo.widgets.optimize_widget:173:Identified 0 hit i
 INFO:2020-07-04 13:38:51,114:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>
 INFO:2020-07-04 13:38:51,114:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7face25923a8> run to <polo.crystallography.run.HWIRun object at 0x7facd1cc9e10>
 INFO:2020-07-04 13:38:51,114:polo.windows.main_window:216:Loaded new run named X000015805202005211148-uvt
+INFO:2020-07-06 09:34:42,194:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 09:34:42,327:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0c8868f828>
+INFO:2020-07-06 09:34:42,327:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0c8868f828>
+INFO:2020-07-06 09:34:42,338:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 09:34:42,344:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f0c84666798>
+INFO:2020-07-06 09:34:42,351:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 09:35:17,259:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f0c47c82048>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 09:35:17,308:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f0c47c82048>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 09:35:17,326:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 09:35:17,326:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f0c47c82048>
+INFO:2020-07-06 09:35:17,326:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f0c846573a8> run to <polo.crystallography.run.HWIRun object at 0x7f0c47c82048>
+INFO:2020-07-06 09:35:17,327:polo.windows.main_window:216:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 09:35:19,223:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 199, in handle_opening_run
+    if self.current_run: self.current_run.unload_all_pixmaps() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py", line 95, in unload_all_pixmaps
+    del image.pixmap AttributeError: pixmap
+Value: pixmap
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 09:35:26,546:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 09:35:26,619:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f340806b828>
+INFO:2020-07-06 09:35:26,619:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f340806b828>
+INFO:2020-07-06 09:35:26,627:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 09:35:26,632:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f33fb5f6798>
+INFO:2020-07-06 09:35:26,636:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 09:35:33,232:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f33cac05fd0>.units
+INFO:2020-07-06 09:35:33,282:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f33cac05fd0>.units
+INFO:2020-07-06 09:35:33,300:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 09:35:33,301:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f33cac05fd0>
+INFO:2020-07-06 09:35:33,301:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f33fb5e63a8> run to <polo.crystallography.run.HWIRun object at 0x7f33cac05fd0>
+INFO:2020-07-06 09:35:33,301:polo.windows.main_window:216:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 09:35:39,865:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 237, in show_current_plate
+    self.apply_plate_settings() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 216, in apply_plate_settings
+    self.ui.plateViewer.emphasize_all_images() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 231, in emphasize_all_images
+    each_gw.resetOpacity() AttributeError: 'QGraphicsPixmapItem' object has no attribute 'resetOpacity'
+Value: 'QGraphicsPixmapItem' object has no attribute 'resetOpacity'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 10:32:26,976:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 10:32:27,051:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fbf9a8ecaf8>
+INFO:2020-07-06 10:32:27,051:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fbf9a8ecaf8>
+INFO:2020-07-06 10:32:27,059:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 10:32:27,064:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fbf7909ba68>
+INFO:2020-07-06 10:32:27,068:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 10:32:33,895:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fbf206c40b8>.units
+INFO:2020-07-06 10:32:33,911:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fbf206c40b8>.units
+INFO:2020-07-06 10:32:33,925:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 10:32:33,925:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fbf206c40b8>
+INFO:2020-07-06 10:32:33,925:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fbf7908d678> run to <polo.crystallography.run.HWIRun object at 0x7fbf206c40b8>
+INFO:2020-07-06 10:32:33,925:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 10:32:36,495:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 239, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 181, in tile_graphics_wells
+    self.set_prerender_info(item) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 200, in set_prerender_info
+    item.setToolTip(item.pixmap().get_tool_tip())  # pixmap is Image AttributeError: 'QPixmap' object has no attribute 'get_tool_tip'
+Value: 'QPixmap' object has no attribute 'get_tool_tip'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 10:34:10,662:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 10:34:10,739:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7a8426eaf8>
+INFO:2020-07-06 10:34:10,739:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7a8426eaf8>
+INFO:2020-07-06 10:34:10,746:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 10:34:10,751:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f7a802a8a68>
+INFO:2020-07-06 10:34:10,755:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 10:34:17,913:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f7a4f8d90f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 10:34:17,960:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f7a4f8d90f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 10:34:17,979:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 10:34:17,979:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f7a4f8d90f0>
+INFO:2020-07-06 10:34:17,979:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f7a80298678> run to <polo.crystallography.run.HWIRun object at 0x7f7a4f8d90f0>
+INFO:2020-07-06 10:34:17,979:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 10:57:08,445:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 10:57:08,520:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4b6fbfeaf8>
+INFO:2020-07-06 10:57:08,520:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4b6fbfeaf8>
+INFO:2020-07-06 10:57:08,527:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 10:57:08,532:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f4b5ebb1a68>
+INFO:2020-07-06 10:57:08,536:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 10:57:22,602:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4b3e4440f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 10:57:22,649:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4b3e4440f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 10:57:22,667:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 10:57:22,668:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f4b3e4440f0>
+INFO:2020-07-06 10:57:22,668:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f4b5eba1678> run to <polo.crystallography.run.HWIRun object at 0x7f4b3e4440f0>
+INFO:2020-07-06 10:57:22,668:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 10:57:33,107:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 255, in pop_out_selected_well
+    pop_out = ImagePopDialog(image) File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 43, in __init__
+    self.image = image File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 57, in image
+    self.show_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 89, in show_image
+    self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image)) File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 108, in to_graphics_scene
+    well = graphicsWell(image=image) TypeError: __init__() missing 1 required positional argument: 'pixmap'
+Value: __init__() missing 1 required positional argument: 'pixmap'
+ Error Type: <class 'TypeError'>
+
+CRITICAL:2020-07-06 11:00:12,905:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 255, in pop_out_selected_well
+    pop_out = ImagePopDialog(image) File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 43, in __init__
+    self.image = image File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 57, in image
+    self.show_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 89, in show_image
+    self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image)) File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 108, in to_graphics_scene
+    if image.isNull(): TypeError: __init__() missing 1 required positional argument: 'pixmap'
+Value: __init__() missing 1 required positional argument: 'pixmap'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-06 11:00:19,194:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:00:19,268:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7faffa892af8>
+INFO:2020-07-06 11:00:19,268:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7faffa892af8>
+INFO:2020-07-06 11:00:19,276:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:00:19,280:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fafecdeea68>
+INFO:2020-07-06 11:00:19,284:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:00:26,553:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fafc0645240>.units
+INFO:2020-07-06 11:00:26,567:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fafc0645240>.units
+INFO:2020-07-06 11:00:26,582:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:00:26,582:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fafc0645240>
+INFO:2020-07-06 11:00:26,582:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fafecddf678> run to <polo.crystallography.run.HWIRun object at 0x7fafc0645240>
+INFO:2020-07-06 11:00:26,582:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:00:36,774:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 255, in pop_out_selected_well
+    pop_out = ImagePopDialog(image) File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 43, in __init__
+    self.image = image File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 57, in image
+    self.show_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 89, in show_image
+    self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image)) File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 110, in to_graphics_scene
+    scene.addItem(image) TypeError: addItem(self, QGraphicsItem): argument 1 has unexpected type 'Image'
+Value: addItem(self, QGraphicsItem): argument 1 has unexpected type 'Image'
+ Error Type: <class 'TypeError'>
+
+CRITICAL:2020-07-06 11:00:54,547:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 255, in pop_out_selected_well
+    pop_out = ImagePopDialog(image) File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 43, in __init__
+    self.image = image File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 57, in image
+    self.show_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py", line 89, in show_image
+    self.ui.photoViewer.set_scene(Image.to_graphics_scene(self.image)) File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 110, in to_graphics_scene
+    scene.addPixmap(image) TypeError: addItem(self, QGraphicsItem): argument 1 has unexpected type 'Image'
+Value: addItem(self, QGraphicsItem): argument 1 has unexpected type 'Image'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-06 11:00:59,214:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:00:59,291:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+INFO:2020-07-06 11:00:59,291:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+INFO:2020-07-06 11:00:59,298:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:00:59,303:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fc3a9915a68>
+INFO:2020-07-06 11:00:59,308:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:01:08,696:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fc37cf32208>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:01:08,744:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fc37cf32208>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:01:08,763:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:01:08,763:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fc37cf32208>
+INFO:2020-07-06 11:01:08,763:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fc3a9905678> run to <polo.crystallography.run.HWIRun object at 0x7fc37cf32208>
+INFO:2020-07-06 11:01:08,763:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+WARNING:2020-07-06 11:02:35,169:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+WARNING:2020-07-06 11:02:35,983:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+WARNING:2020-07-06 11:02:42,191:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+WARNING:2020-07-06 11:02:42,791:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+WARNING:2020-07-06 11:02:43,181:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+WARNING:2020-07-06 11:02:43,387:polo.widgets.slideshow_viewer:396:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc3b314baf8>
+INFO:2020-07-06 11:06:46,373:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:06:46,448:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f9ea59e3a68>
+INFO:2020-07-06 11:06:46,448:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f9ea59e3a68>
+INFO:2020-07-06 11:06:46,455:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:06:46,460:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f9e8d0319d8>
+INFO:2020-07-06 11:06:46,464:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:06:54,379:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:06:54,426:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:06:54,444:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:06:54,444:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>
+INFO:2020-07-06 11:06:54,445:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f9e8d0225e8> run to <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>
+INFO:2020-07-06 11:06:54,445:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:06:59,379:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:06:59,393:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:06:59,406:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:06:59,406:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>
+INFO:2020-07-06 11:06:59,406:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f9e8d0225e8> run to <polo.crystallography.run.HWIRun object at 0x7f9e6c637198>
+INFO:2020-07-06 11:06:59,406:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:07:01,779:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 240, in show_current_plate
+    self.apply_plate_settings() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 216, in apply_plate_settings
+    self.ui.plateViewer.emphasize_all_images() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 274, in emphasize_all_images
+    each_gw.resetOpacity() AttributeError: 'QGraphicsPixmapItem' object has no attribute 'resetOpacity'
+Value: 'QGraphicsPixmapItem' object has no attribute 'resetOpacity'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 11:08:25,428:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:08:25,503:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f91f1a24a68>
+INFO:2020-07-06 11:08:25,503:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f91f1a24a68>
+INFO:2020-07-06 11:08:25,511:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:08:25,516:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f91cd9839d8>
+INFO:2020-07-06 11:08:25,520:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:08:32,014:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>.units
+INFO:2020-07-06 11:08:32,065:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>.units
+INFO:2020-07-06 11:08:32,083:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:08:32,083:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>
+INFO:2020-07-06 11:08:32,083:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f91cd9735e8> run to <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>
+INFO:2020-07-06 11:08:32,083:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:08:41,989:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>.units
+INFO:2020-07-06 11:08:42,035:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>.units
+INFO:2020-07-06 11:08:42,053:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:08:42,053:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>
+INFO:2020-07-06 11:08:42,054:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f91cd9735e8> run to <polo.crystallography.run.HWIRun object at 0x7f91bcfb40b8>
+INFO:2020-07-06 11:08:42,054:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:09:26,000:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:09:26,074:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fd42e77ca68>
+INFO:2020-07-06 11:09:26,074:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fd42e77ca68>
+INFO:2020-07-06 11:09:26,082:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:09:26,086:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fd40670f9d8>
+INFO:2020-07-06 11:09:26,090:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:09:42,687:polo.windows.ftp_dialog:43:Opened FTP Dialog
+INFO:2020-07-06 11:09:50,118:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fd3f9d42400>.units
+INFO:2020-07-06 11:09:50,167:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7fd3f9d42400>.units
+INFO:2020-07-06 11:09:50,185:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:09:50,185:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fd3f9d42400>
+INFO:2020-07-06 11:09:50,185:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fd4066fe5e8> run to <polo.crystallography.run.HWIRun object at 0x7fd3f9d42400>
+INFO:2020-07-06 11:09:50,185:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:10:09,610:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 214, in apply_plate_settings
+    self.apply_image_filters() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 250, in apply_image_filters
+    self.selected_classifications, self.human, self.marco File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 211, in set_scene_opacity_from_filters
+    image.setOpacity(filtered_opacity) AttributeError: 'Image' object has no attribute 'setOpacity'
+Value: 'Image' object has no attribute 'setOpacity'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 11:11:03,445:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:11:03,521:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f6cbb7a3a68>
+INFO:2020-07-06 11:11:03,521:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f6cbb7a3a68>
+INFO:2020-07-06 11:11:03,528:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:11:03,533:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f6cb777a9d8>
+INFO:2020-07-06 11:11:03,538:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:11:14,226:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f6ca6fc2128>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:11:14,243:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f6ca6fc2128>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:11:14,257:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:11:14,257:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f6ca6fc2128>
+INFO:2020-07-06 11:11:14,257:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f6cb776a5e8> run to <polo.crystallography.run.HWIRun object at 0x7f6ca6fc2128>
+INFO:2020-07-06 11:11:14,257:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:11:40,460:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 214, in apply_plate_settings
+    self.apply_image_filters() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 250, in apply_image_filters
+    self.selected_classifications, self.human, self.marco File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 211, in set_scene_opacity_from_filters
+    item.setOpacity(filtered_opacity) TypeError: setOpacity(self, float): argument 1 has unexpected type 'list'
+Value: setOpacity(self, float): argument 1 has unexpected type 'list'
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-06 11:12:43,323:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:12:43,418:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f80b0e3ca68>
+INFO:2020-07-06 11:12:43,418:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f80b0e3ca68>
+INFO:2020-07-06 11:12:43,426:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:12:43,431:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f80a8e289d8>
+INFO:2020-07-06 11:12:43,435:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:12:50,056:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f80844360b8>.units
+INFO:2020-07-06 11:12:50,105:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f80844360b8>.units
+INFO:2020-07-06 11:12:50,123:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:12:50,123:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f80844360b8>
+INFO:2020-07-06 11:12:50,123:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f80a8e185e8> run to <polo.crystallography.run.HWIRun object at 0x7f80844360b8>
+INFO:2020-07-06 11:12:50,124:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:17:47,258:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:17:47,342:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdfffcc7a68>
+INFO:2020-07-06 11:17:47,342:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fdfffcc7a68>
+INFO:2020-07-06 11:17:47,350:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:17:47,355:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fdffc03b9d8>
+INFO:2020-07-06 11:17:47,359:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:17:53,979:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fdfc6b170f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:17:54,026:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fdfc6b170f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:17:54,044:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:17:54,044:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fdfc6b170f0>
+INFO:2020-07-06 11:17:54,044:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fdffc02c5e8> run to <polo.crystallography.run.HWIRun object at 0x7fdfc6b170f0>
+INFO:2020-07-06 11:17:54,044:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:19:07,708:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:19:07,783:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f96486a4a68>
+INFO:2020-07-06 11:19:07,783:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f96486a4a68>
+INFO:2020-07-06 11:19:07,791:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:19:07,795:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f963c6a19d8>
+INFO:2020-07-06 11:19:07,800:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:19:16,021:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f95ffcc40f0>.units
+INFO:2020-07-06 11:19:16,070:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f95ffcc40f0>.units
+INFO:2020-07-06 11:19:16,088:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:19:16,089:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f95ffcc40f0>
+INFO:2020-07-06 11:19:16,089:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f963c6905e8> run to <polo.crystallography.run.HWIRun object at 0x7f95ffcc40f0>
+INFO:2020-07-06 11:19:16,089:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:22:05,114:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:22:05,193:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2e55ee1a68>
+INFO:2020-07-06 11:22:05,193:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f2e55ee1a68>
+INFO:2020-07-06 11:22:05,200:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:22:05,205:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f2e394e99d8>
+INFO:2020-07-06 11:22:05,209:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:22:10,946:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f2e20ac1278>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:22:10,979:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f2e20ac1278>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:22:10,995:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:22:10,995:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f2e20ac1278>
+INFO:2020-07-06 11:22:10,995:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f2e394d85e8> run to <polo.crystallography.run.HWIRun object at 0x7f2e20ac1278>
+INFO:2020-07-06 11:22:10,995:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:23:19,165:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:23:19,245:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f9488f21a68>
+INFO:2020-07-06 11:23:19,245:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f9488f21a68>
+INFO:2020-07-06 11:23:19,255:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:23:19,260:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f9474e869d8>
+INFO:2020-07-06 11:23:19,264:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:23:26,165:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f944c4b4278>.units
+INFO:2020-07-06 11:23:26,179:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f944c4b4278>.units
+INFO:2020-07-06 11:23:26,194:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:23:26,194:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f944c4b4278>
+INFO:2020-07-06 11:23:26,194:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f9474e775e8> run to <polo.crystallography.run.HWIRun object at 0x7f944c4b4278>
+INFO:2020-07-06 11:23:26,194:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:25:02,828:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:25:02,905:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc00db8ea68>
+INFO:2020-07-06 11:25:02,905:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc00db8ea68>
+INFO:2020-07-06 11:25:02,916:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:25:02,921:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fc0053019d8>
+INFO:2020-07-06 11:25:02,926:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:25:09,065:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fbfd0906160>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:25:09,114:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fbfd0906160>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:25:09,132:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:25:09,132:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fbfd0906160>
+INFO:2020-07-06 11:25:09,132:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fc0052f15e8> run to <polo.crystallography.run.HWIRun object at 0x7fbfd0906160>
+INFO:2020-07-06 11:25:09,132:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:26:41,167:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/threads/thread.py", line 75, in run
+    self.result = self.job_func(**self.func_args) File "/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py", line 598, in xtal_to_run
+    object_hook=RunDeserializer.dict_to_obj) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 268, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 332, in loads
+    return cls(**kw).decode(s) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/decoder.py", line 342, in decode
+    raise JSONDecodeError("Extra data", s, end) json.decoder.JSONDecodeError: Extra data: line 1 column 14 (char 13)
+Value: Extra data: line 1 column 14 (char 13)
+ Error Type: <class 'json.decoder.JSONDecodeError'>
+
+INFO:2020-07-06 11:26:49,792:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:26:49,867:polo.widgets.slideshow_viewer:273:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f36d3728a68>
+INFO:2020-07-06 11:26:49,868:polo.widgets.slideshow_viewer:247:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f36d3728a68>
+INFO:2020-07-06 11:26:49,875:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:26:49,880:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f36cad8d9d8>
+INFO:2020-07-06 11:26:49,884:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:27:11,927:polo.crystallography.run:339:Linking <polo.crystallography.run.HWIRun object at 0x7f369a3cb0b8> to <polo.crystallography.run.HWIRun object at 0x7f369a3cb080>
+INFO:2020-07-06 11:27:17,729:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f369a3cb0b8>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:27:17,773:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f369a3cb0b8>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:27:17,791:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:27:17,791:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f369a3cb0b8>
+INFO:2020-07-06 11:27:17,791:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f36cad7c5e8> run to <polo.crystallography.run.HWIRun object at 0x7f369a3cb0b8>
+INFO:2020-07-06 11:27:17,791:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:27:40,048:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f369a3cb080>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:27:40,062:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f369a3cb080>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:27:40,076:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:27:40,076:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f369a3cb080>
+INFO:2020-07-06 11:27:40,086:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f36cad7c5e8> run to <polo.crystallography.run.HWIRun object at 0x7f369a3cb080>
+INFO:2020-07-06 11:27:40,086:polo.windows.main_window:217:Loaded new run named X000015805202005211148-jpg
+CRITICAL:2020-07-06 11:28:05,390:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 63, in <lambda>
+    lambda: self.show_current_plate(next_date=True)) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py", line 238, in show_current_plate
+    next_date = next_date, prev_date=prev_date, alt_spec=alt_spec File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 165, in tile_graphics_wells
+    images = [item.data[0].next_image for item in self.scene.items()] File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py", line 165, in <listcomp>
+    images = [item.data[0].next_image for item in self.scene.items()] TypeError: 'builtin_function_or_method' object is not subscriptable
+Value: 'builtin_function_or_method' object is not subscriptable
+ Error Type: <class 'TypeError'>
+
+INFO:2020-07-06 11:36:48,213:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:36:48,290:polo.widgets.slideshow_viewer:274:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+INFO:2020-07-06 11:36:48,290:polo.widgets.slideshow_viewer:248:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+INFO:2020-07-06 11:36:48,297:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:36:48,303:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fe5a05a4708>
+INFO:2020-07-06 11:36:48,307:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:36:56,790:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:36:56,836:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:36:56,854:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:36:56,854:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>
+INFO:2020-07-06 11:36:56,854:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fe5a0595318> run to <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>
+INFO:2020-07-06 11:36:56,854:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:37:07,735:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:37:07,770:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:37:07,786:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:37:07,786:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>
+INFO:2020-07-06 11:37:07,786:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fe5a0595318> run to <polo.crystallography.run.HWIRun object at 0x7fe573bc51d0>
+INFO:2020-07-06 11:37:07,786:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+WARNING:2020-07-06 11:37:08,899:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:09,655:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:10,183:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:10,341:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:10,686:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:11,060:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:11,425:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+WARNING:2020-07-06 11:37:11,763:polo.widgets.slideshow_viewer:393:Failed to set current image to None at <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fe5a8f70798>
+INFO:2020-07-06 11:37:34,528:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:37:34,606:polo.widgets.slideshow_viewer:274:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc1d908f798>
+INFO:2020-07-06 11:37:34,606:polo.widgets.slideshow_viewer:248:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc1d908f798>
+INFO:2020-07-06 11:37:34,614:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:37:34,619:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fc1d485f708>
+INFO:2020-07-06 11:37:34,623:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:37:43,163:polo.widgets.slideshow_viewer:268:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc1d908f798> set to <polo.crystallography.run.HWIRun object at 0x7fc1c48c20f0>
+INFO:2020-07-06 11:37:43,166:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7fc1d4849390>
+INFO:2020-07-06 11:37:43,166:polo.widgets.slideshow_viewer:332:Applied filters {'Clear', 'Other', 'Precipitate', 'Crystals'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fc1d908f798>
+INFO:2020-07-06 11:37:43,176:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fc1c48c20f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:37:43,190:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7fc1c48c20f0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 11:37:43,204:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:37:43,204:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7fc1c48c20f0>
+INFO:2020-07-06 11:37:43,204:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7fc1d484f318> run to <polo.crystallography.run.HWIRun object at 0x7fc1c48c20f0>
+INFO:2020-07-06 11:37:43,204:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 11:49:12,184:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:49:12,259:polo.widgets.slideshow_viewer:275:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f11d04e1828>
+INFO:2020-07-06 11:49:12,259:polo.widgets.slideshow_viewer:249:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f11d04e1828>
+INFO:2020-07-06 11:49:12,267:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:49:12,272:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f11c8483798>
+INFO:2020-07-06 11:49:12,276:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:49:31,166:polo.crystallography.run:339:Linking <polo.crystallography.run.HWIRun object at 0x7f11b2cc22b0> to <polo.crystallography.run.HWIRun object at 0x7f11b2cc2278>
+INFO:2020-07-06 11:49:33,994:polo.widgets.slideshow_viewer:269:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f11d04e1828> set to <polo.crystallography.run.HWIRun object at 0x7f11b2cc22b0>
+INFO:2020-07-06 11:49:34,005:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f11c846f588>
+INFO:2020-07-06 11:49:34,005:polo.widgets.slideshow_viewer:333:Applied filters {'Other', 'Clear', 'Crystals', 'Precipitate'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f11d04e1828>
+CRITICAL:2020-07-06 11:49:34,040:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 208, in handle_opening_run
+    self.slideshowInspector.run = self.current_run File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 115, in run
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 390, in display_current_image
+    self.set_single_image_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 371, in set_single_image_scene
+    image.setPixmap() File "/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py", line 123, in setPixmap
+    if isinstance(self.scaling, float): AttributeError: 'Image' object has no attribute 'scaling'
+Value: 'Image' object has no attribute 'scaling'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 11:50:00,778:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:50:00,853:polo.widgets.slideshow_viewer:275:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f302c08d828>
+INFO:2020-07-06 11:50:00,853:polo.widgets.slideshow_viewer:249:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f302c08d828>
+INFO:2020-07-06 11:50:00,860:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:50:00,865:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f300b88a798>
+INFO:2020-07-06 11:50:00,869:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:50:25,533:polo.crystallography.run:339:Linking <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0> to <polo.crystallography.run.HWIRun object at 0x7f2ffaed5198>
+INFO:2020-07-06 11:50:27,195:polo.widgets.slideshow_viewer:269:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f302c08d828> set to <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0>
+INFO:2020-07-06 11:50:27,197:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f300b873470>
+INFO:2020-07-06 11:50:27,197:polo.widgets.slideshow_viewer:333:Applied filters {'Precipitate', 'Other', 'Clear', 'Crystals'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f302c08d828>
+INFO:2020-07-06 11:50:27,208:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0>.units
+INFO:2020-07-06 11:50:27,223:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0>.units
+INFO:2020-07-06 11:50:27,240:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:50:27,240:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0>
+INFO:2020-07-06 11:50:27,241:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f300b8793a8> run to <polo.crystallography.run.HWIRun object at 0x7f2ffaed51d0>
+INFO:2020-07-06 11:50:27,241:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:51:02,736:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 64, in <lambda>
+    lambda x: self.set_slideshow_mode(show_all_dates=x) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 74, in set_slideshow_mode
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 386, in display_current_image
+    self.set_all_dates_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 358, in set_all_dates_scene
+    scene = self.arrange_multi_image_scene(all_dates) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 349, in arrange_multi_image_scene
+    scene_item = scene.addPixMap(item) AttributeError: 'QGraphicsScene' object has no attribute 'addPixMap'
+Value: 'QGraphicsScene' object has no attribute 'addPixMap'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 11:51:59,111:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 11:51:59,185:polo.widgets.slideshow_viewer:275:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f92dc060828>
+INFO:2020-07-06 11:51:59,185:polo.widgets.slideshow_viewer:249:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f92dc060828>
+INFO:2020-07-06 11:51:59,193:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 11:51:59,198:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f92bf579798>
+INFO:2020-07-06 11:51:59,203:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 11:52:02,699:polo.windows.run_importer_dialog:263:Opened run importer dialog
+INFO:2020-07-06 11:52:32,610:polo.crystallography.run:339:Linking <polo.crystallography.run.HWIRun object at 0x7f927da3ec18> to <polo.crystallography.run.HWIRun object at 0x7f927da3ebe0>
+INFO:2020-07-06 11:53:01,691:polo.widgets.slideshow_viewer:269:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f92dc060828> set to <polo.crystallography.run.HWIRun object at 0x7f927da3ec18>
+INFO:2020-07-06 11:53:01,703:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f92bf5643c8>
+INFO:2020-07-06 11:53:01,703:polo.widgets.slideshow_viewer:333:Applied filters {'Other', 'Precipitate', 'Crystals', 'Clear'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f92dc060828>
+INFO:2020-07-06 11:53:01,743:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f927da3ec18>.units
+INFO:2020-07-06 11:53:01,762:polo.utils.io_utils:37:Made RunSerializer _RunCsvWriter__output_path: None.unitsnrun: <polo.crystallography.run.HWIRun object at 0x7f927da3ec18>.units
+INFO:2020-07-06 11:53:01,777:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 11:53:01,777:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f927da3ec18>
+INFO:2020-07-06 11:53:01,777:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f92bf5693a8> run to <polo.crystallography.run.HWIRun object at 0x7f927da3ec18>
+INFO:2020-07-06 11:53:01,777:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+CRITICAL:2020-07-06 11:53:43,986:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 64, in <lambda>
+    lambda x: self.set_slideshow_mode(show_all_dates=x) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 74, in set_slideshow_mode
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 386, in display_current_image
+    self.set_all_dates_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 358, in set_all_dates_scene
+    scene = self.arrange_multi_image_scene(all_dates) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 351, in arrange_multi_image_scene
+    x += well.width() NameError: name 'well' is not defined
+Value: name 'well' is not defined
+ Error Type: <class 'NameError'>
+
+INFO:2020-07-06 12:09:42,798:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:09:42,872:polo.widgets.slideshow_viewer:281:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f68807e8798>
+INFO:2020-07-06 12:09:42,872:polo.widgets.slideshow_viewer:255:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f68807e8798>
+INFO:2020-07-06 12:09:42,880:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 12:09:42,884:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f687c01c708>
+INFO:2020-07-06 12:09:42,889:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 12:09:53,722:polo.widgets.slideshow_viewer:275:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f68807e8798> set to <polo.crystallography.run.HWIRun object at 0x7f684e405128>
+INFO:2020-07-06 12:09:53,728:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f687c007400>
+INFO:2020-07-06 12:09:53,728:polo.widgets.slideshow_viewer:339:Applied filters {'Clear', 'Other', 'Precipitate', 'Crystals'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f68807e8798>
+CRITICAL:2020-07-06 12:09:53,746:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 208, in handle_opening_run
+    self.slideshowInspector.run = self.current_run File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 115, in run
+    self.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 201, in display_current_image
+    self.ui.slideshowViewer.display_current_image() File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 397, in display_current_image
+    self.set_single_image_scene(cur_img) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 378, in set_single_image_scene
+    self.__scene.clear() AttributeError: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+Value: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 12:10:58,860:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:10:58,936:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fb4c1e89828>
+CRITICAL:2020-07-06 12:10:58,937:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "src/Polo.py", line 63, in <module>
+    main() File "src/Polo.py", line 56, in main
+    main = MainWindow() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 53, in __init__
+    self.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_main_window.py", line 332, in setupUi
+    self.slideshowInspector = slideshowInspector(self.tab) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 19, in __init__
+    self.ui.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_slideshow_inspector.py", line 336, in setupUi
+    self.slideshowViewer = SlideshowViewer(self.groupBox) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 254, in __init__
+    print(self.__scene) RuntimeError: super-class __init__() of type SlideshowViewer was never called
+Value: super-class __init__() of type SlideshowViewer was never called
+ Error Type: <class 'RuntimeError'>
+
+INFO:2020-07-06 12:11:42,553:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:11:42,629:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f514355b828>
+CRITICAL:2020-07-06 12:11:42,629:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "src/Polo.py", line 63, in <module>
+    main() File "src/Polo.py", line 56, in main
+    main = MainWindow() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 53, in __init__
+    self.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_main_window.py", line 332, in setupUi
+    self.slideshowInspector = slideshowInspector(self.tab) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 19, in __init__
+    self.ui.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_slideshow_inspector.py", line 336, in setupUi
+    self.slideshowViewer = SlideshowViewer(self.groupBox) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 255, in __init__
+    print(self.__scene) AttributeError: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+Value: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 12:11:59,516:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:11:59,592:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f0fb03aa828>
+CRITICAL:2020-07-06 12:11:59,593:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "src/Polo.py", line 63, in <module>
+    main() File "src/Polo.py", line 56, in main
+    main = MainWindow() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 53, in __init__
+    self.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_main_window.py", line 332, in setupUi
+    self.slideshowInspector = slideshowInspector(self.tab) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 19, in __init__
+    self.ui.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_slideshow_inspector.py", line 336, in setupUi
+    self.slideshowViewer = SlideshowViewer(self.groupBox) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 255, in __init__
+    print(super().__scene) AttributeError: 'super' object has no attribute '_SlideshowViewer__scene'
+Value: 'super' object has no attribute '_SlideshowViewer__scene'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 12:14:51,064:__main__:46:Started Polo version 0.0.1
+CRITICAL:2020-07-06 12:14:51,139:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "src/Polo.py", line 63, in <module>
+    main() File "src/Polo.py", line 56, in main
+    main = MainWindow() File "/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py", line 53, in __init__
+    self.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_main_window.py", line 332, in setupUi
+    self.slideshowInspector = slideshowInspector(self.tab) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py", line 19, in __init__
+    self.ui.setupUi(self) File "/home/ethan/Documents/github/Marco_Polo/src/polo/designer/UI_slideshow_inspector.py", line 336, in setupUi
+    self.slideshowViewer = SlideshowViewer(self.groupBox) File "/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py", line 252, in __init__
+    print(self.__scene) AttributeError: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+Value: 'SlideshowViewer' object has no attribute '_SlideshowViewer__scene'
+ Error Type: <class 'AttributeError'>
+
+INFO:2020-07-06 12:15:17,524:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:15:17,600:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fa37edc6828>
+INFO:2020-07-06 12:15:17,600:polo.widgets.slideshow_viewer:256:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7fa37edc6828>
+INFO:2020-07-06 12:15:17,608:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 12:15:17,614:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7fa36dd4f798>
+INFO:2020-07-06 12:15:17,618:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 12:17:43,375:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:17:43,450:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7541306828>
+INFO:2020-07-06 12:17:43,450:polo.widgets.slideshow_viewer:255:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f7541306828>
+INFO:2020-07-06 12:17:43,458:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 12:17:43,463:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f7534ab7798>
+INFO:2020-07-06 12:17:43,467:polo.windows.main_window:85:Created mainWindow object
+CRITICAL:2020-07-06 12:17:54,779:__main__:33:Polo encountered an unexpected error.
+Error Message: Traceback (most recent call last): File "/home/ethan/Documents/github/Marco_Polo/src/polo/threads/thread.py", line 75, in run
+    self.result = self.job_func(**self.func_args) File "/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py", line 598, in xtal_to_run
+    object_hook=RunDeserializer.dict_to_obj) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 268, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/__init__.py", line 332, in loads
+    return cls(**kw).decode(s) File "/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/json/decoder.py", line 342, in decode
+    raise JSONDecodeError("Extra data", s, end) json.decoder.JSONDecodeError: Extra data: line 1 column 25 (char 24)
+Value: Extra data: line 1 column 25 (char 24)
+ Error Type: <class 'json.decoder.JSONDecodeError'>
+
+INFO:2020-07-06 12:18:00,492:__main__:46:Started Polo version 0.0.1
+INFO:2020-07-06 12:18:00,568:polo.widgets.slideshow_viewer:282:Failed to set None as __run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:18:00,568:polo.widgets.slideshow_viewer:255:Made <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:18:00,576:polo.widgets.plate_inspector_widget:79:Set image count options to [16, 64, 96]
+INFO:2020-07-06 12:18:00,581:polo.widgets.optimize_widget:93:Made <polo.widgets.optimize_widget.OptimizeWidget object at 0x7f4bf29fe798>
+INFO:2020-07-06 12:18:00,585:polo.windows.main_window:85:Created mainWindow object
+INFO:2020-07-06 12:18:08,836:polo.widgets.slideshow_viewer:276:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828> set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:18:08,849:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f4bf29e9208>
+INFO:2020-07-06 12:18:08,849:polo.widgets.slideshow_viewer:340:Applied filters {'Precipitate', 'Crystals', 'Clear', 'Other'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:18:08,882:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:18:08,901:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:18:08,916:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 12:18:08,917:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:18:08,917:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f4bf29ee3a8> run to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:18:08,917:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg
+INFO:2020-07-06 12:18:54,389:polo.crystallography.run:339:Linking <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28> to <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>
+INFO:2020-07-06 12:18:56,457:polo.widgets.slideshow_viewer:276:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828> set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>
+INFO:2020-07-06 12:18:56,469:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f4bf29e9208>
+INFO:2020-07-06 12:18:56,469:polo.widgets.slideshow_viewer:340:Applied filters {'Precipitate', 'Crystals', 'Clear', 'Other'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:18:56,505:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:18:56,524:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:18:56,539:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 12:18:56,539:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>
+INFO:2020-07-06 12:18:56,539:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f4bf29ee3a8> run to <polo.crystallography.run.HWIRun object at 0x7f4be58b5ef0>
+INFO:2020-07-06 12:18:56,539:polo.windows.main_window:217:Loaded new run named X000015805202005211148-jpg
+INFO:2020-07-06 12:19:26,758:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f4bf29e9208>
+INFO:2020-07-06 12:19:26,758:polo.widgets.slideshow_viewer:340:Applied filters ['Crystals'] human: False marco: True to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:20:12,211:polo.widgets.slideshow_viewer:276:Run attribute of <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828> set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:20:12,215:polo.widgets.slideshow_viewer:76:Added 0 new slides to <polo.widgets.slideshow_viewer.Carousel object at 0x7f4bf29e9208>
+INFO:2020-07-06 12:20:12,215:polo.widgets.slideshow_viewer:340:Applied filters {'Precipitate', 'Crystals', 'Clear', 'Other'} human: False marco: False to <polo.widgets.slideshow_viewer.SlideshowViewer object at 0x7f4c1f2ef828>
+INFO:2020-07-06 12:20:12,237:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:20:12,251:polo.utils.io_utils:37:Made RunSerializer run: <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>.unitsn_RunCsvWriter__output_path: None.units
+INFO:2020-07-06 12:20:12,265:polo.widgets.optimize_widget:173:Identified 0 hit images
+INFO:2020-07-06 12:20:12,266:polo.widgets.optimize_widget:206:Optimize run set to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:20:12,275:polo.widgets.plate_inspector_widget:128:Set <polo.widgets.plate_viewer.plateViewer object at 0x7f4bf29ee3a8> run to <polo.crystallography.run.HWIRun object at 0x7f4be58b5f28>
+INFO:2020-07-06 12:20:12,275:polo.windows.main_window:217:Loaded new run named X000015805202005200001-jpg

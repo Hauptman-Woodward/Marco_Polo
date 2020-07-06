@@ -90,9 +90,14 @@ class Run():
                       date=self.date)
             )
     
-    def unload_all_pixmaps(self):
-        for image in self.images:
-            del image.pixmap
+    def unload_all_pixmaps(self, s=None, e=None):  # reduce memory usage
+        if isinstance(s, int) and isinstance(e, int):
+            images = self.images[s:e]
+        else:
+            images = self.images
+            
+        for image in images:
+            image.delete_pixmap_data()
 
     def get_images_by_classification(self, human=True):
         '''

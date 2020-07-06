@@ -196,15 +196,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param q: QListItem. Run selection from listWidget made by user.
         '''
         if isinstance(q, list) and len(q) > 0:
-            if self.current_run: self.current_run.unload_all_pixmaps()
-            QPixmapCache.clear()
+            if self.current_run:
+                self.current_run.unload_all_pixmaps()
+                QPixmapCache.clear()
 
             # only keep the pixmaps for the current run loaded
             # other pixmaps from other runs will be loaded if the user
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
-            #self.slideshowInspector.run = self.current_run
+            self.slideshowInspector.run = self.current_run
             self.tableInspector.run = self.current_run
             self.tableInspector.update_table_view()
             self.optimizeWidget.run = self.current_run

@@ -105,9 +105,9 @@ class Image(QtGui.QPixmap):
     @classmethod
     def to_graphics_scene(cls, image):
         scene = QtWidgets.QGraphicsScene()
-        well = graphicsWell(image=image)
-        well.setPixmap()
-        scene.addItem(well)
+        if image.isNull():
+            image.setPixmap()
+        scene.addPixmap(image)
         return scene
 
     @classmethod
@@ -115,29 +115,29 @@ class Image(QtGui.QPixmap):
         # return default no images found image instance
         return cls(path=DEFAULT_IMAGE_PATH)
 
-    def setPixmap(self):
+    def setPixmap(self, scaling=None):
         if os.path.exists(self.path):
             self.load(self.path)
         elif isinstance(self.bites, bytes):
             self.loadFromData(base64.b64decode(self.bites))
+        if isinstance(scaling, float):
+            self.scaled(self.width*scaling, self.height*scaling, Qt.KeepAspectRatio)
     
     def delete_pixmap_data(self):
         self.swap(QPixmap())  # swap with null pixel map
+    
+    def recursive_delete_pixmap_data(self):
+        for i in self.get_linked_images_by_date():
+            i.delete_pixmap_data()
+        for i in self.get_linked_images_by_spectrum():
+            i.delete_pixmap_data()
 
     
-
     def height(self):
         return self.size().height()
     
     def width(self):
         return self.size().width()
-
-    
-    def set_color(self, QColor, strength=0.5):
-        effect = QGraphicsColorizeEffect()
-        effect.setColor(QColor)
-        effect.setStrength(strength)
-        self.setGraphicsEffect(effect)
 
 
     def __str__(self):
@@ -148,22 +148,6 @@ class Image(QtGui.QPixmap):
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
-
-    # @property
-    # def pixmap(self):
-    #     if not self.__pixmap:
-    #         self.__pixmap = self.make_pixmap()
-    #         print('made new pixelmap')
-    #     return self.__pixmap
-#            return self.make_pixmap()
-# need to make graphics wells referecne this pixmap
-
-    # @pixmap.deleter
-    # def pixmap(self):
-    #     if self.__pixmap:
-    #         self.__pixmap.clear()
-    #         del self.__pixmap
-    #         self.__pixmap = None
 
     @property
     def path(self):
@@ -357,5 +341,38 @@ class Image(QtGui.QPixmap):
                                                                       self.path)
         except AttributeError as e:
             return e
+    
+
+    def standard_filter(self, image_types, human, marco):
+        '''Method that determines if this image should be included in a set
+        of filtered images based on given image types and a classifier: human,
+        marco or both. 
+
+        :param image_types: [description]
+        :type image_types: [type]
+        :param human: [description]
+        :type human: [type]
+        :param marco: [description]
+        :type marco: [type]
+        :return: [description]
+        :rtype: [type]
+        '''
+        if image_types:  # have specificed some image types
+            if human and self.human_class in image_types:
+                return True
+            elif marco and self.machine_class in image_types:
+                return True
+            else:
+                return False
+        else:
+            if human or marco:  # set at least one classifier filter
+                if (human and self.human_class) or marco and self.machine_class:
+                    return True
+                else:
+                    return False 
+            else:
+                return True # set no filters so return True 
+                
+
 
 from polo.widgets.graphics_well import graphicsWell

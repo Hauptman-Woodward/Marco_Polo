@@ -234,10 +234,19 @@ class PlateInspectorWidget(QtWidgets.QWidget):
                          imaging spectrum, defaults to False
         :type alt_spec: bool, optional
         '''     
-        self.apply_plate_settings()
+
+        if next_date and self.__run.next_run:
+            self.run = self.__run.next_run
+        elif prev_date and self.__run.previous_run:
+            self.run = self.__run.previous_run
+        elif alt_spec and self.__run.alt_spectrum:
+            self.run = self.__run.alt_spectrum
+
+
         added_wells = self.ui.plateViewer.tile_graphics_wells(
             next_date = next_date, prev_date=prev_date, alt_spec=alt_spec
         )
+        self.apply_plate_settings()
         self.set_plate_label()
             
     
@@ -246,9 +255,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         which changes the opacity of currently displayed images based on if
         their labels meet the currently selected image filter checkboxes.
         '''
-        self.ui.plateViewer.demphasize_filtered_images(
+        self.ui.plateViewer.set_scene_opacity_from_filters(
             self.selected_classifications, self.human, self.marco
         )
+        
     
     def apply_color_mapping(self):
         '''Applies the current color mapping to images. Changes the color of
@@ -259,7 +269,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         either Marco or human classifications. 
         '''
         human = self.ui.radioButton_2.isChecked()
-        self.ui.plateViewer.color_images(
+        self.ui.plateViewer.set_scene_colors_from_filters(
             self.color_mapping, self.ui.horizontalSlider.value() / 100,
             human
         )

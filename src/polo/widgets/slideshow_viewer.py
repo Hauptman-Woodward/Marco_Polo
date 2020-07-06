@@ -108,6 +108,7 @@ class Carousel():
         :type prev_slide: bool
         '''
         if self.current_slide:
+            self.current_slide.image.recursive_delete_pixmap_data()
             if next_slide:
                 self.current_slide = self.current_slide.next_slide
             elif prev_slide:
@@ -136,9 +137,9 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self.show_all_specs = False
         self.__zoom = 0
         self.__empty = True
-        self.__scene = QtWidgets.QGraphicsScene(self)
+        self.scene = QtWidgets.QGraphicsScene(self)
         #  self.__photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
-        self.setScene(self.__scene)
+        self.setScene(self.scene)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -154,11 +155,12 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         return not self.__empty
 
     def fitInView(self, scale=True):
-        rect = self.__scene.itemsBoundingRect()
+        rect = self.scene.itemsBoundingRect()
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
+            self.__empty = False
             # self.setSceneRect(rect)
-            self.setScene(self.__scene)  # possibly do this instead or in addition to line above
+            self.setScene(self.scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
                 self.scale(1 / unity.width(), 1 / unity.height())
@@ -168,20 +170,26 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self.__zoom = 0
-
-    def set_scene(self, graphics_scene):
-        # should do same thing as set_image but with a graphics scene
-        if graphics_scene:
-            self.__empty = False
-            self.__scene = graphics_scene
-            self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-        # call fit in view
         else:
             self.__empty = True
-            self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-            self.__scene = QtWidgets.QGraphicsScene(
-                self)  # reset the graphics scene
-        self.fitInView()
+
+    # def set_scene(self, graphics_scene=None):
+    #     # should do same thing as set_image but with a graphics scene
+        
+
+
+    #     if graphics_scene:
+    #         self.__empty = False
+    #         self.scene = graphics_scene
+    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+    #     # call fit in view
+    #     else:
+    #         self.__empty = True
+    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+    #         self.scene = QtWidgets.QGraphicsScene(
+    #             self)  # reset the graphics scene
+    #     self.fitInView()
+    #     print('fit in view')
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -218,7 +226,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         :param event: Mouse press event
         :type event: QEvent
         '''
-        # if self.__scene.isUnderMouse():
+        # if self.scene.isUnderMouse():
         self.photoClicked.emit(self.mapToScene(event.pos()).toPoint())
         super(PhotoViewer, self).mousePressEvent(event)
 
@@ -331,13 +339,8 @@ class SlideshowViewer(PhotoViewer):
                 image_types, human, marco, self
             ))
 
-    def show_image_all_dates(self):
-        pass
-    
-
     def arrange_multi_image_scene(self, image_list):
         x, y = 0, 0  # set starting cords
-        scene = QtWidgets.QGraphicsScene(self)
         for item in image_list:
             if isinstance(item, (list, tuple)):  # 2D list
                 pass
@@ -348,31 +351,33 @@ class SlideshowViewer(PhotoViewer):
             elif isinstance(item, Image):
                 if item.isNull():
                     item.setPixmap()
-                scene_item = scene.addPixMap(item)
+                scene_item = self.scene.addPixmap(item)
                 scene_item.setToolTip(item.get_tool_tip())
-                x += well.width()
-        return scene
-
+                scene_item.setPos(x, y)
+                x += item.width()
 
     def set_all_dates_scene(self, image):
         if isinstance(image, Image):
             all_dates = image.get_linked_images_by_date()
-            scene = self.arrange_multi_image_scene(all_dates)
-            self.set_scene(scene)
+            self.scene.clear()
+            self.arrange_multi_image_scene(all_dates)
+            self.fitInView()
     
     def set_all_spectrums_scene(self, image):
         if isinstance(image, Image):
             all_specs = image.get_linked_images_by_spectrum()
-            scene = self.arrange_multi_image_scene(all_specs)
-            self.set_scene(scene)
+            self.scene.clear()
+            self.arrange_multi_image_scene(all_specs)
+            self.fitInView()
+            
     
     def set_single_image_scene(self, image):
         if isinstance(image, Image):
-            scene = QtWidgets.QGraphicsScene(self)
             if image.isNull():
                 image.setPixmap()
-            scene.addPixmap(image)
-            self.set_scene(scene)
+            self.scene.clear()
+            self.scene.addPixmap(image)
+            self.fitInView()
 
     def display_current_image(self):
         '''

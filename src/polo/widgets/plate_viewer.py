@@ -31,6 +31,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.setScene(self.__scene)
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.__zoom = 0
+        self.__scene_map = {}
         self.setInteractive(True)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -144,43 +145,80 @@ class plateViewer(QtWidgets.QGraphicsView):
     def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
                             prev_date=False, alt_spec=False):
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.__scene.clear()
+        # self.__scene.clear()
         # self.__scene = QtWidgets.QGraphicsScene(self)  # new scene\
         # memory leak somewhere pixelmaps not being derefenced and garbage collected
-        for i in self.run.images:
-            i.delete_pixmap_data()  # do this if do not want to have
-            # cached pixmaps ready to go
 
+        # if some condition
 
         visible_wells = self.get_visible_wells()
         _, stride = self.subgrid_dict[self.images_per_page]
         cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
         row_height = 0  # height of tallest image in a given row of images
 
-        for i, well in enumerate(visible_wells):
+
+        images = [self.run.images[i] for i in self.get_visible_wells()]
+        _, stride = self.subgrid_dict[self.images_per_page]
+
+        self.__scene.clear()
+
+        for i, image in enumerate(images):
             if i % stride == 0 and i != 0:
                 cur_y_pos += row_height
                 row_height, cur_x_pos, = 0, 0  # reset row height for next row
-            image=self.run.images[well]
+            
             if image.isNull():
                 image.setPixmap()
-            item = self.__scene.addPixmap(image)    
+            
+            item = self.__scene.addPixmap(image)
             item.setPos(cur_x_pos, cur_y_pos)
-            self.apply_scene_settings(item)  # TODO apply the settings here
+            item.setData(0, image)
+            self.set_prerender_info(item, image)
+            #self.apply_scene_settings(item)  # TODO apply the settings here
             if image.height() > row_height:
                 row_height = image.height()
-            cur_x_pos += image.width()
+            cur_x_pos += image.width() 
         
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.setScene(self.__scene)
         self.fitInView(self.__scene, self.preserve_aspect)
         QtWidgets.QApplication.restoreOverrideCursor()
+            
     
-    def apply_scene_settings(self, item):
-        pass
-    # modifies the scene item before it is displayed 
+    # modifies the scene item before it is displayed
 
 
+    def set_prerender_info(self, item, image):
+        item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
+        item.setToolTip(image.get_tool_tip())  # pixmap is Image
+        
+        return item
+    
+    def set_scene_opacity_from_filters(self, image_types, human=False, marco=False, filtered_opacity=0.2):
+        for item in self.__scene.items():
+            image = item.data(0)
+            print(image_types, image.machine_class)
+            if image.standard_filter(image_types, human, marco):
+                item.setOpacity(1)
+                print('set opacity to 1')
+            else:
+                # did not meet the filtered criteria
+                item.setOpacity(filtered_opacity)
+                print('set opacity to filtered opacity', filtered_opacity)
+    
+    def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
+        for item in self.__scene.items():
+            image, color = item.data(0), None
+            if human and image.human_class in color_mapping:
+                color = color_mapping[image.human_class]
+            elif image.machine_class in color_mapping:
+                color = color_mapping[image.machine_class]
+            if color:
+                effect = QGraphicsColorizeEffect()
+                effect.setColor(color)
+                effect.setStrength(strength)
+            item.setGraphicsEffect(effect)
+            
 
     def fitInView(self, scene, preserve_aspect=False):
         if preserve_aspect:
@@ -207,33 +245,34 @@ class plateViewer(QtWidgets.QGraphicsView):
     def pop_out_selected_well(self):
         selection = self.__scene.selectedItems()
         if selection:
-            pop_out = ImagePopDialog(selection[0].image)
+            image = selection[0].data(0)
+            pop_out = ImagePopDialog(image)
             pop_out.setWindowModality(Qt.ApplicationModal)
             pop_out.show()
             self.__scene.clearSelection()
             
 
-    def demphasize_filtered_images(self, image_types, human, marco):
-        for each_gw in self.__scene.items():
-            if each_gw:
-                each_gw.setOpacity(0.25, image_types=image_types,
-                                   human=human, marco=marco)
+    # def demphasize_filtered_images(self, image_types, human, marco):
+    #     for each_gw in self.__scene.items():
+    #         if each_gw:
+    #             each_gw.setOpacity(0.25, image_types=image_types,
+    #                                human=human, marco=marco)
 
-    def color_images(self, color_mapping, strength=0.5, human=False):
-        for each_gw in self.__scene.items():
-            if each_gw:
-                each_gw.set_color(color_mapping, strength=strength,
-                                  by_human_class=human)
+    # def color_images(self, color_mapping, strength=0.5, human=False):
+    #     for each_gw in self.__scene.items():
+    #         if each_gw:
+    #             each_gw.set_color(color_mapping, strength=strength,
+    #                               by_human_class=human)
 
     def emphasize_all_images(self):
         for each_gw in self.__scene.items():
             if each_gw:
-                each_gw.resetOpacity()
+                each_gw.setOpacity(1)
 
     def decolor_all_images(self):
         for each_gw in self.__scene.items():
             if each_gw:
-                each_gw.set_color(None)
+                each_gw.setGraphicsEffect(None)
     
     def export_current_view(self):
         if self.__scene:

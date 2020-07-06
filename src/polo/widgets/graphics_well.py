@@ -20,6 +20,8 @@ class graphicsWell(QtWidgets.QGraphicsPixmapItem):
         self.setToolTip()
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
     
+
+    
     def delete_pixmap(self):
         super(graphicsWell, self).setPixmap(QPixmap())
     
