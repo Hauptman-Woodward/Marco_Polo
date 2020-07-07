@@ -214,7 +214,7 @@ class Ui_PlateInspector(object):
         self.gridLayout.addWidget(self.plateViewer, 1, 0, 1, 2)
 
         self.retranslateUi(PlateInspector)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(PlateInspector)
 
     def retranslateUi(self, PlateInspector):
