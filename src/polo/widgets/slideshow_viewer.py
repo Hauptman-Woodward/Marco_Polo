@@ -160,7 +160,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
             self.__empty = False
-            # self.setSceneRect(rect)
+            self.setSceneRect(rect)
             self.setScene(self.scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
@@ -364,6 +364,7 @@ class SlideshowViewer(PhotoViewer):
     def set_all_spectrums_scene(self, image):
         if isinstance(image, Image):
             all_specs = image.get_linked_images_by_spectrum()
+            print(all_specs)
             self.scene.clear()
             self.arrange_multi_image_scene(all_specs)
             self.fitInView()

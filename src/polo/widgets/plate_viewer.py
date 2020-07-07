@@ -170,8 +170,11 @@ class plateViewer(QtWidgets.QGraphicsView):
     def tile_graphics_wells(self, next_date=False,
                             prev_date=False, alt_spec=False, label_dict={}):
         if self.run:
+            print('deleting recursively')
             QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items() if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
+            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items() 
+            if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
+            print('finished deleting')
             # for now delete all previous pixmap data from ram
 
             visible_wells = self.get_visible_wells()
@@ -204,6 +207,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 cur_x_pos += image.width() 
             
             self.__scene.selectionChanged.connect(self.pop_out_selected_well)
+
             self.setScene(self.__scene)
             self.fitInView(self.__scene, self.preserve_aspect)
             QtWidgets.QApplication.restoreOverrideCursor()
@@ -240,6 +244,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             
 
     def fitInView(self, scene, preserve_aspect=False):
+        self.setSceneRect(scene.itemsBoundingRect())
         if preserve_aspect:
             super(plateViewer, self).fitInView(scene.itemsBoundingRect(),
                                                Qt.KeepAspectRatio)

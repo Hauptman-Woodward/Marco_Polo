@@ -95,19 +95,24 @@ class RunOrganizer(QtWidgets.QWidget):
         if xtal_file:  # returned as a list
             xtal_file = xtal_file[0]
             if os.path.isfile(xtal_file):
-                self.new_run_thread = RunDeserializer(
-                    xtal_file).xtal_to_run_on_thread()
+                r = RunDeserializer(
+                     xtal_file).xtal_to_run()
+                self.ui.runTree.add_run_to_tree(r)
+                self.ui.runTree.add_classified_run(r)
 
-                def finished_import():
-                    result = self.new_run_thread.result
-                    if isinstance(result, (Run, HWIRun)):
-                        self.ui.runTree.add_run_to_tree(result)
-                        self.ui.runTree.add_classified_run(result)
-                    else:
-                        pass
-                    # shoe error message
-                self.new_run_thread.finished.connect(finished_import)
-                self.new_run_thread.start()
+                # self.new_run_thread = RunDeserializer(
+                #     xtal_file).xtal_to_run_on_thread()
+
+                # def finished_import():
+                #     result = self.new_run_thread.result
+                #     if isinstance(result, (Run, HWIRun)):
+                #         self.ui.runTree.add_run_to_tree(result)
+                #         self.ui.runTree.add_classified_run(result)
+                #     else:
+                #         pass
+                #     # shoe error message
+                # self.new_run_thread.finished.connect(finished_import)
+                # self.new_run_thread.start()
 
     def import_run_from_dialog(self):
         run_importer_dialog = RunImporterDialog(

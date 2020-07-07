@@ -139,7 +139,6 @@ class Image(QtGui.QPixmap):
     def width(self):
         return self.size().width()
 
-
     def __str__(self):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
         image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
@@ -148,6 +147,18 @@ class Image(QtGui.QPixmap):
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
+    
+    @property
+    def date(self):
+        return self.__date
+    
+    @date.setter
+    def date(self, date):
+        if isinstance(date, str):
+            d = BarTender.datetime_converter(date)
+            self.__date = d
+        else:
+            self.__date = date
 
     @property
     def path(self):
@@ -249,15 +260,6 @@ class Image(QtGui.QPixmap):
                 self.bites = base64.b64encode(image_file.read())
                 return self.bites
 
-    # def make_pixmap(self):
-    #     pm = QPixmap()
-    #     if os.path.exists(self.path):
-    #         pm.load(self.path)
-    #     elif isinstance(self.bites, bytes):
-    #         pm.loadFromData(base64.b64decode(self.bites))
-    #     pm.scaled(int(pm.height() * 0.5), int(pm.width() * 0.5), Qt.KeepAspectRatio)
-    #     return pm
-
     def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes
         that file as base64 and returns the encoded image.
@@ -306,28 +308,36 @@ class Image(QtGui.QPixmap):
 
     def get_linked_images_by_date(self):
         linked_images = [self]
-
+        print('got images by date')
         if self.next_image:
-            start_image = self
-            while start_image.next_image:
-                linked_images.append(start_image.next_image)
+            start_image = self.next_image
+            while isinstance(start_image, Image) and start_image.path != self.path:
+                linked_images.append(start_image)
                 start_image = start_image.next_image
         if self.previous_image:
-            start_image = self
-            while start_image.previous_image:
-                linked_images.append(start_image.previous_image)
+            start_image = self.previous_image
+            while isinstance(start_image, Image) and self.previous_image.path != self.path:
+                linked_images.append(start_image)
                 start_image = start_image.previous_image
-
+        print('linked images by date end')
         return sorted(linked_images, key=lambda i: i.date)
 
     def get_linked_images_by_spectrum(self):
-        linked_images = [self]
-
+        linked_images, paths = [self], set([])
         if self.alt_image:
             start_image = self.alt_image
-            while start_image.path != self.path:
+            while (isinstance(start_image, Image) 
+                   and start_image.path != self.path
+                   and start_image.path not in paths):
                 linked_images.append(start_image)
+                paths.add(start_image.path)
                 start_image = start_image.alt_image
+            
+            # Before added paths set check BUG would happen if loaded sample
+            # with linked dates and spectrum in the plateview. Opening the non
+            # visible run in plateview then swaping spectrum then navigate by
+            # date then next or previous page would cause this function to go
+            # into infinite loop
 
             return sorted(linked_images, key=lambda i: len(i.spectrum))
         else:
@@ -377,3 +387,5 @@ class Image(QtGui.QPixmap):
                     return True # set no filters so return True
         else:
             return False 
+
+from polo.utils.io_utils import BarTender
