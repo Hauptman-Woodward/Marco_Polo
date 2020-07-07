@@ -291,14 +291,7 @@ class HWIRun(Run):
         if isinstance(other_run, (HWIRun, Run)):
             for current_image, alt_image in zip(self.images, other_run.images):
                 current_image.alt_image = alt_image
-                if self.image_spectrum == 'Visible':
-                    alt_image.machine_class = current_image.machine_class
-                    alt_image.human_class = current_image.human_class
-                else:
-                    current_image.machine_class = alt_image.machine_class
-                    current_image.human_class = alt_image.human_class
-
-                self.alt_spectrum = other_run
+            self.alt_spectrum = other_run
 
         # only do a one way link here currently
 
@@ -313,6 +306,38 @@ class HWIRun(Run):
         self.current_slide_show_images.sort(
             key=lambda x: self.images[x].get_cocktail_number())
         self.current_image = 0
+    
+    def get_linked_alt_runs(self):
+        if isinstance(self.alt_spectrum, (Run, HWIRun)):    
+            linked_runs = [self.alt_spectrum]
+            start_run = self.alt_spectrum.alt_spectrum
+            while isinstance(start_run, (Run, HWIRun)) and start_run.run_name != self.alt_spectrum.run_name:
+                if start_run.image_spectrum != IMAGE_SPECS[0]:  # not visible
+                    linked_runs.append(start_run)
+                else:
+                    linked_runs.append(False)  # marker for found visble run in chaing that need to be replaced
+                start_run = start_run.alt_spectrum
+            return linked_runs
+        else:
+            return []
+    
+    def insert_into_alt_spec_chain(self):
+        linked_runs = self.get_linked_alt_runs()
+        if linked_runs:
+            if len(linked_runs) == 1:
+                linked_runs[0].link_to_alt_spectrum(self)
+            else:
+                try:
+                    break_link_index = linked_runs.index(False)
+                    p, n = break_link_index - 1, break_link_index + 1
+                    if n >= len(linked_runs): n = 0
+                    linked_runs[p].link_to_alt_spectrum(self)
+                    self.link_to_alt_spectrum(n)
+                except ValueError:
+                    linked_runs[-1].link_to_alt_spectrum(self)
+
+            
+
 
     def link_to_alt_images(self, other_run):
         '''Establish linked lists between this run and another run instance

@@ -27,12 +27,18 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="plateViewer" name="plateViewer" native="true">
-     <property name="toolTip">
-      <string>Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate.</string>
+   <item row="2" column="1">
+    <spacer name="horizontalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-    </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_26">
@@ -144,7 +150,7 @@
          <string/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tab_7">
          <attribute name="title">
@@ -375,29 +381,91 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Labels</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>Date</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_4">
+            <property name="text">
+             <string>Human Classification</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="checkBox_3">
+            <property name="text">
+             <string>Cocktail Number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="checkBox_5">
+            <property name="text">
+             <string>MARCO Classification</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Include Checked Labels</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="checkBox_2">
+            <property name="text">
+             <string>Well</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>30</y>
+            <width>67</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </widget>
         <widget class="QWidget" name="tab_9">
          <attribute name="title">
           <string>Plate View</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_13">
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkBox_29">
+            <property name="toolTip">
+             <string>Keep the aspect ratio of the images in the grid. Favors accuracy to the image over image size.</string>
+            </property>
+            <property name="text">
+             <string>Preserve Aspect Ratio</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1">
            <widget class="QComboBox" name="comboBox_7"/>
-          </item>
-          <item row="1" column="2">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="checkBox_28">
@@ -426,17 +494,23 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="3" rowspan="2">
-           <widget class="QPushButton" name="pushButton_23">
-            <property name="toolTip">
-             <string>Reload the current view. Like a refresh button.</string>
+          <item row="1" column="2">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="text">
-             <string>Reload Current View</string>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
             </property>
-           </widget>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
-          <item row="1" column="3">
+          <item row="0" column="3">
            <widget class="QPushButton" name="pushButton_19">
             <property name="toolTip">
              <string>Apply the currently selected coloring and filtering options if selected</string>
@@ -449,13 +523,20 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkBox_29">
+          <item row="1" column="3">
+           <widget class="QPushButton" name="pushButton_23">
             <property name="toolTip">
-             <string>Keep the aspect ratio of the images in the grid. Favors accuracy to the image over image size.</string>
+             <string>Reload the current view. Like a refresh button.</string>
             </property>
             <property name="text">
-             <string>Preserve Aspect Ratio</string>
+             <string>Reload Current View</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Save View</string>
             </property>
            </widget>
           </item>
@@ -466,18 +547,12 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="1">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="1" column="0" colspan="2">
+    <widget class="plateViewer" name="plateViewer" native="true">
+     <property name="toolTip">
+      <string>Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate.</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>

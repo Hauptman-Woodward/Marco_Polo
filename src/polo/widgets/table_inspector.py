@@ -76,5 +76,3 @@ class TableInspector(QtWidgets.QWidget):
                 self.selected_classifications,
                 self.ui.checkBox_12.isChecked(),
                 self.ui.checkBox_11.isChecked())
-
-    # parse the filters and the checked headers

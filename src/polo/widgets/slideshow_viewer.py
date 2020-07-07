@@ -2,11 +2,11 @@ import copy
 import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 
 from polo import IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
-from polo.widgets.graphics_well import graphicsWell
 
 logger = make_default_logger(__name__)
 
@@ -146,6 +146,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
     # current image will be an actual image to show to the screen
     # slideshow images are images in the que that are ready to go
@@ -159,7 +160,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         #rect = QtCore.QRectF(self.__photo.pixmap().rect())
         if not rect.isNull():
             self.__empty = False
-            # self.setSceneRect(rect)
+            self.setSceneRect(rect)
             self.setScene(self.scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
                 unity = self.transform().mapRect(QtCore.QRectF(0, 0, 1, 1))
@@ -176,23 +177,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def add_pixmap(self, pixmap):
         self.scene.addPixmap(pixmap)
 
-    # def set_scene(self, graphics_scene=None):
-    #     # should do same thing as set_image but with a graphics scene
-        
-
-
-    #     if graphics_scene:
-    #         self.__empty = False
-    #         self.scene = graphics_scene
-    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-    #     # call fit in view
-    #     else:
-    #         self.__empty = True
-    #         self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-    #         self.scene = QtWidgets.QGraphicsScene(
-    #             self)  # reset the graphics scene
-    #     self.fitInView()
-    #     print('fit in view')
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -280,6 +264,7 @@ class SlideshowViewer(PhotoViewer):
                 image_types=set([]), human=False, marco=False
             )
         else:
+            self.__run = None
             logger.info('Failed to set {} as __run attribute of {}'.format(
                 new_run, self
             ))
@@ -331,7 +316,6 @@ class SlideshowViewer(PhotoViewer):
         :type marco: bool
         '''
         if self.run:
-            print(marco, 'update slides from filters')
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
             self.__carousel.add_slides(images)
@@ -339,8 +323,18 @@ class SlideshowViewer(PhotoViewer):
             logger.info('Applied filters {} human: {} marco: {} to {}'.format(
                 image_types, human, marco, self
             ))
+    
+    def add_text_to_scene(self, text, x, y, size=40):
+        t = QtWidgets.QGraphicsTextItem()
+        t.setPlainText(text)
+        f = QFont()
+        f.setPointSize(size)
+        t.setFont(f)
+        self.scene.addItem(t)
+        t.setPos(x, y)
 
-    def arrange_multi_image_scene(self, image_list):
+
+    def arrange_multi_image_scene(self, image_list, render_date=False):
         x, y = 0, 0  # set starting cords
         for item in image_list:
             if isinstance(item, (list, tuple)):  # 2D list
@@ -355,13 +349,16 @@ class SlideshowViewer(PhotoViewer):
                 scene_item = self.scene.addPixmap(item)
                 scene_item.setToolTip(item.get_tool_tip())
                 scene_item.setPos(x, y)
+                if render_date and item.date:
+                    self.add_text_to_scene(str(item.date), x, y)
+
                 x += item.width()
 
     def set_all_dates_scene(self, image):
         if isinstance(image, Image):
             all_dates = image.get_linked_images_by_date()
             self.scene.clear()
-            self.arrange_multi_image_scene(all_dates)
+            self.arrange_multi_image_scene(all_dates, render_date=True)
             self.fitInView()
     
     def set_all_spectrums_scene(self, image):
@@ -439,3 +436,5 @@ class SlideshowViewer(PhotoViewer):
         '''
         if isinstance(self.current_image, Image):
             self.current_image.human_class = classification
+    
+

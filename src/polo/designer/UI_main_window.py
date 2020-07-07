@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -506,6 +506,8 @@ class Ui_MainWindow(object):
         self.actionBeta_Tester_s_Guide.setObjectName("actionBeta_Tester_s_Guide")
         self.actionEdit_Current_Run_Data = QtWidgets.QAction(MainWindow)
         self.actionEdit_Current_Run_Data.setObjectName("actionEdit_Current_Run_Data")
+        self.actionAs_MSO = QtWidgets.QAction(MainWindow)
+        self.actionAs_MSO.setObjectName("actionAs_MSO")
         self.menuImages.addAction(self.actionFrom_FTP)
         self.menuImages.addSeparator()
         self.menuImages.addAction(self.actionFrom_Saved_Run_3)
@@ -514,10 +516,7 @@ class Ui_MainWindow(object):
         self.menuImport.addAction(self.actionCocktails)
         self.menuExport.addAction(self.actionAs_HTML)
         self.menuExport.addAction(self.actionAs_CSV)
-        self.menuExport.addSeparator()
-        self.menuExport.addAction(self.actionRun_Journal)
-        self.menuExport.addSeparator()
-        self.menuExport.addAction(self.actionOptimization_Screens)
+        self.menuExport.addAction(self.actionAs_MSO)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionUser_Guide)
@@ -545,7 +544,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.run_interface.setCurrentIndex(4)
+        self.run_interface.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -632,6 +631,7 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionBeta_Tester_s_Guide.setText(_translate("MainWindow", "Beta Tester\'s Guide"))
         self.actionEdit_Current_Run_Data.setText(_translate("MainWindow", "Edit Current Run Data"))
+        self.actionAs_MSO.setText(_translate("MainWindow", "As MSO"))
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.widgets.run_organizer import RunOrganizer

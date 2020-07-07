@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
+from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from jinja2 import Template
@@ -18,13 +18,13 @@ from polo import (ALLOWED_IMAGE_TYPES, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA,
                   RUN_HTML_TEMPLATE, SCREEN_HTML_TEMPLATE, __version__,
                   make_default_logger, num_regex, unit_regex)
 from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
-from polo.threads.thread import PixmapMakerThread, QuickThread
+from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.unrar_utils import unrar_archive
-from polo import SPEC_KEYS, IMAGE_SPECS
+from polo import SPEC_KEYS, IMAGE_SPECS, MSO_DICT, IMAGE_CLASSIFICATIONS
 
 
 logger = make_default_logger(__name__)
@@ -152,7 +152,6 @@ class HtmlWriter(RunSerializer):
         anything other than a Qthread instance.
         '''
         result = str(self.thread.result)
-        print(result)
         # creating message on thread possibly be causing an issue
         # if os.path.exists(result):
         #     message = 'Export to {} was successful'.format(result)
@@ -327,6 +326,84 @@ class RunCsvWriter(RunSerializer):
     def __iter__(self):
         for image in self.run.images:
             yield RunCsvWriter.image_to_row(image)
+
+class SceneExporter():
+
+    def __init__(self, graphics_scene=None, file_path=None):
+        self.graphics_scene = graphics_scene
+        self.file_path = file_path
+    
+    @staticmethod
+    def write_image(scene, file_path):
+        try:
+            image = QImage(scene.width(), scene.height(), QImage.Format_ARGB32_Premultiplied)
+            painter = QPainter(image)
+            scene.render(painter)
+            image.save(file_path)
+            painter.end()
+            return file_path
+        except Exception as e:
+            return e
+    
+    def write(self):
+        return SceneExporter.write_image(self.graphics_scene, self.file_path)
+
+
+class MsoWriter(RunSerializer):
+
+    mso_version = 'msoversion2'
+
+    def __init__(self, run, output_path):
+        self.run = run
+        self.output_path = output_path
+
+    @staticmethod
+    def row_formater(cocktail_row):
+        # well number should be first index in the list
+        # total list length should be 18 last item is the mso code
+        return cocktail_row + ([''] * (len(cocktail_row) - 17))
+
+    
+    @property
+    def first_line(self):
+        return [
+            MsoWriter.path_suffix_checker(self.run.run_name, '.rar'), 
+            self.mso_version
+        ]
+    
+
+    def get_cocktail_csv_data(self):
+        cocktail_menu = self.run.cocktail_menu.path
+        with open(cocktail_menu, 'r') as menu_file:
+            next(menu_file)  # skip first row
+            return [row for row in csv.reader(menu_file)]
+
+    def write_mso_file(self, use_marco_classifications=False):
+        cocktail_data = self.get_cocktail_csv_data()
+        self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
+        with open(self.output_path, 'w') as mso_file:
+            writer = csv.writer(mso_file, delimiter='\t')
+            writer.writerow(self.first_line)
+            writer.writerow(cocktail_data.pop(0))  # header row
+            for row in cocktail_data:
+                row = MsoWriter.row_formater(row)
+                well_num = int(float(row[0]))
+
+                image = self.run.images[well_num-1]
+                if image and image.human_class:
+                    row.append(MSO_DICT[image.human_class])
+                elif use_marco_classifications and image.machine_class:
+                    row.append(MSO_DICT[image.machine_class])
+                else:
+                    row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
+                writer.writerow(row)
+                    # default to other image classification
+            
+
+    
+    
+
+
 
 
 class XtalWriter(RunSerializer):
@@ -597,6 +674,7 @@ class RunDeserializer():  # convert saved file into a run
                 r = json.load(xtal_data,  # update date since datetime goes right to string
                               object_hook=RunDeserializer.dict_to_obj)
                 r.date = BarTender.datetime_converter(r.date)
+                r.save_file_path = xtal_path
                 return r
 
 
@@ -876,6 +954,11 @@ class RunLinker():
 
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
+    
+    @staticmethod
+    def insert_visible_into_alt(visible_run):
+        linked_alt_runs = visible_run.get
+
 
     def the_big_link(self):
         self.link_runs_by_date()
@@ -886,7 +969,6 @@ class RunLinker():
             if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
                 continue
             else:
-                print('hipdpdfpdfpdfp')
                 return False
         runs = [r for r in sorted(
             self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
@@ -909,17 +991,26 @@ class RunLinker():
                 visible.append(run)
             else:
                 other.append(run)
-        # now have sorted by spectrums
-        if other and visible:
-            for v_run in visible:  # all in visible spectrum
-                if v_run:
-                    other.append(v_run)
-                    spec_list = sorted(other, key=lambda r: len(str(r.image_spectrum)))
-                    for i in range(0, len(spec_list)-1):
-                        spec_list[i].link_to_alt_spectrum(spec_list[i+1])
-                    spec_list[-1].link_to_alt_spectrum(spec_list[0])
-                    other.pop()  # remove visible run added to other
-                # ties the head and tail together
+        if other:
+            # ISSUE WITH LINKING ALT RUNS HERE
+            if len(other) > 1:
+                other = sorted(other, key=lambda o: len(str(o.image_spectrum)))
+                for i in range(len(other)-1):
+                    other[i].link_to_alt_spectrum(other[i+1])
+                other[-1].link_to_alt_spectrum(other[0])
+
+            if visible:
+                for run in visible:
+                    run.link_to_alt_spectrum(other[0])  # link to first run of alts
+
+            # setting up the linked list structure
+            # all alt spectrum (non visible) runs get linked together in a
+            # circular linked list. Visible runs then point at the one
+            # alt spectrum run. When a run is loaded in if it is in the visible
+            # spectrum the visible run is temprorarly inserted into the alt
+            # spec linked list and reconnected. If a new visible run is selected
+            # the current visible run in the linked list is replaced with the
+            # new current run
 
 
 class XmlReader():
@@ -952,7 +1043,6 @@ class XmlReader():
         try:
             tree = ET.parse(xml_path)
             root = tree.getroot()
-            print(root)
 
             d = XmlReader.get_data_from_xml_element(root[0])
             d.update(

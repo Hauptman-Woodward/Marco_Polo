@@ -88,13 +88,11 @@ class SpectrumDialog(QtWidgets.QDialog):
                 spectrum_list_widget = self.get_spectrum_list(run)
                 spectrum_list_widget.setCurrentItem(run.run_name)
 
-
     def link_current_selection(self):
         '''Link the currently selected runs together. Creates a circular
         linked list structure.
         '''
         selected_runs = self.get_selections()
-        print(selected_runs)
         if self.validate_selection(selected_runs):
             for i in range(len(selected_runs)-1):
                 run_a, run_b = (
@@ -102,13 +100,10 @@ class SpectrumDialog(QtWidgets.QDialog):
                     self.loaded_runs[selected_runs[i+1]]
                 )
                 run_a.link_to_alt_spectrum(run_b)
-                print('linked', run_a, 'to', run_b)
             first_run, last_run = (
                 self.loaded_runs[selected_runs[0]],
                 self.loaded_runs[selected_runs[-1]])
             last_run.link_to_alt_spectrum(first_run)
-            print('linked ', last_run, ' to ', first_run)
-            #last_run.link_to_alt_spectrum(first_run)
             message = ''
             for run in selected_runs:
                 message += run + ' '

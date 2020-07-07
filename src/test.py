@@ -628,8 +628,6 @@ class XmlReader():
         try:
             tree = ET.parse(xml_path)
             root = tree.getroot()
-            print(root)
-
             d = XmlReader.get_data_from_xml_element(root[0])
             d.update(
                 XmlReader.get_data_from_xml_element(root[1])

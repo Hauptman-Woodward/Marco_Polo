@@ -7,7 +7,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QColor, QBitmap, QPainter
 from polo.widgets.slideshow_viewer import PhotoViewer
+from polo.utils.dialog_utils import make_message_box
 from polo.designer.UI_slideshow_inspector import Ui_slideshowInspector
+from polo.utils.io_utils import SceneExporter, RunSerializer
 import copy
 from polo import ICON_DICT
 
@@ -45,6 +47,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
         self.ui.pushButton_6.clicked.connect(
             lambda: self.navigate_carousel(next_image=True))
+        self.ui.pushButton_7.clicked.connect(self.export_current_view)
         self.ui.pushButton_4.clicked.connect(
             lambda: self.navigate_carousel(prev_image=True))
         self.ui.pushButton_11.clicked.connect(self.submit_filters)
@@ -211,7 +214,6 @@ class slideshowInspector(QtWidgets.QWidget):
         so the current slideshow contents can be adjusted to reflect the
         new filters. Displays the current image after filtering.
         '''
-        print(self.marco)
         self.ui.slideshowViewer.update_slides_from_filters(
             self.selected_classifications, self.human, self.marco, self.favorites
         )
@@ -256,3 +258,24 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.pushButton_12.setEnabled(True)
         else:
             self.ui.pushButton_12.setEnabled(False)
+    
+    def export_current_view(self):
+        # get file path here from dialog
+        save_path = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Save View'
+        )[0]
+        if save_path:
+            save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+        write_result = SceneExporter.write_image(
+                self.ui.slideshowViewer.scene, save_path)
+        
+        if isinstance(write_result, str):
+            message = 'View saved to {}'.format(write_result)
+        else:
+            message = 'Write to {} failed with error {}'.format(
+                save_path, write_result
+            )
+        make_message_box(parent=self, message=message).exec_()
+
+
+    

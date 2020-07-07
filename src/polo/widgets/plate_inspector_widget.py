@@ -41,10 +41,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.set_image_count_options()
 
         self.ui.pushButton_18.clicked.connect(
-            lambda: self.navigate_plateview(next_page=True)
+            lambda: self.show_current_plate(next_view=True)
         )
         self.ui.pushButton_17.clicked.connect(
-            lambda: self.navigate_plateview(prev_page=True)
+            lambda: self.show_current_plate(prev_view=True)
         )
         self.image_type_checkboxes = dict(zip(IMAGE_CLASSIFICATIONS,
         [self.ui.checkBox_23, self.ui.checkBox_24, self.ui.checkBox_25,
@@ -70,6 +70,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.ui.plateViewer.images_per_page = self.images_per_page[0]
 
         self.ui.comboBox_7.currentIndexChanged.connect(self.set_images_per_page)
+
+        self.ui.pushButton.clicked.connect(
+            self.ui.plateViewer.export_current_view)
     
 
     def set_images_per_page(self):
@@ -171,7 +174,15 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             mapping[img_class] = COLORS[each_combo_box.currentText()]
         return mapping
     
-    
+
+    def parse_label_checkboxes(self):
+        boxes = [
+                 self.ui.checkBox, self.ui.checkBox_2, self.ui.checkBox_3,
+                 self.ui.checkBox_4, self.ui.checkBox_5
+                ]
+        return {b.text(): b.isChecked() for b in boxes}
+
+
     def navigate_plateview(self, next_page=False, prev_page=False,
                            alt_image=False, next_date=False, prev_date=False):
         '''
@@ -228,7 +239,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             else:
                 self.ui.plateViewer.decolor_all_images()
     
-    def show_current_plate(self, next_date=False, prev_date=False,
+    def show_current_plate(self, next_view=False, prev_view=False, next_date=False, prev_date=False,
                            alt_spec=False):
         '''Show the images belonging to the current plate view to the user.
 
@@ -249,10 +260,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             self.run = self.__run.previous_run
         elif alt_spec and self.__run.alt_spectrum:
             self.run = self.__run.alt_spectrum
+        
+        if next_view:
+            self.ui.plateViewer.current_page += 1
+        elif prev_view:
+            self.ui.plateViewer.current_page -= 1
 
-
+        label_dict = self.parse_label_checkboxes()
         added_wells = self.ui.plateViewer.tile_graphics_wells(
-            next_date = next_date, prev_date=prev_date, alt_spec=alt_spec
+            next_date = next_date, prev_date=prev_date, alt_spec=alt_spec,
+            label_dict=label_dict
         )
         self.apply_plate_settings()
         self.set_plate_label()

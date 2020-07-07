@@ -2,7 +2,7 @@ import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache
+from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache, QFont
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
@@ -10,7 +10,9 @@ from polo.crystallography.run import HWIRun, Run
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.utils.math_utils import *
 from polo.widgets.slideshow_viewer import PhotoViewer
-from polo.widgets.graphics_well import graphicsWell
+from polo.utils.io_utils import RunSerializer, SceneExporter
+from polo.utils.dialog_utils import make_message_box
+from polo.threads.thread import QuickThread
 
 
     
@@ -27,13 +29,12 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.__graphics_wells = None
         self.__current_page = 1
         self.__scene = QtWidgets.QGraphicsScene(self)
-        # self.__cache = PlateCache(self)
-        self.setScene(self.__scene)
         self.__scene.selectionChanged.connect(self.pop_out_selected_well)
         self.__zoom = 0
         self.__scene_map = {}
         self.__view_cache = {}
         self.setInteractive(True)
+        self.setScene(self.__scene)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -142,51 +143,73 @@ class plateViewer(QtWidgets.QGraphicsView):
             plate_index += 1
             if plate_index == page:
                 yield i
+
+    def make_image_label(self, image, label_dict, font_size=35):
+        template, text = '{}: {}', []
+        if label_dict:
+            for k in sorted(label_dict.keys()):
+                if k == 'Well' and label_dict[k]:
+                    text.append(template.format(k, image.well_number))
+                elif k == 'Date' and label_dict[k]:
+                    text.append(template.format(k, image.date))
+                elif k == 'Cocktail Number' and label_dict[k] and image.cocktail:
+                    text.append(template.format(k, image.cocktail.number))
+                elif k == 'Human Classification' and label_dict[k]:
+                    text.append(template.format(k, image.human_class))
+                elif k == 'MARCO Classification' and label_dict[k]:
+                    text.append(template.format(k, image.machine_class)) 
+
+            t = QtWidgets.QGraphicsTextItem()
+            t.setPlainText('\n'.join(text))
+            f = QFont()
+            f.setPointSize(font_size)
+            t.setFont(f)
+
+            return t
     
-    def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
-                            prev_date=False, alt_spec=False):
-        QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+    def tile_graphics_wells(self, next_date=False,
+                            prev_date=False, alt_spec=False, label_dict={}):
+        if self.run:
+            QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items() 
+            if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
+            # for now delete all previous pixmap data from ram
 
-        [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
+            visible_wells = self.get_visible_wells()
+            _, stride = self.subgrid_dict[self.images_per_page]
+            cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
+            row_height = 0  # height of tallest image in a given row of images
 
+            images = [self.run.images[i] for i in self.get_visible_wells()]
+            _, stride = self.subgrid_dict[self.images_per_page]
+            self.__scene.clear()
 
-        visible_wells = self.get_visible_wells()
-        _, stride = self.subgrid_dict[self.images_per_page]
-        cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
-        row_height = 0  # height of tallest image in a given row of images
-
-
-        images = [self.run.images[i] for i in self.get_visible_wells()]
-        _, stride = self.subgrid_dict[self.images_per_page]
-
-        self.__scene.clear()
-
-        for i, image in enumerate(images):
-            if i % stride == 0 and i != 0:
-                cur_y_pos += row_height
-                row_height, cur_x_pos, = 0, 0  # reset row height for next row
+            for i, image in enumerate(images):
+                if i % stride == 0 and i != 0:
+                    cur_y_pos += row_height
+                    row_height, cur_x_pos, = 0, 0  # reset row height for next row
+                
+                if image.isNull():
+                    image.setPixmap()
+                
+                item = self.__scene.addPixmap(image)
+                item.setPos(cur_x_pos, cur_y_pos)
+                label = self.make_image_label(image, label_dict)
+                if label: 
+                    self.__scene.addItem(label)
+                    label.setPos(cur_x_pos, cur_y_pos)
+                item.setData(0, image)
+                self.set_prerender_info(item, image)
+                if image.height() > row_height:
+                    row_height = image.height()
+                cur_x_pos += image.width() 
             
-            if image.isNull():
-                image.setPixmap()
-            
-            item = self.__scene.addPixmap(image)
-            item.setPos(cur_x_pos, cur_y_pos)
-            item.setData(0, image)
-            self.set_prerender_info(item, image)
-            #self.apply_scene_settings(item)  # TODO apply the settings here
-            if image.height() > row_height:
-                row_height = image.height()
-            cur_x_pos += image.width() 
-        
-        self.__scene.selectionChanged.connect(self.pop_out_selected_well)
-        self.setScene(self.__scene)
-        self.fitInView(self.__scene, self.preserve_aspect)
-        QtWidgets.QApplication.restoreOverrideCursor()
-            
-    
-    # modifies the scene item before it is displayed
+            self.__scene.selectionChanged.connect(self.pop_out_selected_well)
 
-
+            self.setScene(self.__scene)
+            self.fitInView(self.__scene, self.preserve_aspect)
+            QtWidgets.QApplication.restoreOverrideCursor()
+            
     def set_prerender_info(self, item, image):
         item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
         item.setToolTip(image.get_tool_tip())  # pixmap is Image
@@ -196,30 +219,30 @@ class plateViewer(QtWidgets.QGraphicsView):
     def set_scene_opacity_from_filters(self, image_types, human=False, marco=False, filtered_opacity=0.2):
         for item in self.__scene.items():
             image = item.data(0)
-            print(image_types, image.machine_class)
             if image.standard_filter(image_types, human, marco):
                 item.setOpacity(1)
-                print('set opacity to 1')
             else:
                 # did not meet the filtered criteria
                 item.setOpacity(filtered_opacity)
-                print('set opacity to filtered opacity', filtered_opacity)
     
     def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
         for item in self.__scene.items():
-            image, color = item.data(0), None
-            if human and image.human_class in color_mapping:
-                color = color_mapping[image.human_class]
-            elif image.machine_class in color_mapping:
-                color = color_mapping[image.machine_class]
-            if color:
-                effect = QGraphicsColorizeEffect()
-                effect.setColor(color)
-                effect.setStrength(strength)
-            item.setGraphicsEffect(effect)
+            effect = None
+            if isinstance(item, QtWidgets.QGraphicsPixmapItem):
+                image, color = item.data(0), None
+                if human and image.human_class in color_mapping:
+                    color = color_mapping[image.human_class]
+                elif image.machine_class in color_mapping:
+                    color = color_mapping[image.machine_class]
+                if color:
+                    effect = QGraphicsColorizeEffect()
+                    effect.setColor(color)
+                    effect.setStrength(strength)
+                item.setGraphicsEffect(effect)
             
 
     def fitInView(self, scene, preserve_aspect=False):
+        self.setSceneRect(scene.itemsBoundingRect())
         if preserve_aspect:
             super(plateViewer, self).fitInView(scene.itemsBoundingRect(),
                                                Qt.KeepAspectRatio)
@@ -250,37 +273,37 @@ class plateViewer(QtWidgets.QGraphicsView):
             pop_out.show()
             self.__scene.clearSelection()
             
-
-    # def demphasize_filtered_images(self, image_types, human, marco):
-    #     for each_gw in self.__scene.items():
-    #         if each_gw:
-    #             each_gw.setOpacity(0.25, image_types=image_types,
-    #                                human=human, marco=marco)
-
-    # def color_images(self, color_mapping, strength=0.5, human=False):
-    #     for each_gw in self.__scene.items():
-    #         if each_gw:
-    #             each_gw.set_color(color_mapping, strength=strength,
-    #                               by_human_class=human)
-
     def emphasize_all_images(self):
         for each_gw in self.__scene.items():
-            if each_gw:
+            if isinstance(each_gw, QtWidgets.QGraphicsPixmapItem):
                 each_gw.setOpacity(1)
 
     def decolor_all_images(self):
-        for each_gw in self.__scene.items():
-            if each_gw:
-                each_gw.setGraphicsEffect(None)
+        for each_item in self.__scene.items():
+            if isinstance(each_item, QtWidgets.QGraphicsPixmapItem):
+                each_item.setGraphicsEffect(None)
     
     def export_current_view(self):
         if self.__scene:
-            export_path = QtWidgets.QFileDialog.getSaveFile()
-            # something like that to get save file
-            if export_path:
-                image = QImage(self.__scene.rect(), Format_ARGB32_Premultiplied)
-                painter = QPainter(image)
-                self.__scene.render(painter, image.rect(), self.__scene.rect())
-                painter.end()
-                image.save(export_path)
-        # TODO Needs testing no idea if this will work
+            save_path = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Save View')[0]
+        if save_path:
+            save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+            self.export_thread = QuickThread(SceneExporter.write_image,
+            scene=self.__scene, file_path=save_path)
+
+            def finished_write():
+                write_result = self.export_thread.result
+                if isinstance(write_result, str):
+                    message = 'View saved to {}'.format(write_result)
+                else:
+                    message = 'Write to {} failed with error {}'.format(
+                    save_path, write_result
+                    )
+                make_message_box(parent=self, message=message).exec_()
+
+            self.export_thread.finished.connect(finished_write)
+            self.export_thread.start()
+
+
+
