@@ -954,6 +954,11 @@ class RunLinker():
 
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
+    
+    @staticmethod
+    def insert_visible_into_alt(visible_run):
+        linked_alt_runs = visible_run.get
+
 
     def the_big_link(self):
         self.link_runs_by_date()
@@ -986,17 +991,26 @@ class RunLinker():
                 visible.append(run)
             else:
                 other.append(run)
-        # now have sorted by spectrums
-        if other and visible:
-            for v_run in visible:  # all in visible spectrum
-                if v_run:
-                    other.append(v_run)
-                    spec_list = sorted(other, key=lambda r: len(str(r.image_spectrum)))
-                    for i in range(0, len(spec_list)-1):
-                        spec_list[i].link_to_alt_spectrum(spec_list[i+1])
-                    spec_list[-1].link_to_alt_spectrum(spec_list[0])
-                    other.pop()  # remove visible run added to other
-                # ties the head and tail together
+        if other:
+            # ISSUE WITH LINKING ALT RUNS HERE
+            if len(other) > 1:
+                other = sorted(other, key=lambda o: len(str(o.image_spectrum)))
+                for i in range(len(other)-1):
+                    other[i].link_to_alt_spectrum(other[i+1])
+                other[-1].link_to_alt_spectrum(other[0])
+
+            if visible:
+                for run in visible:
+                    run.link_to_alt_spectrum(other[0])  # link to first run of alts
+
+            # setting up the linked list structure
+            # all alt spectrum (non visible) runs get linked together in a
+            # circular linked list. Visible runs then point at the one
+            # alt spectrum run. When a run is loaded in if it is in the visible
+            # spectrum the visible run is temprorarly inserted into the alt
+            # spec linked list and reconnected. If a new visible run is selected
+            # the current visible run in the linked list is replaced with the
+            # new current run
 
 
 class XmlReader():
@@ -1029,7 +1043,6 @@ class XmlReader():
         try:
             tree = ET.parse(xml_path)
             root = tree.getroot()
-            print(root)
 
             d = XmlReader.get_data_from_xml_element(root[0])
             d.update(

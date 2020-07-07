@@ -243,14 +243,14 @@ class Image(QtGui.QPixmap):
         '''
         if new_class in IMAGE_CLASSIFICATIONS:
             self.__human_class = new_class
-            if hasattr(self, 'alt_image') and self.alt_image:
-                # alt images inherit their linked classifications
-                alt_image = self.alt_image
-                while alt_image.path and alt_image.path != self.path:
-                    alt_image.__human_class = new_class
-                    # assign directly to hidden attr to avoid creating an
-                    # endless recursive call loop
-                    alt_image = alt_image.alt_image
+            # if hasattr(self, 'alt_image') and self.alt_image:
+            #     # alt images inherit their linked classifications
+            #     alt_image = self.alt_image
+            #     while alt_image.path and alt_image.path != self.path:
+            #         alt_image.__human_class = new_class
+            #         # assign directly to hidden attr to avoid creating an
+            #         # endless recursive call loop
+            #         alt_image = alt_image.alt_image
         else:
             self.__human_class = None
 
@@ -308,7 +308,6 @@ class Image(QtGui.QPixmap):
 
     def get_linked_images_by_date(self):
         linked_images = [self]
-        print('got images by date')
         if self.next_image:
             start_image = self.next_image
             while isinstance(start_image, Image) and start_image.path != self.path:
@@ -319,7 +318,6 @@ class Image(QtGui.QPixmap):
             while isinstance(start_image, Image) and self.previous_image.path != self.path:
                 linked_images.append(start_image)
                 start_image = start_image.previous_image
-        print('linked images by date end')
         return sorted(linked_images, key=lambda i: i.date)
 
     def get_linked_images_by_spectrum(self):

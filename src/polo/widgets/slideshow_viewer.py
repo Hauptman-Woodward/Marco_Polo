@@ -364,7 +364,6 @@ class SlideshowViewer(PhotoViewer):
     def set_all_spectrums_scene(self, image):
         if isinstance(image, Image):
             all_specs = image.get_linked_images_by_spectrum()
-            print(all_specs)
             self.scene.clear()
             self.arrange_multi_image_scene(all_specs)
             self.fitInView()

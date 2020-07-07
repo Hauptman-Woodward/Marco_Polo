@@ -70,6 +70,7 @@ class RunTree(QtWidgets.QTreeWidget):
                     0, sample_node.childCount()) if sample_node.child(i).text(0) in all_runs]
                 # LIST COMP AT ALL COSTS!
                 linker = RunLinker(sample_runs)
+                print('linking the runs now')
                 linked_runs = linker.the_big_link()
 
     def add_run_to_tree(self, new_run):

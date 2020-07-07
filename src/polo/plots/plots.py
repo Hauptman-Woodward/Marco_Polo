@@ -247,7 +247,6 @@ class StaticCanvas(MplCanvas):
         for xtal in crystal_images:
             for additive in xtal.cocktail.solutions:
                 unique_additives.add(additive.chemical_additive)
-                print(additive.chemical_additive)
         
         num_additives = len(unique_additives)
 
@@ -387,8 +386,6 @@ class MplWidget(QtWidgets.QWidget):
             for each_image_class in image.prediction_dict:
                 image_class.append(each_image_class)
                 confidence.append(image.prediction_dict[each_image_class])
-            print(image_class, confidence)
-            print(self.fig.get_axes()[0])
 
             self.fig.get_axes()[0].bar(image_class, confidence)
 

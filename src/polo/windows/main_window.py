@@ -204,6 +204,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
+            if self.current_run.image_spectrum == IMAGE_SPECS[0]:  # is visible
+                self.current_run.insert_into_alt_spec_chain()
             self.slideshowInspector.run = self.current_run
             self.tableInspector.run = self.current_run
             self.tableInspector.update_table_view()
