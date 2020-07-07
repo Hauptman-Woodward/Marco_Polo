@@ -2,7 +2,7 @@ import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache
+from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache, QFont
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
@@ -10,6 +10,9 @@ from polo.crystallography.run import HWIRun, Run
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.utils.math_utils import *
 from polo.widgets.slideshow_viewer import PhotoViewer
+from polo.utils.io_utils import RunSerializer, SceneExporter
+from polo.utils.dialog_utils import make_message_box
+from polo.threads.thread import QuickThread
 
 
     
@@ -140,12 +143,35 @@ class plateViewer(QtWidgets.QGraphicsView):
             plate_index += 1
             if plate_index == page:
                 yield i
+
+    def make_image_label(self, image, label_dict, font_size=35):
+        template, text = '{}: {}', []
+        if label_dict:
+            for k in sorted(label_dict.keys()):
+                if k == 'Well' and label_dict[k]:
+                    text.append(template.format(k, image.well_number))
+                elif k == 'Date' and label_dict[k]:
+                    text.append(template.format(k, image.date))
+                elif k == 'Cocktail Number' and label_dict[k] and image.cocktail:
+                    text.append(template.format(k, image.cocktail.number))
+                elif k == 'Human Classification' and label_dict[k]:
+                    text.append(template.format(k, image.human_class))
+                elif k == 'MARCO Classification' and label_dict[k]:
+                    text.append(template.format(k, image.machine_class)) 
+
+            t = QtWidgets.QGraphicsTextItem()
+            t.setPlainText('\n'.join(text))
+            f = QFont()
+            f.setPointSize(font_size)
+            t.setFont(f)
+
+            return t
     
-    def tile_graphics_wells(self, overwrite_cache=False, next_date=False,
-                            prev_date=False, alt_spec=False):
+    def tile_graphics_wells(self, next_date=False,
+                            prev_date=False, alt_spec=False, label_dict={}):
         if self.run:
             QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items()]
+            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items() if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
             # for now delete all previous pixmap data from ram
 
             visible_wells = self.get_visible_wells()
@@ -167,6 +193,10 @@ class plateViewer(QtWidgets.QGraphicsView):
                 
                 item = self.__scene.addPixmap(image)
                 item.setPos(cur_x_pos, cur_y_pos)
+                label = self.make_image_label(image, label_dict)
+                if label: 
+                    self.__scene.addItem(label)
+                    label.setPos(cur_x_pos, cur_y_pos)
                 item.setData(0, image)
                 self.set_prerender_info(item, image)
                 if image.height() > row_height:
@@ -195,16 +225,18 @@ class plateViewer(QtWidgets.QGraphicsView):
     
     def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
         for item in self.__scene.items():
-            image, color = item.data(0), None
-            if human and image.human_class in color_mapping:
-                color = color_mapping[image.human_class]
-            elif image.machine_class in color_mapping:
-                color = color_mapping[image.machine_class]
-            if color:
-                effect = QGraphicsColorizeEffect()
-                effect.setColor(color)
-                effect.setStrength(strength)
-            item.setGraphicsEffect(effect)
+            effect = None
+            if isinstance(item, QtWidgets.QGraphicsPixmapItem):
+                image, color = item.data(0), None
+                if human and image.human_class in color_mapping:
+                    color = color_mapping[image.human_class]
+                elif image.machine_class in color_mapping:
+                    color = color_mapping[image.machine_class]
+                if color:
+                    effect = QGraphicsColorizeEffect()
+                    effect.setColor(color)
+                    effect.setStrength(strength)
+                item.setGraphicsEffect(effect)
             
 
     def fitInView(self, scene, preserve_aspect=False):
@@ -240,22 +272,35 @@ class plateViewer(QtWidgets.QGraphicsView):
             
     def emphasize_all_images(self):
         for each_gw in self.__scene.items():
-            if each_gw:
+            if isinstance(each_gw, QtWidgets.QGraphicsPixmapItem):
                 each_gw.setOpacity(1)
 
     def decolor_all_images(self):
-        for each_gw in self.__scene.items():
-            if each_gw:
-                each_gw.setGraphicsEffect(None)
+        for each_item in self.__scene.items():
+            if isinstance(each_item, QtWidgets.QGraphicsPixmapItem):
+                each_item.setGraphicsEffect(None)
     
     def export_current_view(self):
         if self.__scene:
-            export_path = QtWidgets.QFileDialog.getSaveFile()
-            # something like that to get save file
-            if export_path:
-                image = QImage(self.__scene.rect(), Format_ARGB32_Premultiplied)
-                painter = QPainter(image)
-                self.__scene.render(painter, image.rect(), self.__scene.rect())
-                painter.end()
-                image.save(export_path)
-        # TODO Needs testing no idea if this will work
+            save_path = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Save View')[0]
+        if save_path:
+            save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+            self.export_thread = QuickThread(SceneExporter.write_image,
+            scene=self.__scene, file_path=save_path)
+
+            def finished_write():
+                write_result = self.export_thread.result
+                if isinstance(write_result, str):
+                    message = 'View saved to {}'.format(write_result)
+                else:
+                    message = 'Write to {} failed with error {}'.format(
+                    save_path, write_result
+                    )
+                make_message_box(parent=self, message=message).exec_()
+
+            self.export_thread.finished.connect(finished_write)
+            self.export_thread.start()
+
+
+

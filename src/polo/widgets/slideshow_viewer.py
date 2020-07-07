@@ -2,6 +2,7 @@ import copy
 import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 
 from polo import IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.image import Image
@@ -145,6 +146,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(30, 30, 30)))
         self.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
     # current image will be an actual image to show to the screen
     # slideshow images are images in the que that are ready to go
@@ -321,8 +323,18 @@ class SlideshowViewer(PhotoViewer):
             logger.info('Applied filters {} human: {} marco: {} to {}'.format(
                 image_types, human, marco, self
             ))
+    
+    def add_text_to_scene(self, text, x, y, size=40):
+        t = QtWidgets.QGraphicsTextItem()
+        t.setPlainText(text)
+        f = QFont()
+        f.setPointSize(size)
+        t.setFont(f)
+        self.scene.addItem(t)
+        t.setPos(x, y)
 
-    def arrange_multi_image_scene(self, image_list):
+
+    def arrange_multi_image_scene(self, image_list, render_date=False):
         x, y = 0, 0  # set starting cords
         for item in image_list:
             if isinstance(item, (list, tuple)):  # 2D list
@@ -337,13 +349,16 @@ class SlideshowViewer(PhotoViewer):
                 scene_item = self.scene.addPixmap(item)
                 scene_item.setToolTip(item.get_tool_tip())
                 scene_item.setPos(x, y)
+                if render_date and item.date:
+                    self.add_text_to_scene(str(item.date), x, y)
+
                 x += item.width()
 
     def set_all_dates_scene(self, image):
         if isinstance(image, Image):
             all_dates = image.get_linked_images_by_date()
             self.scene.clear()
-            self.arrange_multi_image_scene(all_dates)
+            self.arrange_multi_image_scene(all_dates, render_date=True)
             self.fitInView()
     
     def set_all_spectrums_scene(self, image):
@@ -421,3 +436,5 @@ class SlideshowViewer(PhotoViewer):
         '''
         if isinstance(self.current_image, Image):
             self.current_image.human_class = classification
+    
+

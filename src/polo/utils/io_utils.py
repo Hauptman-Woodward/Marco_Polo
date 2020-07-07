@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
+from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from jinja2 import Template
@@ -327,6 +327,27 @@ class RunCsvWriter(RunSerializer):
         for image in self.run.images:
             yield RunCsvWriter.image_to_row(image)
 
+class SceneExporter():
+
+    def __init__(self, graphics_scene=None, file_path=None):
+        self.graphics_scene = graphics_scene
+        self.file_path = file_path
+    
+    @staticmethod
+    def write_image(scene, file_path):
+        try:
+            image = QImage(scene.width(), scene.height(), QImage.Format_ARGB32_Premultiplied)
+            painter = QPainter(image)
+            scene.render(painter)
+            image.save(file_path)
+            painter.end()
+            return file_path
+        except Exception as e:
+            return e
+    
+    def write(self):
+        return SceneExporter.write_image(self.graphics_scene, self.file_path)
+
 
 class MsoWriter(RunSerializer):
 
@@ -340,14 +361,14 @@ class MsoWriter(RunSerializer):
     def row_formater(cocktail_row):
         # well number should be first index in the list
         # total list length should be 18 last item is the mso code
-        print(type(cocktail_row)) 
         return cocktail_row + ([''] * (len(cocktail_row) - 17))
 
     
     @property
     def first_line(self):
         return [
-            self.run.run_name, self.mso_version
+            MsoWriter.path_suffix_checker(self.run.run_name, '.rar'), 
+            self.mso_version
         ]
     
 
