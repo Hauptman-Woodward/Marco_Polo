@@ -134,6 +134,10 @@ class Run():
 
 
     def image_filter_query(self, image_types, human, marco, favorite):
+        
+
+
+
         images = [i for i in self.images if i and i.standard_filter(
             image_types, human, marco, favorite
         )]
