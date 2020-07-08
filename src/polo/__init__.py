@@ -21,7 +21,6 @@ APP_ICON = Path('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
 
-
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')
 # cocktail meta data csv stores info about each of the cocktail menus. Stuff
@@ -39,8 +38,10 @@ MODEL_PATH = DATA_DIR.joinpath('savedmodel')
 
 
 # HTML jinja2 templates
-RUN_HTML_TEMPLATE = dirname.joinpath('polo/templates/exportRunTemplate.html')
-SCREEN_HTML_TEMPLATE = dirname.joinpath('polo/templates/exportPlatesTemplate.html')
+
+
+RUN_HTML_TEMPLATE = dirname.joinpath('templates/exportRunTemplate.html')
+SCREEN_HTML_TEMPLATE = dirname.joinpath('templates/exportPlatesTemplate.html')
 BLANK_IMAGE = Path('data/images/default_images/blank_image.png')
 
 # icons for tabs and buttons of the GUI
