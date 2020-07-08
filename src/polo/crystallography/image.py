@@ -258,7 +258,6 @@ class Image(QtGui.QPixmap):
         if not self.bites and os.path.exists(self.path):
             with open(self.path, 'rb') as image_file:
                 self.bites = base64.b64encode(image_file.read())
-                return self.bites
 
     def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes

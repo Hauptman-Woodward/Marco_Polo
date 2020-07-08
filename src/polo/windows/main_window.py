@@ -229,8 +229,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 export_path, export_results = Path(export_path), None
                 if action == self.actionAs_HTML:
                     self.writer = HtmlWriter(self.current_run)
-                    self.writer.write_complete_run_on_thread(
+                    QApplication.setOverrideCursor(Qt.WaitCursor)
+                    self.setEnabled(False)
+                    self.writer.write_complete_run(
                         export_path, encode_images=True)
+                    self.setEnabled(True)
+                    QApplication.restoreOverrideCursor()
                 elif action == self.actionAs_CSV:
                     export_path = export_path.with_suffix('.csv')
                     csv_exporter = RunCsvWriter(self.current_run, export_path)

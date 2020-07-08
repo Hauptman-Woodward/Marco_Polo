@@ -64,7 +64,7 @@ class Run():
         return sum([1 for i in self.images if i != None])
 
     def get_tooltip(self):
-        return 'Run Name: {}Spectrum: {}\nDate: {}\nNum Images: {}'.format(
+        return 'Run Name: {}\nSpectrum: {}\nDate: {}\nNum Images: {}'.format(
             self.run_name, self.image_spectrum, str(self.date), len(self)
         )
 
@@ -73,8 +73,7 @@ class Run():
         base64.
         '''
         for image in self.images:
-            if image:
-                image.encode_base64()
+            if image: image.encode_base64()
 
     def add_images_from_dir(self):
         '''Adds the contents of a directory to `images` attribute.
@@ -88,6 +87,7 @@ class Run():
             )
 
     def unload_all_pixmaps(self, s=None, e=None, r=False):  # reduce memory usage
+
         if isinstance(s, int) and isinstance(e, int):
             images = self.images[s:e]
         else:
@@ -134,10 +134,6 @@ class Run():
 
 
     def image_filter_query(self, image_types, human, marco, favorite):
-        
-
-
-
         images = [i for i in self.images if i and i.standard_filter(
             image_types, human, marco, favorite
         )]
@@ -339,8 +335,6 @@ class HWIRun(Run):
                     self.link_to_alt_spectrum(n)
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
-
-            
 
 
     def link_to_alt_images(self, other_run):

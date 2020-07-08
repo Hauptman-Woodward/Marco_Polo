@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="src/python/static/stylesheet.css">
+    <style>
+        table, td, th {  
+          border: 1px solid #ddd;
+          text-align: left;
+        }
+        
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        th, td {
+          padding: 15px;
+        }
+        </style>
   </head>
 
 <body>
@@ -24,12 +38,10 @@
         <h3>MARCO Classification: {{image.machine_class}}</h3>
         {% endif %}
         <hr>
-        {% if image.bites %}
-        <img  src="data:image/gif;base64,{{image.bites}}"/>
-        {{ else }}
-            <p><img src={{image.path}}></p>
+        {% if image._Image__bites %}
+        <h3>{{image.path}}</h3>
+        <img  src="data:image/gif;base64,{{image._Image__bites}}" height=50% width=50%/>
         {% endif %}
-
         
         {% if image.cocktail %}
             <h2>Cocktail Composition</h2>
@@ -40,6 +52,7 @@
                     <th>Chemcial Additive</th>
                     <th>Formula</th>
                     <th>Concentration</th>
+                    <th>Units</th>
                 </tr>
                 {% for solution in image.cocktail.reagents %}
                     {% if solution %}  
@@ -50,7 +63,8 @@
                         {% else %}
                             <td>Not Available</td>
                         {% endif %}
-                        <td>{{solution.concentration}}</td>
+                        <td>{{solution._Reagent__concentration._SignedValue__value}}</td>
+                        <td>{{solution._Reagent__concentration.units}}</td>
                     </tr>
                     {% endif %}
                 {% endfor %}

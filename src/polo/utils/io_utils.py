@@ -133,32 +133,33 @@ class HtmlWriter(RunSerializer):
             contents = template.read()
             return Template(contents)
 
-    def write_complete_run_on_thread(self, output_path, encode_images):
-        '''
-        Wrapper around `write_complete_run` that executes on a seperate
-        Qthread.
-        '''
-        self.thread = HtmlWriter.make_thread(
-            self.write_complete_run, output_path=output_path,
-            encode_images=encode_images)
-        self.thread.finished.connect(self.finished_writing)
-        self.thread.start()
-        logger.info('Writing {} as html to {}'.format(
-            self.write_complete_run, output_path))
+    # def write_complete_run_on_thread(self, output_path, encode_images=True):
+    #     '''
+    #     Wrapper around `write_complete_run` that executes on a seperate
+    #     Qthread.
+    #     '''
+    #     # self.thread = HtmlWriter.make_thread(
+    #     #     self.write_complete_run, output_path=output_path,
+    #     #     encode_images=encode_images)
+    #     # self.thread.finished.connect(self.finished_writing)
+    #     # self.thread.start()
+    #     # logger.info('Writing {} as html to {}'.format(
+    #     #     self.write_complete_run, output_path))
+    #     self.write_complete_run(output_path, encode_images=True)
 
-    def finished_writing(self):  # should only be called from connection to thread
-        '''
-        Method to connect to Qthread instance. Should not be called from
-        anything other than a Qthread instance.
-        '''
-        result = str(self.thread.result)
-        # creating message on thread possibly be causing an issue
-        # if os.path.exists(result):
-        #     message = 'Export to {} was successful'.format(result)
-        # else:
-        #     message = 'Export to HTML file failed. Returned {}'.format(result)
-        # logger.info('Html write attempt status: {}'.format(message))
-        # HtmlWriter.make_message_box(message=message).exec_()
+    # def finished_writing(self):  # should only be called from connection to thread
+    #     '''
+    #     Method to connect to Qthread instance. Should not be called from
+    #     anything other than a Qthread instance.
+    #     '''
+    #     result = str(self.thread.result)
+    #     # creating message on thread possibly be causing an issue
+    #     # if os.path.exists(result):
+    #     #     message = 'Export to {} was successful'.format(result)
+    #     # else:
+    #     #     message = 'Export to HTML file failed. Returned {}'.format(result)
+    #     # logger.info('Html write attempt status: {}'.format(message))
+    #     # HtmlWriter.make_message_box(message=message).exec_()
 
     def write_complete_run(self, output_path, encode_images=True):
         # write a run as html file with images and classifications
@@ -169,6 +170,7 @@ class HtmlWriter(RunSerializer):
                 self.run.encode_images_to_base64()
             images = json.loads(json.dumps(
                 self.run.images, default=XtalWriter.json_encoder))
+            [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
 
             template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
             if template:
@@ -400,10 +402,6 @@ class MsoWriter(RunSerializer):
                     # default to other image classification
             
 
-    
-    
-
-
 
 
 class XtalWriter(RunSerializer):
@@ -555,7 +553,7 @@ class RunDeserializer():  # convert saved file into a run
         self.xtal_path = xtal_path
 
     @staticmethod
-    def clean_base64_string(string):
+    def clean_base64_string(string, out_fmt=bytes):
         '''Image instances may contain byte strings that store their actual
         crystallization image encoded as base64. Previously, these byte strings
         were written directly into the json file as strings causing the b'
@@ -575,8 +573,12 @@ class RunDeserializer():  # convert saved file into a run
                 string = string[1:]
             if string[-1] == "'":
                 string = string[:-1]
-            if string:
-                return bytes(string, 'utf-8')
+            if string: 
+                if isinstance(out_fmt, bytes):
+                    return bytes(string, 'utf-8')
+                else:
+                    return string
+            
 
     @staticmethod
     def dict_to_obj(d):
