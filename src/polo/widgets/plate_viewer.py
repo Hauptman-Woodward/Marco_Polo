@@ -217,11 +217,12 @@ class plateViewer(QtWidgets.QGraphicsView):
         return item
     
     def set_scene_opacity_from_filters(self, image_types, human=False,
-                                       marco=False, filtered_opacity=0.2):
+                                       marco=False, favorite=False, 
+                                       filtered_opacity=0.2):
         for item in self.__scene.items():
             if isinstance(item, QtWidgets.QGraphicsPixmapItem):
                 image = item.data(0)
-                if image.standard_filter(image_types, human, marco):
+                if image.standard_filter(image_types, human, marco, favorite):
                     item.setOpacity(1)
                 else:
                     # did not meet the filtered criteria

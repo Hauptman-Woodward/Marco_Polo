@@ -162,6 +162,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         return self.ui.checkBox_22.isChecked()
     
     @property
+    def favorite(self):
+        return self.ui.checkBox_6.isChecked()
+    
+    @property
     def color_mapping(self):
         '''
         Creates a color mapping dictionary from the current selections of the
@@ -281,7 +285,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         their labels meet the currently selected image filter checkboxes.
         '''
         self.ui.plateViewer.set_scene_opacity_from_filters(
-            self.selected_classifications, self.human, self.marco
+            self.selected_classifications, self.human, self.marco, 
+            self.favorite
         )
         
     
