@@ -174,12 +174,17 @@ class HtmlWriter(RunSerializer):
 
             template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
             if template:
-                html = template.render(
-                    images=images, run_name=self.run.run_name,
-                    annotations='No annotations')
-                with open(output_path, 'w') as html_file:
-                    html_file.write(html)
-                    return output_path
+                try:
+                    html = template.render(
+                        images=images, run_name=self.run.run_name,
+                        annotations='No annotations')
+                    with open(output_path, 'w') as html_file:
+                        html_file.write(html)
+                        return output_path
+                except Exception as e:
+                    make_message_box(
+                        message='Could not write run to html failed with {}'.format(e)
+                        ).exec_()
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
