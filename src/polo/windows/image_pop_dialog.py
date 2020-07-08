@@ -41,7 +41,7 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.ui.pushButton_7.clicked.connect(
             lambda: self.show_alt_image(alt=True))
         self.image = image
-        self.set_allowed_navigation_functions()
+        #self.set_allowed_navigation_functions()
         self.ui.radioButton.toggled.connect(
             self.change_favorite_status
         )
@@ -86,6 +86,9 @@ class ImagePopDialog(QtWidgets.QDialog):
         '''Show the image stored in the `image` attribute
         '''
         if self.image:
+            self.ui.photoViewer.scene.clear()
+            if self.image.isNull():
+                self.image.setPixmap()
             self.ui.photoViewer.add_pixmap(self.image)
             self.ui.photoViewer.fitInView()
             self.set_groupbox_title()
@@ -125,13 +128,13 @@ class ImagePopDialog(QtWidgets.QDialog):
         elif alt and self.image.alt_image:
             self.image = self.image.alt_image
 
-    def set_allowed_navigation_functions(self):
-        nav_buttons = [self.ui.pushButton,
-                       self.ui.pushButton_6, self.ui.pushButton_7]
-        imgs = [self.image.next_image,
-                self.image.previous_image, self.image.alt_image]
-        for button, image in zip(nav_buttons, imgs):
-            if isinstance(image, Image):
-                button.setEnabled(True)
-            else:
-                button.setEnabled(False)
+    # def set_allowed_navigation_functions(self):
+    #     nav_buttons = [self.ui.pushButton,
+    #                    self.ui.pushButton_6, self.ui.pushButton_7]
+    #     imgs = [self.image.next_image,
+    #             self.image.previous_image, self.image.alt_image]
+    #     for button, image in zip(nav_buttons, imgs):
+    #         if isinstance(image, Image):
+    #             button.setEnabled(True)
+    #         else:
+    #             button.setEnabled(False)
