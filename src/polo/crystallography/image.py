@@ -383,6 +383,8 @@ class Image(QtGui.QPixmap):
                 else:
                     return True # set no filters so return True
         else:
-            return False 
+            return False
+
+
 
 from polo.utils.io_utils import BarTender

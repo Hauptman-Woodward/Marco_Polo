@@ -8,6 +8,9 @@ from datetime import datetime
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
+from pptx import Presentation
+from pptx.util import Inches
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
@@ -683,6 +686,98 @@ class RunDeserializer():  # convert saved file into a run
                 r.date = BarTender.datetime_converter(r.date)
                 r.save_file_path = xtal_path
                 return r
+
+class PptxWriter(Presentation):
+
+    # 13.33 x 7.5 
+    def __init__(self, output_path, images, included_attributes={}, **kwargs):
+        super(PptxWriter, self).__init__()
+        self.output_path = output_path
+        self.images = images
+        self.included_attributes = included_attributes
+        self.__temp_images = []
+        self.__dict__.update(kwargs)
+        self.__bumper = Inches(1)
+        self.__slide_size = 10
+    
+   
+    def add_time_resolved_slide(self, images, well_number):
+        img_size = round(
+            (self.__slide_size - (self.__bumper * 2)) / len(images), 1)
+
+        new_slide = self.slide_layouts[6]
+        date_images = [img for img in sorted(self.images, key=lambda i: i.date) 
+                       if img.spectrum == IMAGE_SPECS[0]]
+        left, top = self.__bumper, 3
+        for image in date_images:
+            self.add_image_to_slide(
+                image, new_slide, left, top, img_size
+            )
+            date = str(image.date)  # add formating here
+            self.add_text_to_slide(
+                new_slide, date, left, top + (img_size * 1.5), img_size, 1, 
+                rotation=90)
+            left += img_size
+    
+    def add_multi_spectrum_slide(self, images, well_number):
+        pass
+
+    def add_cocktail_slide(self, cocktail):
+        pass
+    
+    def add_classification_slide(self, rep_image):
+        pass
+
+
+
+    def add_text_to_slide(self, slide, text, left, top, width, height, rotation=0, font_size=14):
+        text_box = slide.shapes.add_textbox(
+            Inches(left), Inches(top), Inches(width), Inches(height))
+        text_box.rotation = rotation
+        tf = text_box.text_frame
+        p = tf.add_paragraph()
+        t.text = text
+        p.font.size = Pt(font_size)
+
+        return text_box
+    
+    def add_image_to_slide(image, slide, left, top, height):
+        # if the image path does not exist then will have to encode
+        # is somehow or think about how that will work
+        if os.path.isfile(image.path):
+            img_path = image.path
+        else:
+            temp_path = os.path.join(TEMP_DIR, hash(image.path))
+            with open(temp_path, 'wb') as tmp:
+                tmp.write(base64.decodebytes(image.bites))
+                self.__temp_images.append(temp_path)
+            img_path = temp_path
+        
+        return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
+                                        height=Inches(height)
+
+
+        # visible only
+
+
+
+        # for a whole sample presention images that are assigned to a well
+    
+
+
+
+        # slides are created from image objects
+
+
+
+        
+
+    
+    # assume write all these images to the file
+
+
+
+
 
 class BarTender():
     '''Class for organizing and accessing cocktail menus'''
