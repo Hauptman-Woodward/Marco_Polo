@@ -698,36 +698,79 @@ class PptxWriter(Presentation):
         self.__temp_images = []
         self.__dict__.update(kwargs)
         self.__bumper = Inches(1)
-        self.__slide_size = 10
+        self.__slide_width = 10
+        self.__slide_height = 6
     
    
-    def add_time_resolved_slide(self, images, well_number):
-        img_size = round(
-            (self.__slide_size - (self.__bumper * 2)) / len(images), 1)
 
-        new_slide = self.slide_layouts[6]
-        date_images = [img for img in sorted(self.images, key=lambda i: i.date) 
-                       if img.spectrum == IMAGE_SPECS[0]]
+    def add_multi_spectrum_slide(self, images, well_number):
+        pass
+
+    
+    def add_classification_slide(self, well_number, rep_image):
+        new_slide = self.slides.add_slide(self.slide_layouts[5])
+        title = 'Well {} Classifications'.format(well_number)
+        new_slide.shapes.title.text = title
+
+        data = [
+            ['Human Classification'. 'MARCO Classification']
+            [rep_image.human_class, rep_image.machine_class]
+        ]
+
+        self.add_table_to_slide(new_slide, data, self.__bumper, 2)
+        # do for most recent human classification image if it exits
+
+    
+    def add_timeline_slide(images, well_number):
+        date_images = sorted(images key=lambda i: i.date)
+        new_slide = self.slides.add_slide(self.slide_layouts[5])
+        labeler = lambda i: i.date
+        self.add_multi_image_slide(new_slide, images, labeler)
+        title = 'Well {}: {} - {}'.format(
+            well_number, date_images[0].date, date_images[-1].date)
+        new_slide.shapes.title.text = title
+    
+    def add_cocktail_slide(self, well, cocktail):
+        new_slide = self.slides.add_slide(self.slide_layouts[5])
+        title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
+        new_slide.shapes.title.text = title
+
+    
+    def add_table_to_slide(self, slide, data, left, top):
+        rows, cols = len(data), max([len(r) for r in data])
+        shapes = slide.shapes
+        
+        width = (self.slide_width - (self.__bumper * 2))
+        height = self.__slide_height - 2
+        table = shapes.add_table(rows, cols, Inches(left), Inches(top), 
+                                 Inches(width), Inches(height))
+
+        for k in range(cols):
+            table.columns[k].width = (self.slide_size - (self.__bumper * 2)) / cols
+            # set column width
+        for i in range(rows):
+            for j in range(cols):
+                table.cell(i, j).text = data[i][j]
+        return slide
+        
+    
+
+    
+
+
+
+    def add_multi_image_slide(slide, images, labeler):
         left, top = self.__bumper, 3
-        for image in date_images:
+        for image in images:
             self.add_image_to_slide(
-                image, new_slide, left, top, img_size
+                image, slide, left, top, img_size
             )
-            date = str(image.date)  # add formating here
+            label_text = labeler(image)
             self.add_text_to_slide(
                 new_slide, date, left, top + (img_size * 1.5), img_size, 1, 
                 rotation=90)
             left += img_size
-    
-    def add_multi_spectrum_slide(self, images, well_number):
-        pass
-
-    def add_cocktail_slide(self, cocktail):
-        pass
-    
-    def add_classification_slide(self, rep_image):
-        pass
-
+        return slide
 
 
     def add_text_to_slide(self, slide, text, left, top, width, height, rotation=0, font_size=14):

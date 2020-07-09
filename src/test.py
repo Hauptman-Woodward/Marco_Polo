@@ -9,18 +9,14 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 
 prs = Presentation()
-blank_slide_layout = prs.slide_layouts[6]
+blank_slide_layout = prs.slide_layouts[5]
 slide = prs.slides.add_slide(blank_slide_layout)
 
 
 
 # add the title
 
-title = slide.shapes.add_textbox(Inches(2), Inches(0.5), Inches(10), Inches(1))
-tf = title.text_frame
-p = tf.add_paragraph()
-p.text = 'Well 18 From X to X'
-p.font.size = Pt(24)
+
 
 
 # add the images here
