@@ -134,13 +134,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         run for the plateViewer widget and checks if time resolved and
         spectrum navigation should be enabled.
         '''
-        self.__run = new_run
-        self.ui.plateViewer.run = new_run
-        logger.info('Set {} run to {}'.format(self.ui.plateViewer, new_run))
-        if self.__run.previous_run or self.__run.next_run:
-            self.set_time_resolved_buttons(True)
-        if self.__run.alt_spectrum:
-            self.set_alt_spectrum_buttons(True)
+        if new_run:
+            self.__run = new_run
+            self.ui.plateViewer.run = new_run
+            logger.info('Set {} run to {}'.format(self.ui.plateViewer, new_run))
+            if self.__run.previous_run or self.__run.next_run:
+                self.set_time_resolved_buttons(True)
+            if self.__run.alt_spectrum:
+                self.set_alt_spectrum_buttons(True)
+        else:
+            self.__run = None
 
     @property
     def selected_classifications(self):

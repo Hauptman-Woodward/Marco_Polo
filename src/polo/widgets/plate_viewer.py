@@ -287,10 +287,11 @@ class plateViewer(QtWidgets.QGraphicsView):
             if isinstance(each_item, QtWidgets.QGraphicsPixmapItem):
                 each_item.setGraphicsEffect(None)
     
-    def export_current_view(self):
+    def export_current_view(self, save_path=None):
         if self.__scene:
-            save_path = QtWidgets.QFileDialog.getSaveFileName(
-            self, 'Save View')[0]
+            if not save_path:
+                save_path = QtWidgets.QFileDialog.getSaveFileName(
+                self, 'Save View')[0]
         if save_path:
             save_path = RunSerializer.path_suffix_checker(save_path, '.png')
             self.export_thread = QuickThread(SceneExporter.write_image,

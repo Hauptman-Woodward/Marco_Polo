@@ -491,7 +491,7 @@ class XtalWriter(RunSerializer):
 
         XtalWriter.make_message_box(message).exec_()
 
-    def write_xtal_file(self, output_path):
+    def write_xtal_file(self, output_path=None):
         '''Method to serialize run object to xtal file format.
 
         :param output_path: Xtal file path
@@ -683,7 +683,6 @@ class RunDeserializer():  # convert saved file into a run
                 r.date = BarTender.datetime_converter(r.date)
                 r.save_file_path = xtal_path
                 return r
-
 
 class BarTender():
     '''Class for organizing and accessing cocktail menus'''
@@ -962,11 +961,6 @@ class RunLinker():
     def __init__(self, loaded_runs):
         self.loaded_runs = loaded_runs
     
-    @staticmethod
-    def insert_visible_into_alt(visible_run):
-        linked_alt_runs = visible_run.get
-
-
     def the_big_link(self):
         self.link_runs_by_date()
         self.link_runs_by_spectrum()
@@ -1085,12 +1079,12 @@ class Menu():  # holds the dictionary of cocktails
     def __init__(self, path, start_date, end_date, type_, cocktails={}):
         '''Creates a Menu instance. Menu objects are used to organize a single
         screening run plate set up. They should contain 1536 unique screening
-        conditions; one for each well in the HWI highthrouput plate. HWI
+        conditions; one for each well in the HWI high-throughput plate. HWI
         has altered what cocktails are used in each of the 1536 wells over the
         years and so many versions of cocktail menus have been used. A single
         Menu instance represents one of these versions and accordingly has a
         start and end date to identify when the menu was used. Additionally, 
-        HWI offers two types of high throughput screens; membrane or solulbe
+        HWI offers two types of high throughput screens; membrane or soluble
         screens. Both use 1536 well plates but have very different chemical
         conditions at the same well index. 
 
