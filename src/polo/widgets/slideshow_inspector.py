@@ -242,19 +242,23 @@ class slideshowInspector(QtWidgets.QWidget):
         Turns on / off time resolved functions depending if the __run
         attribute has been linked to another run in time.
         ''' 
-        if self.__run and (self.__run.previous_run or self.__run.next_run):
-            self.ui.pushButton_9.setEnabled(True)
-            self.ui.pushButton_10.setEnabled(True)
-        else:
-            self.ui.pushButton_9.setEnabled(False)
-            self.ui.pushButton_10.setEnabled(False)
+        if hasattr(self.__run, 'previous_run') and hasattr(self.__run, 'next_run'):
+            if self.__run and (self.__run.previous_run or self.__run.next_run):
+                self.ui.pushButton_9.setEnabled(True)
+                self.ui.pushButton_10.setEnabled(True)
+                return
+                
+        self.ui.pushButton_9.setEnabled(False)
+        self.ui.pushButton_10.setEnabled(False)
     
     def set_alt_spectrum_buttons(self):
         '''
         Turns on / off alt spec functions depending on if the __run
         attribute has been linked to another spectrum.
         '''
-        if self.__run and self.__run.alt_spectrum:
+        if (hasattr(self.__run, 'alt_spectrum') 
+            and isinstance(self.__run.alt_spectrum, (Run, HWIRun))
+            ):
             self.ui.pushButton_12.setEnabled(True)
         else:
             self.ui.pushButton_12.setEnabled(False)

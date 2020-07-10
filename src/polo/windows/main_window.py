@@ -174,10 +174,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def tab_limiter(self):
         if not isinstance(self.current_run, HWIRun):
             # need to disable stuff that requires cocktails
-            self.tab_10.setEnabled(False)
+            self.tab_10.setEnabled(False)  # optimize tab
+            self.tab_2.setEnabled(False)  # plate view tab
             make_message_box(
                 parent=self,
-                message='Looks like you imported a non-HWI Run. For now optimization screening is disabled.'
+                message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
                 ).exec_()
 
     def handle_opening_run(self, q):
@@ -204,7 +205,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
-            if self.current_run.image_spectrum == IMAGE_SPECS[0]:  # is visible
+            if (self.current_run.image_spectrum == IMAGE_SPECS[0]
+                and hasattr(self.current_run, 'insert_into_alt_spec_chain')
+                ):
                 self.current_run.insert_into_alt_spec_chain()
             self.slideshowInspector.run = self.current_run
             self.tableInspector.run = self.current_run
@@ -228,23 +231,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if export_path:
                 export_path, export_results = Path(export_path), None
                 if action == self.actionAs_HTML:
-                    self.writer = HtmlWriter(self.current_run)
+                    writer = HtmlWriter(self.current_run)
                     QApplication.setOverrideCursor(Qt.WaitCursor)
                     self.setEnabled(False)
-                    self.writer.write_complete_run(
+                    export_results = writer.write_complete_run(
                         export_path, encode_images=True)
+                    if export_results != True:
+                        error_message = 'Failed to write html file with error {}'.format(export_results)
                     self.setEnabled(True)
                     QApplication.restoreOverrideCursor()
                 elif action == self.actionAs_CSV:
                     export_path = export_path.with_suffix('.csv')
                     csv_exporter = RunCsvWriter(self.current_run, export_path)
                     export_results = csv_exporter.write_csv()
+                    if export_results != True:
+                        error_message = 'Failed to write to csv file.'
                 elif action == self.actionAs_MSO:
                     writer = MsoWriter(self.current_run, export_path)
-                    writer.write_mso_file()
-
+                    attempt = writer.write_mso_file()
+                    if attempt != True:
+                        error_message='Failed to write mso. Is the an HWI Run?'
+                # check if need to show an error message
+                if export_results != True:
+                    make_message_box(
+                        message=error_message, parent=self
+                    ).exec_()
         else:
-            logger.info('User attempted to export with no current run')
             make_message_box(
                 parent=self,
                 message='Please load a run first'

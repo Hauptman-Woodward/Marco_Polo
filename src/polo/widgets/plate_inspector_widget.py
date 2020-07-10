@@ -137,10 +137,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if new_run:
             self.__run = new_run
             self.ui.plateViewer.run = new_run
-            if self.__run.previous_run or self.__run.next_run:
-                self.set_time_resolved_buttons(True)
-            if self.__run.alt_spectrum:
-                self.set_alt_spectrum_buttons(True)
+            self.set_time_resolved_buttons()
+            self.set_alt_spectrum_buttons()
         else:
             self.__run = None
 
@@ -305,9 +303,20 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             human
         )
     # TODO change so in reference to the run attr not a flag
-    def set_time_resolved_buttons(self, allow=False):
-        self.ui.pushButton_21.setEnabled(allow)
-        self.ui.pushButton_20.setEnabled(allow)
-    
+    def set_time_resolved_buttons(self):
+        if hasattr(self.__run, 'next_run') and hasattr(self.__run, 'previous_run'):
+            if (isinstance(self.__run.next_run, (HWIRun, Run))
+                or isinstance(self.__run.previous_run, (HWIRun, Run))
+                ):
+                self.ui.pushButton_21.setEnabled(True)
+                self.ui.pushButton_20.setEnabled(True)
+                return
+        self.ui.pushButton_21.setEnabled(False)
+        self.ui.pushButton_21.setEnabled(False) 
+
     def set_alt_spectrum_buttons(self, allow=False):
-        self.ui.pushButton_22.setEnabled(allow)
+        if hasattr(self.__run, 'alt_spectrum'):
+            if isinstance(self.__run, (HWIRun, Run)):
+                self.ui.pushButton_22.setEnabled(True)
+                return
+        self.ui.pushButton_22.setEnabled(False)

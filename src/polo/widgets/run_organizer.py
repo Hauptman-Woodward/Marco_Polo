@@ -56,24 +56,12 @@ class RunOrganizer(QtWidgets.QWidget):
         elif selected_runname in self.ui.runTree.loaded_runs:
             selected_run = self.ui.runTree.loaded_runs[selected_runname]
         else:
-            make_message_box('It appears this run no longer exists').exec_()
+            pass
+            #make_message_box('It appears this run no longer exists').exec_()
+            # throws message when double click on sample name
         if selected_run:
             self.opening_run.emit([selected_run])
 
-        # if selected_runname in self.ui.runTree.classified_runs:
-        #     selected_run = self.ui.runTree.classified_runs[selected_runname]
-        #     self.opening_run.emit([selected_run])
-        # else:
-        #     if selected_runname in self.ui.runTree.loaded_runs:
-        #         selected_run = self.ui.runTree.loaded_runs[selected_runname]
-        #         if selected_run.image_spectrum == IMAGE_SPECS[0]:  # visible
-        #             # self.classify_run.emit([selected_run])
-        #             self.open_classification_thread(selected_run)
-        #         else:
-        #             self.ui.runTree.add_classified_run(selected_run)
-        #             self.opening_run.emit([selected_run])
-        #     else:
-        #         pass
 
     def open_classification_thread(self, run):
         self.ui.progressBar.setMaximum(len(run))
@@ -115,20 +103,6 @@ class RunOrganizer(QtWidgets.QWidget):
                     xtal_file).xtal_to_run()
                 self.ui.runTree.add_run_to_tree(r)
                 self.ui.runTree.add_classified_run(r)
-
-                # self.new_run_thread = RunDeserializer(
-                #     xtal_file).xtal_to_run_on_thread()
-
-                # def finished_import():
-                #     result = self.new_run_thread.result
-                #     if isinstance(result, (Run, HWIRun)):
-                #         self.ui.runTree.add_run_to_tree(result)
-                #         self.ui.runTree.add_classified_run(result)
-                #     else:
-                #         pass
-                #     # shoe error message
-                # self.new_run_thread.finished.connect(finished_import)
-                # self.new_run_thread.start()
 
     def import_run_from_dialog(self):
         run_importer_dialog = RunImporterDialog(

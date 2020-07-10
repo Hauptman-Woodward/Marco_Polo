@@ -169,8 +169,6 @@ class RunImporter():
             new_run.add_images_from_dir()
             return new_run
 
-
-
     def make_run():
         pass
 
@@ -211,7 +209,6 @@ class RunImporter():
                 return plate_data
             else:
                 return {}  # empty dict so always safe to pass to update method
-
 
 class RunImporterDialog(QtWidgets.QDialog):
     '''
@@ -422,24 +419,22 @@ class RunImporterDialog(QtWidgets.QDialog):
             menu_type = self.current_menu_type
 
         return tim.get_menu_by_date(image_date, menu_type)
-    
 
-
-    def make_hwi_run_suggestions(self):
+    def make_hwi_run_suggestions(self, dir_path):
         '''Wrapper method that can be used to call all methods involved in
         displaying suggested settings for HWI Run image imports.
 
         :return: True if image directory conforms to HWI naming conventions, False otherwise
         :rtype: Bool
         '''
-        dir_path = self.ui.lineEdit.text()
         if os.path.exists(dir_path) and os.path.isdir:
             dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
+            print(dir_data, type(dir_data))
             if isinstance(dir_data, ValueError):
                 make_message_box('Selected directory does not conform to HWI naming\
                     conventions. Could not make suggestions.').exec_()
                 return False
-            else:
+            elif isinstance(dir_data, (list, tuple)):
                 image_type, plate_id, date, run_name = dir_data
                 self.ui.lineEdit_2.setText(run_name)
                 self.set_hwi_image_type(image_type)
@@ -450,6 +445,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                 return True
         else:
             self.ui.lineEdit.clear()
+            return False
 
     def detect_missing_images(self, image_dir):
         # first check the number of images specified
@@ -502,16 +498,15 @@ class RunImporterDialog(QtWidgets.QDialog):
         Returns the path of the directory the user selects. Will be none
         is no directory is selected.
         '''
-        if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
-            mode = QtWidgets.QFileDialog.ExistingFile
-            f = 'Rar archives (*.rar)'
-        else:
-            mode = QtWidgets.QFileDialog.DirectoryOnly
-            f = ''
+        mode = QtWidgets.QFileDialog.DirectoryOnly
+        f = ''  # file type filter
 
+        if self.ui.stackedWidget.currentIndex() == 0: # HWI run import 
+            if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
+                mode = QtWidgets.QFileDialog.ExistingFile
+                f = 'Rar archives (*.rar)'
         browser = QtWidgets.QFileDialog(self, filter=f)
         browser.setFileMode(mode)
-
         browser.exec_()
         f = browser.selectedFiles()
 
@@ -541,26 +536,26 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         def thread_done():
             self.setEnabled(True)
-            if message:
-                message.close()
             QApplication.restoreOverrideCursor()
-            r = import_thread.result
-            if isinstance(r, Path):
-                validator_result = RunImporter.directory_validator(str(r))
-                if validator_result:
-                    self.current_dir_path_lineEdit.setText(str(r))
+            result = import_thread.result
+            error, message = True, 'Error importing run'
+            if isinstance(result, Path):
+                validator_result = RunImporter.directory_validator(str(result))
+                if validator_result:  # directory is good to go
                     if self.ui.stackedWidget.currentIndex() == 0:
-                        # additional actions if loading in an HWI directory
-                        self.make_hwi_run_suggestions()
-                        self.validate_run_name(text=self.ui.lineEdit_2.text())
+                        if self.make_hwi_run_suggestions(str(result)):
+                            error = False
+                        else:
+                            message = 'Directory does not confrom to HWI standards'  
+                    else:
+                        error = False
                 else:
-                    make_message_box('Failed to import with error {}'.format(
-                        validator_result
-                    ))
+                    message = 'Invalid Directory. Failed with error {}'.format(validator_result)
+            if error:
+                self.current_dir_path_lineEdit.clear()
+                make_message_box(message=message, parent=self).exec_()
             else:
-                make_message_box('Failed to read {} with error {}'.format(
-                    import_path, r
-                )).exec_()
+                self.current_dir_path_lineEdit.setText(str(result))
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         import_thread.finished.connect(thread_done)
@@ -589,7 +584,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         :param text: String. The run name to be validated.
         '''
         validator_result = run_name_validator(text, self.current_run_names)
-        message = None
+        message = ''
         if validator_result == UnicodeError:
             message = 'Run name is not UTF-8 Compliant'
         elif validator_result == TypeError:
@@ -597,14 +592,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         elif not validator_result:  # result is false already exists
             message = 'Run name already exists, please pick a unique name.'
             # TODO option to overwrite the run of that same name
+        return message
         
-        if message:
-            make_message_box(message).exec_()
-            self.current_run_name_lineEdit.setText('')
-            return False
-        else:
-            self.current_run_name_lineEdit.setText(text)
-            return True
     
     def read_xml_data(self, dir_path):
         # read xml data from HWI uncompressed rar files

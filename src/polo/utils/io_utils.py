@@ -153,11 +153,9 @@ class HtmlWriter(RunSerializer):
                         annotations='No annotations')
                     with open(output_path, 'w') as html_file:
                         html_file.write(html)
-                        return output_path
+                        return True
                 except Exception as e:
-                    make_message_box(
-                        message='Could not write run to html failed with {}'.format(e)
-                        ).exec_()
+                    return e
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
@@ -351,7 +349,6 @@ class MsoWriter(RunSerializer):
             self.mso_version
         ]
     
-
     def get_cocktail_csv_data(self):
         cocktail_menu = self.run.cocktail_menu.path
         with open(cocktail_menu, 'r') as menu_file:
@@ -359,25 +356,28 @@ class MsoWriter(RunSerializer):
             return [row for row in csv.reader(menu_file)]
 
     def write_mso_file(self, use_marco_classifications=False):
-        cocktail_data = self.get_cocktail_csv_data()
-        self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
-        with open(self.output_path, 'w') as mso_file:
-            writer = csv.writer(mso_file, delimiter='\t')
-            writer.writerow(self.first_line)
-            writer.writerow(cocktail_data.pop(0))  # header row
-            for row in cocktail_data:
-                row = MsoWriter.row_formater(row)
-                well_num = int(float(row[0]))
+        if isinstance(self.run, HWIRun):  # must be hwi run to write to mso
+            cocktail_data = self.get_cocktail_csv_data()
+            self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
+            with open(self.output_path, 'w') as mso_file:
+                writer = csv.writer(mso_file, delimiter='\t')
+                writer.writerow(self.first_line)
+                writer.writerow(cocktail_data.pop(0))  # header row
+                for row in cocktail_data:
+                    row = MsoWriter.row_formater(row)
+                    well_num = int(float(row[0]))
 
-                image = self.run.images[well_num-1]
-                if image and image.human_class:
-                    row.append(MSO_DICT[image.human_class])
-                elif use_marco_classifications and image.machine_class:
-                    row.append(MSO_DICT[image.machine_class])
-                else:
-                    row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
-                writer.writerow(row)
-                    # default to other image classification
+                    image = self.run.images[well_num-1]
+                    if image and image.human_class:
+                        row.append(MSO_DICT[image.human_class])
+                    elif use_marco_classifications and image.machine_class:
+                        row.append(MSO_DICT[image.machine_class])
+                    else:
+                        row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
+                    writer.writerow(row)
+            return True
+        else:
+            return False
             
 
 
