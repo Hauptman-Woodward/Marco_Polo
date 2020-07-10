@@ -10,47 +10,17 @@ logger = make_default_logger(__name__)
 
 
 class Run():
-    '''
-    :param image_dir: String. Path to directory containing images to \
-        be classified.
-    :param run_name: String. Unique name of this run.
-    :param images: List. List of Image objects is images already exist \
-        and need to be passed into a run (Unlikely).
-    :param current_image: Int. Index in self.current_slide_show_images \
-        where the image that should be currently rendered into the app \
-        can be found.
-    :param current_slide_show_images: List. List of indexes in self.images. \
-        The Images at these indicies are the set of images that based \
-        on current filters applied by the user, are \
-        available for viewing. Works in tandem with the value stored \
-        in self.current_image to create a chain of reference
-        that recovers the actual image object stored in self.images. No
-        image objects are ever stored in self.current_image or\
-        self.current_slide_show_images.
-    '''
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress']
-    # DEFAULT_IMAGE = Image(path=str(DEFAULT_IMAGE_PATH))
-    # BLANK_IMAGE = Image(path=str(BLANK_IMAGE))
 
-    def __init__(self, image_dir, run_name, images=None,
-                 save_file_path=None, log=None, date=None,
-                 image_spectrum=None, next_run=None, previous_run=None,
-                 alt_spectrum=None, journal={},
-                 current_image=None, current_image_index=0, *args, **kwargs):
+    def __init__(self, image_dir, run_name, image_spectrum=None, 
+                 images=[], **kwargs):
 
         self.image_dir = str(image_dir)
         self.run_name = run_name
-        self.images = images
-        self.current_table_data = []
-        self.next_run = None
         self.image_spectrum = image_spectrum
-        self.save_file_path = save_file_path
-        self.date = date
-        self.next_run = next_run
-        self.previous_run = previous_run
-        self.alt_spectrum = alt_spectrum
+        self.images = images
         self.__dict__.update(kwargs)
 
     def __getitem__(self, n):
@@ -132,7 +102,6 @@ class Run():
                 row_dict[arg] = None
         return row_dict
 
-
     def image_filter_query(self, image_types, human, marco, favorite):
         images = [i for i in self.images if i and i.standard_filter(
             image_types, human, marco, favorite
@@ -179,77 +148,15 @@ class HWIRun(Run):
                      'Plate Heatmaps']
     # HWI still store images in list but in order of well number
     # index = well -1
-    '''Child class of Run. Is used to represent runs from the HWI screening center
-    as images will have additional metadata like well and cocktail information.
-    Main difference is that HWIRuns will always contain 1536 images as that is
-    the number of wells in a HWI crystallization plate. Each well uses a
-    different chemcial cocktail which is described in the cocktail tsv file
-    included in the directory of images provided by HWI in each run. 
-
-    :param image_dir: Path to directory holding the image files
-    :type image_dir: str or Path
-    :param run_name: Unique ID for the Run
-    :type run_name: str
-    :param cocktail_menu: Dictionary mapping well numbers to
-                          Cocktail instances, defaults to None
-    :type cocktail_menu: dict, optional
-    :param images: List of Image instances taken for this run, defaults to []
-    :type images: list, optional
-    :param plate_id: HWI given unique plate ID, defaults to None
-    :type plate_id: str, optional
-    :param annotations: Any notes relating to this run, defaults to None
-    :type annotations: str, optional
-    :param save_file_path: Path to where this Run will be saved if 
-                           serialized to xtal format, defaults to None
-    :type save_file_path: Path or str, optional
-    :param num_wells: Number of wells (images) in this run, defaults to 1536
-    :type num_wells: int, optional
-    :param image_spectrum: Image tech used in this run, defaults to None
-    :type image_spectrum: str, optional
-    :param date: Date images were taken on, defaults to None
-    :type date: Datetime, optional
-    :param next_run: Another Run instance that is of the same sample but 
-                     taken later in time, defaults to None
-    :type next_run: Run or HWIRun, optional
-    :param previous_run: Another Run instance that is of the same sample 
-                         but taken previously in time, defaults to None
-    :type previous_run: Run or HWIRun, optional
-    :param alt_spectrum: Another Run instance that is of the same sample 
-                         but taken in using a different imaging technology,
-                         defaults to None
-    :type alt_spectrum: Run or HWIRun, optional
-    :param number_grid_pages: DEPR, defaults to None
-    :type number_grid_pages: DEPR, optional
-    :param current_grid_page: DEPR, defaults to 1
-    :type current_grid_page: int, optional
-    :param journal: DEPR, defaults to None
-    :type journal: DEPR, optional
-    :param current_image_index: DEPR, defaults to 0
-    :type current_image_index: int, optional
-    :param current_image: DEPR, defaults to None
-    :type current_image: DEPR, optional
-    '''
-
-    def __init__(self, image_dir, run_name, cocktail_menu=None,
-                 images=[], plate_id=None, annotations=None,
-                 save_file_path=None, num_wells=1536, image_spectrum=None, date=None,
-                 next_run=None, previous_run=None, alt_spectrum=None,
-                 number_grid_pages=None, current_grid_page=1, journal=None, current_image_index=0,
-                 current_image=None, *args, **kwargs):
-
-        super().__init__(image_dir, run_name, images=images,
-                         annotations=annotations,
-                         save_file_path=save_file_path, date=date,
-                         image_spectrum=image_spectrum, next_run=next_run,
-                         previous_run=previous_run, alt_spectrum=alt_spectrum,
-                         number_grid_pages=number_grid_pages, current_grid_page=current_grid_page,
-                         journal=journal, current_image=current_image,
-                         current_image_index=current_image_index)
-
+    def __init__(self, cocktail_menu, plate_id=None, num_wells=1536,
+                alt_spectrum=None, next_run=None, previous_run=None, **kwargs):
         self.cocktail_menu = cocktail_menu
         self.plate_id = plate_id
         self.num_wells = num_wells
-        self.__dict__.update(kwargs)
+        self.next_run = next_run
+        self.previous_run = previous_run
+        self.alt_spectrum = alt_spectrum
+        super(HWIRun, self).__init__(**kwargs)
 
     def get_tooltip(self):
         if 'plateName' in self.__dict__:
@@ -260,15 +167,6 @@ class HWIRun(Run):
         return super().get_tooltip() + '\nCocktail Version: {}\nPlate ID: {}'.format(
             os.path.basename(str(self.cocktail_menu.path)), str(platename)
         )
-
-    # def link_to_predecessor(self, other_run):
-    #     if type(other_run) == HWIRun:
-    #         logger.info('Linking {} to {}'.format(self, other_run))
-    #         for current_image, pred_image in zip(self.images, other_run.images):
-    #             if current_image:
-    #                 current_image.previous_image = pred_image
-    #             if pred_image:
-    #                 pred_image.next_image = current_image
 
     def link_to_decendent(self, other_run):
         if type(other_run) == HWIRun:
@@ -335,28 +233,6 @@ class HWIRun(Run):
                     self.link_to_alt_spectrum(n)
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
-
-
-    def link_to_alt_images(self, other_run):
-        '''Establish linked lists between this run and another run instance
-        that holds images of a different imaging spectrum / technology.
-
-        :param other_run: A different run instance
-        :type other_run: Run
-        '''
-
-        for current_image, alt_image in zip(self.images, other_run.images):
-            current_image.alternative_image = alt_image
-            alt_image.alternative_image = current_image
-            if self.image_spectrum == 'Visible':
-                alt_image.machine_class = current_image.machine_class
-                alt_image.human_class = current_image.human_class
-            else:
-                current_image.machine_class = alt_image.machine_class
-                current_image.human_class = alt_image.human_class
-
-            self.alt_spectrum = other_run
-            other_run.alt_spectrum = self
 
     def add_images_from_dir(self):
         '''

@@ -9,7 +9,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
@@ -17,17 +17,15 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from jinja2 import Template
-from polo import (ALLOWED_IMAGE_TYPES, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA,
-                  RUN_HTML_TEMPLATE, SCREEN_HTML_TEMPLATE, __version__,
-                  make_default_logger, num_regex, unit_regex)
-from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
+from polo import *
+from polo import __version__
 from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
-from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
-from polo.utils.dialog_utils import make_message_box
-from polo.utils.unrar_utils import unrar_archive
-from polo import SPEC_KEYS, IMAGE_SPECS, MSO_DICT, IMAGE_CLASSIFICATIONS
+from polo.crystallography.cocktail import *
+from polo.utils.dialog_utils import *
+from polo.utils.unrar_utils import *
+from polo.utils.math_utils import *
 
 
 logger = make_default_logger(__name__)
@@ -135,34 +133,6 @@ class HtmlWriter(RunSerializer):
         with open(template_path, 'r') as template:
             contents = template.read()
             return Template(contents)
-
-    # def write_complete_run_on_thread(self, output_path, encode_images=True):
-    #     '''
-    #     Wrapper around `write_complete_run` that executes on a seperate
-    #     Qthread.
-    #     '''
-    #     # self.thread = HtmlWriter.make_thread(
-    #     #     self.write_complete_run, output_path=output_path,
-    #     #     encode_images=encode_images)
-    #     # self.thread.finished.connect(self.finished_writing)
-    #     # self.thread.start()
-    #     # logger.info('Writing {} as html to {}'.format(
-    #     #     self.write_complete_run, output_path))
-    #     self.write_complete_run(output_path, encode_images=True)
-
-    # def finished_writing(self):  # should only be called from connection to thread
-    #     '''
-    #     Method to connect to Qthread instance. Should not be called from
-    #     anything other than a Qthread instance.
-    #     '''
-    #     result = str(self.thread.result)
-    #     # creating message on thread possibly be causing an issue
-    #     # if os.path.exists(result):
-    #     #     message = 'Export to {} was successful'.format(result)
-    #     # else:
-    #     #     message = 'Export to HTML file failed. Returned {}'.format(result)
-    #     # logger.info('Html write attempt status: {}'.format(message))
-    #     # HtmlWriter.make_message_box(message=message).exec_()
 
     def write_complete_run(self, output_path, encode_images=True):
         # write a run as html file with images and classifications
@@ -687,19 +657,19 @@ class RunDeserializer():  # convert saved file into a run
                 r.save_file_path = xtal_path
                 return r
 
-class PptxWriter(Presentation):
+class PptxWriter():
 
     # 13.33 x 7.5 
-    def __init__(self, output_path, images, included_attributes={}, **kwargs):
+    def __init__(self, output_path, images, included_attributes={}):
         super(PptxWriter, self).__init__()
         self.output_path = output_path
         self.images = images
         self.included_attributes = included_attributes
         self.__temp_images = []
-        self.__dict__.update(kwargs)
         self.__bumper = Inches(1)
         self.__slide_width = 10
         self.__slide_height = 6
+        self.__presentation = Presentation()
     
    
 
@@ -708,22 +678,25 @@ class PptxWriter(Presentation):
 
     
     def add_classification_slide(self, well_number, rep_image):
-        new_slide = self.slides.add_slide(self.slide_layouts[5])
+        new_slide = self.add_new_slide()
         title = 'Well {} Classifications'.format(well_number)
         new_slide.shapes.title.text = title
 
         data = [
-            ['Human Classification'. 'MARCO Classification']
+            ['Human Classification', 'MARCO Classification']
             [rep_image.human_class, rep_image.machine_class]
         ]
 
         self.add_table_to_slide(new_slide, data, self.__bumper, 2)
         # do for most recent human classification image if it exits
 
+    def add_new_slide(self, template=5):
+        return self.__presentation.slides.add_slide(
+            self.__presentation.slide_layouts[template])
     
-    def add_timeline_slide(images, well_number):
-        date_images = sorted(images key=lambda i: i.date)
-        new_slide = self.slides.add_slide(self.slide_layouts[5])
+    def add_timeline_slide(self, images, well_number):
+        date_images = sorted(images, key=lambda i: i.date)
+        new_slide = self.add_new_slide()
         labeler = lambda i: i.date
         self.add_multi_image_slide(new_slide, images, labeler)
         title = 'Well {}: {} - {}'.format(
@@ -731,11 +704,10 @@ class PptxWriter(Presentation):
         new_slide.shapes.title.text = title
     
     def add_cocktail_slide(self, well, cocktail):
-        new_slide = self.slides.add_slide(self.slide_layouts[5])
+        new_slide = self.add_new_slide(5)
         title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
         new_slide.shapes.title.text = title
 
-    
     def add_table_to_slide(self, slide, data, left, top):
         rows, cols = len(data), max([len(r) for r in data])
         shapes = slide.shapes
@@ -752,14 +724,8 @@ class PptxWriter(Presentation):
             for j in range(cols):
                 table.cell(i, j).text = data[i][j]
         return slide
-        
-    
 
-    
-
-
-
-    def add_multi_image_slide(slide, images, labeler):
+    def add_multi_image_slide(self, slide, images, labeler):
         left, top = self.__bumper, 3
         for image in images:
             self.add_image_to_slide(
@@ -773,7 +739,8 @@ class PptxWriter(Presentation):
         return slide
 
 
-    def add_text_to_slide(self, slide, text, left, top, width, height, rotation=0, font_size=14):
+    def add_text_to_slide(self, slide, text, left, top, width, height,
+                          rotation=0, font_size=14):
         text_box = slide.shapes.add_textbox(
             Inches(left), Inches(top), Inches(width), Inches(height))
         text_box.rotation = rotation
@@ -797,7 +764,7 @@ class PptxWriter(Presentation):
             img_path = temp_path
         
         return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
-                                        height=Inches(height)
+                                        height=Inches(height))
 
 
         # visible only

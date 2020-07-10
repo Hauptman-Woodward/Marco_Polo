@@ -17,7 +17,6 @@ from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.windows.main_window import MainWindow
 
 dirname = os.path.dirname(__file__)
-app = QApplication(sys.argv)
 
 
 @pytest.fixture

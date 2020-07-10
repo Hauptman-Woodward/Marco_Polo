@@ -137,7 +137,6 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if new_run:
             self.__run = new_run
             self.ui.plateViewer.run = new_run
-            logger.info('Set {} run to {}'.format(self.ui.plateViewer, new_run))
             if self.__run.previous_run or self.__run.next_run:
                 self.set_time_resolved_buttons(True)
             if self.__run.alt_spectrum:
@@ -177,7 +176,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         image type.
         '''
         mapping = {}
-        for each_combo_box, img_class in zip(self.color_combos, IMAGE_CLASSIFICATIONS):
+        for each_combo_box, img_class in zip(self.color_combos,
+                                             IMAGE_CLASSIFICATIONS):
             mapping[img_class] = COLORS[each_combo_box.currentText()]
         return mapping
     
@@ -235,12 +235,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if self.__run:
             self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
-
             if self.ui.checkBox_27.isChecked():
                 self.apply_image_filters()
             else:
                 self.ui.plateViewer.emphasize_all_images()
-
             if self.ui.checkBox_28.isChecked():
                 self.apply_color_mapping()
             else:
