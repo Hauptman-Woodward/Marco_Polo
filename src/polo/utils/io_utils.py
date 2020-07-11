@@ -887,28 +887,6 @@ class PptxWriter():
                                         height=Inches(height))
 
 
-        # visible only
-
-
-
-        # for a whole sample presention images that are assigned to a well
-    
-
-
-
-        # slides are created from image objects
-
-
-
-        
-
-    
-    # assume write all these images to the file
-
-
-
-
-
 class BarTender():
     '''Class for organizing and accessing cocktail menus'''
 
