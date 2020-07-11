@@ -84,8 +84,6 @@ class slideshowInspector(QtWidgets.QWidget):
         else:
             self.ui.slideshowViewer.show_all_specs = False
 
-
-
     def set_classification_button_labels(self):
         '''
         To be called in init function. Sets the classification button labels

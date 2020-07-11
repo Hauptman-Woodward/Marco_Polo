@@ -9,13 +9,7 @@ from polo.crystallography.run import HWIRun, Run
 from polo.utils.io_utils import RunCsvWriter, write_screen_html
 from polo import make_default_logger
 
-# Jun 16 BUG
-# changing headers causings issues with stuff lining up with each other
-# possible if one image has none for a spefic header need to look
-# more into this
 
-# seems like headers are not being updated from the list of selected headers
-# but from the feildnames calculated on the first view
 logger = make_default_logger(__name__)
 
 class TableViewer(QtWidgets.QTableWidget):

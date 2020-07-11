@@ -673,8 +673,6 @@ class PptxWriter():
         self.__slide_height = 6
         self.__presentation = Presentation()
     
-   
-
     def add_multi_spectrum_slide(self, images, well_number):
         pass
 
@@ -740,7 +738,6 @@ class PptxWriter():
             left += img_size
         return slide
 
-
     def add_text_to_slide(self, slide, text, left, top, width, height,
                           rotation=0, font_size=14):
         text_box = slide.shapes.add_textbox(
@@ -767,28 +764,6 @@ class PptxWriter():
         
         return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
                                         height=Inches(height))
-
-
-        # visible only
-
-
-
-        # for a whole sample presention images that are assigned to a well
-    
-
-
-
-        # slides are created from image objects
-
-
-
-        
-
-    
-    # assume write all these images to the file
-
-
-
 
 
 class BarTender():
