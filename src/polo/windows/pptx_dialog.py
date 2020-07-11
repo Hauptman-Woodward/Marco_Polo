@@ -16,17 +16,15 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         self.image_type_checkboxes = [
 
         ]
-        
 
     @property
     def image_types(self):
         pass
 
-
-    
     def setup_run_tree(self):
-        for run_name, run in runs.items():
-            self.ui.treeWidget.add_run_to_tree(run)
+        self.ui.runTreeWidget.auto_link = False
+        for run_name, run in self.runs.items():
+            self.ui.runTreeWidget.add_run_to_tree(run)
     
 
     def set_default_titles(self):

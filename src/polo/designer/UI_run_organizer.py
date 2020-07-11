@@ -48,5 +48,7 @@ class Ui_Form(object):
         self.label_31.setText(_translate("Form", "Classification Progress"))
         self.label_32.setText(_translate("Form", "0"))
         self.runTree.headerItem().setText(0, _translate("Form", "Samples"))
+        self.pushButton.setToolTip(_translate("Form", "Run the MARCO model on the currently selected run. MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.\n"
+""))
         self.pushButton.setText(_translate("Form", "Classify Selected Run"))
 from polo.widgets.run_tree import RunTree

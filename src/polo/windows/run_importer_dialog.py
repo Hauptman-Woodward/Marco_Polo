@@ -422,14 +422,16 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         return tim.get_menu_by_date(image_date, menu_type)
 
-    def make_hwi_run_suggestions(self, dir_path):
+    def make_hwi_run_suggestions(self, dir_path=''):
         '''Wrapper method that can be used to call all methods involved in
         displaying suggested settings for HWI Run image imports.
 
         :return: True if image directory conforms to HWI naming conventions, False otherwise
         :rtype: Bool
         '''
-        if os.path.exists(dir_path) and os.path.isdir:
+        if not dir_path:
+            dir_path = self.ui.lineEdit.text()
+        if os.path.exists(dir_path) and os.path.isdir(dir_path):
             dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
             print(dir_data, type(dir_data))
             if isinstance(dir_data, ValueError):
@@ -640,7 +642,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             self.close()
         else:
             make_message_box(
-                message='Directory could not be imported.{}'.format(new_run),
+                message='Directory could not be imported',
                 parent=self
             ).exec_()
             return False

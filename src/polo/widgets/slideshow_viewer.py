@@ -46,7 +46,7 @@ class Carousel():
     def __init__(self):
         self.current_slide = None
 
-    def add_slides(self, ordered_images):
+    def add_slides(self, ordered_images, sort_function=None):
         '''
         Sets up linked list consisting of nodes of Slide instances. The list
         is circular and bi-directional. Sets self.current_slide to the first
@@ -58,6 +58,9 @@ class Carousel():
         :rtype: Slide
         '''
         if ordered_images:
+            if sort_function:
+                sorted_images = sort_function(ordered_images)
+                if sorted_images: ordered_images = sorted_images
             first_slide = Slide(ordered_images.pop(0), slide_number=0)
             cur_slide = first_slide
             while ordered_images:
@@ -301,7 +304,7 @@ class SlideshowViewer(PhotoViewer):
 
             # self.display_current_image()
 
-    def update_slides_from_filters(self, image_types, human, marco, favorite=False):
+    def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
         '''
         Creates new Carousel slides based on selected image filters.
         Sets the current_image attribute to the image contained at
@@ -318,11 +321,8 @@ class SlideshowViewer(PhotoViewer):
         if self.run:
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
-            self.__carousel.add_slides(images)
+            self.__carousel.add_slides(images, sort_function)
             self.current_image = self.__carousel.current_slide.image
-            logger.info('Applied filters {} human: {} marco: {} to {}'.format(
-                image_types, human, marco, self
-            ))
     
     def add_text_to_scene(self, text, x, y, size=40):
         t = QtWidgets.QGraphicsTextItem()
@@ -350,7 +350,7 @@ class SlideshowViewer(PhotoViewer):
                 scene_item.setToolTip(item.get_tool_tip())
                 scene_item.setPos(x, y)
                 if render_date and item.date:
-                    self.add_text_to_scene(str(item.date), x, y)
+                    self.add_text_to_scene(item.formated_date, x, y)
 
                 x += item.width()
 

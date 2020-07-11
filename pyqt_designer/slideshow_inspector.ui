@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>870</width>
-    <height>791</height>
+    <width>903</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -982,98 +982,176 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control what kind of images are displayed by filtering images in the current run by classification type and / or classification method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="title">
-      <string>Image Filters</string>
+      <string>Image Filtering</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" rowspan="2">
-       <widget class="QGroupBox" name="groupBox_6">
-        <property name="title">
-         <string>Image Type</string>
+      <item row="0" column="0">
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="toolTip">
-            <string>Include images classified as Crystal in slideshow</string>
-           </property>
-           <property name="text">
-            <string>Crystal</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_2">
-           <property name="toolTip">
-            <string>Include images classified as Precipitate in slideshow</string>
-           </property>
-           <property name="text">
-            <string>Precipitate</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_3">
-           <property name="toolTip">
-            <string>Include images classified as Clear in slideshow</string>
-           </property>
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_4">
-           <property name="toolTip">
-            <string>Include images classified as Other in slideshow</string>
-           </property>
-           <property name="text">
-            <string>Other</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="tab_1">
+         <attribute name="title">
+          <string>Filters</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="title">
+             <string>Image Type</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QCheckBox" name="checkBox">
+               <property name="toolTip">
+                <string>Include images classified as Crystal in slideshow</string>
+               </property>
+               <property name="text">
+                <string>Crystal</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_2">
+               <property name="toolTip">
+                <string>Include images classified as Precipitate in slideshow</string>
+               </property>
+               <property name="text">
+                <string>Precipitate</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_3">
+               <property name="toolTip">
+                <string>Include images classified as Clear in slideshow</string>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_4">
+               <property name="toolTip">
+                <string>Include images classified as Other in slideshow</string>
+               </property>
+               <property name="text">
+                <string>Other</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="checkBox_8">
+            <property name="toolTip">
+             <string>Include only images  you have marked as favorite</string>
+            </property>
+            <property name="text">
+             <string>Favorites</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QGroupBox" name="groupBox_7">
+            <property name="title">
+             <string>Classifier</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QCheckBox" name="checkBox_5">
+               <property name="toolTip">
+                <string>Set image types to refer to human (your) classifications. That is assuming you are a human.</string>
+               </property>
+               <property name="text">
+                <string>Human</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_6">
+               <property name="toolTip">
+                <string>Set image types in reference to MARCO classifications.</string>
+               </property>
+               <property name="text">
+                <string>MARCO</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Sort</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Sort By</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QRadioButton" name="radioButton_3">
+            <property name="text">
+             <string>Well Number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>5</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="0">
+           <widget class="QRadioButton" name="radioButton_2">
+            <property name="text">
+             <string>Cocktail Number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="radioButton">
+            <property name="text">
+             <string>MARCO Confidence</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QGroupBox" name="groupBox_7">
-        <property name="title">
-         <string>Classifier</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QCheckBox" name="checkBox_5">
-           <property name="toolTip">
-            <string>Set image types to refer to human (your) classifications. That is assuming you are a human.</string>
-           </property>
-           <property name="text">
-            <string>Human</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_6">
-           <property name="toolTip">
-            <string>Set image types in reference to MARCO classifications.</string>
-           </property>
-           <property name="text">
-            <string>MARCO</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="checkBox_8">
-        <property name="toolTip">
-         <string>Include only images  you have marked as favorite</string>
-        </property>
-        <property name="text">
-         <string>Favorites</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
+      <item row="1" column="0">
        <widget class="QPushButton" name="pushButton_11">
         <property name="toolTip">
          <string>Apply your currently selected filters</string>

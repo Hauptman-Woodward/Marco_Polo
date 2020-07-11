@@ -151,7 +151,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 if k == 'Well' and label_dict[k]:
                     text.append(template.format(k, image.well_number))
                 elif k == 'Date' and label_dict[k]:
-                    text.append(template.format(k, image.date))
+                    text.append(template.format(k, image.formated_date))
                 elif k == 'Cocktail Number' and label_dict[k] and image.cocktail:
                     text.append(template.format(k, image.cocktail.number))
                 elif k == 'Human Classification' and label_dict[k]:

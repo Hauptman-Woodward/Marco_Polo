@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="runTree" name="treeWidget">
+    <widget class="runTree" name="runTreeWidget">
      <property name="minimumSize">
       <size>
        <width>200</width>
@@ -182,7 +182,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>runTree</class>
+   <class>RunTree</class>
    <extends>QTreeWidget</extends>
    <header>polo/widgets/run_tree.h</header>
   </customwidget>

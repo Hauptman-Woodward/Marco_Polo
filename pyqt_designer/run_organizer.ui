@@ -62,6 +62,10 @@
    </item>
    <item row="1" column="0" colspan="2">
     <widget class="QPushButton" name="pushButton">
+     <property name="toolTip">
+      <string>Run the MARCO model on the currently selected run. MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.
+</string>
+     </property>
      <property name="text">
       <string>Classify Selected Run</string>
      </property>

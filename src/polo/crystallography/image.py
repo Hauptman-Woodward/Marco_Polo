@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger)
 from polo.marco.run_marco import classify_image
-from polo.utils.io_utils import BarTender
+
 
 
 class Image(QtGui.QPixmap):
@@ -143,7 +143,11 @@ class Image(QtGui.QPixmap):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
         image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
             str(self.machine_class), str(self.human_class))
-        image_string += 'Date: {}\n'.format(str(self.date))
+        if self.machine_class and self.prediction_dict and self.machine_class in self.prediction_dict:
+            image_string += 'MARCO Confidence: {} %\n'.format(
+                round(float(self.prediction_dict[self.machine_class]) * 100, 1)
+            )
+        image_string += 'Date: {}\n'.format(self.formated_date)
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
@@ -391,3 +395,5 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
+
+from polo.utils.io_utils import BarTender

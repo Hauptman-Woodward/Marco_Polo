@@ -100,6 +100,37 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         for each_checkbox, im_cls in zip(self.class_checkboxs, IMAGE_CLASSIFICATIONS):
             each_checkbox.setText(im_cls)
+    
+    @staticmethod
+    def sort_images_by_marco_confidence(images):
+        try:
+            return sorted(
+                images,
+                key=lambda i: float(i.prediction_dict[i.machine_class]),
+                reverse=True
+                )
+        except Exception:
+            return False
+    
+    @staticmethod
+    def sort_images_by_cocktail_number(images):
+        try:
+            return sorted(
+                images,
+                key=lambda i: i.cocktail.number
+            )
+        except Exception:
+            return False
+    
+    @staticmethod
+    def sort_images_by_well_number(images):
+        try:
+            return sorted(
+                images,
+                key=lambda i: i.well_number
+            )
+        except Exception:
+            return False
 
     @property
     def run(self):
@@ -150,6 +181,18 @@ class slideshowInspector(QtWidgets.QWidget):
         '''Current Image object being displayed in the slideshowViewer widget'''
         return self.ui.slideshowViewer.current_image
     
+    @property 
+    def current_sort_function(self):
+        if self.ui.radioButton.isChecked():
+            return slideshowInspector.sort_images_by_marco_confidence
+        elif self.ui.radioButton_2.isChecked():
+            return slideshowInspector.sort_images_by_cocktail_number
+        elif self.ui.radioButton_3.isChecked():
+            return slideshowInspector.sort_images_by_well_number
+        else:
+            return None
+            
+
     def show_image_from_well_number(self, well_number):
         self.ui.slideshowViewer.set_current_image_by_well_number(well_number)
         self.display_current_image()
@@ -213,9 +256,11 @@ class slideshowInspector(QtWidgets.QWidget):
         new filters. Displays the current image after filtering.
         '''
         self.ui.slideshowViewer.update_slides_from_filters(
-            self.selected_classifications, self.human, self.marco, self.favorites
+            self.selected_classifications, self.human, self.marco, self.favorites,
+            self.current_sort_function
         )
         self.display_current_image()
+    
 
     def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
         '''
