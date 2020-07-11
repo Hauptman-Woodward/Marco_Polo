@@ -2,6 +2,7 @@ import base64
 import os
 import time
 from pathlib import Path
+from datetime import datetime
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtCore import Qt
@@ -253,6 +254,14 @@ class Image(QtGui.QPixmap):
             #         alt_image = alt_image.alt_image
         else:
             self.__human_class = None
+    
+    @property
+    def formated_date(self):
+        if isinstance(self.date, datetime):
+            return datetime.strftime(self.date, '%m-%d-%Y')
+        else:
+            return ''
+
 
     def encode_base64(self):
         if not self.bites and os.path.exists(self.path):
@@ -368,9 +377,9 @@ class Image(QtGui.QPixmap):
         '''
         if favorite == self.favorite:
             if image_types:  # have specificed some image types
-                if human and self.human_class in image_types:
+                if self.human_class and human and self.human_class in image_types:
                     return True
-                elif marco and self.machine_class in image_types:
+                elif self.machine_class and marco and self.machine_class in image_types:
                     return True
                 else:
                     return False

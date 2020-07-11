@@ -30,6 +30,7 @@ from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
 from polo.windows.run_importer_dialog import RunImporterDialog
 from polo.windows.run_updater_dialog import RunUpdaterDialog
+from polo.windows.pptx_dialog import PptxDesignerDialog
 
 from polo.windows.spectrum_dialog import SpectrumDialog
 from polo.windows.time_res_dialog import TimeResDialog
@@ -218,12 +219,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         Handles when user wants to export the current run. Creates an instance
         of exporterDialog class and displays that dialog to the user.
         '''
-        if self.current_run:
-            if not export_path: export_path =QtWidgets.QFileDialog.getSaveFileName(
-                self, 'Save Run')[0]
+        if self.current_run:        
+            if action != self.actionAs_PPTX:
+                if not export_path:
+                    export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Run')[0]
 
-            if export_path:
-                export_path, export_results = Path(export_path), None
+                if export_path:
+                    export_path, export_results = Path(export_path), None
                 
                 if action == self.actionAs_HTML:
                     writer = HtmlWriter(self.current_run)
@@ -253,6 +255,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     make_message_box(
                         message=error_message, parent=self
                     ).exec_()
+            else:
+                presentation_maker = PptxDesignerDialog(
+                    self.runOrganizer.ui.runTree.all_runs)
+                presentation_maker.exec_()
         else:
             make_message_box(
                 parent=self,

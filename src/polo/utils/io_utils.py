@@ -662,22 +662,104 @@ class RunDeserializer():  # convert saved file into a run
 class PptxWriter():
 
     # 13.33 x 7.5 
-    def __init__(self, output_path, images, included_attributes={}):
-        super(PptxWriter, self).__init__()
+    def __init__(self, output_path, included_attributes={},
+                 image_types = None, human=False, marco=False, favorite=False):
         self.output_path = output_path
-        self.images = images
         self.included_attributes = included_attributes
+        self.human = human
+        self.marco = marco
+        self.favorite = favorite
+        self.image_types = image_types
         self.__temp_images = []
-        self.__bumper = Inches(1)
+        self.__bumper = 1
         self.__slide_width = 10
         self.__slide_height = 6
         self.__presentation = Presentation()
     
-   
+    def delete_presentation(self):
+        self.__presentation = Presentation()
+    
+    def delete_temp_images(self):
+        try:
+            [os.remove(img_path) for img_path in self.__temp_images]
+            return True
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            return e
+    
+    def sort_runs_by_spectrum(self, runs):
+        visible, other = [], []
+        for run in runs:
+            if run.image_spectrum == IMAGE_SPECS[0]:
+                visible.append(run)
+            else:
+                other.append(run)
+        return visible, other
+           
+    def make_sample_presentation(self, sample_name, runs, title, subtitle, cocktail_data=True):
+        visible, other = self.sort_runs_by_spectrum(runs)
+        title_slide = self.add_new_slide(0)
+        title_slide.shapes.title.text = title
+        if subtitle:
+            title_slide.placeholders[1].text = subtitle
 
-    def add_multi_spectrum_slide(self, images, well_number):
-        pass
+        if visible or other:
+            show_all_dates, show_single_image, show_alt_specs = False, False, False
+            if visible:
+                if len(visible) > 1:
+                    show_all_dates = True
+                else:
+                    show_single_image = True
+            if other:
+                show_alt_specs = True
 
+            if show_all_dates or show_single_image:
+                rep_run = visible[0]
+            else:
+                rep_run = other[0]
+            
+            for i in range(10):
+                if show_all_dates:
+                    self.add_timeline_slide([r.images[i] for r in visible], i+1)
+                elif show_single_image:
+                    metadata = str(rep_run.images[i])
+                    if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
+                        metadata += '\n\n' + str(rep_run.images[i].cocktail)
+                    title = 'Well Number {}'.format(rep_run.images[i].well_number)
+                    self.add_single_image_slide(rep_run.images[i], title, metadata)
+                
+                if show_alt_specs:
+                    well_number = i + 1
+                    self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
+            
+            self.__presentation.save(str(self.output_path))
+            self.delete_temp_images()
+                
+        else:
+            return False
+        
+
+    def make_single_run_presentation(self, run, title, subtitle=None, cocktail_data=True):
+        title_slide = self.add_new_slide(0)
+        title_slide.shapes.title.text = title
+        if subtitle:
+            title_slide.placeholders[1].text = subtitle
+        
+        slide_title_formater = 'Well Number {}'
+        for image in run.images:
+            if image.standard_filter(self.image_types, self.human, self.marco, self.favorite):
+                metadata = str(image)
+                if cocktail_data and hasattr(image, 'cocktail'):
+                    metadata += '\n\n' + str(image.cocktail)
+                self.add_single_image_slide(
+                    image, 
+                    slide_title_formater.format(image.well_number),
+                    metadata=metadata
+                    )
+        
+        self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
+        self.__presentation.save(str(self.output_path))
+        self.delete_temp_images()
+                
     
     def add_classification_slide(self, well_number, rep_image):
         new_slide = self.add_new_slide()
@@ -699,11 +781,24 @@ class PptxWriter():
     def add_timeline_slide(self, images, well_number):
         date_images = sorted(images, key=lambda i: i.date)
         new_slide = self.add_new_slide()
-        labeler = lambda i: i.date
+        labeler = lambda i: i.formated_date
         self.add_multi_image_slide(new_slide, images, labeler)
         title = 'Well {}: {} - {}'.format(
-            well_number, date_images[0].date, date_images[-1].date)
+            well_number, date_images[0].formated_date, date_images[-1].formated_date)
         new_slide.shapes.title.text = title
+
+        return new_slide
+    
+
+    def add_multi_spectrum_slide(self, images, well_number):
+        spec_images = sorted(images, key=lambda i: len(i.spectrum))
+        new_slide = self.add_new_slide()
+        labeler = lambda i: i.spectrum
+        self.add_multi_image_slide(new_slide, images, labeler)
+        title = 'Well {} Alternate Imagers'.format(well_number)
+        new_slide.shapes.title.text = title
+
+        return new_slide
     
     def add_cocktail_slide(self, well, cocktail):
         new_slide = self.add_new_slide(5)
@@ -728,38 +823,61 @@ class PptxWriter():
         return slide
 
     def add_multi_image_slide(self, slide, images, labeler):
-        left, top = self.__bumper, 3
+        top = 3
+        img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
+        if img_size >= 0.4 * self.__slide_height: img_size = 0.4 * self.__slide_height
+
+        left = ((self.__slide_width - (img_size * len(images))) / 2) - 0.2
+
         for image in images:
             self.add_image_to_slide(
                 image, slide, left, top, img_size
             )
             label_text = labeler(image)
             self.add_text_to_slide(
-                new_slide, date, left, top + (img_size * 1.5), img_size, 1, 
+                slide, label_text, left, top + (img_size * 1.5), img_size, 1.5, 
                 rotation=90)
             left += img_size
         return slide
+    
+    def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+        new_slide = self.add_new_slide(5)
+        new_slide.shapes.title.text = title
+        img_size = self.__slide_height * img_scaler
+        self.add_image_to_slide(
+            image, new_slide, self.__bumper, 2, img_size)
 
-
+        if metadata:
+            metadata_offset = ((self.__bumper + img_size) - self.__slide_width) - self.__bumper
+            metadata_left = img_size + (self.__bumper * 2)
+            metadata_width = self.__slide_width - metadata_left - self.__bumper
+            metadata_height = self.__slide_height - 2 - self.__bumper
+            self.add_text_to_slide(
+                new_slide, metadata, metadata_left, 2, metadata_width,
+                metadata_height)
+        return new_slide
+        
+    
     def add_text_to_slide(self, slide, text, left, top, width, height,
                           rotation=0, font_size=14):
         text_box = slide.shapes.add_textbox(
             Inches(left), Inches(top), Inches(width), Inches(height))
         text_box.rotation = rotation
         tf = text_box.text_frame
+        tf.word_wrap = True
         p = tf.add_paragraph()
-        t.text = text
+        p.text = text
         p.font.size = Pt(font_size)
 
         return text_box
     
-    def add_image_to_slide(image, slide, left, top, height):
+    def add_image_to_slide(self, image, slide, left, top, height):
         # if the image path does not exist then will have to encode
         # is somehow or think about how that will work
         if os.path.isfile(image.path):
             img_path = image.path
         else:
-            temp_path = os.path.join(TEMP_DIR, hash(image.path))
+            temp_path = str(TEMP_DIR.joinpath(str(hash(image.path))))
             with open(temp_path, 'wb') as tmp:
                 tmp.write(base64.decodebytes(image.bites))
                 self.__temp_images.append(temp_path)

@@ -16,6 +16,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def __init__(self, parent=None, auto_link=True):
         self.classified_runs = {}
         self.loaded_runs = {}
+        self.samples = []
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
@@ -42,6 +43,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def add_sample(self, sample_name, *args):
         parent_item = QtWidgets.QTreeWidgetItem(self)
         parent_item.setText(0, sample_name)
+        self.samples.append(sample_name)
         for run in args:
             if isinstance(run, (Run, HWIRun)):
                 self.add_run_node(run, parent_item)
@@ -56,7 +58,8 @@ class RunTree(QtWidgets.QTreeWidget):
             self.handle_dup_run_import()
         else:
             self.loaded_runs[run.run_name] = run
-            self.link_in_new_run(run)
+            if self.auto_link:
+                self.link_in_new_run(run)
         return new_node
 
     def link_in_new_run(self, new_run):

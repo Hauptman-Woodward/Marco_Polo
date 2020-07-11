@@ -54,6 +54,7 @@ class RunImporter():
 
     @staticmethod
     def directory_validator(dir_path):
+        dir_path = str(dir_path)
         if os.path.exists(dir_path):
             if os.path.isdir(dir_path):
                 files = list_dir_abs(dir_path, allowed=True)
@@ -79,7 +80,7 @@ class RunImporter():
         they are taken and well number and that kind of thing. This function returns
         that data
         '''
-        HWI_image_file = os.path.basename(HWI_image_file)
+        HWI_image_file = os.path.basename(str(HWI_image_file))
         return (
             HWI_image_file[:10],
             int(HWI_image_file[10:14].lstrip('0')),
@@ -90,6 +91,7 @@ class RunImporter():
     @staticmethod
     def parse_hwi_dir_metadata(dir_name):
         try:
+            dir_name = str(dir_name)
             dir_name = os.path.basename(dir_name)
             image_type = dir_name.split('-')[-1].strip()
             if image_type in SPEC_KEYS:

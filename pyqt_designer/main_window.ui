@@ -1127,6 +1127,7 @@
     <addaction name="actionAs_HTML"/>
     <addaction name="actionAs_CSV"/>
     <addaction name="actionAs_MSO"/>
+    <addaction name="actionAs_PPTX"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1408,6 +1409,11 @@
   <action name="actionAs_MSO">
    <property name="text">
     <string>As MSO</string>
+   </property>
+  </action>
+  <action name="actionAs_PPTX">
+   <property name="text">
+    <string>As PPTX</string>
    </property>
   </action>
  </widget>

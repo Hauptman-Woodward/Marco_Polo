@@ -20,6 +20,7 @@ LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
 APP_ICON = Path('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
+TEMP_DIR = dirname.joinpath('polo/.tmp')
 
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')

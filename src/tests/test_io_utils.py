@@ -18,7 +18,6 @@ from polo.windows.main_window import MainWindow
 
 dirname = os.path.dirname(__file__)
 
-
 @pytest.fixture
 def run():
     test_run = RunDeserializer(os.path.join(
@@ -143,10 +142,8 @@ def test_xtal_writer(run, main_window, xtal_write_path):
         #     assert test_image.favorite == standard_image.favorite
         #     assert test_image.prediction_dict == standard_image.prediction_dict
 
-
 def test_run_linker_init(run_linker):
     assert isinstance(run_linker, RunLinker)
-
 
 def test_link_run_by_date(run_linker):
     run_linker.link_runs_by_date()
@@ -163,7 +160,6 @@ def test_link_run_by_date(run_linker):
             # if spectrum is visible assert that after linking by date
             # that the run is either linked to a next run or previous run
             # that is not itself
-
 
 def test_link_run_by_spectrum(run_linker):
     run_linker.link_runs_by_spectrum()
