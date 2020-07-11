@@ -643,22 +643,24 @@ class RunDeserializer():  # convert saved file into a run
         :return: Run object encoded by an xtal file
         :rtype: Run
         '''
-        if 'xtal_path' in kwargs:
-            xtal_path = kwargs['xtal_path']
-        else:
-            xtal_path = self.xtal_path
-        if os.path.isfile(str(xtal_path)):
-            with open(xtal_path) as xtal_data:
-                header_data = self.xtal_header_reader(
-                    xtal_data)  # must read header first
-                r = json.load(xtal_data,  # update date since datetime goes right to string
-                              object_hook=RunDeserializer.dict_to_obj)
-                r.date = BarTender.datetime_converter(r.date)
-                r.save_file_path = xtal_path
-                return r
-        else:
-            return FileNotFoundError
-
+        try:
+            if 'xtal_path' in kwargs:
+                xtal_path = kwargs['xtal_path']
+            else:
+                xtal_path = self.xtal_path
+            if os.path.isfile(str(xtal_path)):
+                with open(xtal_path) as xtal_data:
+                    header_data = self.xtal_header_reader(
+                        xtal_data)  # must read header first
+                    r = json.load(xtal_data,  # update date since datetime goes right to string
+                                object_hook=RunDeserializer.dict_to_obj)
+                    r.date = BarTender.datetime_converter(r.date)
+                    r.save_file_path = xtal_path
+                    return r
+            else:
+                return FileNotFoundError
+        except Exception as e:
+            return e
 class PptxWriter():
 
     # 13.33 x 7.5 

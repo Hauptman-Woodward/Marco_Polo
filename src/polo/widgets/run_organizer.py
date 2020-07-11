@@ -101,9 +101,15 @@ class RunOrganizer(QtWidgets.QWidget):
             if os.path.isfile(xtal_file):
                 r = RunDeserializer(
                     xtal_file).xtal_to_run()
-                self.ui.runTree.add_run_to_tree(r)
-                self.ui.runTree.add_classified_run(r)
-                return True
+                if isinstance(r, (Run, HWIRun)):
+                    self.ui.runTree.add_run_to_tree(r)
+                    self.ui.runTree.add_classified_run(r)
+                    return True
+                else:
+                    make_message_box(
+                        message='Failed to import run with {}'.format(r),
+                        parent=self
+                    ).exec()
         return False
 
     def import_run_from_dialog(self):
