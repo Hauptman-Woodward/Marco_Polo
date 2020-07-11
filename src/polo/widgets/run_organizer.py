@@ -91,11 +91,11 @@ class RunOrganizer(QtWidgets.QWidget):
             time_string = '{} secs'.format(round(time))
         self.ui.label_32.setText(time_string)
 
-    def import_from_saved_run(self):
-
-        xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
-        xtal_dialog.exec_()
-        xtal_file = xtal_dialog.selectedFiles()
+    def import_from_saved_run(self, xtal_file=None):
+        if not xtal_file:
+            xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
+            xtal_dialog.exec_()
+            xtal_file = xtal_dialog.selectedFiles()
         if xtal_file:  # returned as a list
             xtal_file = xtal_file[0]
             if os.path.isfile(xtal_file):
@@ -103,11 +103,14 @@ class RunOrganizer(QtWidgets.QWidget):
                     xtal_file).xtal_to_run()
                 self.ui.runTree.add_run_to_tree(r)
                 self.ui.runTree.add_classified_run(r)
+                return True
+        return False
 
     def import_run_from_dialog(self):
         run_importer_dialog = RunImporterDialog(
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
+        run_importer_dialog.exec_()
         if (
             hasattr(run_importer_dialog, 'new_run')
             and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
@@ -121,6 +124,7 @@ class RunOrganizer(QtWidgets.QWidget):
                 parent=self)
             self.shown_unrar_message = True
             msg.exec_()
+
         if hasattr(self, 'ftp_download_thread') and self.ftp_download_thread.isRunning():
             msg = make_message_box(
                 message='FTP download already in progress. {} of {} files downloaded.'.format(
@@ -132,6 +136,7 @@ class RunOrganizer(QtWidgets.QWidget):
             return
 
         ftp_browser = FTPDialog(parent=self)
+        ftp_browser.exec_()
         if ftp_browser.ftp and ftp_browser.download_files and ftp_browser.save_dir:
             self.ftp_download_thread = FTPDownloadThread(
                 ftp_browser.ftp, ftp_browser.download_files, ftp_browser.save_dir
@@ -176,4 +181,5 @@ class RunOrganizer(QtWidgets.QWidget):
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
             self.ui.runTree.add_run_to_tree(new_run)
+        return new_run
         # message box failed to import?

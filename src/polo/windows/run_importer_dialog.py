@@ -46,6 +46,7 @@ import_descriptors = [  # TODO Move this into a text file
         cannot specify alternative metadata parsing methods or cocktail menus
         outside of HWI.'''
 ]
+
 class RunImporter():
 
     def __init__(self, *args):
@@ -259,7 +260,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.set_menu_options()
         logger.info('Opened run importer dialog')
         self.cannot_unrar_message()
-        self.exec_()
 
     @property
     def current_menu_type(self):
@@ -636,3 +636,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         if isinstance(new_run, (Run, HWIRun)):
             self.new_run = new_run
             self.close()
+        else:
+            make_message_box(
+                message='Directory could not be imported.{}'.format(new_run),
+                parent=self
+            ).exec_()
+            return False

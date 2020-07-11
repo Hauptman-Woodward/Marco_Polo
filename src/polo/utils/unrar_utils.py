@@ -6,7 +6,7 @@ from pathlib import Path
 
 UNRAR_EXE = str(UNRAR_EXE)
 
-def unrar_archive(rar_path, target_dir):
+def unrar_archive(rar_path=UNRAR_EXE, target_dir=None):
     try:
         unrar_cmd = [UNRAR_EXE, 'x', '-y', str(rar_path), str(target_dir)]
         exit_status = subprocess.call(unrar_cmd)
@@ -30,7 +30,7 @@ def parse_check_file_output(output_bytes):
                 files.add(l[0])  # add the file name to set
     return files
 
-def test_file_contents(rar_path):
+def test_file_contents(rar_path=UNRAR_EXE):
     try:
         check_cmd = [UNRAR_EXE, 't', rar_path]
         output = subprocess.check_output(check_cmd)

@@ -647,7 +647,7 @@ class RunDeserializer():  # convert saved file into a run
             xtal_path = kwargs['xtal_path']
         else:
             xtal_path = self.xtal_path
-        if RunSerializer.path_validator(xtal_path, parent=True):
+        if os.path.isfile(str(xtal_path)):
             with open(xtal_path) as xtal_data:
                 header_data = self.xtal_header_reader(
                     xtal_data)  # must read header first
@@ -656,6 +656,8 @@ class RunDeserializer():  # convert saved file into a run
                 r.date = BarTender.datetime_converter(r.date)
                 r.save_file_path = xtal_path
                 return r
+        else:
+            return FileNotFoundError
 
 class PptxWriter():
 
