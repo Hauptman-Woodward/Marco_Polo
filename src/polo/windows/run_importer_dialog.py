@@ -32,12 +32,7 @@ from PyQt5.QtWidgets import QApplication
 logger = make_default_logger(__name__)
 
 import_descriptors = [  # TODO Move this into a text file
-    '''Use HWI image import for screening runs conducted at the 
-        Hauptman-Woodward Medical Research Insitutue High-Throughput
-        Crystallization Screening Center. Polo includes all current and past 
-        crystallization cocktail menus for HWI screens and will automatically
-        extract metadata from your imported files based on current HWI
-        file naming conventions.''',
+    'Use HWI image import for screening runs conducted at the Hauptman-Woodward Medical Research Insitutue High-Throughput Crystallization Screening Center. Polo includes all current and past crystallization cocktail menus for HWI screens and will automatically extract metadata from your imported files based on current HWI file naming conventions.',
     '''Use raw image import for importing a directory of misc images into 
         Polo. Be aware that using inconsistent image sizes and types may cause
         unexpected behavior from Polo.''',
@@ -213,11 +208,81 @@ class RunImporter():
             else:
                 return {}  # empty dict so always safe to pass to update method
 
+
+# class ImportCandidate(Path):
+
+#     def __init__(self, path, **kwargs):
+#         super(ImportCandidate, self).__init__(path)
+#         self.__dict__.update(kwargs)
+#         self.metadata = []
+    
+#     def add_metadata(self, new_data):
+#         self.metadata.append(new_data)
+    
+
+
+class ImportCandidateManager():
+
+    def __init__(self, candidate_paths=[], **kwargs):
+        self.candidate_paths = candidate_paths
+        self.__dict__.update(kwargs)
+    
+    @property
+    def candidate_paths(self):
+        return self.__candidate_paths
+    
+    @candidate_paths.setter
+    def candidate_paths(self, new_paths):
+        for i, path in enumerate(new_paths):
+            new_paths[i] = ImportCandidate(str(path))
+        
+        self.__candidate_paths = set(new_paths)
+    
+    def add_candidates(self, import_candidates):
+        import_candidates = set(Path(str(p)) for p in import_candidates])
+        if self.__candidate_paths:
+            self.candidate_paths = self.__candidate_paths.union(import_candidates)
+        else:
+            self.__candidate_paths = import_candidates
+    
+    def prune_bad_directories(self):
+        good_paths, pruned_paths = [], []
+        for p in self.candidate_paths:
+            if p.suffix == '.rar':
+                good_paths.append(p)
+            elif RunImporter.directory_validator(p):
+                good_paths.append(p)
+            else:
+                pruned_paths.append(p)
+        return good_paths, pruned_paths
+    
+    def prune_as_hwi_paths(self):
+        # prune paths as if they are HWI paths
+        good_paths, pruned_paths = prune_bad_directories()
+        for p in self.candidate_paths:
+            hwi_metadata = RunImporter.parse_hwi_dir_metadata()
+            if hwi_metadata:
+                p.add_metadata(hwi_metadata)
+                good_paths.append(p)
+            else:
+                pruned_paths.append(p)
+        return good_paths, pruned_paths
+    
+    def could_not_import_message(self, pruned_paths, parent=None):
+        message = ['Could not import the following:\n'] + [str(p) for p in pruned_paths]
+        return make_message_box(
+            message='\n'.join(message), parent=parent
+        )
+
+
+
 class RunImporterDialog(QtWidgets.QDialog):
     '''
     Dialog that allows and controls how the user creates run objects from
     directories of images.
     '''
+
+    HWI_INDEX, NON_HWI_INDEX, RAW_INDEX = 0, 1, 2
 
     def __init__(self, current_run_names, parent=None):
         '''Create instance of RunImporterDialog. Used to import screening
@@ -229,6 +294,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         '''
         super(RunImporterDialog, self).__init__(parent)
         self.current_run_names = current_run_names
+        self.import_manager = ImportCandidateManager()
+        
         # Data and UI setup
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -260,8 +327,11 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         # Widget display setup
         self.set_menu_options()
-        logger.info('Opened run importer dialog')
         self.cannot_unrar_message()
+    
+    @property
+    def current_index(self):
+        return self.ui.stackedWidget.currentIndex()
 
     @property
     def current_menu_type(self):
@@ -314,14 +384,16 @@ class RunImporterDialog(QtWidgets.QDialog):
             return self.ui.dateEdit_2
 
     @property
-    def current_dir_path_lineEdit(self):
+    def current_dir_path(self):
         current_index = self.ui.stackedWidget.currentIndex()
-        if current_index == 0:
-            return self.ui.lineEdit
-        elif current_index == 1:
-            return self.ui.lineEdit_5
+        if current_index == self.HWI_INDEX:
+            return self.ui.combobox_7.currentText()
+        elif current_index == self.NON_HWI_INDEX:
+            return self.ui.lineEdit_3.text()
+        elif current_index == self.RAW_INDEX:
+            return self.ui.lineEdit_5.text()
         else:
-            return self.ui.lineEdit_3
+            return None
 
     @property
     def current_run_name_lineEdit(self):
@@ -332,6 +404,111 @@ class RunImporterDialog(QtWidgets.QDialog):
             return self.ui.lineEdit_6
         else:
             return self.ui.lineEdit_4
+    
+
+    def unrar_imports(self, import_paths):
+        valid_paths, invalid_paths = [], []
+        if self.import_paths and self.can_unrar:
+            for path in import_paths:
+                unrar_result = crack_open_a_rar_one(path)
+                if isinstance(unrar_result, Path):
+                    valid_paths.append(unrar_result)
+                else:
+                    invalid_paths.append((path, unrar_result))
+        
+        return valid_paths, invalid_paths
+    
+    def handle_unrar_job(self, import_paths):
+        self.setEnabled(False)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        make_message_box(message='Extracting image archives').show()
+        unrared_paths, failed_paths = [], []
+        for p in import_paths:
+            result = self.crack_open_a_rar_one(p)
+            if isinstance(result, Path):
+                unrared_paths.append(result)
+            else:
+                failed_paths.append(result)
+        QApplication.restoreOverrideCursor()
+        self.setEnabled(True)
+        return unrared_paths, failed_paths
+    
+    def populate_current_interface(self, import_paths):
+        if import_paths:
+            if self.current_index = self.HWI_INDEX:
+                c = self.ui.comboBox_7
+                current_items = set([c.itemText(i) for i in range(c.count())])
+                c.clear()
+                c.addItems(list(current_items.union(set(import_paths))))
+                c.setCurrentIndex(0)
+            else:
+                pass
+            # handle cases for non-hwi imports here
+            # need to change the line edits to comboboxes
+    
+    def hwi_dir_changed(self):
+        current_dir = self.ui.combobox_7.currentText()
+        
+            
+
+
+
+    def handle_browse_request(self):
+        # open the file browser in the correct mode
+        import_paths = self.open_run_browser()
+        # get the paths could be many or just one
+        if self.ui.comboBox_6.currentText() == 'From Rar':
+            if self.can_unrar:
+                import_paths, bad_paths = self.handle_unrar_job(import_paths)
+                if bad_paths:
+                    self.import_manager.could_not_import_message(
+                        bad_paths, parent=self).exec_()
+            else:
+                make_message_box(
+                    message='Could not find a working unrar installation to open the selected files.',
+                    parent=self).exec_()
+                return False
+
+        if import_paths:
+            self.import_manager.add_candidates = import_paths
+            if self.current_index == self.HWI_INDEX:
+                import_paths, bad_paths = self.import_manager.prune_as_hwi_paths()
+            else:
+                import_paths, bad_paths = self.import_manager.prune_prune_bad_directories()
+            
+            if import_paths:
+                self.populate_current_interface(import_paths)
+            if bad_paths:
+                self.import_manager.could_not_import_message(
+                    bad_paths, parent=self
+                ).exec_()
+    
+     
+            
+    def add_import_paths(self, import_paths):
+        if import_paths:
+            # convert items to strings for display
+            import_paths = set([str(p) for p in import_paths])
+            current_items = set([self.current_dir_path.itemText(i) for i in range(self.current_dir_path.count())])
+            self.current_dir_path.addItems(
+                list(import_paths.union(current_items))
+            )
+    
+
+    def display_hwi_metadata(self):
+        # get the current directory
+        cur_dir = self.ui.comboBox_7.currentText()
+        self.make_hwi_run_suggestions(dir_path=cur_dir)
+        # assume dirs and valid at this point
+
+
+    def display_import_paths(self, import_paths):
+        # shows import paths
+        if self.import_paths:
+            self.current_dir_path.clear()
+            self.current_dir_path.addItems(self.import_paths)
+            self.current_dir_path.setCurrentIndex(0)
+    
 
     def cannot_unrar_message(self):
         if not self.can_unrar:
@@ -360,7 +537,6 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         return sorted(menus, key=lambda menu: menu.start_date, reverse=True)
 
-
     def set_menu_options(self):
         '''Set the menu selection comboBox items to the available menu options
         '''
@@ -368,6 +544,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.comboBox_3.clear()
         self.ui.comboBox_3.addItems(
             [os.path.basename(str(menu.path)) for menu in options])
+    
 
     def get_menu_index_by_path(self, menu_path):
         '''Retrieve the index of a combobox item representing a Menu object
@@ -429,11 +606,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         :return: True if image directory conforms to HWI naming conventions, False otherwise
         :rtype: Bool
         '''
-        if not dir_path:
-            dir_path = self.ui.lineEdit.text()
         if os.path.exists(dir_path) and os.path.isdir(dir_path):
             dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
-            print(dir_data, type(dir_data))
             if isinstance(dir_data, ValueError):
                 make_message_box('Selected directory does not conform to HWI naming\
                     conventions. Could not make suggestions.').exec_()
@@ -447,18 +621,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self.set_current_menu(suggested_menu)
                 self.ui.dateEdit_2.setDate(date)
                 return True
-        else:
-            self.ui.lineEdit.clear()
-            return False
 
-    def detect_missing_images(self, image_dir):
-        # first check the number of images specified
-        images = list_dir_abs(image_dir)
-        if len(images) in ALLOWED_IMAGE_COUNTS:
-            pass
-            # make suggestion for number of images here
-        else:
-            pass
 
     def validate_hwi_number_images_run(self):
         '''
@@ -507,17 +670,14 @@ class RunImporterDialog(QtWidgets.QDialog):
 
         if self.ui.stackedWidget.currentIndex() == 0: # HWI run import 
             if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
-                mode = QtWidgets.QFileDialog.ExistingFile
+                mode = QtWidgets.QFileDialog.ExistingFiles
                 f = 'Rar archives (*.rar)'
         browser = QtWidgets.QFileDialog(self, filter=f)
         browser.setFileMode(mode)
         browser.exec_()
         f = browser.selectedFiles()
-
-        if f and len(f) > 0 and f[0]:  # avoid index errors
-            return f[0]
-        else:
-            return ''
+        self.import_paths = f
+        return self.import_paths
 
     def crack_open_a_rar_one(self, rar_path):
         if not isinstance(rar_path, Path):
@@ -525,54 +685,55 @@ class RunImporterDialog(QtWidgets.QDialog):
         parent_path = rar_path.parent
         return unrar_archive(rar_path, parent_path)
 
-    def validate_import(self, import_path=None):
+    # def validate_import(self, import_path=None):
 
-        if not isinstance(import_path, Path):
-            import_path = Path(import_path)
+    #     if not isinstance(import_path, Path):
+    #         import_path = Path(import_path)
 
-        if import_path.suffix == '.rar':
-            import_thread = QuickThread(self.crack_open_a_rar_one,
-                                        rar_path=import_path)
-            message = 'Unpacking rar archive'
-        else:
-            import_thread = QuickThread(lambda: import_path)
-            message = ''
+    #     if import_path.suffix == '.rar':
+    #         import_thread = QuickThread(self.crack_open_a_rar_one,
+    #                                     rar_path=import_path)
+    #         message = 'Unpacking rar archive'
+    #     else:
+    #         import_thread = QuickThread(lambda: import_path)
+    #         message = ''
 
-        def thread_done():
-            self.setEnabled(True)
-            QApplication.restoreOverrideCursor()
-            result = import_thread.result
-            error, message = True, 'Error importing run'
-            if isinstance(result, Path):
-                validator_result = RunImporter.directory_validator(str(result))
-                if validator_result:  # directory is good to go
-                    if self.ui.stackedWidget.currentIndex() == 0:
-                        if self.make_hwi_run_suggestions(str(result)):
-                            error = False
-                        else:
-                            message = 'Directory does not confrom to HWI standards'  
-                    else:
-                        error = False
-                else:
-                    message = 'Invalid Directory. Failed with error {}'.format(validator_result)
-            if error:
-                self.current_dir_path_lineEdit.clear()
-                make_message_box(message=message, parent=self).exec_()
-            else:
-                self.current_dir_path_lineEdit.setText(str(result))
+    #     def thread_done():
+    #         self.setEnabled(True)
+    #         QApplication.restoreOverrideCursor()
+    #         result = import_thread.result
+    #         error, message = True, 'Error importing run'
+    #         if isinstance(result, Path):
+    #             validator_result = RunImporter.directory_validator(str(result))
+    #             if validator_result:  # directory is good to go
+    #                 if self.ui.stackedWidget.currentIndex() == 0:
+    #                     if self.make_hwi_run_suggestions(str(result)):
+    #                         error = False
+    #                     else:
+    #                         message = 'Directory does not confrom to HWI standards'  
+    #                 else:
+    #                     error = False
+    #             else:
+    #                 message = 'Invalid Directory. Failed with error {}'.format(validator_result)
+    #         if error:
+    #             self.current_dir_path.clear()
+    #             make_message_box(message=message, parent=self).exec_()
+    #         else:
+    #             self.current_dir_path.setText(str(result))
 
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        import_thread.finished.connect(thread_done)
-        import_thread.start()
-        self.setEnabled(False)
-        if message:
-            message = make_message_box(message)
-            message.exec_()
+    #     QApplication.setOverrideCursor(Qt.WaitCursor)
+    #     import_thread.finished.connect(thread_done)
+    #     import_thread.start()
+    #     self.setEnabled(False)
+    #     if message:
+    #         message = make_message_box(message)
+    #         message.exec_()
 
-    def handle_browse_request(self):
-        path = self.open_run_browser()
-        if path:
-            self.validate_import(path)
+    # def handle_browse_request(self):
+    #     paths = self.open_run_browser()
+    #     if path:
+    #         for p in paths:
+    #             self.validate_import(p)
 
     def validate_run_name(self, text=None):
         '''
@@ -618,7 +779,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         current_index = self.ui.stackedWidget.currentIndex()
         new_run = None
         run_name = self.current_run_name_lineEdit.text()
-        dir_name = self.current_dir_path_lineEdit.text()
+        dir_name = self.current_dir_path.text()
         date = self.current_dateEdit.dateTime().toPyDateTime()
         kwargs = {
             'run_name': run_name, 'date': date

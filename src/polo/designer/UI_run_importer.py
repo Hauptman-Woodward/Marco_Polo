@@ -76,14 +76,14 @@ class Ui_Dialog(object):
         self.comboBox_3 = QtWidgets.QComboBox(self.groupBox_3)
         self.comboBox_3.setObjectName("comboBox_3")
         self.gridLayout_2.addWidget(self.comboBox_3, 2, 1, 1, 2)
-        self.lineEdit = QtWidgets.QLineEdit(self.groupBox_3)
-        self.lineEdit.setObjectName("lineEdit")
-        self.gridLayout_2.addWidget(self.lineEdit, 0, 1, 1, 3)
         self.comboBox_6 = QtWidgets.QComboBox(self.groupBox_3)
         self.comboBox_6.setObjectName("comboBox_6")
         self.comboBox_6.addItem("")
         self.comboBox_6.addItem("")
         self.gridLayout_2.addWidget(self.comboBox_6, 0, 0, 1, 1)
+        self.comboBox_7 = QtWidgets.QComboBox(self.groupBox_3)
+        self.comboBox_7.setObjectName("comboBox_7")
+        self.gridLayout_2.addWidget(self.comboBox_7, 0, 1, 1, 3)
         self.gridLayout.addWidget(self.groupBox_3, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.page)
         self.page_3 = QtWidgets.QWidget()
@@ -204,7 +204,7 @@ class Ui_Dialog(object):
         self.gridLayout_3.addWidget(self.groupBox_2, 3, 0, 1, 4)
 
         self.retranslateUi(Dialog)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
