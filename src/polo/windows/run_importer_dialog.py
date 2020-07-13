@@ -86,8 +86,8 @@ class RunImporter():
     @staticmethod
     def parse_hwi_dir_metadata(dir_name):
         try:
-            dir_name = str(dir_name)
-            dir_name = os.path.basename(dir_name)
+            run_name = str(Path(str(dir_name)).with_suffix(''))
+            run_name = os.path.basename(dir_name)
             image_type = dir_name.split('-')[-1].strip()
             if image_type in SPEC_KEYS:
                 image_type = SPEC_KEYS[image_type]
@@ -97,7 +97,18 @@ class RunImporter():
             date = datetime.strptime(dir_name[10:].split('-')[0],
                                     '%Y''%m''%d''%H''%M')
             
-            return image_type, plate_id, date, dir_name  # last is suggeseted run name
+            #return image_type, plate_id, date, run_name  # last is suggeseted run name
+            return {
+                'image_spectrum': image_spectrum,
+                'plate_id': plate_id,
+                'date': date,
+                'run_name': run_name
+                }
+
+
+
+
+
         except (ValueError, IndexError) as e:
             logger.error('Caught {} at {} attempting to parse {}'.format(
                 e, RunImporter.parse_hwi_dir_metadata, dir_name
