@@ -1484,6 +1484,17 @@ class Menu():  # holds the dictionary of cocktails
         else:
             self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
 
+    def __len__(self):
+        if self.cocktails:
+            return len(self.cocktails)
+        else:
+            return None
+    
+    def __getitem__(self, key):
+        return self.cocktails[key]
+
+
+
 
 class BulkImporter():
 

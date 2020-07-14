@@ -1,4 +1,6 @@
 from polo.utils.exceptions import NotASolutionError
+from cockatoo.screen import _parse_cocktail_csv
+from cockatoo.metric import distance
 from molmass import Formula
 import re
 from polo import *
@@ -68,6 +70,7 @@ class Cocktail():
         if isinstance(value, (str, float)):
             value = int(value)
         self.__well_assignment = value
+    
 
     def add_reagent(self, new_reagent):
         '''Adds a reagent to the existing list of reagents stored in the
@@ -78,6 +81,34 @@ class Cocktail():
         '''
         if new_reagent:
             self.reagents.append(new_reagent)
+
+    def compute_distance(self, other_cocktail):
+        if isinstance(other_cocktail, Cocktail):
+            this_cockatoo_cocktail = self.to_cockatoo_cocktail()
+            other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()
+            if this_cockatoo_cocktail and other_cockatoo_cocktail:
+                return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)
+        return False 
+
+    def to_cockatoo_cocktail(self):
+        # convert cocktail object to a "row" as read from a csv file for use with
+        # cockatoo package
+        # name,overall_ph,[conc,unit,name,ph]*
+        row = [self.number, str(self.pH)]
+        for reagent in self.reagents:
+            if reagent.molarity != False:
+                reagent_row = [
+                    str(reagent.concentration.value),
+                    str(reagent.concentration.units),
+                    reagent.chemical_additive,
+                    self.pH]  # doesnt seem like reagent pH is used in distance calc
+                row += reagent_row
+                return _parse_cocktail_csv(row)  # should return cocktail object if it worked
+            # then can compare two cocktail objects
+            else:
+                break
+        return False
+
 
     def __repr__(self):
         return ''.join(sorted(['{}: {}\n'.format(key, value) for key, value in self.__dict__.items()]))
@@ -359,7 +390,7 @@ class SignedValue():
         :return: SignedValue converted to base unit of called SignedValue instance
         :rtype: SignedValue
         '''
-        if self.units[0] in self.saved_scalers:
+        if self.units and self.units[0] in self.saved_scalers:
             return SignedValue(
                 self.value * self.saved_scalers[self.units[0]], self.units[1:])
         else:
