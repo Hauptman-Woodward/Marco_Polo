@@ -1,6 +1,6 @@
 from polo.utils.exceptions import NotASolutionError
-from cockatoo.screen import _parse_cocktail_csv
-from cockatoo.metric import distance
+#from cockatoo.screen import _parse_cocktail_csv
+#from cockatoo.metric import distance
 from molmass import Formula
 import re
 from polo import *
@@ -9,7 +9,7 @@ from polo import *
 class Cocktail():
     '''Cocktail instances are used to hold a collection of reagents
     that form one chemical cocktail screen. Also hold metadata including
-    their commerical code if one exists, the cocktail pH and the
+    their commercial code if one exists, the cocktail pH and the
     well they are assigned to. Currently, cocktails are only supported
     for HWIRuns.
 
@@ -82,32 +82,32 @@ class Cocktail():
         if new_reagent:
             self.reagents.append(new_reagent)
 
-    def compute_distance(self, other_cocktail):
-        if isinstance(other_cocktail, Cocktail):
-            this_cockatoo_cocktail = self.to_cockatoo_cocktail()
-            other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()
-            if this_cockatoo_cocktail and other_cockatoo_cocktail:
-                return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)
-        return False 
+    # def compute_distance(self, other_cocktail):
+    #     if isinstance(other_cocktail, Cocktail):
+    #         this_cockatoo_cocktail = self.to_cockatoo_cocktail()
+    #         other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()
+    #         if this_cockatoo_cocktail and other_cockatoo_cocktail:
+    #             return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)
+    #     return False 
 
-    def to_cockatoo_cocktail(self):
-        # convert cocktail object to a "row" as read from a csv file for use with
-        # cockatoo package
-        # name,overall_ph,[conc,unit,name,ph]*
-        row = [self.number, str(self.pH)]
-        for reagent in self.reagents:
-            if reagent.molarity != False:
-                reagent_row = [
-                    str(reagent.concentration.value),
-                    str(reagent.concentration.units),
-                    reagent.chemical_additive,
-                    self.pH]  # doesnt seem like reagent pH is used in distance calc
-                row += reagent_row
-                return _parse_cocktail_csv(row)  # should return cocktail object if it worked
-            # then can compare two cocktail objects
-            else:
-                break
-        return False
+    # def to_cockatoo_cocktail(self):
+    #     # convert cocktail object to a "row" as read from a csv file for use with
+    #     # cockatoo package
+    #     # name,overall_ph,[conc,unit,name,ph]*
+    #     row = [self.number, str(self.pH)]
+    #     for reagent in self.reagents:
+    #         if reagent.molarity != False:
+    #             reagent_row = [
+    #                 str(reagent.concentration.value),
+    #                 str(reagent.concentration.units),
+    #                 reagent.chemical_additive,
+    #                 self.pH]  # doesnt seem like reagent pH is used in distance calc
+    #             row += reagent_row
+    #             return _parse_cocktail_csv(row)  # should return cocktail object if it worked
+    #         # then can compare two cocktail objects
+    #         else:
+    #             break
+    #     return False
 
 
     def __repr__(self):
