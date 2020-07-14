@@ -73,11 +73,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
         self.ui.pushButton.clicked.connect(
             self.ui.plateViewer.export_current_view)
+        
+        self.ui.spinBox.valueChanged.connect(self.set_current_page)
+        self.ui.spinBox.setRange(1, 1)
+        
     
 
     def set_images_per_page(self):
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
+        self.set_spin_box_range()
 
 
     def set_image_count_options(self):
@@ -302,7 +307,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             self.color_mapping, self.ui.horizontalSlider.value() / 100,
             human
         )
-    # TODO change so in reference to the run attr not a flag
+
     def set_time_resolved_buttons(self):
         if hasattr(self.__run, 'next_run') and hasattr(self.__run, 'previous_run'):
             if (isinstance(self.__run.next_run, (HWIRun, Run))
@@ -320,3 +325,17 @@ class PlateInspectorWidget(QtWidgets.QWidget):
                 self.ui.pushButton_22.setEnabled(True)
                 return
         self.ui.pushButton_22.setEnabled(False)
+    
+    def set_spin_box_range(self):
+        '''Set the allowed range for the page navigation spinbox.
+        '''
+        self.ui.spinBox.setRange(1, self.ui.plateViewer.total_pages)
+    
+    def set_current_page(self, page_number):
+        '''Set the current page number
+
+        :param page_number: The new page number
+        :type page_number: int
+        '''
+        self.ui.plateViewer.current_page = page_number
+        self.show_current_plate()

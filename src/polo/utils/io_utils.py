@@ -28,7 +28,6 @@ from polo.utils.unrar_utils import *
 from polo.utils.math_utils import *
 
 
-
 logger = make_default_logger(__name__)
 
 class RunImporter():
@@ -187,15 +186,6 @@ class RunImporter():
             return make_message_box(message).exec_()
         else:
             return True
-
-        # def read_xml_data(self, dir_path):
-        #     # read xml data from HWI uncompressed rar files
-        #     reader = XmlReader(dir_path)
-        #     plate_data = reader.find_and_read_plate_data(dir_path)
-        #     if isinstance(plate_data, dict) and plate_data:
-        #         return plate_data
-        #     else:
-        #         return {}  # empty dict so always safe to pass to update method
 
 
 class RunSerializer():
