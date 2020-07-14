@@ -12,10 +12,9 @@ from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_run_organizer import Ui_Form
 from polo.threads.thread import *
 from polo.utils.dialog_utils import make_message_box
-from polo.utils.io_utils import RunDeserializer, RunLinker
+from polo.utils.io_utils import *
 from polo.utils.unrar_utils import test_for_working_unrar
 from polo.windows.ftp_dialog import FTPDialog
-from polo.windows.run_importer_dialog import RunImporter
 from polo.windows.run_importer import RunImporterDialog
 
 # run organizer should be the outer class and
