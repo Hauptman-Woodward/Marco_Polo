@@ -41,8 +41,7 @@ class FTPDialog(QtWidgets.QDialog):
         self.ui.pushButton_2.setIcon(QIcon(self.DOWNLOAD_ICON))
 
         logger.info('Opened FTP Dialog')
-        self.exec_()
-
+        
     @property
     def host(self):
         '''Get user entered FTP host

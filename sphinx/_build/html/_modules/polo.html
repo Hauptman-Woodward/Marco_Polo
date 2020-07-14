@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo &mdash; Polo 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>polo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.predictor</span> <span class="kn">import</span> <span class="n">from_saved_model</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.0.2&#39;</span>
+<span class="n">dirname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="c1"># CONSTANT FILE PATHS</span>
+<span class="c1"># =============================================================================</span>
+
+<span class="n">LOG_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo.log&#39;</span><span class="p">)</span>  <span class="c1"># always in same dir as Polo main file</span>
+<span class="n">APP_ICON</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo.png&#39;</span><span class="p">)</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">UNRAR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>
+
+
+<span class="n">COCKTAIL_DATA_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_data&#39;</span><span class="p">)</span>
+<span class="n">COCKTAIL_META_DATA</span> <span class="o">=</span> <span class="n">COCKTAIL_DATA_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_meta.csv&#39;</span><span class="p">)</span>
+<span class="c1"># cocktail meta data csv stores info about each of the cocktail menus. Stuff</span>
+<span class="c1"># like when each menu was used and what type of screen it is (Soluble or </span>
+<span class="c1"># membrane screens)</span>
+
+<span class="c1"># images to show when missing images or no image found </span>
+<span class="n">DEFAULT_IMAGE_PATH</span><span class="p">,</span> <span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;images/default_images/default_image.jpg&#39;</span><span class="p">),</span>
+    <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;images/default_images/blank_image.png&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># path to tensorflow marco model</span>
+<span class="n">MODEL_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;savedmodel&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># HTML jinja2 templates</span>
+<span class="n">RUN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportRunTemplate.html&#39;</span><span class="p">)</span>
+<span class="n">SCREEN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportPlatesTemplate.html&#39;</span><span class="p">)</span>
+<span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data/images/default_images/blank_image.png&#39;</span><span class="p">)</span>
+
+<span class="c1"># icons for tabs and buttons of the GUI</span>
+
+<span class="n">ICONS</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;images/icons&#39;</span><span class="p">)</span>
+<span class="n">ICON_DICT</span> <span class="o">=</span> <span class="p">{</span><span class="n">Path</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span> <span class="n">ICONS</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICONS</span><span class="p">))}</span>
+
+<span class="c1"># DATA</span>
+<span class="c1"># =============================================================================</span>
+
+<span class="n">MODEL</span> <span class="o">=</span> <span class="n">from_saved_model</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">MODEL_PATH</span><span class="p">))</span>  <span class="c1"># load tensorflow model</span>
+<span class="n">ALLOWED_IMAGE_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;.jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">}</span>
+
+<span class="n">IMAGE_CLASSIFICATIONS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Crystals&#39;</span><span class="p">,</span> <span class="s1">&#39;Clear&#39;</span><span class="p">,</span> <span class="s1">&#39;Precipitate&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span>
+<span class="p">]</span>
+
+<span class="n">COLORS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;red&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">199</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">58</span><span class="p">),</span> <span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">199</span><span class="p">),</span>
+    <span class="s1">&#39;green&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="mi">199</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">199</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+    <span class="s1">&#39;yellow&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">199</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="s1">&#39;grey&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">145</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">138</span><span class="p">),</span>
+    <span class="s1">&#39;purple&#39;</span><span class="p">:</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">195</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">204</span><span class="p">),</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="p">}</span>
+
+<span class="n">ALLOWED_IMAGE_COUNTS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">786</span><span class="p">,</span> <span class="mi">1536</span><span class="p">]</span>
+
+<span class="n">IMAGE_SPECS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Visible&#39;</span><span class="p">,</span> <span class="s1">&#39;UV-TPEF&#39;</span><span class="p">,</span> <span class="s1">&#39;SHG&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># UNRAR EXE</span>
+<span class="c1"># =============================================================================</span>
+
+<span class="n">unrar_versions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">OS</span> <span class="k">for</span> <span class="n">OS</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">))])</span>
+<span class="n">platform</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="n">unrar_versions</span><span class="p">:</span>
+    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">,</span> <span class="n">platform</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="n">UNRAR_DIR</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;Windows&#39;</span><span class="p">:</span>
+        <span class="c1"># get bits</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">:</span>  <span class="c1"># is 64 bit version</span>
+            <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;Win64&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;Win32&#39;</span><span class="p">)</span>
+    <span class="n">UNRAR_EXE</span> <span class="o">=</span> <span class="p">[</span><span class="n">UNRAR_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">UNRAR_DIR</span><span class="p">))</span> <span class="k">if</span> <span class="s1">&#39;unrar&#39;</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">UNRAR_EXE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>  <span class="c1"># pray they have it installed and in their PATH</span>
+    
+<span class="c1"># REGEX</span>
+<span class="c1"># =============================================================================</span>
+<span class="n">num_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[-+]?([0-9]*\.[0-9]+|[0-9]+)&#39;</span><span class="p">)</span>
+<span class="n">peg_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;[0-9]+&#39;</span><span class="p">)</span>
+<span class="n">unit_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;v/v|w/v|M|L|ml|ul&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+<span class="n">water_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;\*[0-9]*h2o&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+
+
+<span class="c1"># FUNCTIONS</span>
+<span class="c1"># =============================================================================</span>
+
+<div class="viewcode-block" id="make_default_logger"><a class="viewcode-back" href="../polo.html#polo.make_default_logger">[docs]</a><span class="k">def</span> <span class="nf">make_default_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+        <span class="s1">&#39;</span><span class="si">%(levelname)s</span><span class="s1">:</span><span class="si">%(asctime)s</span><span class="s1">:</span><span class="si">%(name)s</span><span class="s1">:</span><span class="si">%(lineno)d</span><span class="s1">:</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">file_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">))</span>
+    <span class="n">file_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">file_handler</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">logger</span></div>
+
+
+<span class="c1"># URLS</span>
+<span class="c1"># =============================================================================</span>
+<span class="n">ABOUT</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/about.html&#39;</span>
+<span class="n">QUICKSTART</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/Quickstart.html&#39;</span>
+<span class="n">FAQS</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/FAQS.html&#39;</span>
+<span class="n">USER_GUIDE</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/user_guide.html&#39;</span>
+<span class="n">DOCS</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/polo.html&#39;</span>
+<span class="n">BETA</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/beta_testers.html&#39;</span>
+
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">Cocktail</span><span class="p">,</span> <span class="n">Reagent</span><span class="p">,</span> <span class="n">SignedValue</span>
+<span class="kn">from</span> <span class="nn">polo.threads</span> <span class="kn">import</span> <span class="n">thread</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span><span class="p">,</span> <span class="n">Menu</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+
+
+<span class="c1"># best bartender at Cunneen&#39;s bar in Rodger&#39;s Park</span>
+<span class="n">tim</span> <span class="o">=</span> <span class="n">BarTender</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_META_DATA</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan T. Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

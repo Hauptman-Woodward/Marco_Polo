@@ -8,26 +8,184 @@ from datetime import datetime
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
+from pptx import Presentation
+from pptx.util import Inches, Pt
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from jinja2 import Template
-from polo import (ALLOWED_IMAGE_TYPES, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA,
-                  RUN_HTML_TEMPLATE, SCREEN_HTML_TEMPLATE, __version__,
-                  make_default_logger, num_regex, unit_regex)
-from polo.crystallography.cocktail import Cocktail, Reagent, SignedValue
+from polo import *
+from polo import __version__
 from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
-from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.crystallography.image import Image
-from polo.utils.dialog_utils import make_message_box
-from polo.utils.unrar_utils import unrar_archive
-from polo import SPEC_KEYS, IMAGE_SPECS, MSO_DICT, IMAGE_CLASSIFICATIONS
+from polo.crystallography.cocktail import *
+from polo.utils.dialog_utils import *
+from polo.utils.unrar_utils import *
+from polo.utils.math_utils import *
 
 
 logger = make_default_logger(__name__)
+
+class RunImporter():
+
+    @staticmethod
+    def directory_validator(dir_path):
+        dir_path = str(dir_path)
+        if os.path.exists(dir_path):
+            if os.path.isdir(dir_path):
+                files = list_dir_abs(dir_path, allowed=True)
+                if files:
+                    return True
+                else:
+                    e = ForbiddenImageTypeError
+                    logger.warning('Directory validation failed with {}'.format(e))
+                    return e
+            else:
+                e = NotADirectoryError
+                logger.warning('Directory validation failed with {}'.format(e))
+                return e
+        else:
+            e = FileNotFoundError
+            logger.warning('Directory validation failed with {}'.format(e))
+            return FileNotFoundError
+    
+    @staticmethod
+    def parse_HWI_filename_meta(HWI_image_file):
+        '''
+        HWI images have a standard file nameing schema that gives info about when
+        they are taken and well number and that kind of thing. This function returns
+        that data
+        '''
+        HWI_image_file = os.path.basename(str(HWI_image_file))
+        return (
+            HWI_image_file[:10],
+            int(HWI_image_file[10:14].lstrip('0')),
+            datetime.strptime(HWI_image_file[14:22], '%Y''%m''%d'),
+            HWI_image_file[22:]
+        )
+
+    @staticmethod
+    def parse_hwi_dir_metadata(dir_name):
+        try:
+            dir_name = str(Path(dir_name).with_suffix('').name)
+            image_type = dir_name.split('-')[-1].strip()
+            if image_type in SPEC_KEYS:
+                image_spectrum = SPEC_KEYS[image_type]
+            else:
+                image_spectrum = IMAGE_SPECS[0]  # default to visible
+            plate_id = dir_name[:10]
+            date = datetime.strptime(dir_name[10:].split('-')[0],
+                                    '%Y''%m''%d''%H''%M')
+            
+            #return image_type, plate_id, date, run_name  # last is suggeseted run name
+            return {
+                'image_spectrum': image_spectrum,
+                'plate_id': plate_id,
+                'date': date,
+                'run_name': dir_name
+                }
+
+        except Exception as e:
+            logger.error('Caught {} at {} attempting to parse {}'.format(
+                e, RunImporter.parse_hwi_dir_metadata, dir_name
+            ))
+            return False
+    
+    @staticmethod
+    def crack_open_a_rar_one(rar_path):
+        if not isinstance(rar_path, Path):
+            rar_path = Path(rar_path)
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    @staticmethod
+    def import_from_xtal_thread(xtal_path):
+        reader = RunDeserializer(xtal_path)
+        if os.path.isfile(xtal_path):
+            return reader.make_read_xtal_thread()
+    
+    @staticmethod
+    def make_xtal_file_dialog(parent=None):
+        file_dlg = QtWidgets.QFileDialog(parent=parent)
+        file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
+        return file_dlg
+    
+    @staticmethod
+    def unpack_rar_archive_thread(archive_path):
+        archive_path = str(archive_path)
+        if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
+            return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
+
+    @staticmethod
+    def import_run_from_directory(data_dir, **kwargs):
+        hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
+        if isinstance(hwi_import_attempt, HWIRun):
+            return hwi_import_attempt
+        else:
+            return RunImporter.import_general_run(data_dir, **kwargs)
+
+    @staticmethod
+    def import_hwi_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            from polo import tim
+            metadata = XmlReader().find_and_read_plate_data(data_dir)
+            file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
+
+            if metadata and file_name_data:
+                image_type, plate_id, date, run_name = file_name_data
+                menu = tim.get_menu_by_date(date, 's')
+                new_run = HWIRun(
+                    image_dir=data_dir, run_name=run_name, cocktail_menu=menu,
+                    image_spectrum=image_type, date=date
+                )
+                new_run.__dict__.update(metadata)  # from xml data
+                new_run.__dict__.update(kwargs)  # for user supplied data
+                # that could overwrite what is in metadata
+                new_run.add_images_from_dir()
+                return new_run
+        else:
+            return False
+
+    @staticmethod
+    def import_general_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            # add some rule if does not have run name and spectru
+            new_run = Run(image_dir=data_dir, **kwargs)
+            new_run.add_images_from_dir()
+            return new_run
+
+    @staticmethod
+    def validate_run_name(text=None):
+        '''
+        Validates a given run name to ensure it can be used safely. Shows
+        an error message to the user if the run name is not valid and clears
+        the run name lineEdit widget.
+
+        In order for a run name to be valid it must contain only UTF-8
+        codable characters and not already be in use by another
+        run object. This is because the run name is used as a key to refer
+        to the run object in other functions.
+
+        :param text: String. The run name to be validated.
+        '''
+        validator_result = run_name_validator(text, self.current_run_names)
+        message = None
+        if validator_result == UnicodeError:
+            message = 'Run name is not UTF-8 Compliant'
+        elif validator_result == TypeError:
+            message = 'Run name must not be empty.'
+        elif not validator_result:  # result is false already exists
+            message = 'Run name already exists, please pick a unique name.'
+            # TODO option to overwrite the run of that same name
+        
+        if message:
+            return make_message_box(message).exec_()
+        else:
+            return True
 
 
 class RunSerializer():
@@ -56,13 +214,16 @@ class RunSerializer():
 
         :param desired_suffix: File extension for given file path.
         '''
-
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix == desired_suffix:
-            return str(path)
-        else:
-            return str(path.with_suffix(desired_suffix))
+        try:
+            if desired_suffix:
+                if isinstance(path, str):
+                    path = Path(path)
+                if path.suffix == desired_suffix:
+                    return str(path)
+                else:
+                    return str(path.with_suffix(desired_suffix))
+        except Exception as e:
+            return None
 
     @staticmethod
     def make_message_box(message, icon=QtWidgets.QMessageBox.Information,
@@ -133,58 +294,29 @@ class HtmlWriter(RunSerializer):
             contents = template.read()
             return Template(contents)
 
-    # def write_complete_run_on_thread(self, output_path, encode_images=True):
-    #     '''
-    #     Wrapper around `write_complete_run` that executes on a seperate
-    #     Qthread.
-    #     '''
-    #     # self.thread = HtmlWriter.make_thread(
-    #     #     self.write_complete_run, output_path=output_path,
-    #     #     encode_images=encode_images)
-    #     # self.thread.finished.connect(self.finished_writing)
-    #     # self.thread.start()
-    #     # logger.info('Writing {} as html to {}'.format(
-    #     #     self.write_complete_run, output_path))
-    #     self.write_complete_run(output_path, encode_images=True)
-
-    # def finished_writing(self):  # should only be called from connection to thread
-    #     '''
-    #     Method to connect to Qthread instance. Should not be called from
-    #     anything other than a Qthread instance.
-    #     '''
-    #     result = str(self.thread.result)
-    #     # creating message on thread possibly be causing an issue
-    #     # if os.path.exists(result):
-    #     #     message = 'Export to {} was successful'.format(result)
-    #     # else:
-    #     #     message = 'Export to HTML file failed. Returned {}'.format(result)
-    #     # logger.info('Html write attempt status: {}'.format(message))
-    #     # HtmlWriter.make_message_box(message=message).exec_()
-
     def write_complete_run(self, output_path, encode_images=True):
         # write a run as html file with images and classifications
         # and that kind of stuff
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
             output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
-            if encode_images:
-                self.run.encode_images_to_base64()
-            images = json.loads(json.dumps(
-                self.run.images, default=XtalWriter.json_encoder))
-            [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
+            if output_path:
+                if encode_images:
+                    self.run.encode_images_to_base64()
+                images = json.loads(json.dumps(
+                    self.run.images, default=XtalWriter.json_encoder))
+                [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
 
-            template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
-            if template:
-                try:
-                    html = template.render(
-                        images=images, run_name=self.run.run_name,
-                        annotations='No annotations')
-                    with open(output_path, 'w') as html_file:
-                        html_file.write(html)
-                        return output_path
-                except Exception as e:
-                    make_message_box(
-                        message='Could not write run to html failed with {}'.format(e)
-                        ).exec_()
+                template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
+                if template:
+                    try:
+                        html = template.render(
+                            images=images, run_name=self.run.run_name,
+                            annotations='No annotations')
+                        with open(output_path, 'w') as html_file:
+                            html_file.write(html)
+                            return True
+                    except Exception as e:
+                        return e
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
@@ -378,7 +510,6 @@ class MsoWriter(RunSerializer):
             self.mso_version
         ]
     
-
     def get_cocktail_csv_data(self):
         cocktail_menu = self.run.cocktail_menu.path
         with open(cocktail_menu, 'r') as menu_file:
@@ -386,25 +517,28 @@ class MsoWriter(RunSerializer):
             return [row for row in csv.reader(menu_file)]
 
     def write_mso_file(self, use_marco_classifications=False):
-        cocktail_data = self.get_cocktail_csv_data()
-        self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
-        with open(self.output_path, 'w') as mso_file:
-            writer = csv.writer(mso_file, delimiter='\t')
-            writer.writerow(self.first_line)
-            writer.writerow(cocktail_data.pop(0))  # header row
-            for row in cocktail_data:
-                row = MsoWriter.row_formater(row)
-                well_num = int(float(row[0]))
+        if isinstance(self.run, HWIRun):  # must be hwi run to write to mso
+            cocktail_data = self.get_cocktail_csv_data()
+            self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
+            with open(self.output_path, 'w') as mso_file:
+                writer = csv.writer(mso_file, delimiter='\t')
+                writer.writerow(self.first_line)
+                writer.writerow(cocktail_data.pop(0))  # header row
+                for row in cocktail_data:
+                    row = MsoWriter.row_formater(row)
+                    well_num = int(float(row[0]))
 
-                image = self.run.images[well_num-1]
-                if image and image.human_class:
-                    row.append(MSO_DICT[image.human_class])
-                elif use_marco_classifications and image.machine_class:
-                    row.append(MSO_DICT[image.machine_class])
-                else:
-                    row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
-                writer.writerow(row)
-                    # default to other image classification
+                    image = self.run.images[well_num-1]
+                    if image and image.human_class:
+                        row.append(MSO_DICT[image.human_class])
+                    elif use_marco_classifications and image.machine_class:
+                        row.append(MSO_DICT[image.machine_class])
+                    else:
+                        row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
+                    writer.writerow(row)
+            return True
+        else:
+            return False
             
 
 
@@ -670,19 +804,251 @@ class RunDeserializer():  # convert saved file into a run
         :return: Run object encoded by an xtal file
         :rtype: Run
         '''
-        if 'xtal_path' in kwargs:
-            xtal_path = kwargs['xtal_path']
+        try:
+            if 'xtal_path' in kwargs:
+                xtal_path = kwargs['xtal_path']
+            else:
+                xtal_path = self.xtal_path
+            if os.path.isfile(str(xtal_path)):
+                with open(xtal_path) as xtal_data:
+                    header_data = self.xtal_header_reader(
+                        xtal_data)  # must read header first
+                    r = json.load(xtal_data,  # update date since datetime goes right to string
+                                object_hook=RunDeserializer.dict_to_obj)
+                    r.date = BarTender.datetime_converter(r.date)
+                    r.save_file_path = xtal_path
+                    return r
+            else:
+                return FileNotFoundError
+        except Exception as e:
+            return e
+class PptxWriter():
+
+    # 13.33 x 7.5 
+    def __init__(self, output_path, included_attributes={},
+                 image_types = None, human=False, marco=False, favorite=False):
+        self.output_path = output_path
+        self.included_attributes = included_attributes
+        self.human = human
+        self.marco = marco
+        self.favorite = favorite
+        self.image_types = image_types
+        self.__temp_images = []
+        self.__bumper = 1
+        self.__slide_width = 10
+        self.__slide_height = 6
+        self.__presentation = Presentation()
+    
+    def delete_presentation(self):
+        self.__presentation = Presentation()
+    
+    def delete_temp_images(self):
+        try:
+            [os.remove(img_path) for img_path in self.__temp_images]
+            return True
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            return e
+    
+    def sort_runs_by_spectrum(self, runs):
+        visible, other = [], []
+        for run in runs:
+            if run.image_spectrum == IMAGE_SPECS[0]:
+                visible.append(run)
+            else:
+                other.append(run)
+        return visible, other
+           
+    def make_sample_presentation(self, sample_name, runs, title, subtitle, cocktail_data=True):
+        visible, other = self.sort_runs_by_spectrum(runs)
+        title_slide = self.add_new_slide(0)
+        title_slide.shapes.title.text = title
+        if subtitle:
+            title_slide.placeholders[1].text = subtitle
+
+        if visible or other:
+            show_all_dates, show_single_image, show_alt_specs = False, False, False
+            if visible:
+                if len(visible) > 1:
+                    show_all_dates = True
+                else:
+                    show_single_image = True
+            if other:
+                show_alt_specs = True
+
+            if show_all_dates or show_single_image:
+                rep_run = visible[0]
+            else:
+                rep_run = other[0]
+            
+            for i in range(10):
+                if show_all_dates:
+                    self.add_timeline_slide([r.images[i] for r in visible], i+1)
+                elif show_single_image:
+                    metadata = str(rep_run.images[i])
+                    if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
+                        metadata += '\n\n' + str(rep_run.images[i].cocktail)
+                    title = 'Well Number {}'.format(rep_run.images[i].well_number)
+                    self.add_single_image_slide(rep_run.images[i], title, metadata)
+                
+                if show_alt_specs:
+                    well_number = i + 1
+                    self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
+            
+            self.__presentation.save(str(self.output_path))
+            self.delete_temp_images()
+                
         else:
-            xtal_path = self.xtal_path
-        if RunSerializer.path_validator(xtal_path, parent=True):
-            with open(xtal_path) as xtal_data:
-                header_data = self.xtal_header_reader(
-                    xtal_data)  # must read header first
-                r = json.load(xtal_data,  # update date since datetime goes right to string
-                              object_hook=RunDeserializer.dict_to_obj)
-                r.date = BarTender.datetime_converter(r.date)
-                r.save_file_path = xtal_path
-                return r
+            return False
+        
+
+    def make_single_run_presentation(self, run, title, subtitle=None, cocktail_data=True):
+        title_slide = self.add_new_slide(0)
+        title_slide.shapes.title.text = title
+        if subtitle:
+            title_slide.placeholders[1].text = subtitle
+        
+        slide_title_formater = 'Well Number {}'
+        for image in run.images:
+            if image.standard_filter(self.image_types, self.human, self.marco, self.favorite):
+                metadata = str(image)
+                if cocktail_data and hasattr(image, 'cocktail'):
+                    metadata += '\n\n' + str(image.cocktail)
+                self.add_single_image_slide(
+                    image, 
+                    slide_title_formater.format(image.well_number),
+                    metadata=metadata
+                    )
+        
+        self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
+        self.__presentation.save(str(self.output_path))
+        self.delete_temp_images()
+                
+    
+    def add_classification_slide(self, well_number, rep_image):
+        new_slide = self.add_new_slide()
+        title = 'Well {} Classifications'.format(well_number)
+        new_slide.shapes.title.text = title
+
+        data = [
+            ['Human Classification', 'MARCO Classification']
+            [rep_image.human_class, rep_image.machine_class]
+        ]
+
+        self.add_table_to_slide(new_slide, data, self.__bumper, 2)
+        # do for most recent human classification image if it exits
+
+    def add_new_slide(self, template=5):
+        return self.__presentation.slides.add_slide(
+            self.__presentation.slide_layouts[template])
+    
+    def add_timeline_slide(self, images, well_number):
+        date_images = sorted(images, key=lambda i: i.date)
+        new_slide = self.add_new_slide()
+        labeler = lambda i: i.formated_date
+        self.add_multi_image_slide(new_slide, images, labeler)
+        title = 'Well {}: {} - {}'.format(
+            well_number, date_images[0].formated_date, date_images[-1].formated_date)
+        new_slide.shapes.title.text = title
+
+        return new_slide
+    
+
+    def add_multi_spectrum_slide(self, images, well_number):
+        spec_images = sorted(images, key=lambda i: len(i.spectrum))
+        new_slide = self.add_new_slide()
+        labeler = lambda i: i.spectrum
+        self.add_multi_image_slide(new_slide, images, labeler)
+        title = 'Well {} Alternate Imagers'.format(well_number)
+        new_slide.shapes.title.text = title
+
+        return new_slide
+    
+    def add_cocktail_slide(self, well, cocktail):
+        new_slide = self.add_new_slide(5)
+        title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
+        new_slide.shapes.title.text = title
+
+    def add_table_to_slide(self, slide, data, left, top):
+        rows, cols = len(data), max([len(r) for r in data])
+        shapes = slide.shapes
+        
+        width = (self.slide_width - (self.__bumper * 2))
+        height = self.__slide_height - 2
+        table = shapes.add_table(rows, cols, Inches(left), Inches(top), 
+                                 Inches(width), Inches(height))
+
+        for k in range(cols):
+            table.columns[k].width = (self.slide_size - (self.__bumper * 2)) / cols
+            # set column width
+        for i in range(rows):
+            for j in range(cols):
+                table.cell(i, j).text = data[i][j]
+        return slide
+
+    def add_multi_image_slide(self, slide, images, labeler):
+        top = 3
+        img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
+        if img_size >= 0.4 * self.__slide_height: img_size = 0.4 * self.__slide_height
+
+        left = ((self.__slide_width - (img_size * len(images))) / 2) - 0.2
+
+        for image in images:
+            self.add_image_to_slide(
+                image, slide, left, top, img_size
+            )
+            label_text = labeler(image)
+            self.add_text_to_slide(
+                slide, label_text, left, top + (img_size * 1.5), img_size, 1.5, 
+                rotation=90)
+            left += img_size
+        return slide
+    
+    def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+        new_slide = self.add_new_slide(5)
+        new_slide.shapes.title.text = title
+        img_size = self.__slide_height * img_scaler
+        self.add_image_to_slide(
+            image, new_slide, self.__bumper, 2, img_size)
+
+        if metadata:
+            metadata_offset = ((self.__bumper + img_size) - self.__slide_width) - self.__bumper
+            metadata_left = img_size + (self.__bumper * 2)
+            metadata_width = self.__slide_width - metadata_left - self.__bumper
+            metadata_height = self.__slide_height - 2 - self.__bumper
+            self.add_text_to_slide(
+                new_slide, metadata, metadata_left, 2, metadata_width,
+                metadata_height)
+        return new_slide
+        
+    
+    def add_text_to_slide(self, slide, text, left, top, width, height,
+                          rotation=0, font_size=14):
+        text_box = slide.shapes.add_textbox(
+            Inches(left), Inches(top), Inches(width), Inches(height))
+        text_box.rotation = rotation
+        tf = text_box.text_frame
+        tf.word_wrap = True
+        p = tf.add_paragraph()
+        p.text = text
+        p.font.size = Pt(font_size)
+
+        return text_box
+    
+    def add_image_to_slide(self, image, slide, left, top, height):
+        # if the image path does not exist then will have to encode
+        # is somehow or think about how that will work
+        if os.path.isfile(image.path):
+            img_path = image.path
+        else:
+            temp_path = str(TEMP_DIR.joinpath(str(hash(image.path))))
+            with open(temp_path, 'wb') as tmp:
+                tmp.write(base64.decodebytes(image.bites))
+                self.__temp_images.append(temp_path)
+            img_path = temp_path
+        
+        return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
+                                        height=Inches(height))
+
 
 class BarTender():
     '''Class for organizing and accessing cocktail menus'''
@@ -769,7 +1135,7 @@ class BarTender():
                     # add new menu to menus dict path to csv file is the menu
                     # key
 
-    def get_menu_by_date(self, date, type_):
+    def get_menu_by_date(self, date, type_='s'):
         '''Get a menu instance who's usage dates include the given date and
         match the given screen type.
 
@@ -797,7 +1163,7 @@ class BarTender():
                     return self.menus[each_key]
             return self.menus[menus_keys_by_date[-1]]
 
-    def get_menus_by_type(self, type_):
+    def get_menus_by_type(self, type_='s'):
         '''Returns all menus of a given screen type.
 
         's' for soluble screens and 'm' for membrane screens. No other
@@ -1263,3 +1629,5 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
             return e
 
     return path
+
+from polo.crystallography.run import *

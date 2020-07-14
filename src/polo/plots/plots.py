@@ -121,31 +121,39 @@ class StaticCanvas(MplCanvas):
         self.fig.add_subplot(223)
         self.fig.add_subplot(224)
 
-        # DANGER plot is dependent on haveing a pull 1536 well plate
+        # DANGER plot is dependent on haveing a full 1536 well plate
         # should adjust for the given number of plates 
 
-        for k, image_type in enumerate(['Crystals', 'Precipitate', 'Clear', 'Other']):
-            data = []
-            for i, image in enumerate(current_run.images):
-                if image and image.prediction_dict:
-                    confidence = image.prediction_dict[image_type]
-                    if image.well_number:
-                        data.append(confidence)
-                else:
-                    data.append(0)
-            data = np.reshape(data, (48, 32))  # DANGER Assumes 1536 images
-            data = data.astype(np.float)
-            im = self.fig.get_axes()[k].imshow(data, cmap='hot')
-            self.fig.get_axes()[k].set_title(
-                '{} Confidence Map'.format(image_type))
+        # preplot checks to make sure it is good to graph
+        # should include that all images have marco classifications
+        # and that there are 1536 images 
 
-        cb_ax = self.fig.add_axes([0.83, 0.1, 0.02, 0.8])
-        cbar = self.fig.colorbar(im, cax=cb_ax)
 
-        # store figure so can easily
-        # check if want to redraw it
+        try:
+            for k, image_type in enumerate(['Crystals', 'Precipitate', 'Clear', 'Other']):
+                data = []
+                for i, image in enumerate(current_run.images):
+                    if image and image.prediction_dict:
+                        confidence = image.prediction_dict[image_type]
+                        if image.well_number:
+                            data.append(confidence)
+                    else:
+                        data.append(0)
+                data = np.reshape(data, (48, 32))  # DANGER Assumes 1536 images
+                data = data.astype(np.float)
+                im = self.fig.get_axes()[k].imshow(data, cmap='hot')
+                self.fig.get_axes()[k].set_title(
+                    '{} Confidence Map'.format(image_type))
 
-        self.draw()
+            cb_ax = self.fig.add_axes([0.83, 0.1, 0.02, 0.8])
+            cbar = self.fig.colorbar(im, cax=cb_ax)
+
+            # store figure so can easily
+            # check if want to redraw it
+
+            self.draw()
+        except Exception:  # lazy error handling for now see code above try block
+            return 
 
     def plot_existing_plot(self, saved_figure):
         self.clear_axis()
@@ -178,20 +186,6 @@ class StaticCanvas(MplCanvas):
             axis.bar(labels, heights)
 
         self.draw()
-
-    def two_d_hist(self, current_hits, y_var='pH'):
-
-        # need to think about what is actually being plotted
-        # get a collection of cocktails that are in the hits
-        # from that collection have many solutions but each cocktail
-        # has only one pH so if want to compare pH need to tie that pH to
-        # the solution in some way
-
-        # want to compare a additive to a numerical propery in this plot
-        # which could be concentration or pH start with pH becuase
-        # dont need to worry about units stuff then
-        # assume x will be
-        pass
 
     def plot_cocktail_map(self, current_run):
         # currently only supports pH as quantative axis

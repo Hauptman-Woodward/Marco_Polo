@@ -13,7 +13,7 @@ from matplotlib.backends.backend_qt5agg import \
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
-from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout, QApplication
 
 from polo import *
 from polo.crystallography.run import HWIRun, Run
@@ -28,8 +28,8 @@ from polo.widgets.slideshow_viewer import SlideshowViewer
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
-from polo.windows.run_importer_dialog import RunImporterDialog
-from polo.windows.run_updater_dialog import RunUpdaterDialog
+# from polo.windows.run_updater_dialog import RunUpdaterDialog
+from polo.windows.pptx_dialog import PptxDesignerDialog
 
 from polo.windows.spectrum_dialog import SpectrumDialog
 from polo.windows.time_res_dialog import TimeResDialog
@@ -50,15 +50,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         QtWidgets.QMainWindow.__init__(self)
         self.setupUi(self)
-
-        self.current_run = None  # name of current run
-        self.cached_plate_scenes = {}
+        self.current_run = None
         self.runOrganizer.opening_run.connect(self.handle_opening_run)
         self.menuImport.triggered[QAction].connect(self.handle_image_import)
-
-        #self.menuAdvanced_Tools.triggered[QAction].connect(
-        #    self.handle_advanced_tools)
-        # TODO make new run linker interface
 
         self.menuExport.triggered[QAction].connect(self.handle_export)
         self.menuHelp.triggered[QAction].connect(self.handle_help_menu)
@@ -66,8 +60,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.run_interface.currentChanged.connect(self.on_changed_tab)
         self.menuBeta_Testers.triggered[QAction].connect(
             lambda: webbrowser.open(BETA))
-
-       # plot view method connections
 
         self.plot_viewer_layout = QtWidgets.QVBoxLayout(self.groupBox_4)
         self.matplotlib_widget = StaticCanvas(parent=self.groupBox_4)
@@ -142,6 +134,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         importer_dialog = RunImporterDialog(
             current_run_names=list(self.loaded_runs.keys()))
+        importer_dialog.exec_()
         if importer_dialog.new_run != None:
             self.add_loaded_run(importer_dialog.new_run)
             logging.info('Added run successfully')
@@ -174,11 +167,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def tab_limiter(self):
         if not isinstance(self.current_run, HWIRun):
             # need to disable stuff that requires cocktails
-            self.tab_10.setEnabled(False)
+            self.tab_10.setEnabled(False)  # optimize tab
+            self.tab_2.setEnabled(False)  # plate view tab
             make_message_box(
                 parent=self,
-                message='Looks like you imported a non-HWI Run. For now optimization screening is disabled.'
+                message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
                 ).exec_()
+        else:
+            self.tab_10.setEnabled(True)
+            self.tab_2.setEnabled(True)
 
     def handle_opening_run(self, q):
         '''
@@ -192,7 +189,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         push Buttons if the run has either a next or previous run
         connected to it.
 
-        :param q: QListItem. Run selection from listWidget made by user.
+        :param q: List
         '''
         if isinstance(q, list) and len(q) > 0:
             if self.current_run:
@@ -204,7 +201,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
-            if self.current_run.image_spectrum == IMAGE_SPECS[0]:  # is visible
+            if (self.current_run.image_spectrum == IMAGE_SPECS[0]
+                and hasattr(self.current_run, 'insert_into_alt_spec_chain')
+                ):
                 self.current_run.insert_into_alt_spec_chain()
             self.slideshowInspector.run = self.current_run
             self.tableInspector.run = self.current_run
@@ -217,34 +216,47 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             logger.info('Loaded new run named {}'.format(
                 self.current_run.run_name))
 
-    def handle_export(self, action):
+    def handle_export(self, action, export_path=None):
         '''
         Handles when user wants to export the current run. Creates an instance
         of exporterDialog class and displays that dialog to the user.
         '''
-        if self.current_run:
-            export_path = QtWidgets.QFileDialog.getSaveFileName(
-                self, 'Save Run')[0]
-            if export_path:
-                export_path, export_results = Path(export_path), None
-                if action == self.actionAs_HTML:
-                    self.writer = HtmlWriter(self.current_run)
-                    QApplication.setOverrideCursor(Qt.WaitCursor)
-                    self.setEnabled(False)
-                    self.writer.write_complete_run(
-                        export_path, encode_images=True)
+        if self.current_run:        
+            if action != self.actionAs_PPTX:
+                if not export_path:
+                    export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Run')[0]
+
+                if export_path:
+                    export_path, export_results = Path(export_path), None
+                
+                    if action == self.actionAs_HTML:
+                        writer = HtmlWriter(self.current_run)
+                        QApplication.setOverrideCursor(Qt.WaitCursor)
+                        self.setEnabled(False)
+                        export_results = writer.write_complete_run(
+                            export_path, encode_images=True)
+
+                    elif action == self.actionAs_CSV:
+                        export_path = export_path.with_suffix('.csv')
+                        csv_exporter = RunCsvWriter(self.current_run, export_path)
+                        export_results = csv_exporter.write_csv()
+
+                    elif action == self.actionAs_MSO:
+                        writer = MsoWriter(self.current_run, export_path)
+                        export_results = writer.write_mso_file()
+
+                    # check if need to show an error message
                     self.setEnabled(True)
                     QApplication.restoreOverrideCursor()
-                elif action == self.actionAs_CSV:
-                    export_path = export_path.with_suffix('.csv')
-                    csv_exporter = RunCsvWriter(self.current_run, export_path)
-                    export_results = csv_exporter.write_csv()
-                elif action == self.actionAs_MSO:
-                    writer = MsoWriter(self.current_run, export_path)
-                    writer.write_mso_file()
-
+                    if export_results != True and export_results != None:
+                        make_message_box(
+                            message='Export failed', parent=self
+                        ).exec_()
+            else:
+                presentation_maker = PptxDesignerDialog(
+                    self.runOrganizer.ui.runTree.all_runs)
+                presentation_maker.exec_()
         else:
-            logger.info('User attempted to export with no current run')
             make_message_box(
                 parent=self,
                 message='Please load a run first'

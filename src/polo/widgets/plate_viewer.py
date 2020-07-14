@@ -151,7 +151,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 if k == 'Well' and label_dict[k]:
                     text.append(template.format(k, image.well_number))
                 elif k == 'Date' and label_dict[k]:
-                    text.append(template.format(k, image.date))
+                    text.append(template.format(k, image.formated_date))
                 elif k == 'Cocktail Number' and label_dict[k] and image.cocktail:
                     text.append(template.format(k, image.cocktail.number))
                 elif k == 'Human Classification' and label_dict[k]:
@@ -229,13 +229,13 @@ class plateViewer(QtWidgets.QGraphicsView):
                     item.setOpacity(filtered_opacity)
     
     def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
-
         for item in self.__scene.items():
             effect = None
             if isinstance(item, QtWidgets.QGraphicsPixmapItem):
                 image, color = item.data(0), None
-                if human and image.human_class in color_mapping:
-                    color = color_mapping[image.human_class]
+                if human:
+                    if image.human_class in color_mapping:
+                        color = color_mapping[image.human_class]
                 elif image.machine_class in color_mapping:
                     color = color_mapping[image.machine_class]
                 if color:

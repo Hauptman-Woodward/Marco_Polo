@@ -2,15 +2,16 @@ import base64
 import os
 import time
 from pathlib import Path
+from datetime import datetime
 
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger)
 from polo.marco.run_marco import classify_image
-from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 
 
@@ -60,7 +61,7 @@ class Image(QtGui.QPixmap):
                  plate_id=None, date=None, cocktail=None, spectrum=None,
                  previous_image=None, next_image=None, alt_image=None,
                  favorite=False, parent=None, **kwargs):
-        
+
         super(Image, self).__init__(parent)
         self.path = str(path)
         self.bites = bites
@@ -76,7 +77,6 @@ class Image(QtGui.QPixmap):
         self.next_image = next_image
         self.alt_image = alt_image
         self.favorite = favorite
-        self.__pixmap = None
 
     @staticmethod
     def clean_base64_string(string):
@@ -121,21 +121,21 @@ class Image(QtGui.QPixmap):
         elif isinstance(self.bites, bytes):
             self.loadFromData(base64.b64decode(self.bites))
         if isinstance(scaling, float):
-            self.scaled(self.width*scaling, self.height*scaling, Qt.KeepAspectRatio)
-    
+            self.scaled(self.width*scaling, self.height *
+                        scaling, Qt.KeepAspectRatio)
+
     def delete_pixmap_data(self):
         self.swap(QPixmap())  # swap with null pixel map
-    
+
     def recursive_delete_pixmap_data(self):
         for i in self.get_linked_images_by_date():
             i.delete_pixmap_data()
         for i in self.get_linked_images_by_spectrum():
             i.delete_pixmap_data()
 
-    
     def height(self):
         return self.size().height()
-    
+
     def width(self):
         return self.size().width()
 
@@ -143,15 +143,19 @@ class Image(QtGui.QPixmap):
         image_string = 'Well Num: {}\n'.format(str(self.well_number))
         image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
             str(self.machine_class), str(self.human_class))
-        image_string += 'Date: {}\n'.format(str(self.date))
+        if self.machine_class and self.prediction_dict and self.machine_class in self.prediction_dict:
+            image_string += 'MARCO Confidence: {} %\n'.format(
+                round(float(self.prediction_dict[self.machine_class]) * 100, 1)
+            )
+        image_string += 'Date: {}\n'.format(self.formated_date)
         image_string += 'Spectrum: {}'.format(self.spectrum)
 
         return image_string
-    
+
     @property
     def date(self):
         return self.__date
-    
+
     @date.setter
     def date(self, date):
         if isinstance(date, str):
@@ -253,6 +257,14 @@ class Image(QtGui.QPixmap):
             #         alt_image = alt_image.alt_image
         else:
             self.__human_class = None
+    
+    @property
+    def formated_date(self):
+        if isinstance(self.date, datetime):
+            return datetime.strftime(self.date, '%m-%d-%Y')
+        else:
+            return ''
+
 
     def encode_base64(self):
         if not self.bites and os.path.exists(self.path):
@@ -323,13 +335,13 @@ class Image(QtGui.QPixmap):
         linked_images, paths = [self], set([])
         if self.alt_image:
             start_image = self.alt_image
-            while (isinstance(start_image, Image) 
+            while (isinstance(start_image, Image)
                    and start_image.path != self.path
                    and start_image.path not in paths):
                 linked_images.append(start_image)
                 paths.add(start_image.path)
                 start_image = start_image.alt_image
-            
+
             # Before added paths set check BUG would happen if loaded sample
             # with linked dates and spectrum in the plateview. Opening the non
             # visible run in plateview then swaping spectrum then navigate by
@@ -350,7 +362,6 @@ class Image(QtGui.QPixmap):
                                                                       self.path)
         except AttributeError as e:
             return e
-    
 
     def standard_filter(self, image_types, human, marco, favorite):
         '''Method that determines if this image should be included in a set
@@ -368,9 +379,9 @@ class Image(QtGui.QPixmap):
         '''
         if favorite == self.favorite:
             if image_types:  # have specificed some image types
-                if human and self.human_class in image_types:
+                if self.human_class and human and self.human_class in image_types:
                     return True
-                elif marco and self.machine_class in image_types:
+                elif self.machine_class and marco and self.machine_class in image_types:
                     return True
                 else:
                     return False
@@ -379,10 +390,10 @@ class Image(QtGui.QPixmap):
                     if (human and self.human_class) or (marco and self.machine_class):
                         return True
                     else:
-                        return False 
+                        return False
                 else:
-                    return True # set no filters so return True
+                    return True  # set no filters so return True
         else:
-            return False 
+            return False
 
 from polo.utils.io_utils import BarTender

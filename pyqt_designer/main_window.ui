@@ -473,7 +473,7 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>450</width>
+        <width>500</width>
         <height>16777215</height>
        </size>
       </property>
@@ -1127,6 +1127,7 @@
     <addaction name="actionAs_HTML"/>
     <addaction name="actionAs_CSV"/>
     <addaction name="actionAs_MSO"/>
+    <addaction name="actionAs_PPTX"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1141,10 +1142,8 @@
    </widget>
    <widget class="QMenu" name="menuAdvanced_Tools">
     <property name="title">
-     <string>Advanced Tools</string>
+     <string>Tools</string>
     </property>
-    <addaction name="actionTime_Resolved"/>
-    <addaction name="actionAdd_Image_Type"/>
     <addaction name="separator"/>
     <addaction name="actionView_Log_2"/>
     <addaction name="separator"/>
@@ -1408,6 +1407,11 @@
   <action name="actionAs_MSO">
    <property name="text">
     <string>As MSO</string>
+   </property>
+  </action>
+  <action name="actionAs_PPTX">
+   <property name="text">
+    <string>As PPTX</string>
    </property>
   </action>
  </widget>

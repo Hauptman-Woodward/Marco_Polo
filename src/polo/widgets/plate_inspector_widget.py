@@ -73,11 +73,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
         self.ui.pushButton.clicked.connect(
             self.ui.plateViewer.export_current_view)
+        
+        self.ui.spinBox.valueChanged.connect(self.set_current_page)
+        self.ui.spinBox.setRange(1, 1)
+        
     
 
     def set_images_per_page(self):
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
+        self.set_spin_box_range()
 
 
     def set_image_count_options(self):
@@ -137,11 +142,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if new_run:
             self.__run = new_run
             self.ui.plateViewer.run = new_run
-            logger.info('Set {} run to {}'.format(self.ui.plateViewer, new_run))
-            if self.__run.previous_run or self.__run.next_run:
-                self.set_time_resolved_buttons(True)
-            if self.__run.alt_spectrum:
-                self.set_alt_spectrum_buttons(True)
+            self.set_time_resolved_buttons()
+            self.set_alt_spectrum_buttons()
         else:
             self.__run = None
 
@@ -177,7 +179,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         image type.
         '''
         mapping = {}
-        for each_combo_box, img_class in zip(self.color_combos, IMAGE_CLASSIFICATIONS):
+        for each_combo_box, img_class in zip(self.color_combos,
+                                             IMAGE_CLASSIFICATIONS):
             mapping[img_class] = COLORS[each_combo_box.currentText()]
         return mapping
     
@@ -235,12 +238,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if self.__run:
             self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
-
             if self.ui.checkBox_27.isChecked():
                 self.apply_image_filters()
             else:
                 self.ui.plateViewer.emphasize_all_images()
-
             if self.ui.checkBox_28.isChecked():
                 self.apply_color_mapping()
             else:
@@ -306,10 +307,35 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             self.color_mapping, self.ui.horizontalSlider.value() / 100,
             human
         )
-    # TODO change so in reference to the run attr not a flag
-    def set_time_resolved_buttons(self, allow=False):
-        self.ui.pushButton_21.setEnabled(allow)
-        self.ui.pushButton_20.setEnabled(allow)
-    
+
+    def set_time_resolved_buttons(self):
+        if hasattr(self.__run, 'next_run') and hasattr(self.__run, 'previous_run'):
+            if (isinstance(self.__run.next_run, (HWIRun, Run))
+                or isinstance(self.__run.previous_run, (HWIRun, Run))
+                ):
+                self.ui.pushButton_21.setEnabled(True)
+                self.ui.pushButton_20.setEnabled(True)
+                return
+        self.ui.pushButton_21.setEnabled(False)
+        self.ui.pushButton_21.setEnabled(False) 
+
     def set_alt_spectrum_buttons(self, allow=False):
-        self.ui.pushButton_22.setEnabled(allow)
+        if hasattr(self.__run, 'alt_spectrum'):
+            if isinstance(self.__run, (HWIRun, Run)):
+                self.ui.pushButton_22.setEnabled(True)
+                return
+        self.ui.pushButton_22.setEnabled(False)
+    
+    def set_spin_box_range(self):
+        '''Set the allowed range for the page navigation spinbox.
+        '''
+        self.ui.spinBox.setRange(1, self.ui.plateViewer.total_pages)
+    
+    def set_current_page(self, page_number):
+        '''Set the current page number
+
+        :param page_number: The new page number
+        :type page_number: int
+        '''
+        self.ui.plateViewer.current_page = page_number
+        self.show_current_plate()

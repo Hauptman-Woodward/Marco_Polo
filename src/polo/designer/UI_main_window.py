@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.runOrganizer = RunOrganizer(self.centralwidget)
         self.runOrganizer.setMinimumSize(QtCore.QSize(200, 0))
-        self.runOrganizer.setMaximumSize(QtCore.QSize(450, 16777215))
+        self.runOrganizer.setMaximumSize(QtCore.QSize(500, 16777215))
         self.runOrganizer.setObjectName("runOrganizer")
         self.gridLayout.addWidget(self.runOrganizer, 0, 0, 1, 1)
         self.run_interface = QtWidgets.QTabWidget(self.centralwidget)
@@ -508,6 +508,8 @@ class Ui_MainWindow(object):
         self.actionEdit_Current_Run_Data.setObjectName("actionEdit_Current_Run_Data")
         self.actionAs_MSO = QtWidgets.QAction(MainWindow)
         self.actionAs_MSO.setObjectName("actionAs_MSO")
+        self.actionAs_PPTX = QtWidgets.QAction(MainWindow)
+        self.actionAs_PPTX.setObjectName("actionAs_PPTX")
         self.menuImages.addAction(self.actionFrom_FTP)
         self.menuImages.addSeparator()
         self.menuImages.addAction(self.actionFrom_Saved_Run_3)
@@ -517,14 +519,13 @@ class Ui_MainWindow(object):
         self.menuExport.addAction(self.actionAs_HTML)
         self.menuExport.addAction(self.actionAs_CSV)
         self.menuExport.addAction(self.actionAs_MSO)
+        self.menuExport.addAction(self.actionAs_PPTX)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionUser_Guide)
         self.menuHelp.addAction(self.actionQuickstart_Guide)
         self.menuHelp.addAction(self.actionFAQ)
         self.menuHelp.addAction(self.actionDocumentation)
-        self.menuAdvanced_Tools.addAction(self.actionTime_Resolved)
-        self.menuAdvanced_Tools.addAction(self.actionAdd_Image_Type)
         self.menuAdvanced_Tools.addSeparator()
         self.menuAdvanced_Tools.addAction(self.actionView_Log_2)
         self.menuAdvanced_Tools.addSeparator()
@@ -580,7 +581,7 @@ class Ui_MainWindow(object):
         self.menuImages.setTitle(_translate("MainWindow", "Images"))
         self.menuExport.setTitle(_translate("MainWindow", "Export"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
-        self.menuAdvanced_Tools.setTitle(_translate("MainWindow", "Advanced Tools"))
+        self.menuAdvanced_Tools.setTitle(_translate("MainWindow", "Tools"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuBeta_Testers.setTitle(_translate("MainWindow", "Beta Testers"))
@@ -632,6 +633,7 @@ class Ui_MainWindow(object):
         self.actionBeta_Tester_s_Guide.setText(_translate("MainWindow", "Beta Tester\'s Guide"))
         self.actionEdit_Current_Run_Data.setText(_translate("MainWindow", "Edit Current Run Data"))
         self.actionAs_MSO.setText(_translate("MainWindow", "As MSO"))
+        self.actionAs_PPTX.setText(_translate("MainWindow", "As PPTX"))
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.widgets.run_organizer import RunOrganizer

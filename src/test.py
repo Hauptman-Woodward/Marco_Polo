@@ -1,26 +1,11 @@
 import time
+from random import randint
 
 
-l = list(range(0, 100))
 
-def filter(i):
+s = time.time()
+r = randint(0, 10^1000)
+if r == 0:
     print('hello')
-    if i + int(i * 0.5) % 7 == 0:
-        return i
-
-s = time.time()
-new_list = []
-for f in l:
-    r = filter(f)
-    if r:
-        new_list.append(r)
 e = time.time()
-print(len(new_list))
-print('time for loop:', str(e-s))
-
-s = time.time()
-p = list(map(filter, l))
-print(len(p))
-e = time.time()
-
-print('time for map:', str(e-s))
+print(e - s)

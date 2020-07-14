@@ -16,6 +16,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def __init__(self, parent=None, auto_link=True):
         self.classified_runs = {}
         self.loaded_runs = {}
+        self.samples = []
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
@@ -42,6 +43,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def add_sample(self, sample_name, *args):
         parent_item = QtWidgets.QTreeWidgetItem(self)
         parent_item.setText(0, sample_name)
+        self.samples.append(sample_name)
         for run in args:
             if isinstance(run, (Run, HWIRun)):
                 self.add_run_node(run, parent_item)
@@ -56,7 +58,8 @@ class RunTree(QtWidgets.QTreeWidget):
             self.handle_dup_run_import()
         else:
             self.loaded_runs[run.run_name] = run
-            self.link_in_new_run(run)
+            if self.auto_link:
+                self.link_in_new_run(run)
         return new_node
 
     def link_in_new_run(self, new_run):
@@ -74,33 +77,34 @@ class RunTree(QtWidgets.QTreeWidget):
                 linked_runs = linker.the_big_link()
 
     def add_run_to_tree(self, new_run):
-        if isinstance(new_run, HWIRun):
-            if hasattr(new_run, 'sampleName'):
-                sample_node = self.findItems(
-                    new_run.sampleName, Qt.MatchExactly, column=0)
-                if sample_node:
-                    sample_node = sample_node.pop()  # returned as a list
-                    self.add_run_node(new_run, sample_node)
+        if new_run.run_name not in self.all_runs:
+            if isinstance(new_run, HWIRun):
+                if hasattr(new_run, 'sampleName'):
+                    sample_node = self.findItems(
+                        new_run.sampleName, Qt.MatchExactly, column=0)
+                    if sample_node:
+                        sample_node = sample_node.pop()  # returned as a list
+                        self.add_run_node(new_run, sample_node)
+                    else:
+                        self.add_sample(new_run.sampleName, new_run)
                 else:
-                    self.add_sample(new_run.sampleName, new_run)
-            else:
-                orphan_runs = self.findItems(
-                    'Sampleless Runs', Qt.MatchExactly, column=0)
-                if orphan_runs:
-                    orphan_runs = orphan_runs.pop()
-                else:
-                    orphan_runs = QtWidgets.QTreeWidgetItem(self)
-                    orphan_runs.setText(0, 'Sampleless Runs')
-                new_run.sampleName = 'Sampleless Runs'
-                self.add_run_node(new_run, orphan_runs)
+                    orphan_runs = self.findItems(
+                        'Sampleless Runs', Qt.MatchExactly, column=0)
+                    if orphan_runs:
+                        orphan_runs = orphan_runs.pop()
+                    else:
+                        orphan_runs = QtWidgets.QTreeWidgetItem(self)
+                        orphan_runs.setText(0, 'Sampleless Runs')
+                    new_run.sampleName = 'Sampleless Runs'
+                    self.add_run_node(new_run, orphan_runs)
 
-        elif isinstance(new_run, Run):
-            non_hwi_runs = self.findItems(
-                'Non-HWI Runs', Qt.MatchExactly, column=0)
-            if non_hwi_runs:
-                non_hwi_runs = non_hwi_runs.pop()
-            else:
-                non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
-                non_hwi_runs.setText(0, 'Non-HWI Runs')
-                new_run.sampleName = 'Non-HWI Runs'
-            self.add_run_node(new_run, non_hwi_runs)
+            elif isinstance(new_run, Run):
+                non_hwi_runs = self.findItems(
+                    'Non-HWI Runs', Qt.MatchExactly, column=0)
+                if non_hwi_runs:
+                    non_hwi_runs = non_hwi_runs.pop()
+                else:
+                    non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
+                    non_hwi_runs.setText(0, 'Non-HWI Runs')
+                    new_run.sampleName = 'Non-HWI Runs'
+                self.add_run_node(new_run, non_hwi_runs)

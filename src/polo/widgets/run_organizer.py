@@ -15,17 +15,18 @@ from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import RunDeserializer, RunLinker
 from polo.utils.unrar_utils import test_for_working_unrar
 from polo.windows.ftp_dialog import FTPDialog
-from polo.windows.run_importer_dialog import RunImporter, RunImporterDialog
+from polo.windows.run_importer_dialog import RunImporter
+from polo.windows.run_importer import RunImporterDialog
 
 # run organizer should be the outer class and
 # run tree should be the inner calss widget
+
 
 class RunOrganizer(QtWidgets.QWidget):
 
     opening_run = pyqtSignal(list)
     classify_run = pyqtSignal(list)
     ftp_download_status = pyqtSignal(bool)
-
 
     def __init__(self, parent=None, loaded_runs={},
                  classified_runs={}, auto_link_runs=True):
@@ -38,26 +39,29 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classified_runs = {}
         self.shown_unrar_message = False
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
-
+        self.ui.pushButton.clicked.connect(self.handle_classification_request)
         self.ui.runTree.itemDoubleClicked.connect(self.handle_opening_run)
+
+    def handle_classification_request(self):
+        selected_runname = self.ui.runTree.currentItem().text(0)
+        if selected_runname in self.ui.runTree.loaded_runs:
+            selected_run = self.ui.runTree.loaded_runs[selected_runname]
+            self.open_classification_thread(selected_run)
 
     def handle_opening_run(self, *args):
         # get the selected item
         selected_runname = self.ui.runTree.currentItem().text(0)
+        selected_run = None
         if selected_runname in self.ui.runTree.classified_runs:
             selected_run = self.ui.runTree.classified_runs[selected_runname]
-            self.opening_run.emit([selected_run])
+        elif selected_runname in self.ui.runTree.loaded_runs:
+            selected_run = self.ui.runTree.loaded_runs[selected_runname]
         else:
-            if selected_runname in self.ui.runTree.loaded_runs:
-                selected_run = self.ui.runTree.loaded_runs[selected_runname]
-                if selected_run.image_spectrum == IMAGE_SPECS[0]:  # visible
-                    # self.classify_run.emit([selected_run])
-                    self.open_classification_thread(selected_run)
-                else:
-                    self.ui.runTree.add_classified_run(selected_run)
-                    self.opening_run.emit([selected_run])
-            else:
-                pass
+            pass
+            #make_message_box('It appears this run no longer exists').exec_()
+            # throws message when double click on sample name
+        if selected_run:
+            self.opening_run.emit([selected_run])
 
     def open_classification_thread(self, run):
         self.ui.progressBar.setMaximum(len(run))
@@ -86,44 +90,40 @@ class RunOrganizer(QtWidgets.QWidget):
         else:
             time_string = '{} secs'.format(round(time))
         self.ui.label_32.setText(time_string)
+    
 
-    def import_from_saved_run(self):
+    def _add_run_to_tree(self, run, classified=False):
+        self.ui.runTree.add_run_to_tree(run)
+        if classified:
+            self.ui.add_classified_run(run)
 
-        xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
-        xtal_dialog.exec_()
-        xtal_file = xtal_dialog.selectedFiles()
+    def import_from_saved_run(self, xtal_file=None):
+        if not xtal_file:
+            xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
+            xtal_dialog.exec_()
+            xtal_file = xtal_dialog.selectedFiles()
         if xtal_file:  # returned as a list
             xtal_file = xtal_file[0]
             if os.path.isfile(xtal_file):
                 r = RunDeserializer(
-                     xtal_file).xtal_to_run()
-                self.ui.runTree.add_run_to_tree(r)
-                self.ui.runTree.add_classified_run(r)
-
-                # self.new_run_thread = RunDeserializer(
-                #     xtal_file).xtal_to_run_on_thread()
-
-                # def finished_import():
-                #     result = self.new_run_thread.result
-                #     if isinstance(result, (Run, HWIRun)):
-                #         self.ui.runTree.add_run_to_tree(result)
-                #         self.ui.runTree.add_classified_run(result)
-                #     else:
-                #         pass
-                #     # shoe error message
-                # self.new_run_thread.finished.connect(finished_import)
-                # self.new_run_thread.start()
+                    xtal_file).xtal_to_run()
+                if isinstance(r, (Run, HWIRun)):
+                    self._add_run_to_tree(r)
+                    return True
+                else:
+                    make_message_box(
+                        message='Failed to import run with {}'.format(r),
+                        parent=self
+                    ).exec()
+        return False
 
     def import_run_from_dialog(self):
         run_importer_dialog = RunImporterDialog(
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
-        if (
-            hasattr(run_importer_dialog, 'new_run')
-            and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
-        ):
-            self.ui.runTree.add_run_to_tree(run_importer_dialog.new_run)
-
+        run_importer_dialog.exec_()
+        for run_name, run in run_importer_dialog.imported_runs.items():
+            self._add_run_to_tree(run)
 
     def import_run_from_ftp(self):
         if not test_for_working_unrar() and not self.shown_unrar_message:
@@ -132,6 +132,7 @@ class RunOrganizer(QtWidgets.QWidget):
                 parent=self)
             self.shown_unrar_message = True
             msg.exec_()
+
         if hasattr(self, 'ftp_download_thread') and self.ftp_download_thread.isRunning():
             msg = make_message_box(
                 message='FTP download already in progress. {} of {} files downloaded.'.format(
@@ -141,8 +142,9 @@ class RunOrganizer(QtWidgets.QWidget):
             )
             msg.exec_()
             return
-            
+
         ftp_browser = FTPDialog(parent=self)
+        ftp_browser.exec_()
         if ftp_browser.ftp and ftp_browser.download_files and ftp_browser.save_dir:
             self.ftp_download_thread = FTPDownloadThread(
                 ftp_browser.ftp, ftp_browser.download_files, ftp_browser.save_dir
@@ -155,14 +157,13 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ftp_download_status.emit(True)
             self.ftp_download_counter[1] = len(ftp_browser.download_files)
             self.ftp_download_thread.start()
-    
+
     def finished_ftp_download(self):
         self.ftp_download_status.emit(False)
         self.ftp_download_counter = [0, 0]  # reset the counter
         make_message_box(
             message='All FTP downloads completed!', parent=self
         ).exec_()
-
 
     def handle_ftp_download(self, file_path):
         if test_for_working_unrar():
@@ -174,7 +175,6 @@ class RunOrganizer(QtWidgets.QWidget):
                 unpacker.start()
         else:
             pass
-    
 
         # connect the downloaded file to classification thread if it
         # is in the visible spectrum and another run is not already
@@ -189,6 +189,5 @@ class RunOrganizer(QtWidgets.QWidget):
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
             self.ui.runTree.add_run_to_tree(new_run)
+        return new_run
         # message box failed to import?
-
-

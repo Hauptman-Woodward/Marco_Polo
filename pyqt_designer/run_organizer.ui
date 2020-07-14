@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>318</width>
+    <width>329</width>
     <height>580</height>
    </rect>
   </property>
@@ -14,6 +14,27 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_30">
+     <property name="text">
+      <string>Est Time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="label_31">
+     <property name="text">
+      <string>Classification Progress</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="label_32">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="2">
     <widget class="RunTree" name="runTree">
      <property name="minimumSize">
@@ -22,6 +43,23 @@
        <height>0</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <stylestrategy>PreferDefault</stylestrategy>
+      </font>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
      <column>
       <property name="text">
        <string>Samples</string>
@@ -29,14 +67,7 @@
      </column>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="label_31">
-     <property name="text">
-      <string>Classification Progress</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="toolTip">
       <string/>
@@ -46,17 +77,14 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_30">
-     <property name="text">
-      <string>Est Time</string>
+   <item row="1" column="0" colspan="2">
+    <widget class="QPushButton" name="pushButton">
+     <property name="toolTip">
+      <string>Run the MARCO model on the currently selected run. MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.
+</string>
      </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="label_32">
      <property name="text">
-      <string>0</string>
+      <string>Classify Selected Run</string>
      </property>
     </widget>
    </item>
