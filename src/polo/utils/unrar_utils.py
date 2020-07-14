@@ -12,7 +12,7 @@ def unrar_archive(rar_path, target_dir=None):
         exit_status = subprocess.call(unrar_cmd)
 
         if exit_status == 0:
-            return Path(rar_path).with_suffix('')
+            return Path(str(rar_path)).with_suffix('')
         else:
             return exit_status
     except Exception as e:

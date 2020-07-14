@@ -28,8 +28,8 @@ from polo.widgets.slideshow_viewer import SlideshowViewer
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
-from polo.windows.run_importer_dialog import RunImporterDialog
-from polo.windows.run_updater_dialog import RunUpdaterDialog
+from polo.windows.multi_run_importer import RunImporterDialog
+# from polo.windows.run_updater_dialog import RunUpdaterDialog
 from polo.windows.pptx_dialog import PptxDesignerDialog
 
 from polo.windows.spectrum_dialog import SpectrumDialog

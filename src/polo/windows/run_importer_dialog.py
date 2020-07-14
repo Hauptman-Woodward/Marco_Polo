@@ -8,7 +8,7 @@ from PyQt5.QtCore import QItemSelectionModel
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo import make_default_logger
-from polo.crystallography.run import HWIRun, Run
+from polo.crystallography.run import *
 from polo.designer.UI_run_importer import Ui_Dialog
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 # from polo.threads.thread import LoadRunThread
@@ -90,9 +90,9 @@ class RunImporter():
             run_name = os.path.basename(dir_name)
             image_type = dir_name.split('-')[-1].strip()
             if image_type in SPEC_KEYS:
-                image_type = SPEC_KEYS[image_type]
+                image_spectrum = SPEC_KEYS[image_type]
             else:
-                image_type = IMAGE_SPECS[0]  # default to visible
+                image_spectrum = IMAGE_SPECS[0]  # default to visible
             plate_id = dir_name[:10]
             date = datetime.strptime(dir_name[10:].split('-')[0],
                                     '%Y''%m''%d''%H''%M')
@@ -105,11 +105,7 @@ class RunImporter():
                 'run_name': run_name
                 }
 
-
-
-
-
-        except (ValueError, IndexError) as e:
+        except Exception as e:
             logger.error('Caught {} at {} attempting to parse {}'.format(
                 e, RunImporter.parse_hwi_dir_metadata, dir_name
             ))
@@ -287,30 +283,30 @@ class ImportCandidateManager():
 
 
 
-class RunImporterDialog(QtWidgets.QDialog):
-    '''
-    Dialog that allows and controls how the user creates run objects from
-    directories of images.
-    '''
+# class RunImporterDialog(QtWidgets.QDialog):
+#     '''
+#     Dialog that allows and controls how the user creates run objects from
+#     directories of images.
+#     '''
 
-    HWI_INDEX, NON_HWI_INDEX, RAW_INDEX = 0, 1, 2
+#     HWI_INDEX, NON_HWI_INDEX, RAW_INDEX = 0, 1, 2
 
-    def __init__(self, current_run_names, parent=None):
-        '''Create instance of RunImporterDialog. Used to import screening
-        images from an uncompressed directory of images.
+#     def __init__(self, current_run_names, parent=None):
+#         '''Create instance of RunImporterDialog. Used to import screening
+#         images from an uncompressed directory of images.
 
-        :param current_run_names: Runnames that are already in use by the\
-            current Polo session (Run names should be unique)
-        :type current_run_names: list or set
-        '''
-        super(RunImporterDialog, self).__init__(parent)
-        self.current_run_names = current_run_names
-        self.import_manager = ImportCandidateManager()
+#         :param current_run_names: Runnames that are already in use by the\
+#             current Polo session (Run names should be unique)
+#         :type current_run_names: list or set
+#         '''
+#         super(RunImporterDialog, self).__init__(parent)
+#         self.current_run_names = current_run_names
+#         self.import_manager = ImportCandidateManager()
         
-        # Data and UI setup
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
-        self.new_run = None
+#         # Data and UI setup
+#         self.ui = Ui_Dialog()
+#         self.ui.setupUi(self)
+#         self.new_run = None
         # self.can_unrar = test_for_working_unrar()
 
         # # self.import_descriptors = read_import_descriptors()

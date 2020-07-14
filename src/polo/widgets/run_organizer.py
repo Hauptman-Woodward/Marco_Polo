@@ -15,7 +15,8 @@ from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import RunDeserializer, RunLinker
 from polo.utils.unrar_utils import test_for_working_unrar
 from polo.windows.ftp_dialog import FTPDialog
-from polo.windows.run_importer_dialog import RunImporter, RunImporterDialog
+from polo.windows.run_importer_dialog import RunImporter
+from polo.windows.multi_run_importer import RunImporterDialog
 
 # run organizer should be the outer class and
 # run tree should be the inner calss widget
@@ -62,7 +63,6 @@ class RunOrganizer(QtWidgets.QWidget):
         if selected_run:
             self.opening_run.emit([selected_run])
 
-
     def open_classification_thread(self, run):
         self.ui.progressBar.setMaximum(len(run))
         self.ui.progressBar.setValue(1)  # reset the bar to 0
@@ -90,6 +90,14 @@ class RunOrganizer(QtWidgets.QWidget):
         else:
             time_string = '{} secs'.format(round(time))
         self.ui.label_32.setText(time_string)
+    
+
+    def _add_run_to_tree(self, run, classified=False):
+        self.ui.runTree.add_run_to_tree(run)
+        if classified:
+            self.ui.add_classified_run(run)
+
+
 
     def import_from_saved_run(self, xtal_file=None):
         if not xtal_file:
@@ -102,8 +110,7 @@ class RunOrganizer(QtWidgets.QWidget):
                 r = RunDeserializer(
                     xtal_file).xtal_to_run()
                 if isinstance(r, (Run, HWIRun)):
-                    self.ui.runTree.add_run_to_tree(r)
-                    self.ui.runTree.add_classified_run(r)
+                    self._add_run_to_tree(r)
                     return True
                 else:
                     make_message_box(
@@ -117,11 +124,13 @@ class RunOrganizer(QtWidgets.QWidget):
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
         run_importer_dialog.exec_()
-        if (
-            hasattr(run_importer_dialog, 'new_run')
-            and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
-        ):
-            self.ui.runTree.add_run_to_tree(run_importer_dialog.new_run)
+        # if (
+        #     hasattr(run_importer_dialog, 'new_run')
+        #     and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
+        # ):
+        #     self.ui._add_run_to_tree(run_importer_dialog.new_run)
+
+        # TODO needs to be able to handle multiple runs now
 
     def import_run_from_ftp(self):
         if not test_for_working_unrar() and not self.shown_unrar_message:

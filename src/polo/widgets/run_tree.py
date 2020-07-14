@@ -77,33 +77,34 @@ class RunTree(QtWidgets.QTreeWidget):
                 linked_runs = linker.the_big_link()
 
     def add_run_to_tree(self, new_run):
-        if isinstance(new_run, HWIRun):
-            if hasattr(new_run, 'sampleName'):
-                sample_node = self.findItems(
-                    new_run.sampleName, Qt.MatchExactly, column=0)
-                if sample_node:
-                    sample_node = sample_node.pop()  # returned as a list
-                    self.add_run_node(new_run, sample_node)
+        if new_run.run_name not in self.all_runs:
+            if isinstance(new_run, HWIRun):
+                if hasattr(new_run, 'sampleName'):
+                    sample_node = self.findItems(
+                        new_run.sampleName, Qt.MatchExactly, column=0)
+                    if sample_node:
+                        sample_node = sample_node.pop()  # returned as a list
+                        self.add_run_node(new_run, sample_node)
+                    else:
+                        self.add_sample(new_run.sampleName, new_run)
                 else:
-                    self.add_sample(new_run.sampleName, new_run)
-            else:
-                orphan_runs = self.findItems(
-                    'Sampleless Runs', Qt.MatchExactly, column=0)
-                if orphan_runs:
-                    orphan_runs = orphan_runs.pop()
-                else:
-                    orphan_runs = QtWidgets.QTreeWidgetItem(self)
-                    orphan_runs.setText(0, 'Sampleless Runs')
-                new_run.sampleName = 'Sampleless Runs'
-                self.add_run_node(new_run, orphan_runs)
+                    orphan_runs = self.findItems(
+                        'Sampleless Runs', Qt.MatchExactly, column=0)
+                    if orphan_runs:
+                        orphan_runs = orphan_runs.pop()
+                    else:
+                        orphan_runs = QtWidgets.QTreeWidgetItem(self)
+                        orphan_runs.setText(0, 'Sampleless Runs')
+                    new_run.sampleName = 'Sampleless Runs'
+                    self.add_run_node(new_run, orphan_runs)
 
-        elif isinstance(new_run, Run):
-            non_hwi_runs = self.findItems(
-                'Non-HWI Runs', Qt.MatchExactly, column=0)
-            if non_hwi_runs:
-                non_hwi_runs = non_hwi_runs.pop()
-            else:
-                non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
-                non_hwi_runs.setText(0, 'Non-HWI Runs')
-                new_run.sampleName = 'Non-HWI Runs'
-            self.add_run_node(new_run, non_hwi_runs)
+            elif isinstance(new_run, Run):
+                non_hwi_runs = self.findItems(
+                    'Non-HWI Runs', Qt.MatchExactly, column=0)
+                if non_hwi_runs:
+                    non_hwi_runs = non_hwi_runs.pop()
+                else:
+                    non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
+                    non_hwi_runs.setText(0, 'Non-HWI Runs')
+                    new_run.sampleName = 'Non-HWI Runs'
+                self.add_run_node(new_run, non_hwi_runs)

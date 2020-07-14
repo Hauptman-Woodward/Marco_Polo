@@ -28,7 +28,174 @@ from polo.utils.unrar_utils import *
 from polo.utils.math_utils import *
 
 
+
 logger = make_default_logger(__name__)
+
+class RunImporter():
+
+    @staticmethod
+    def directory_validator(dir_path):
+        dir_path = str(dir_path)
+        if os.path.exists(dir_path):
+            if os.path.isdir(dir_path):
+                files = list_dir_abs(dir_path, allowed=True)
+                if files:
+                    return True
+                else:
+                    e = ForbiddenImageTypeError
+                    logger.warning('Directory validation failed with {}'.format(e))
+                    return e
+            else:
+                e = NotADirectoryError
+                logger.warning('Directory validation failed with {}'.format(e))
+                return e
+        else:
+            e = FileNotFoundError
+            logger.warning('Directory validation failed with {}'.format(e))
+            return FileNotFoundError
+    
+    @staticmethod
+    def parse_HWI_filename_meta(HWI_image_file):
+        '''
+        HWI images have a standard file nameing schema that gives info about when
+        they are taken and well number and that kind of thing. This function returns
+        that data
+        '''
+        HWI_image_file = os.path.basename(str(HWI_image_file))
+        return (
+            HWI_image_file[:10],
+            int(HWI_image_file[10:14].lstrip('0')),
+            datetime.strptime(HWI_image_file[14:22], '%Y''%m''%d'),
+            HWI_image_file[22:]
+        )
+
+    @staticmethod
+    def parse_hwi_dir_metadata(dir_name):
+        try:
+            dir_name = str(Path(dir_name).with_suffix('').name)
+            image_type = dir_name.split('-')[-1].strip()
+            if image_type in SPEC_KEYS:
+                image_spectrum = SPEC_KEYS[image_type]
+            else:
+                image_spectrum = IMAGE_SPECS[0]  # default to visible
+            plate_id = dir_name[:10]
+            date = datetime.strptime(dir_name[10:].split('-')[0],
+                                    '%Y''%m''%d''%H''%M')
+            
+            #return image_type, plate_id, date, run_name  # last is suggeseted run name
+            return {
+                'image_spectrum': image_spectrum,
+                'plate_id': plate_id,
+                'date': date,
+                'run_name': dir_name
+                }
+
+        except Exception as e:
+            logger.error('Caught {} at {} attempting to parse {}'.format(
+                e, RunImporter.parse_hwi_dir_metadata, dir_name
+            ))
+            return False
+    
+    @staticmethod
+    def crack_open_a_rar_one(rar_path):
+        if not isinstance(rar_path, Path):
+            rar_path = Path(rar_path)
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    @staticmethod
+    def import_from_xtal_thread(xtal_path):
+        reader = RunDeserializer(xtal_path)
+        if os.path.isfile(xtal_path):
+            return reader.make_read_xtal_thread()
+    
+    @staticmethod
+    def make_xtal_file_dialog(parent=None):
+        file_dlg = QtWidgets.QFileDialog(parent=parent)
+        file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
+        return file_dlg
+    
+    @staticmethod
+    def unpack_rar_archive_thread(archive_path):
+        archive_path = str(archive_path)
+        if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
+            return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
+
+    @staticmethod
+    def import_run_from_directory(data_dir, **kwargs):
+        hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
+        if isinstance(hwi_import_attempt, HWIRun):
+            return hwi_import_attempt
+        else:
+            return RunImporter.import_general_run(data_dir, **kwargs)
+
+    @staticmethod
+    def import_hwi_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            from polo import tim
+            metadata = XmlReader().find_and_read_plate_data(data_dir)
+            file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
+
+            if metadata and file_name_data:
+                image_type, plate_id, date, run_name = file_name_data
+                menu = tim.get_menu_by_date(date, 's')
+                new_run = HWIRun(
+                    image_dir=data_dir, run_name=run_name, cocktail_menu=menu,
+                    image_spectrum=image_type, date=date
+                )
+                new_run.__dict__.update(metadata)  # from xml data
+                new_run.__dict__.update(kwargs)  # for user supplied data
+                # that could overwrite what is in metadata
+                new_run.add_images_from_dir()
+                return new_run
+        else:
+            return False
+
+    @staticmethod
+    def import_general_run(data_dir, **kwargs):
+        if RunImporter.directory_validator(data_dir) == True:
+            # add some rule if does not have run name and spectru
+            new_run = Run(image_dir=data_dir, **kwargs)
+            new_run.add_images_from_dir()
+            return new_run
+
+    @staticmethod
+    def validate_run_name(text=None):
+        '''
+        Validates a given run name to ensure it can be used safely. Shows
+        an error message to the user if the run name is not valid and clears
+        the run name lineEdit widget.
+
+        In order for a run name to be valid it must contain only UTF-8
+        codable characters and not already be in use by another
+        run object. This is because the run name is used as a key to refer
+        to the run object in other functions.
+
+        :param text: String. The run name to be validated.
+        '''
+        validator_result = run_name_validator(text, self.current_run_names)
+        message = None
+        if validator_result == UnicodeError:
+            message = 'Run name is not UTF-8 Compliant'
+        elif validator_result == TypeError:
+            message = 'Run name must not be empty.'
+        elif not validator_result:  # result is false already exists
+            message = 'Run name already exists, please pick a unique name.'
+            # TODO option to overwrite the run of that same name
+        
+        if message:
+            return make_message_box(message).exec_()
+        else:
+            return True
+
+        # def read_xml_data(self, dir_path):
+        #     # read xml data from HWI uncompressed rar files
+        #     reader = XmlReader(dir_path)
+        #     plate_data = reader.find_and_read_plate_data(dir_path)
+        #     if isinstance(plate_data, dict) and plate_data:
+        #         return plate_data
+        #     else:
+        #         return {}  # empty dict so always safe to pass to update method
 
 
 class RunSerializer():
@@ -978,7 +1145,7 @@ class BarTender():
                     # add new menu to menus dict path to csv file is the menu
                     # key
 
-    def get_menu_by_date(self, date, type_):
+    def get_menu_by_date(self, date, type_='s'):
         '''Get a menu instance who's usage dates include the given date and
         match the given screen type.
 
@@ -1006,7 +1173,7 @@ class BarTender():
                     return self.menus[each_key]
             return self.menus[menus_keys_by_date[-1]]
 
-    def get_menus_by_type(self, type_):
+    def get_menus_by_type(self, type_='s'):
         '''Returns all menus of a given screen type.
 
         's' for soluble screens and 'm' for membrane screens. No other
@@ -1472,3 +1639,5 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
             return e
 
     return path
+
+from polo.crystallography.run import *
