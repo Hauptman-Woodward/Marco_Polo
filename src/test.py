@@ -1,14 +1,11 @@
+import time
+from random import randint
 
-class foo():
-    def __init__(self, dogs):
-        self.dogs = dogs
-    
-    @classmethod
-    def make(cls, dogs):
-        return cls(dogs=10)
-    
-    def new_foo(self):
-        self = foo.make(10)
-f = foo(5)
-f.new_foo()
-print(f.dogs)
+
+
+s = time.time()
+r = randint(0, 10^1000)
+if r == 0:
+    print('hello')
+e = time.time()
+print(e - s)

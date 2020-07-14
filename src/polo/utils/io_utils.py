@@ -57,13 +57,16 @@ class RunSerializer():
 
         :param desired_suffix: File extension for given file path.
         '''
-
-        if isinstance(path, str):
-            path = Path(path)
-        if path.suffix == desired_suffix:
-            return str(path)
-        else:
-            return str(path.with_suffix(desired_suffix))
+        try:
+            if desired_suffix:
+                if isinstance(path, str):
+                    path = Path(path)
+                if path.suffix == desired_suffix:
+                    return str(path)
+                else:
+                    return str(path.with_suffix(desired_suffix))
+        except Exception as e:
+            return None
 
     @staticmethod
     def make_message_box(message, icon=QtWidgets.QMessageBox.Information,
@@ -139,23 +142,24 @@ class HtmlWriter(RunSerializer):
         # and that kind of stuff
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
             output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
-            if encode_images:
-                self.run.encode_images_to_base64()
-            images = json.loads(json.dumps(
-                self.run.images, default=XtalWriter.json_encoder))
-            [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
+            if output_path:
+                if encode_images:
+                    self.run.encode_images_to_base64()
+                images = json.loads(json.dumps(
+                    self.run.images, default=XtalWriter.json_encoder))
+                [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
 
-            template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
-            if template:
-                try:
-                    html = template.render(
-                        images=images, run_name=self.run.run_name,
-                        annotations='No annotations')
-                    with open(output_path, 'w') as html_file:
-                        html_file.write(html)
-                        return True
-                except Exception as e:
-                    return e
+                template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
+                if template:
+                    try:
+                        html = template.render(
+                            images=images, run_name=self.run.run_name,
+                            annotations='No annotations')
+                        with open(output_path, 'w') as html_file:
+                            html_file.write(html)
+                            return True
+                    except Exception as e:
+                        return e
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):

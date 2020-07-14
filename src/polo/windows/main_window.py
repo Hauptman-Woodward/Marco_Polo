@@ -13,7 +13,7 @@ from matplotlib.backends.backend_qt5agg import \
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
-from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout, QApplication
 
 from polo import *
 from polo.crystallography.run import HWIRun, Run
@@ -227,34 +227,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if export_path:
                     export_path, export_results = Path(export_path), None
                 
-                if action == self.actionAs_HTML:
-                    writer = HtmlWriter(self.current_run)
-                    QApplication.setOverrideCursor(Qt.WaitCursor)
-                    self.setEnabled(False)
-                    export_results = writer.write_complete_run(
-                        export_path, encode_images=True)
-                    if export_results != True:
-                        error_message = 'Failed to write html file with error {}'.format(export_results)
+                    if action == self.actionAs_HTML:
+                        writer = HtmlWriter(self.current_run)
+                        QApplication.setOverrideCursor(Qt.WaitCursor)
+                        self.setEnabled(False)
+                        export_results = writer.write_complete_run(
+                            export_path, encode_images=True)
+
+                    elif action == self.actionAs_CSV:
+                        export_path = export_path.with_suffix('.csv')
+                        csv_exporter = RunCsvWriter(self.current_run, export_path)
+                        export_results = csv_exporter.write_csv()
+
+                    elif action == self.actionAs_MSO:
+                        writer = MsoWriter(self.current_run, export_path)
+                        export_results = writer.write_mso_file()
+
+                    # check if need to show an error message
                     self.setEnabled(True)
                     QApplication.restoreOverrideCursor()
-
-                elif action == self.actionAs_CSV:
-                    export_path = export_path.with_suffix('.csv')
-                    csv_exporter = RunCsvWriter(self.current_run, export_path)
-                    export_results = csv_exporter.write_csv()
-                    if export_results != True:
-                        error_message = 'Failed to write to csv file.'
-
-                elif action == self.actionAs_MSO:
-                    writer = MsoWriter(self.current_run, export_path)
-                    attempt = writer.write_mso_file()
-                    if attempt != True:
-                        error_message='Failed to write mso. Is the an HWI Run?'
-                # check if need to show an error message
-                if export_results != True:
-                    make_message_box(
-                        message=error_message, parent=self
-                    ).exec_()
+                    if export_results != True and export_results != None:
+                        make_message_box(
+                            message='Export failed', parent=self
+                        ).exec_()
             else:
                 presentation_maker = PptxDesignerDialog(
                     self.runOrganizer.ui.runTree.all_runs)

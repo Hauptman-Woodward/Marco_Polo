@@ -238,52 +238,52 @@ class ImportCandidateManager():
         self.candidate_paths = candidate_paths
         self.__dict__.update(kwargs)
     
-    @property
-    def candidate_paths(self):
-        return self.__candidate_paths
+    # @property
+    # def candidate_paths(self):
+    #     return self.__candidate_paths
     
-    @candidate_paths.setter
-    def candidate_paths(self, new_paths):
-        for i, path in enumerate(new_paths):
-            new_paths[i] = ImportCandidate(str(path))
+    # @candidate_paths.setter
+    # def candidate_paths(self, new_paths):
+    #     for i, path in enumerate(new_paths):
+    #         new_paths[i] = ImportCandidate(str(path))
         
-        self.__candidate_paths = set(new_paths)
+    #     self.__candidate_paths = set(new_paths)
     
-    def add_candidates(self, import_candidates):
-        import_candidates = set(Path(str(p)) for p in import_candidates])
-        if self.__candidate_paths:
-            self.candidate_paths = self.__candidate_paths.union(import_candidates)
-        else:
-            self.__candidate_paths = import_candidates
+    # # def add_candidates(self, import_candidates):
+    # #     import_candidates = set(Path(str(p)) for p in import_candidates])
+    # #     if self.__candidate_paths:
+    # #         self.candidate_paths = self.__candidate_paths.union(import_candidates)
+    # #     else:
+    # #         self.__candidate_paths = import_candidates
     
-    def prune_bad_directories(self):
-        good_paths, pruned_paths = [], []
-        for p in self.candidate_paths:
-            if p.suffix == '.rar':
-                good_paths.append(p)
-            elif RunImporter.directory_validator(p):
-                good_paths.append(p)
-            else:
-                pruned_paths.append(p)
-        return good_paths, pruned_paths
+    # def prune_bad_directories(self):
+    #     good_paths, pruned_paths = [], []
+    #     for p in self.candidate_paths:
+    #         if p.suffix == '.rar':
+    #             good_paths.append(p)
+    #         elif RunImporter.directory_validator(p):
+    #             good_paths.append(p)
+    #         else:
+    #             pruned_paths.append(p)
+    #     return good_paths, pruned_paths
     
-    def prune_as_hwi_paths(self):
-        # prune paths as if they are HWI paths
-        good_paths, pruned_paths = prune_bad_directories()
-        for p in self.candidate_paths:
-            hwi_metadata = RunImporter.parse_hwi_dir_metadata()
-            if hwi_metadata:
-                p.add_metadata(hwi_metadata)
-                good_paths.append(p)
-            else:
-                pruned_paths.append(p)
-        return good_paths, pruned_paths
+    # def prune_as_hwi_paths(self):
+    #     # prune paths as if they are HWI paths
+    #     good_paths, pruned_paths = prune_bad_directories()
+    #     for p in self.candidate_paths:
+    #         hwi_metadata = RunImporter.parse_hwi_dir_metadata()
+    #         if hwi_metadata:
+    #             p.add_metadata(hwi_metadata)
+    #             good_paths.append(p)
+    #         else:
+    #             pruned_paths.append(p)
+    #     return good_paths, pruned_paths
     
-    def could_not_import_message(self, pruned_paths, parent=None):
-        message = ['Could not import the following:\n'] + [str(p) for p in pruned_paths]
-        return make_message_box(
-            message='\n'.join(message), parent=parent
-        )
+    # def could_not_import_message(self, pruned_paths, parent=None):
+    #     message = ['Could not import the following:\n'] + [str(p) for p in pruned_paths]
+    #     return make_message_box(
+    #         message='\n'.join(message), parent=parent
+    #     )
 
 
 
@@ -311,510 +311,510 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.new_run = None
-        self.can_unrar = test_for_working_unrar()
+        # self.can_unrar = test_for_working_unrar()
 
-        # self.import_descriptors = read_import_descriptors()
+        # # self.import_descriptors = read_import_descriptors()
 
-        # Widget connections
-        self.ui.listWidget.currentRowChanged.connect(
-            self.display_selected_run_type)
-        self.ui.pushButton.clicked.connect(self.handle_browse_request)
-        self.ui.pushButton_6.clicked.connect(self.handle_browse_request)
-        self.ui.pushButton_5.clicked.connect(self.handle_browse_request)
-        self.ui.lineEdit.editingFinished.connect(self.make_hwi_run_suggestions)
-        self.ui.pushButton_2.clicked.connect(self.create_new_run)
-        self.ui.radioButton.toggled.connect(self.set_menu_options)
-        self.ui.radioButton_2.toggled.connect(self.set_menu_options)
-        self.ui.listWidget.selectionModel().setCurrentIndex(
-            self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
-        # self.ui.comboBox.currentIndexChanged.connect(
-        #     self.validate_hwi_number_images_run)
-        self.ui.comboBox_2.clear()
-        self.ui.comboBox_2.addItems(IMAGE_SPECS)
-        self.ui.comboBox_5.clear()
-        self.ui.comboBox_5.addItems(IMAGE_SPECS)
-        self.ui.comboBox_4.clear()
-        self.ui.comboBox_4.addItems(IMAGE_SPECS)
+        # # Widget connections
+        # self.ui.listWidget.currentRowChanged.connect(
+        #     self.display_selected_run_type)
+        # self.ui.pushButton.clicked.connect(self.handle_browse_request)
+        # self.ui.pushButton_6.clicked.connect(self.handle_browse_request)
+        # self.ui.pushButton_5.clicked.connect(self.handle_browse_request)
+        # self.ui.lineEdit.editingFinished.connect(self.make_hwi_run_suggestions)
+        # self.ui.pushButton_2.clicked.connect(self.create_new_run)
+        # self.ui.radioButton.toggled.connect(self.set_menu_options)
+        # self.ui.radioButton_2.toggled.connect(self.set_menu_options)
+        # self.ui.listWidget.selectionModel().setCurrentIndex(
+        #     self.ui.listWidget.model().index(0, 0), QItemSelectionModel.Select)
+        # # self.ui.comboBox.currentIndexChanged.connect(
+        # #     self.validate_hwi_number_images_run)
+        # self.ui.comboBox_2.clear()
+        # self.ui.comboBox_2.addItems(IMAGE_SPECS)
+        # self.ui.comboBox_5.clear()
+        # self.ui.comboBox_5.addItems(IMAGE_SPECS)
+        # self.ui.comboBox_4.clear()
+        # self.ui.comboBox_4.addItems(IMAGE_SPECS)
 
         # Widget display setup
-        self.set_menu_options()
-        self.cannot_unrar_message()
+    #     self.set_menu_options()
+    #     self.cannot_unrar_message()
     
-    @property
-    def current_index(self):
-        return self.ui.stackedWidget.currentIndex()
+    # @property
+    # def current_index(self):
+    #     return self.ui.stackedWidget.currentIndex()
 
-    @property
-    def current_menu_type(self):
-        '''Return the current screen type selection. 'm' is returned when
-        membrane screens have been selected by the user and 's' is returned
-        when soluble screens have been selected.
+    # @property
+    # def current_menu_type(self):
+    #     '''Return the current screen type selection. 'm' is returned when
+    #     membrane screens have been selected by the user and 's' is returned
+    #     when soluble screens have been selected.
 
-        :return: screen type
-        :rtype: str
-        '''
-        if self.ui.radioButton.isChecked():
-            return 'm'
-        else:
-            return 's'
+    #     :return: screen type
+    #     :rtype: str
+    #     '''
+    #     if self.ui.radioButton.isChecked():
+    #         return 'm'
+    #     else:
+    #         return 's'
 
-    @property
-    def soluble_menus(self):
-        '''Ask the bartender to return all soluble screen cocktail menus
+    # @property
+    # def soluble_menus(self):
+    #     '''Ask the bartender to return all soluble screen cocktail menus
 
-        :return: list of Menu objects
-        :rtype: list
-        '''
-        return tim.get_menus_by_type('s')
-        # return tim.get_menus_by_type('s')  # returns menu objects
+    #     :return: list of Menu objects
+    #     :rtype: list
+    #     '''
+    #     return tim.get_menus_by_type('s')
+    #     # return tim.get_menus_by_type('s')  # returns menu objects
 
-    @property
-    def membrane_menus(self):
-        '''Ask the bartender to return all membrane screen cocktail menus
+    # @property
+    # def membrane_menus(self):
+    #     '''Ask the bartender to return all membrane screen cocktail menus
 
-        :return: list of Menu objects
-        :rtype: list
-        '''
-        return tim.get_menus_by_type('m')
+    #     :return: list of Menu objects
+    #     :rtype: list
+    #     '''
+    #     return tim.get_menus_by_type('m')
 
-    @property
-    def current_dateEdit(self):
-        '''Get the current dateEdit widget based on the current index of
-        the stackedWidget. `current...` methods are used to determine which
-        stackWidget page to pull information from.
+    # @property
+    # def current_dateEdit(self):
+    #     '''Get the current dateEdit widget based on the current index of
+    #     the stackedWidget. `current...` methods are used to determine which
+    #     stackWidget page to pull information from.
 
-        :return: [description]
-        :rtype: [type]
-        '''
-        current_index = self.ui.stackedWidget.currentIndex()
-        if current_index == 0:
-            return self.ui.dateEdit_2
-        elif current_index == 1:
-            return self.ui.dateEdit
-        else:
-            return self.ui.dateEdit_2
+    #     :return: [description]
+    #     :rtype: [type]
+    #     '''
+    #     current_index = self.ui.stackedWidget.currentIndex()
+    #     if current_index == 0:
+    #         return self.ui.dateEdit_2
+    #     elif current_index == 1:
+    #         return self.ui.dateEdit
+    #     else:
+    #         return self.ui.dateEdit_2
 
-    @property
-    def current_dir_path(self):
-        current_index = self.ui.stackedWidget.currentIndex()
-        if current_index == self.HWI_INDEX:
-            return self.ui.combobox_7.currentText()
-        elif current_index == self.NON_HWI_INDEX:
-            return self.ui.lineEdit_3.text()
-        elif current_index == self.RAW_INDEX:
-            return self.ui.lineEdit_5.text()
-        else:
-            return None
+    # @property
+    # def current_dir_path(self):
+    #     current_index = self.ui.stackedWidget.currentIndex()
+    #     if current_index == self.HWI_INDEX:
+    #         return self.ui.combobox_7.currentText()
+    #     elif current_index == self.NON_HWI_INDEX:
+    #         return self.ui.lineEdit_3.text()
+    #     elif current_index == self.RAW_INDEX:
+    #         return self.ui.lineEdit_5.text()
+    #     else:
+    #         return None
 
-    @property
-    def current_run_name_lineEdit(self):
-        current_index = self.ui.stackedWidget.currentIndex()
-        if current_index == 0:
-            return self.ui.lineEdit_2
-        elif current_index == 1:
-            return self.ui.lineEdit_6
-        else:
-            return self.ui.lineEdit_4
+    # @property
+    # def current_run_name_lineEdit(self):
+    #     current_index = self.ui.stackedWidget.currentIndex()
+    #     if current_index == 0:
+    #         return self.ui.lineEdit_2
+    #     elif current_index == 1:
+    #         return self.ui.lineEdit_6
+    #     else:
+    #         return self.ui.lineEdit_4
     
 
-    def unrar_imports(self, import_paths):
-        valid_paths, invalid_paths = [], []
-        if self.import_paths and self.can_unrar:
-            for path in import_paths:
-                unrar_result = crack_open_a_rar_one(path)
-                if isinstance(unrar_result, Path):
-                    valid_paths.append(unrar_result)
-                else:
-                    invalid_paths.append((path, unrar_result))
+    # def unrar_imports(self, import_paths):
+    #     valid_paths, invalid_paths = [], []
+    #     if self.import_paths and self.can_unrar:
+    #         for path in import_paths:
+    #             unrar_result = crack_open_a_rar_one(path)
+    #             if isinstance(unrar_result, Path):
+    #                 valid_paths.append(unrar_result)
+    #             else:
+    #                 invalid_paths.append((path, unrar_result))
         
-        return valid_paths, invalid_paths
+    #     return valid_paths, invalid_paths
     
-    def handle_unrar_job(self, import_paths):
-        self.setEnabled(False)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        make_message_box(message='Extracting image archives').show()
-        unrared_paths, failed_paths = [], []
-        for p in import_paths:
-            result = self.crack_open_a_rar_one(p)
-            if isinstance(result, Path):
-                unrared_paths.append(result)
-            else:
-                failed_paths.append(result)
-        QApplication.restoreOverrideCursor()
-        self.setEnabled(True)
-        return unrared_paths, failed_paths
+    # def handle_unrar_job(self, import_paths):
+    #     self.setEnabled(False)
+    #     QApplication.setOverrideCursor(Qt.WaitCursor)
+    #     make_message_box(message='Extracting image archives').show()
+    #     unrared_paths, failed_paths = [], []
+    #     for p in import_paths:
+    #         result = self.crack_open_a_rar_one(p)
+    #         if isinstance(result, Path):
+    #             unrared_paths.append(result)
+    #         else:
+    #             failed_paths.append(result)
+    #     QApplication.restoreOverrideCursor()
+    #     self.setEnabled(True)
+    #     return unrared_paths, failed_paths
     
-    def populate_current_interface(self, import_paths):
-        if import_paths:
-            if self.current_index = self.HWI_INDEX:
-                c = self.ui.comboBox_7
-                current_items = set([c.itemText(i) for i in range(c.count())])
-                c.clear()
-                c.addItems(list(current_items.union(set(import_paths))))
-                c.setCurrentIndex(0)
-            else:
-                pass
-            # handle cases for non-hwi imports here
-            # need to change the line edits to comboboxes
+    # def populate_current_interface(self, import_paths):
+    #     if import_paths:
+    #         if self.current_index = self.HWI_INDEX:
+    #             c = self.ui.comboBox_7
+    #             current_items = set([c.itemText(i) for i in range(c.count())])
+    #             c.clear()
+    #             c.addItems(list(current_items.union(set(import_paths))))
+    #             c.setCurrentIndex(0)
+    #         else:
+    #             pass
+    #         # handle cases for non-hwi imports here
+    #         # need to change the line edits to comboboxes
     
-    def hwi_dir_changed(self):
-        current_dir = self.ui.combobox_7.currentText()
+    # def hwi_dir_changed(self):
+    #     current_dir = self.ui.combobox_7.currentText()
         
             
 
 
 
-    def handle_browse_request(self):
-        # open the file browser in the correct mode
-        import_paths = self.open_run_browser()
-        # get the paths could be many or just one
-        if self.ui.comboBox_6.currentText() == 'From Rar':
-            if self.can_unrar:
-                import_paths, bad_paths = self.handle_unrar_job(import_paths)
-                if bad_paths:
-                    self.import_manager.could_not_import_message(
-                        bad_paths, parent=self).exec_()
-            else:
-                make_message_box(
-                    message='Could not find a working unrar installation to open the selected files.',
-                    parent=self).exec_()
-                return False
+    # def handle_browse_request(self):
+    #     # open the file browser in the correct mode
+    #     import_paths = self.open_run_browser()
+    #     # get the paths could be many or just one
+    #     if self.ui.comboBox_6.currentText() == 'From Rar':
+    #         if self.can_unrar:
+    #             import_paths, bad_paths = self.handle_unrar_job(import_paths)
+    #             if bad_paths:
+    #                 self.import_manager.could_not_import_message(
+    #                     bad_paths, parent=self).exec_()
+    #         else:
+    #             make_message_box(
+    #                 message='Could not find a working unrar installation to open the selected files.',
+    #                 parent=self).exec_()
+    #             return False
 
-        if import_paths:
-            self.import_manager.add_candidates = import_paths
-            if self.current_index == self.HWI_INDEX:
-                import_paths, bad_paths = self.import_manager.prune_as_hwi_paths()
-            else:
-                import_paths, bad_paths = self.import_manager.prune_prune_bad_directories()
+    #     if import_paths:
+    #         self.import_manager.add_candidates = import_paths
+    #         if self.current_index == self.HWI_INDEX:
+    #             import_paths, bad_paths = self.import_manager.prune_as_hwi_paths()
+    #         else:
+    #             import_paths, bad_paths = self.import_manager.prune_prune_bad_directories()
             
-            if import_paths:
-                self.populate_current_interface(import_paths)
-            if bad_paths:
-                self.import_manager.could_not_import_message(
-                    bad_paths, parent=self
-                ).exec_()
+    #         if import_paths:
+    #             self.populate_current_interface(import_paths)
+    #         if bad_paths:
+    #             self.import_manager.could_not_import_message(
+    #                 bad_paths, parent=self
+    #             ).exec_()
     
      
             
-    def add_import_paths(self, import_paths):
-        if import_paths:
-            # convert items to strings for display
-            import_paths = set([str(p) for p in import_paths])
-            current_items = set([self.current_dir_path.itemText(i) for i in range(self.current_dir_path.count())])
-            self.current_dir_path.addItems(
-                list(import_paths.union(current_items))
-            )
+    # def add_import_paths(self, import_paths):
+    #     if import_paths:
+    #         # convert items to strings for display
+    #         import_paths = set([str(p) for p in import_paths])
+    #         current_items = set([self.current_dir_path.itemText(i) for i in range(self.current_dir_path.count())])
+    #         self.current_dir_path.addItems(
+    #             list(import_paths.union(current_items))
+    #         )
     
 
-    def display_hwi_metadata(self):
-        # get the current directory
-        cur_dir = self.ui.comboBox_7.currentText()
-        self.make_hwi_run_suggestions(dir_path=cur_dir)
-        # assume dirs and valid at this point
+    # def display_hwi_metadata(self):
+    #     # get the current directory
+    #     cur_dir = self.ui.comboBox_7.currentText()
+    #     self.make_hwi_run_suggestions(dir_path=cur_dir)
+    #     # assume dirs and valid at this point
 
 
-    def display_import_paths(self, import_paths):
-        # shows import paths
-        if self.import_paths:
-            self.current_dir_path.clear()
-            self.current_dir_path.addItems(self.import_paths)
-            self.current_dir_path.setCurrentIndex(0)
+    # def display_import_paths(self, import_paths):
+    #     # shows import paths
+    #     if self.import_paths:
+    #         self.current_dir_path.clear()
+    #         self.current_dir_path.addItems(self.import_paths)
+    #         self.current_dir_path.setCurrentIndex(0)
     
 
-    def cannot_unrar_message(self):
-        if not self.can_unrar:
-            message = '''Polo was unable to find a working unrar program for
-            your operating system. Polo will only be able to import images
-            from uncompressed directories. For for information on installing
-            unrar for Polo please visit this link LINK HERE'''
-            msg = make_message_box(message, parent=self)
-            self.ui.comboBox_6.clear()
-            # only allow imports from dir
-            self.ui.comboBox_6.addItem('From Directory')
-            msg.exec_()
+    # def cannot_unrar_message(self):
+    #     if not self.can_unrar:
+    #         message = '''Polo was unable to find a working unrar program for
+    #         your operating system. Polo will only be able to import images
+    #         from uncompressed directories. For for information on installing
+    #         unrar for Polo please visit this link LINK HERE'''
+    #         msg = make_message_box(message, parent=self)
+    #         self.ui.comboBox_6.clear()
+    #         # only allow imports from dir
+    #         self.ui.comboBox_6.addItem('From Directory')
+    #         msg.exec_()
 
-    def get_menu_options(self):
-        '''Returns a list of Menus that are available for the user to pick from
-        based on their screen type selection.
+    # def get_menu_options(self):
+    #     '''Returns a list of Menus that are available for the user to pick from
+    #     based on their screen type selection.
 
-        :return: list of Menu objects
-        :rtype: list
-        '''
-        # set options depending on the radiobox selected
-        if self.ui.radioButton.isChecked():  # membrane selected
-            menus = self.membrane_menus
-        else:
-            menus = self.soluble_menus
-
-        return sorted(menus, key=lambda menu: menu.start_date, reverse=True)
-
-    def set_menu_options(self):
-        '''Set the menu selection comboBox items to the available menu options
-        '''
-        options = self.get_menu_options()  # menu instances
-        self.ui.comboBox_3.clear()
-        self.ui.comboBox_3.addItems(
-            [os.path.basename(str(menu.path)) for menu in options])
-    
-
-    def get_menu_index_by_path(self, menu_path):
-        '''Retrieve the index of a combobox item representing a Menu object
-        from the menu object's path
-
-        :param menu_path: File path of a menu object
-        :type menu_path: str
-        :return: Index of the menu path in the combobox
-        :rtype: int
-        '''
-        return self.ui.comboBox_3.findText(menu_path)
-
-    def set_current_menu(self, menu):
-        menu_index = self.get_menu_index_by_path(os.path.basename(str(menu.path)))
-        if menu_index >= 0:
-            return self.ui.comboBox_3.setCurrentIndex(menu_index)
-
-    def set_hwi_image_type(self, image_type):
-        '''Suggests an image spectrum for HWI imports based on the
-        inferred image spectrum. 
-
-        :param image_type: Image spectrum keyword
-        :type image_type: str
-        '''
-        if image_type in SPEC_KEYS:
-            image_type = SPEC_KEYS[image_type]
-            # last ditch convert to image descrip
-
-        if image_type == IMAGE_SPECS[1]:  # uvt
-            self.ui.comboBox_2.setCurrentIndex(1)
-        elif image_type == IMAGE_SPECS[0]:  # visible
-            self.ui.comboBox_2.setCurrentIndex(0)
-        elif image_type == IMAGE_SPECS[3]:  # shg
-            self.ui.comboBox_2.setCurrentIndex(2)
-        else:  # other
-            self.ui.comboBox_2.setCurrentIndex(3)
-
-    def suggest_menu_by_date(self, image_date, menu_type=None):
-        '''Given a specific date, suggest what menu should be used. If the
-        menu type is not given then assume the menu type should come from
-        the current user selection.
-
-        :param image_date: Date to search for menu by
-        :type image_date: Datetime
-        :param menu_type: Soluble of membrane menu, defaults to None
-        :type menu_type: str, optional
-        :return: Menu object that was used during the given date
-        :rtype: Menu
-        '''
-        if not menu_type:
-            menu_type = self.current_menu_type
-
-        return tim.get_menu_by_date(image_date, menu_type)
-
-    def make_hwi_run_suggestions(self, dir_path=''):
-        '''Wrapper method that can be used to call all methods involved in
-        displaying suggested settings for HWI Run image imports.
-
-        :return: True if image directory conforms to HWI naming conventions, False otherwise
-        :rtype: Bool
-        '''
-        if os.path.exists(dir_path) and os.path.isdir(dir_path):
-            dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
-            if isinstance(dir_data, ValueError):
-                make_message_box('Selected directory does not conform to HWI naming\
-                    conventions. Could not make suggestions.').exec_()
-                return False
-            elif isinstance(dir_data, (list, tuple)):
-                image_type, plate_id, date, run_name = dir_data
-                self.ui.lineEdit_2.setText(run_name)
-                self.set_hwi_image_type(image_type)
-                self.set_menu_options()
-                suggested_menu = self.suggest_menu_by_date(date)
-                self.set_current_menu(suggested_menu)
-                self.ui.dateEdit_2.setDate(date)
-                return True
-
-
-    def validate_hwi_number_images_run(self):
-        '''
-        Additional directory validation for HWI runs that is not required for
-        non-HWI or raw image imports.
-        '''
-        hwi_image_dir = self.ui.lineEdit.text()
-        if os.path.exists(hwi_image_dir):
-            user_num_images = int(self.ui.comboBox.currentText())
-            actual_image_count = len(list_dir_abs(hwi_image_dir, allowed=True))
-
-            error, message = False, ''
-            if actual_image_count > user_num_images:
-                error = True
-                message = '{} contains more than {} images. Increase number of images or \
-                    import run as a non-HWI run.'.format(hwi_image_dir, user_num_images)
-            elif actual_image_count < user_num_images:
-                error = True
-                message = '{} contains less than {} images. Run can still be imported as an\
-                    HWI run but will be missing image data. You might want to redownload your\
-                    images using the import from FTP function.'.format(hwi_image_dir, user_num_images)
-            if error:
-                make_message_box(message, parent=self).exec_()
-                return False
-            else:
-                return True
-
-    def display_selected_run_type(self, i):
-        '''
-        Changes the Widget displayed in the stackWidget
-        based on the given index i.
-
-        param i: Int. Index of stackWidget to show to user.
-        '''
-        self.ui.stackedWidget.setCurrentIndex(i)
-        self.ui.textBrowser.setPlainText(import_descriptors[i])
-
-    def open_run_browser(self):
-        '''
-        Opens a QFileDialog that only allows for selecting directories.
-        Returns the path of the directory the user selects. Will be none
-        is no directory is selected.
-        '''
-        mode = QtWidgets.QFileDialog.DirectoryOnly
-        f = ''  # file type filter
-
-        if self.ui.stackedWidget.currentIndex() == 0: # HWI run import 
-            if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
-                mode = QtWidgets.QFileDialog.ExistingFiles
-                f = 'Rar archives (*.rar)'
-        browser = QtWidgets.QFileDialog(self, filter=f)
-        browser.setFileMode(mode)
-        browser.exec_()
-        f = browser.selectedFiles()
-        self.import_paths = f
-        return self.import_paths
-
-    def crack_open_a_rar_one(self, rar_path):
-        if not isinstance(rar_path, Path):
-            rar_path = Path(rar_path)
-        parent_path = rar_path.parent
-        return unrar_archive(rar_path, parent_path)
-
-    # def validate_import(self, import_path=None):
-
-    #     if not isinstance(import_path, Path):
-    #         import_path = Path(import_path)
-
-    #     if import_path.suffix == '.rar':
-    #         import_thread = QuickThread(self.crack_open_a_rar_one,
-    #                                     rar_path=import_path)
-    #         message = 'Unpacking rar archive'
+    #     :return: list of Menu objects
+    #     :rtype: list
+    #     '''
+    #     # set options depending on the radiobox selected
+    #     if self.ui.radioButton.isChecked():  # membrane selected
+    #         menus = self.membrane_menus
     #     else:
-    #         import_thread = QuickThread(lambda: import_path)
-    #         message = ''
+    #         menus = self.soluble_menus
 
-    #     def thread_done():
-    #         self.setEnabled(True)
-    #         QApplication.restoreOverrideCursor()
-    #         result = import_thread.result
-    #         error, message = True, 'Error importing run'
-    #         if isinstance(result, Path):
-    #             validator_result = RunImporter.directory_validator(str(result))
-    #             if validator_result:  # directory is good to go
-    #                 if self.ui.stackedWidget.currentIndex() == 0:
-    #                     if self.make_hwi_run_suggestions(str(result)):
-    #                         error = False
-    #                     else:
-    #                         message = 'Directory does not confrom to HWI standards'  
-    #                 else:
-    #                     error = False
-    #             else:
-    #                 message = 'Invalid Directory. Failed with error {}'.format(validator_result)
+    #     return sorted(menus, key=lambda menu: menu.start_date, reverse=True)
+
+    # def set_menu_options(self):
+    #     '''Set the menu selection comboBox items to the available menu options
+    #     '''
+    #     options = self.get_menu_options()  # menu instances
+    #     self.ui.comboBox_3.clear()
+    #     self.ui.comboBox_3.addItems(
+    #         [os.path.basename(str(menu.path)) for menu in options])
+    
+
+    # def get_menu_index_by_path(self, menu_path):
+    #     '''Retrieve the index of a combobox item representing a Menu object
+    #     from the menu object's path
+
+    #     :param menu_path: File path of a menu object
+    #     :type menu_path: str
+    #     :return: Index of the menu path in the combobox
+    #     :rtype: int
+    #     '''
+    #     return self.ui.comboBox_3.findText(menu_path)
+
+    # def set_current_menu(self, menu):
+    #     menu_index = self.get_menu_index_by_path(os.path.basename(str(menu.path)))
+    #     if menu_index >= 0:
+    #         return self.ui.comboBox_3.setCurrentIndex(menu_index)
+
+    # def set_hwi_image_type(self, image_type):
+    #     '''Suggests an image spectrum for HWI imports based on the
+    #     inferred image spectrum. 
+
+    #     :param image_type: Image spectrum keyword
+    #     :type image_type: str
+    #     '''
+    #     if image_type in SPEC_KEYS:
+    #         image_type = SPEC_KEYS[image_type]
+    #         # last ditch convert to image descrip
+
+    #     if image_type == IMAGE_SPECS[1]:  # uvt
+    #         self.ui.comboBox_2.setCurrentIndex(1)
+    #     elif image_type == IMAGE_SPECS[0]:  # visible
+    #         self.ui.comboBox_2.setCurrentIndex(0)
+    #     elif image_type == IMAGE_SPECS[3]:  # shg
+    #         self.ui.comboBox_2.setCurrentIndex(2)
+    #     else:  # other
+    #         self.ui.comboBox_2.setCurrentIndex(3)
+
+    # def suggest_menu_by_date(self, image_date, menu_type=None):
+    #     '''Given a specific date, suggest what menu should be used. If the
+    #     menu type is not given then assume the menu type should come from
+    #     the current user selection.
+
+    #     :param image_date: Date to search for menu by
+    #     :type image_date: Datetime
+    #     :param menu_type: Soluble of membrane menu, defaults to None
+    #     :type menu_type: str, optional
+    #     :return: Menu object that was used during the given date
+    #     :rtype: Menu
+    #     '''
+    #     if not menu_type:
+    #         menu_type = self.current_menu_type
+
+    #     return tim.get_menu_by_date(image_date, menu_type)
+
+    # def make_hwi_run_suggestions(self, dir_path=''):
+    #     '''Wrapper method that can be used to call all methods involved in
+    #     displaying suggested settings for HWI Run image imports.
+
+    #     :return: True if image directory conforms to HWI naming conventions, False otherwise
+    #     :rtype: Bool
+    #     '''
+    #     if os.path.exists(dir_path) and os.path.isdir(dir_path):
+    #         dir_data = RunImporter.parse_hwi_dir_metadata(dir_path)
+    #         if isinstance(dir_data, ValueError):
+    #             make_message_box('Selected directory does not conform to HWI naming\
+    #                 conventions. Could not make suggestions.').exec_()
+    #             return False
+    #         elif isinstance(dir_data, (list, tuple)):
+    #             image_type, plate_id, date, run_name = dir_data
+    #             self.ui.lineEdit_2.setText(run_name)
+    #             self.set_hwi_image_type(image_type)
+    #             self.set_menu_options()
+    #             suggested_menu = self.suggest_menu_by_date(date)
+    #             self.set_current_menu(suggested_menu)
+    #             self.ui.dateEdit_2.setDate(date)
+    #             return True
+
+
+    # def validate_hwi_number_images_run(self):
+    #     '''
+    #     Additional directory validation for HWI runs that is not required for
+    #     non-HWI or raw image imports.
+    #     '''
+    #     hwi_image_dir = self.ui.lineEdit.text()
+    #     if os.path.exists(hwi_image_dir):
+    #         user_num_images = int(self.ui.comboBox.currentText())
+    #         actual_image_count = len(list_dir_abs(hwi_image_dir, allowed=True))
+
+    #         error, message = False, ''
+    #         if actual_image_count > user_num_images:
+    #             error = True
+    #             message = '{} contains more than {} images. Increase number of images or \
+    #                 import run as a non-HWI run.'.format(hwi_image_dir, user_num_images)
+    #         elif actual_image_count < user_num_images:
+    #             error = True
+    #             message = '{} contains less than {} images. Run can still be imported as an\
+    #                 HWI run but will be missing image data. You might want to redownload your\
+    #                 images using the import from FTP function.'.format(hwi_image_dir, user_num_images)
     #         if error:
-    #             self.current_dir_path.clear()
-    #             make_message_box(message=message, parent=self).exec_()
+    #             make_message_box(message, parent=self).exec_()
+    #             return False
     #         else:
-    #             self.current_dir_path.setText(str(result))
+    #             return True
 
-    #     QApplication.setOverrideCursor(Qt.WaitCursor)
-    #     import_thread.finished.connect(thread_done)
-    #     import_thread.start()
-    #     self.setEnabled(False)
-    #     if message:
-    #         message = make_message_box(message)
-    #         message.exec_()
+    # def display_selected_run_type(self, i):
+    #     '''
+    #     Changes the Widget displayed in the stackWidget
+    #     based on the given index i.
 
-    # def handle_browse_request(self):
-    #     paths = self.open_run_browser()
-    #     if path:
-    #         for p in paths:
-    #             self.validate_import(p)
+    #     param i: Int. Index of stackWidget to show to user.
+    #     '''
+    #     self.ui.stackedWidget.setCurrentIndex(i)
+    #     self.ui.textBrowser.setPlainText(import_descriptors[i])
 
-    def validate_run_name(self, text=None):
-        '''
-        Validates a given run name to ensure it can be used safely. Shows
-        an error message to the user if the run name is not valid and clears
-        the run name lineEdit widget.
+    # def open_run_browser(self):
+    #     '''
+    #     Opens a QFileDialog that only allows for selecting directories.
+    #     Returns the path of the directory the user selects. Will be none
+    #     is no directory is selected.
+    #     '''
+    #     mode = QtWidgets.QFileDialog.DirectoryOnly
+    #     f = ''  # file type filter
 
-        In order for a run name to be valid it must contain only UTF-8
-        codable characters and not already be in use by another
-        run object. This is because the run name is used as a key to refer
-        to the run object in other functions.
+    #     if self.ui.stackedWidget.currentIndex() == 0: # HWI run import 
+    #         if self.can_unrar and self.ui.comboBox_6.currentText() == 'From Rar':
+    #             mode = QtWidgets.QFileDialog.ExistingFiles
+    #             f = 'Rar archives (*.rar)'
+    #     browser = QtWidgets.QFileDialog(self, filter=f)
+    #     browser.setFileMode(mode)
+    #     browser.exec_()
+    #     f = browser.selectedFiles()
+    #     self.import_paths = f
+    #     return self.import_paths
 
-        :param text: String. The run name to be validated.
-        '''
-        validator_result = run_name_validator(text, self.current_run_names)
-        message = ''
-        if validator_result == UnicodeError:
-            message = 'Run name is not UTF-8 Compliant'
-        elif validator_result == TypeError:
-            message = 'Run name must not be empty.'
-        elif not validator_result:  # result is false already exists
-            message = 'Run name already exists, please pick a unique name.'
-            # TODO option to overwrite the run of that same name
-        return message
+    # def crack_open_a_rar_one(self, rar_path):
+    #     if not isinstance(rar_path, Path):
+    #         rar_path = Path(rar_path)
+    #     parent_path = rar_path.parent
+    #     return unrar_archive(rar_path, parent_path)
+
+    # # def validate_import(self, import_path=None):
+
+    # #     if not isinstance(import_path, Path):
+    # #         import_path = Path(import_path)
+
+    # #     if import_path.suffix == '.rar':
+    # #         import_thread = QuickThread(self.crack_open_a_rar_one,
+    # #                                     rar_path=import_path)
+    # #         message = 'Unpacking rar archive'
+    # #     else:
+    # #         import_thread = QuickThread(lambda: import_path)
+    # #         message = ''
+
+    # #     def thread_done():
+    # #         self.setEnabled(True)
+    # #         QApplication.restoreOverrideCursor()
+    # #         result = import_thread.result
+    # #         error, message = True, 'Error importing run'
+    # #         if isinstance(result, Path):
+    # #             validator_result = RunImporter.directory_validator(str(result))
+    # #             if validator_result:  # directory is good to go
+    # #                 if self.ui.stackedWidget.currentIndex() == 0:
+    # #                     if self.make_hwi_run_suggestions(str(result)):
+    # #                         error = False
+    # #                     else:
+    # #                         message = 'Directory does not confrom to HWI standards'  
+    # #                 else:
+    # #                     error = False
+    # #             else:
+    # #                 message = 'Invalid Directory. Failed with error {}'.format(validator_result)
+    # #         if error:
+    # #             self.current_dir_path.clear()
+    # #             make_message_box(message=message, parent=self).exec_()
+    # #         else:
+    # #             self.current_dir_path.setText(str(result))
+
+    # #     QApplication.setOverrideCursor(Qt.WaitCursor)
+    # #     import_thread.finished.connect(thread_done)
+    # #     import_thread.start()
+    # #     self.setEnabled(False)
+    # #     if message:
+    # #         message = make_message_box(message)
+    # #         message.exec_()
+
+    # # def handle_browse_request(self):
+    # #     paths = self.open_run_browser()
+    # #     if path:
+    # #         for p in paths:
+    # #             self.validate_import(p)
+
+    # def validate_run_name(self, text=None):
+    #     '''
+    #     Validates a given run name to ensure it can be used safely. Shows
+    #     an error message to the user if the run name is not valid and clears
+    #     the run name lineEdit widget.
+
+    #     In order for a run name to be valid it must contain only UTF-8
+    #     codable characters and not already be in use by another
+    #     run object. This is because the run name is used as a key to refer
+    #     to the run object in other functions.
+
+    #     :param text: String. The run name to be validated.
+    #     '''
+    #     validator_result = run_name_validator(text, self.current_run_names)
+    #     message = ''
+    #     if validator_result == UnicodeError:
+    #         message = 'Run name is not UTF-8 Compliant'
+    #     elif validator_result == TypeError:
+    #         message = 'Run name must not be empty.'
+    #     elif not validator_result:  # result is false already exists
+    #         message = 'Run name already exists, please pick a unique name.'
+    #         # TODO option to overwrite the run of that same name
+    #     return message
         
     
-    def read_xml_data(self, dir_path):
-        # read xml data from HWI uncompressed rar files
-        reader = XmlReader(dir_path)
-        plate_data = reader.find_and_read_plate_data(dir_path)
-        if isinstance(plate_data, dict) and plate_data:
-            return plate_data
-        else:
-            return {}  # empty dict so always safe to pass to update method
+    # def read_xml_data(self, dir_path):
+    #     # read xml data from HWI uncompressed rar files
+    #     reader = XmlReader(dir_path)
+    #     plate_data = reader.find_and_read_plate_data(dir_path)
+    #     if isinstance(plate_data, dict) and plate_data:
+    #         return plate_data
+    #     else:
+    #         return {}  # empty dict so always safe to pass to update method
 
 
-    def create_new_run(self):
-        '''
-        Creates a new run based on the information contained in the widgets
-        of the current stackedWidget index. If a run is able to be created successfully
-        then the new_run attribute is set to point at the new run object.
-        '''
-        current_index = self.ui.stackedWidget.currentIndex()
-        new_run = None
-        run_name = self.current_run_name_lineEdit.text()
-        dir_name = self.current_dir_path.text()
-        date = self.current_dateEdit.dateTime().toPyDateTime()
-        kwargs = {
-            'run_name': run_name, 'date': date
-        }
-        if current_index == 0:
-            # add cocktail selection
-            kwargs['cocktail_menu'] = tim.get_menu_by_basename(
-                self.ui.comboBox_3.currentText())
-            kwargs['image_spectrum'] = self.ui.comboBox_2.currentText()
-        elif current_index == 2:
-            kwargs['image_spectrum'] = self.ui.comboBox_4.currentText()
-        else:
-            kwargs['image_spectrum'] = IMAGE_SPECS[0]
-            # default to visible TODO make this less ugly
+    # def create_new_run(self):
+    #     '''
+    #     Creates a new run based on the information contained in the widgets
+    #     of the current stackedWidget index. If a run is able to be created successfully
+    #     then the new_run attribute is set to point at the new run object.
+    #     '''
+    #     current_index = self.ui.stackedWidget.currentIndex()
+    #     new_run = None
+    #     run_name = self.current_run_name_lineEdit.text()
+    #     dir_name = self.current_dir_path.text()
+    #     date = self.current_dateEdit.dateTime().toPyDateTime()
+    #     kwargs = {
+    #         'run_name': run_name, 'date': date
+    #     }
+    #     if current_index == 0:
+    #         # add cocktail selection
+    #         kwargs['cocktail_menu'] = tim.get_menu_by_basename(
+    #             self.ui.comboBox_3.currentText())
+    #         kwargs['image_spectrum'] = self.ui.comboBox_2.currentText()
+    #     elif current_index == 2:
+    #         kwargs['image_spectrum'] = self.ui.comboBox_4.currentText()
+    #     else:
+    #         kwargs['image_spectrum'] = IMAGE_SPECS[0]
+    #         # default to visible TODO make this less ugly
 
-        new_run = RunImporter.import_run_from_directory(
-            dir_name, **kwargs
-        )
-        if isinstance(new_run, (Run, HWIRun)):
-            self.new_run = new_run
-            self.close()
-        else:
-            make_message_box(
-                message='Directory could not be imported',
-                parent=self
-            ).exec_()
-            return False
+    #     new_run = RunImporter.import_run_from_directory(
+    #         dir_name, **kwargs
+    #     )
+    #     if isinstance(new_run, (Run, HWIRun)):
+    #         self.new_run = new_run
+    #         self.close()
+    #     else:
+    #         make_message_box(
+    #             message='Directory could not be imported',
+    #             parent=self
+    #         ).exec_()
+    #         return False
