@@ -28,7 +28,6 @@ from polo.widgets.slideshow_viewer import SlideshowViewer
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
-from polo.windows.multi_run_importer import RunImporterDialog
 # from polo.windows.run_updater_dialog import RunUpdaterDialog
 from polo.windows.pptx_dialog import PptxDesignerDialog
 
@@ -174,6 +173,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 parent=self,
                 message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
                 ).exec_()
+        else:
+            self.tab_10.setEnabled(True)
+            self.tab_2.setEnabled(True)
 
     def handle_opening_run(self, q):
         '''

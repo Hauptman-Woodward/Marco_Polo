@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(318, 580)
+        Form.resize(329, 580)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
         self.label_30 = QtWidgets.QLabel(Form)
@@ -27,6 +27,13 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.label_32, 4, 1, 1, 1)
         self.runTree = RunTree(Form)
         self.runTree.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setStyleStrategy(QtGui.QFont.PreferDefault)
+        self.runTree.setFont(font)
+        self.runTree.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.runTree.setAlternatingRowColors(False)
+        self.runTree.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.runTree.setWordWrap(True)
         self.runTree.setObjectName("runTree")
         self.gridLayout.addWidget(self.runTree, 0, 0, 1, 2)
         self.progressBar = QtWidgets.QProgressBar(Form)

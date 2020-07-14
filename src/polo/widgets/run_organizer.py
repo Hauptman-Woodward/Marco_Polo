@@ -16,7 +16,7 @@ from polo.utils.io_utils import RunDeserializer, RunLinker
 from polo.utils.unrar_utils import test_for_working_unrar
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.run_importer_dialog import RunImporter
-from polo.windows.multi_run_importer import RunImporterDialog
+from polo.windows.run_importer import RunImporterDialog
 
 # run organizer should be the outer class and
 # run tree should be the inner calss widget
@@ -97,8 +97,6 @@ class RunOrganizer(QtWidgets.QWidget):
         if classified:
             self.ui.add_classified_run(run)
 
-
-
     def import_from_saved_run(self, xtal_file=None):
         if not xtal_file:
             xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
@@ -124,13 +122,8 @@ class RunOrganizer(QtWidgets.QWidget):
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
         run_importer_dialog.exec_()
-        # if (
-        #     hasattr(run_importer_dialog, 'new_run')
-        #     and isinstance(run_importer_dialog.new_run, (HWIRun, Run))
-        # ):
-        #     self.ui._add_run_to_tree(run_importer_dialog.new_run)
-
-        # TODO needs to be able to handle multiple runs now
+        for run_name, run in run_importer_dialog.imported_runs.items():
+            self._add_run_to_tree(run)
 
     def import_run_from_ftp(self):
         if not test_for_working_unrar() and not self.shown_unrar_message:

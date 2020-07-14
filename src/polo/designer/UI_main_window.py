@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         self.runOrganizer = RunOrganizer(self.centralwidget)
         self.runOrganizer.setMinimumSize(QtCore.QSize(200, 0))
-        self.runOrganizer.setMaximumSize(QtCore.QSize(700, 16777215))
+        self.runOrganizer.setMaximumSize(QtCore.QSize(500, 16777215))
         self.runOrganizer.setObjectName("runOrganizer")
         self.gridLayout.addWidget(self.runOrganizer, 0, 0, 1, 1)
         self.run_interface = QtWidgets.QTabWidget(self.centralwidget)

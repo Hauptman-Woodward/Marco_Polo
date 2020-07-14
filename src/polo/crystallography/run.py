@@ -14,13 +14,14 @@ class Run():
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress']
 
-    def __init__(self, image_dir, run_name, image_spectrum=None, 
+    def __init__(self, image_dir, run_name, image_spectrum=None, date=None, 
                  images=[], **kwargs):
 
         self.image_dir = str(image_dir)
         self.run_name = run_name
         self.image_spectrum = image_spectrum
         self.images = images
+        self.date = date
         self.__dict__.update(kwargs)
 
     def __getitem__(self, n):
