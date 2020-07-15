@@ -189,6 +189,7 @@ class RunImporterDialog(QtWidgets.QDialog):
     def _import_files(self, rar=True):
         file_paths = self._open_browser(rar=rar)
         if file_paths:
+            QApplication.setOverrideCursor(Qt.WaitCursor)
             import_candidates = [ImportCandidate(p) for p in file_paths]
             import_candidates, drop_outs = self._test_candidate_paths(
                 import_candidates)
@@ -197,19 +198,38 @@ class RunImporterDialog(QtWidgets.QDialog):
                     'Could not import the following paths:',
                     drop_outs
                 ).exec_()
+
             if rar:
-                import_candidates, failed_unrars = self._unrar_candidate_paths(
-                import_candidates)
-                if failed_unrars:
-                    make_message_box(
-                        message='\n'.join(
-                            ['The following imports failed:\n'] + failed_unrars),
-                        parent=self
-                    ).exec_()
-            if import_candidates:
-                [imp_can.assign_run_type() for imp_can in import_candidates]
-                self._add_import_candidates(import_candidates)
-                self._display_candidate_paths()
+                self.import_thread = QuickThread(
+                    self._unrar_candidate_paths, candidate_paths=import_candidates)
+            else:
+                self.import_thread = QuickThread(
+                    lambda: import_candidates  # dummy thread
+                )
+            
+            def _finish_file_import():
+                self.setEnabled(True)
+                if isinstance(self.import_thread.result, tuple):
+                    import_candidates, failed_unrars = self.import_thread.result
+                    if failed_unrars:
+                        make_message_box(
+                            message='\n'.join(
+                                ['The following imports failed:\n'] + failed_unrars),
+                            parent=self
+                        ).exec_()
+                else:
+                    import_candidates = self.import_thread.result
+                
+                if import_candidates:
+                    [imp_can.assign_run_type() for imp_can in import_candidates]
+                    self._add_import_candidates(import_candidates)
+                    self._display_candidate_paths()
+                QApplication.restoreOverrideCursor()
+            
+            self.import_thread.finished.connect(_finish_file_import)
+            self.setEnabled(False)
+            self.import_thread.start()
+
 
     def _open_browser(self, rar=True):
         if rar:
@@ -242,18 +262,14 @@ class RunImporterDialog(QtWidgets.QDialog):
     def _unrar_candidate_paths(self, candidate_paths):
         unrared_paths, failed_unrar = [], []
         if self.can_unrar:
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.setEnabled(False)
             for path in candidate_paths:
-                if path.is_rar:
+                if path.is_rar:                     
                     result = path.unrar()
                     if result:
                         path.path = result
                         unrared_paths.append(path)
                     else:
                         failed_unrar.append(str(path))
-        self.setEnabled(True)
-        QApplication.restoreOverrideCursor()
         return unrared_paths, failed_unrar
 
     def _verify_run_name(self):
