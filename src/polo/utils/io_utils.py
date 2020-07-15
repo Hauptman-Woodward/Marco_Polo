@@ -111,6 +111,7 @@ class RunImporter():
     @staticmethod
     def make_xtal_file_dialog(parent=None):
         file_dlg = QtWidgets.QFileDialog(parent=parent)
+        file_dlg.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
         return file_dlg
     
@@ -1324,42 +1325,48 @@ class CocktailMenuReader():
 
 class RunLinker():
 
-    def __init__(self, loaded_runs):
-        self.loaded_runs = loaded_runs
-    
-    def the_big_link(self):
-        self.link_runs_by_date()
-        self.link_runs_by_spectrum()
+    @staticmethod
+    def the_big_link(runs):
+        runs = RunLinker.unlink_runs_completly(runs)
+        runs = RunLinker.link_runs_by_date(runs)
+        runs = RunLinker.link_runs_by_spectrum(runs)
 
-    def link_runs_by_date(self):
-        for run in self.loaded_runs:
+        return runs
+
+    @staticmethod
+    def link_runs_by_date(runs):
+        for run in runs:
             if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
                 continue
             else:
                 return False
-        runs = [r for r in sorted(
-            self.loaded_runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
-        # only visible runs liked by date
-        if runs and len(runs) > 1:  # if length is only one will be linked to self
-            for i in range(0, len(runs)-1):
-                runs[i].link_to_decendent(runs[i+1])
-        return runs
 
-    def link_runs_by_spectrum(self):
+        sorted_runs = [r for r in sorted(
+            runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
+        # only visible runs liked by date
+        if sorted_runs and len(sorted_runs) > 1:  # if length is only one will be linked to self
+            for i in range(0, len(sorted_runs)-1):
+                sorted_runs[i].link_to_decendent(sorted_runs[i+1])
+        return list(set(runs).union(set(sorted_runs)))
+        # sorted_runs will not contain non-visible runs so need to merge the
+        # linked visible runs with the non-visible runs in a way that does
+        # not create duplicates
+
+    @staticmethod
+    def link_runs_by_spectrum(runs):
         # for now this links all runs of the sample to the alt spectrums when
-        for run in self.loaded_runs:
+        for run in runs:
             if hasattr(run, 'link_to_alt_spectrum'):
                 continue
             else:
                 return False
         visible, other = [], []
-        for run in self.loaded_runs:
+        for run in runs:
             if run.image_spectrum == IMAGE_SPECS[0]:  # visible images only
                 visible.append(run)
             else:
                 other.append(run)
         if other:
-            # ISSUE WITH LINKING ALT RUNS HERE
             if len(other) > 1:
                 other = sorted(other, key=lambda o: len(str(o.image_spectrum)))
                 for i in range(len(other)-1):
@@ -1369,6 +1376,7 @@ class RunLinker():
             if visible:
                 for run in visible:
                     run.link_to_alt_spectrum(other[0])  # link to first run of alts
+        return runs
 
             # setting up the linked list structure
             # all alt spectrum (non visible) runs get linked together in a
@@ -1378,6 +1386,15 @@ class RunLinker():
             # spec linked list and reconnected. If a new visible run is selected
             # the current visible run in the linked list is replaced with the
             # new current run
+    @staticmethod
+    def unlink_runs_completly(runs):
+        for i, _ in enumerate(runs):
+            runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrun = None, None, None
+            for image in runs[i].images:
+                image.next_image, image.previous_image, image.alt_image = (
+                    None, None, None
+                )
+        return runs
 
 
 class XmlReader():

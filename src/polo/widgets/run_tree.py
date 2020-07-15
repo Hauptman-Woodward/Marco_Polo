@@ -2,7 +2,7 @@ import ftplib
 import os
 from pathlib import Path, PurePosixPath
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
@@ -10,36 +10,48 @@ from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
 from polo.utils.io_utils import RunDeserializer, RunLinker
 from polo.crystallography.run import HWIRun, Run
+from polo.windows.run_updater_dialog import RunUpdaterDialog
 
 class RunTree(QtWidgets.QTreeWidget):
 
+    opening_run = pyqtSignal()
+    save_run_signal = pyqtSignal()
+    remove_run_signal = pyqtSignal(list)
+
     def __init__(self, parent=None, auto_link=True):
-        self.classified_runs = {}
+        self.classified_status = {}
         self.loaded_runs = {}
         self.samples = []
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-
+    
     @property
     def current_run_names(self):
-        return list(self.loaded_runs.keys()) + list(self.classified_runs.keys())
+        return list(self.loaded_runs.keys())
 
-    @property
-    def all_runs(self):
-        d = {}
-        d.update(self.loaded_runs)
-        d.update(self.classified_runs)
-
-        return d
-
+    def remove_run_from_view(self, run_name):
+        # remove the current selected run if one is selected
+        # only removes it from the view does not do any backend removal
+        condemned_run = self.loaded_runs[run_name]
+        condemned_run_parent = self.findItems(condemned_run.sampleName, Qt.MatchExactly, column=0)
+        if condemned_run_parent:
+            condemned_run_parent = condemned_run_parent.pop()
+            # got through all children of parent
+            for i in range(condemned_run_parent.childCount()):
+                if condemned_run_parent.child(i).text(0) == run_name:
+                    condemned_run_parent.removeChild(condemned_run_parent.child(i))
+                    break
+            # check if any remaining children
+            if condemned_run_parent.childCount() == 0:
+                self.invisibleRootItem().removeChild(condemned_run_parent)
+            
+            return condemned_run
+    
     def add_classified_run(self, run):
         if isinstance(run, str) and run in self.loaded_runs:
-            self.classified_runs[run] = self.loaded_runs.pop(run)
-        elif isinstance(run, (Run, HWIRun)) and run.run_name in self.loaded_runs:
-            self.classified_runs[run.run_name] = self.loaded_runs.pop(
-                run.run_name)
-
+            self.classified_status[run] = True
+            
     def add_sample(self, sample_name, *args):
         parent_item = QtWidgets.QTreeWidgetItem(self)
         parent_item.setText(0, sample_name)
@@ -58,26 +70,19 @@ class RunTree(QtWidgets.QTreeWidget):
             self.handle_dup_run_import()
         else:
             self.loaded_runs[run.run_name] = run
-            if self.auto_link:
-                self.link_in_new_run(run)
         return new_node
+    
+    def link_sample(self, sample_name):
+        # gather runs with this sample
+        runs_in_sample = [run for run_name, run in self.loaded_runs.items()
+                        if run.sampleName == sample_name]
+        linked_runs = RunLinker.the_big_link(runs_in_sample)
+        linked_runs_dict = {run.run_name: run for run in linked_runs}
+        self.loaded_runs.update(linked_runs_dict)
 
-    def link_in_new_run(self, new_run):
-        if self.auto_link and new_run.sampleName:
-            sample_node = self.findItems(
-                new_run.sampleName, Qt.MatchExactly, column=0)
-            if sample_node:
-                sample_node = sample_node.pop()
-                all_runs = self.all_runs
-                sample_runs = [all_runs[sample_node.child(i).text(0)] for i in range(
-                    0, sample_node.childCount()) if sample_node.child(i).text(0) in all_runs]
-                # LIST COMP AT ALL COSTS!
-                linker = RunLinker(sample_runs)
-                print('linking the runs now')
-                linked_runs = linker.the_big_link()
 
     def add_run_to_tree(self, new_run):
-        if new_run.run_name not in self.all_runs:
+        if new_run.run_name not in self.loaded_runs:
             if isinstance(new_run, HWIRun):
                 if hasattr(new_run, 'sampleName'):
                     sample_node = self.findItems(
@@ -108,3 +113,88 @@ class RunTree(QtWidgets.QTreeWidget):
                     non_hwi_runs.setText(0, 'Non-HWI Runs')
                     new_run.sampleName = 'Non-HWI Runs'
                 self.add_run_node(new_run, non_hwi_runs)
+    
+    def _remove_run(self, run_name):
+        # get all runs in the sample and just relink everything together
+        run = self.remove_run_from_view(run_name)
+        if run_name in self.loaded_runs: self.loaded_runs.pop(run_name)
+        if run_name in self.classified_status: self.classified_status.pop(run_name)
+
+        self.link_sample(run.sampleName)
+
+        for run in self.loaded_runs:
+            if (self.loaded_runs[run].alt_spectrum
+                and self.loaded_runs[run].alt_spectrum.run_name == run_name
+                ):
+                self.loaded_runs[run].alt_spectrum = None
+        self.remove_run_signal.emit([run])
+        # BUG: run unlinking not working for non visible images
+        # the images within a run are unlinked but not the actual run objects
+        # the above is a temp fix
+    
+    def contextMenuEvent(self, event):
+        if self.currentItem() and self.currentItem().text(0) in self.loaded_runs:
+            self.menu = QtWidgets.QMenu(self)
+
+            # edit_data_action = QtWidgets.QAction('Edit Run Data', self)
+            # edit_data_action.triggered.connect(lambda: self._edit_data_slot(event))
+
+            remove_run_action = QtWidgets.QAction('Remove Run', self)
+            remove_run_action.triggered.connect(lambda: self._remove_run_slot(event))
+
+            open_run_action = QtWidgets.QAction('Open Run', self)
+            open_run_action.triggered.connect(lambda: self._open_run_slot(event))
+
+            
+            self.menu.addAction(open_run_action)
+            self.menu.addSeparator()
+            # self.menu.addAction(edit_data_action)
+            self.menu.addAction(remove_run_action)
+
+            self.menu.popup(QtGui.QCursor.pos())
+    
+    def _open_run_slot(self, event=None):
+        self.opening_run.emit()
+    
+    def _edit_data_slot(self, event=None):
+        current_selection = self.currentItem()
+        if current_selection:
+            run_name = current_selection.text(0)
+            run = self.loaded_runs[run_name]
+            updater = RunUpdaterDialog(run=run, run_names=self.current_run_names)
+            updater.exec_()
+            # if updater.run.run_name != run_name:
+            #     # need to change the run name in the viewer
+            #     print(type(run))
+            #     run_node = self._get_run_node(run)
+            #     if run_node:
+            #         run_node.setText(0, updater.run.run_name)
+            self.loaded_runs[run_name] = updater.run
+            
+    
+    def _get_run_node(self, run):
+        run_name = run.run_name
+        sample_name = run.sampleName
+        parent_node = self.findItems(
+                            run.sampleName, Qt.MatchExactly, column=0).pop(0)
+        
+        for i in range(parent_node.childCount()):
+            child_node = parent_node.child(i)
+            if child_node.text(0) == run_name:
+                return child_node
+
+
+    # open edit run data dialog window
+
+    def _remove_run_slot(self, event=None):
+        current_selection = self.currentItem()
+        if current_selection:
+            run_name = current_selection.text(0)
+            self._remove_run(run_name)
+
+    
+        
+
+        
+
+        

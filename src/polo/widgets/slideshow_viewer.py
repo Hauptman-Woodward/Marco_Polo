@@ -74,10 +74,6 @@ class Carousel():
             first_slide.prev_slide = cur_slide
             self.current_slide = first_slide
             # circ the link list
-
-            logger.info('Added {} new slides to {}'.format(
-                len(ordered_images), self
-            ))
             return first_slide
 
     @property
@@ -266,11 +262,11 @@ class SlideshowViewer(PhotoViewer):
             self.update_slides_from_filters(
                 image_types=set([]), human=False, marco=False
             )
-        else:
+        else:  # if run is none then interpret as request to delete current run
             self.__run = None
-            logger.info('Failed to set {} as __run attribute of {}'.format(
-                new_run, self
-            ))
+            self.__carousel = Carousel()
+            self.scene.clear()
+            self.current_image = None
 
     def set_current_image_by_well_number(self, well_number):
         if self.run:

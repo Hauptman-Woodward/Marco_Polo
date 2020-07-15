@@ -248,6 +248,8 @@ class slideshowInspector(QtWidgets.QWidget):
         )
         self.set_image_name()
         self.set_favorite_checkbox()
+        self.set_time_resolved_functions()
+        self.set_alt_spectrum_buttons()
 
     def submit_filters(self):
         '''
@@ -284,27 +286,31 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         Turns on / off time resolved functions depending if the __run
         attribute has been linked to another run in time.
-        ''' 
-        if hasattr(self.__run, 'previous_run') and hasattr(self.__run, 'next_run'):
-            if self.__run and (self.__run.previous_run or self.__run.next_run):
-                self.ui.pushButton_9.setEnabled(True)
+        '''
+        if self.current_image:
+            if self.current_image.next_image:
                 self.ui.pushButton_10.setEnabled(True)
-                return
-                
-        self.ui.pushButton_9.setEnabled(False)
-        self.ui.pushButton_10.setEnabled(False)
-    
+            else:
+                self.ui.pushButton_10.setEnabled(False)
+            if self.current_image.previous_image:
+                self.ui.pushButton_9.setEnabled(True)
+            else:
+                self.ui.pushButton_9.setEnabled(False)
+            
+        else:
+            self.ui.pushButton_9.setEnabled(False)
+            self.ui.pushButton_10.setEnabled(False)
+
     def set_alt_spectrum_buttons(self):
         '''
         Turns on / off alt spec functions depending on if the __run
         attribute has been linked to another spectrum.
         '''
-        if (hasattr(self.__run, 'alt_spectrum') 
-            and isinstance(self.__run.alt_spectrum, (Run, HWIRun))
-            ):
+        if self.current_image and self.current_image.alt_image:
             self.ui.pushButton_12.setEnabled(True)
         else:
             self.ui.pushButton_12.setEnabled(False)
+
     
     def export_current_view(self):
         # get file path here from dialog

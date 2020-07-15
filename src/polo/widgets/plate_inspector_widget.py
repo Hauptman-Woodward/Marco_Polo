@@ -33,7 +33,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         super(PlateInspectorWidget, self).__init__(parent)
         self.ui = Ui_PlateInspector()
         self.ui.setupUi(self)
-        self.__run = run
+        self.run = run
         self.ui.plateViewer.run = self.__run
 
         self.set_color_comboboxs()
@@ -76,13 +76,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         
         self.ui.spinBox.valueChanged.connect(self.set_current_page)
         self.ui.spinBox.setRange(1, 1)
+
+        self.set_time_resolved_buttons()
+        self.set_alt_spectrum_buttons()
+
         
     
 
     def set_images_per_page(self):
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
-        self.set_spin_box_range()
 
 
     def set_image_count_options(self):
@@ -142,10 +145,14 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if new_run:
             self.__run = new_run
             self.ui.plateViewer.run = new_run
-            self.set_time_resolved_buttons()
-            self.set_alt_spectrum_buttons()
         else:
             self.__run = None
+            self.ui.plateViewer.run = None
+
+        self.set_time_resolved_buttons()
+        self.set_alt_spectrum_buttons()
+
+
 
     @property
     def selected_classifications(self):
@@ -281,6 +288,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
         self.apply_plate_settings()
         self.set_plate_label()
+        self.set_time_resolved_buttons()
+        self.set_alt_spectrum_buttons()
+        self.set_spin_box_range()
             
     
     def apply_image_filters(self):
@@ -309,22 +319,26 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
 
     def set_time_resolved_buttons(self):
-        if hasattr(self.__run, 'next_run') and hasattr(self.__run, 'previous_run'):
-            if (isinstance(self.__run.next_run, (HWIRun, Run))
-                or isinstance(self.__run.previous_run, (HWIRun, Run))
-                ):
+        if self.__run:
+            if self.__run.next_run:
                 self.ui.pushButton_21.setEnabled(True)
+            else:
+                self.ui.pushButton_21.setEnabled(False)
+            if self.__run.previous_run:
                 self.ui.pushButton_20.setEnabled(True)
-                return
-        self.ui.pushButton_21.setEnabled(False)
-        self.ui.pushButton_21.setEnabled(False) 
+            else:
+                self.ui.pushButton_20.setEnabled(False)
+        else:
+            self.ui.pushButton_20.setEnabled(False)
+            self.ui.pushButton_21.setEnabled(False)
 
-    def set_alt_spectrum_buttons(self, allow=False):
-        if hasattr(self.__run, 'alt_spectrum'):
-            if isinstance(self.__run, (HWIRun, Run)):
-                self.ui.pushButton_22.setEnabled(True)
-                return
-        self.ui.pushButton_22.setEnabled(False)
+    def set_alt_spectrum_buttons(self):
+        if self.__run and self.__run.alt_spectrum:
+            self.ui.pushButton_22.setEnabled(True)
+        else:
+            self.ui.pushButton_22.setEnabled(False)
+
+
     
     def set_spin_box_range(self):
         '''Set the allowed range for the page navigation spinbox.

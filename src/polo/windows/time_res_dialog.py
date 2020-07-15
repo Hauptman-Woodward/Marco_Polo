@@ -46,12 +46,11 @@ class TimeResDialog(QtWidgets.QDialog):
         # sorted from earliest to latest
         for i in range(0, len(temp_runs)-1):
             temp_runs[i].link_to_decendent(temp_runs[i+1])
-            print(temp_runs[i].next_run, 'FROM THE DIALOG DEBUG')
         
         
         for run in temp_runs:
             if run.run_name in self.available_runs:
-                print(run.next_run, run.previous_run, run.date, 'run time degiuggg')
+
                 self.available_runs[run.run_name] = run
 
         self.close()

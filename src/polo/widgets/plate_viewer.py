@@ -23,7 +23,6 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     def __init__(self, parent, run=None, images_per_page=24):
         super(plateViewer, self).__init__(parent)
-        self.run = run
         self.preserve_aspect = False  # how to fit images in scene
         self.__images_per_page = images_per_page
         self.__graphics_wells = None
@@ -39,6 +38,8 @@ class plateViewer(QtWidgets.QGraphicsView):
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setTransformationAnchor(self.AnchorUnderMouse)
+
+        self.run = run  # run init last since depends on existence of other attributes
 
     @staticmethod
     def well_index_to_subgrid(i, c_r, c_c, p_r, p_c):
@@ -82,10 +83,6 @@ class plateViewer(QtWidgets.QGraphicsView):
             self.__current_page = 1
 
     @property
-    def scene(self):
-        return self.__scene
-
-    @property
     def total_pages(self):
         if self.run and self.images_per_page:
             return math.ceil(len(self.run) / self.images_per_page)
@@ -115,9 +112,8 @@ class plateViewer(QtWidgets.QGraphicsView):
     @run.setter
     def run(self, new_run):
         self.__run = new_run
-        if isinstance(new_run, Run) or isinstance(new_run, HWIRun):
-            self.__scene.clear()
-            QPixmapCache.clear()
+        self.__scene.clear()
+        QPixmapCache.clear()
 
     @current_page.setter
     def current_page(self, new_page_number):
@@ -171,7 +167,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                             prev_date=False, alt_spec=False, label_dict={}):
         if self.run:
             QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-            [item.data(0).recursive_delete_pixmap_data() for item in self.scene.items() 
+            [item.data(0).recursive_delete_pixmap_data() for item in self.__scene.items() 
             if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
             # for now delete all previous pixmap data from ram
 

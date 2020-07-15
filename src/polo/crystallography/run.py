@@ -33,6 +33,9 @@ class Run():
     def __len__(self):
         '''Returns the number of non null Images'''
         return sum([1 for i in self.images if i != None])
+    
+    def __hash__(self):
+        return hash(str(self.run_name) + str(self.image_dir))
 
     def get_tooltip(self):
         return 'Run Name: {}\nSpectrum: {}\nDate: {}\nNum Images: {}'.format(

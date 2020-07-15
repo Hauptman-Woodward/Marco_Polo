@@ -35,11 +35,18 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.setupUi(self)
         self.auto_link_runs = auto_link_runs  # allow for turn off in settings
         self.current_run = None
-        self.classified_runs = {}
         self.shown_unrar_message = False
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
         self.ui.pushButton.clicked.connect(self.handle_classification_request)
         self.ui.runTree.itemDoubleClicked.connect(self.handle_opening_run)
+        self.ui.runTree.opening_run.connect(self.handle_opening_run)
+        self.ui.runTree.remove_run_signal.connect(self.clear_current_run)
+    
+
+    def clear_current_run(self, run_list):
+        if run_list:
+            self.opening_run.emit([None])
+
 
     def handle_classification_request(self):
         selected_runname = self.ui.runTree.currentItem().text(0)
@@ -49,17 +56,9 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def handle_opening_run(self, *args):
         # get the selected item
-        selected_runname = self.ui.runTree.currentItem().text(0)
-        selected_run = None
-        if selected_runname in self.ui.runTree.classified_runs:
-            selected_run = self.ui.runTree.classified_runs[selected_runname]
-        elif selected_runname in self.ui.runTree.loaded_runs:
-            selected_run = self.ui.runTree.loaded_runs[selected_runname]
-        else:
-            pass
-            #make_message_box('It appears this run no longer exists').exec_()
-            # throws message when double click on sample name
-        if selected_run:
+        selected_run_name = self.ui.runTree.currentItem().text(0)
+        if selected_run_name in self.ui.runTree.loaded_runs:
+            selected_run = self.ui.runTree.loaded_runs[selected_run_name]
             self.opening_run.emit([selected_run])
 
     def open_classification_thread(self, run):
@@ -90,39 +89,47 @@ class RunOrganizer(QtWidgets.QWidget):
             time_string = '{} secs'.format(round(time))
         self.ui.label_32.setText(time_string)
     
+    def _add_runs_to_tree(self, runs):
+        sample_names = set([])
+        for run in runs:
+            self.ui.runTree.add_run_to_tree(run)
+            sample_names.add(self.ui.runTree.loaded_runs[run.run_name].sampleName)
+            # pulling run from runTree ensures it has a sample name if it
+            # was added to the tree
+        # link the runs together by sample
+        for sample in sample_names:
+            self.ui.runTree.link_sample(sample)
 
     def _add_run_to_tree(self, run, classified=False):
         self.ui.runTree.add_run_to_tree(run)
         if classified:
             self.ui.add_classified_run(run)
 
-    def import_from_saved_run(self, xtal_file=None):
-        if not xtal_file:
+    def import_saved_runs(self, xtal_files=[]):
+        if not xtal_files:
             xtal_dialog = RunImporter.make_xtal_file_dialog(parent=self)
             xtal_dialog.exec_()
-            xtal_file = xtal_dialog.selectedFiles()
-        if xtal_file:  # returned as a list
-            xtal_file = xtal_file[0]
-            if os.path.isfile(xtal_file):
-                r = RunDeserializer(
-                    xtal_file).xtal_to_run()
-                if isinstance(r, (Run, HWIRun)):
-                    self._add_run_to_tree(r)
-                    return True
-                else:
-                    make_message_box(
-                        message='Failed to import run with {}'.format(r),
-                        parent=self
-                    ).exec()
-        return False
+            xtal_files = xtal_dialog.selectedFiles()
+        if xtal_files:  # returned as a list
+            runs_to_add = []
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            for xtal in xtal_files:
+                if os.path.isfile(xtal):
+                    deserializer = RunDeserializer(xtal)
+                    new_run = deserializer.xtal_to_run()
+                    if isinstance(new_run, (HWIRun, Run)):
+                        runs_to_add.append(new_run)
+            self._add_runs_to_tree(runs_to_add)
+            QApplication.restoreOverrideCursor()
 
     def import_run_from_dialog(self):
         run_importer_dialog = RunImporterDialog(
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
         run_importer_dialog.exec_()
-        for run_name, run in run_importer_dialog.imported_runs.items():
-            self._add_run_to_tree(run)
+        self._add_runs_to_tree(run_importer_dialog.imported_runs.values())
+        # for run_name, run in run_importer_dialog.imported_runs.items():
+        #     self._add_run_to_tree(run)
 
     def import_run_from_ftp(self):
         if not test_for_working_unrar() and not self.shown_unrar_message:
@@ -187,6 +194,52 @@ class RunOrganizer(QtWidgets.QWidget):
         # use run importer class to make the run
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
-            self.ui.runTree.add_run_to_tree(new_run)
+            self.ui.runTree.add_runs_to_tree([new_run])
         return new_run
         # message box failed to import?
+   
+
+    def remove_run(self, run=None):
+        if not run:
+            run_name = self.ui.runTree.currentItem()
+        if run_name:
+            run_name = run_name.text(0)
+            condemned_run = self.ui.runTree.remove_run_from_view(run_name)
+            if isinstance(condemned_run, (Run, HWIRun)):
+                # need to cut any links that had this run in it
+                next_run, prev_run = None, None
+                if condemned_run.next_run:
+                    next_run = condemned_run.next_run
+                if condemned_run.previous_run:
+                    prev_run = condemned_run.previous_run
+                
+                if next_run and prev_run:  # cut condemned run out
+                    next_run.previous_run = None
+                    prev_run.next_run = None
+                    prev_run.link_to_decendent(next_run)
+                
+                elif next_run:  # condemned run was first in the list
+                    next_run.previous_run = None
+                    for image in next_run.images:
+                        image.previous_image = None
+                elif prev_run:  # condemned was last in the list
+                    prev_run.next_run = None
+                    for image in prev_run.images:
+                        image.next_image = None
+                
+                # need to go around the horn since no backwards pointer
+                if condemned_run.alt_spectrum:
+                    start = condemned_run.alt_spectrum
+                    linked_spectrums = []
+                    while start and start.run_name != condemned_run.run_name:
+                        linked_spectrums.append(start)
+                        start = start.alt_spectrum
+                    linked_spectrums[-1].alt_spectrum = None
+                    if len(linked_spectrums) > 1:
+                        linked_spectrums[0].link_to_alt_spectrum(linked_spectrums[-1])
+
+
+
+                    
+
+

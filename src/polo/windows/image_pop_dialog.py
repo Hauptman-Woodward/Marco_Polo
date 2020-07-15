@@ -94,6 +94,7 @@ class ImagePopDialog(QtWidgets.QDialog):
             self.set_groupbox_title()
             self.set_cocktail_details()
             self.set_image_details()
+            self.set_allowed_navigation_functions()
     
 
     def classify_image(self, crystals=False, clear=False,
@@ -127,6 +128,20 @@ class ImagePopDialog(QtWidgets.QDialog):
             self.image = self.image.previous_image
         elif alt and self.image.alt_image:
             self.image = self.image.alt_image
+
+    def set_allowed_navigation_functions(self):
+        if self.image.next_image:
+            self.ui.pushButton.setEnabled(True)
+        else:
+            self.ui.pushButton.setEnabled(False)
+        if self.image.previous_image:
+            self.ui.pushButton_6.setEnabled(True)
+        else:
+            self.ui.pushButton_6.setEnabled(False)
+        if self.image.alt_image:
+            self.ui.pushButton_7.setEnabled(True)
+        else:
+            self.ui.pushButton_7.setEnabled(False)
 
     # def set_allowed_navigation_functions(self):
     #     nav_buttons = [self.ui.pushButton,

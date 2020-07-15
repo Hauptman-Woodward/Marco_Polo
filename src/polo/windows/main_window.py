@@ -154,7 +154,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if selection == self.actionFrom_FTP:
             self.runOrganizer.import_run_from_ftp()
         elif selection == self.actionFrom_Saved_Run_3:
-            self.runOrganizer.import_from_saved_run()
+            self.runOrganizer.import_saved_runs()
         elif selection == self.actionFrom_Directory:
             self.runOrganizer.import_run_from_dialog()
         elif selection == self.actionCocktails:
@@ -165,7 +165,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # TODO allow users to add cocktail files
 
     def tab_limiter(self):
-        if not isinstance(self.current_run, HWIRun):
+        if self.current_run and not isinstance(self.current_run, HWIRun):
             # need to disable stuff that requires cocktails
             self.tab_10.setEnabled(False)  # optimize tab
             self.tab_2.setEnabled(False)  # plate view tab
@@ -201,8 +201,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # switches between dates or spectrums though
 
             self.current_run = q.pop()
-            if (self.current_run.image_spectrum == IMAGE_SPECS[0]
-                and hasattr(self.current_run, 'insert_into_alt_spec_chain')
+            if (hasattr(self.current_run, 'insert_into_alt_spec_chain')
+                and self.current_run.image_spectrum == IMAGE_SPECS[0]
                 ):
                 self.current_run.insert_into_alt_spec_chain()
             self.slideshowInspector.run = self.current_run
@@ -213,8 +213,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tab_limiter()  # set allowed tabs by run type
             self.plot_limiter()  # set allowed polo.plots
             # enable nav by time if has linked runs
-            logger.info('Loaded new run named {}'.format(
-                self.current_run.run_name))
 
     def handle_export(self, action, export_path=None):
         '''
@@ -343,8 +341,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # allow or disallow access to ploting methods based on run object type
     def plot_limiter(self):
-        self.listWidget_3.clear()
-        self.listWidget_3.addItems(self.current_run.AllOWED_PLOTS)
+        if self.current_run:
+            self.listWidget_3.clear()
+            self.listWidget_3.addItems(self.current_run.AllOWED_PLOTS)
 
     def get_current_plot_selections(self):
         return {

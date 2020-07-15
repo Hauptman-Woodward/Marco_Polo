@@ -14,11 +14,10 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     '''Small dialog for displaying the contents of the Polo log file
     '''
 
-    def __init__(self, run, run_names, main_window, parent=None):
+    def __init__(self, run, run_names, parent=None):
         super(RunUpdaterDialog, self).__init__(parent)
         self.ui = Ui_runUpdater()
         self.ui.setupUi(self)
-        self.main_window = main_window
         self.run = run
         self.run_names = run_names  # all currently used run names
         self.ui.pushButton_2.clicked.connect(self.close)
@@ -28,7 +27,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(self.set_cocktail_menu)
         self.ui.pushButton.clicked.connect(self.update_run)
         self.ui.comboBox_2.addItems(IMAGE_SPECS)
-        self.exec_()
+
 
     @property
     def current_menus(self):
@@ -48,7 +47,6 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     @run.setter
     def run(self, new_run):
         self.__run = new_run
-        self.ui.lineEdit.setText(new_run.run_name)
     
     def set_run_date(self):
         if self.run:
@@ -60,34 +58,28 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             self.current_menus = 's'
         elif self.ui.radioButton_2.isChecked():
             self.current_menus = 'm'
-        self.ui.comboBox.addItems([menu.path for menu in self.current_menus])
+
+        self.ui.comboBox.addItems(
+            [os.path.basename(menu.path) for menu in sorted(
+                self.current_menus, key=lambda m: m.start_date)])
 
     def select_run_menu(self):
         run_menu = self.run.cocktail_menu
-        menu_index = self.ui.comboBox.findText(run_menu.path)
+        menu_index = self.ui.comboBox.findText(os.path.basename(run_menu.path))
         if menu_index:
             self.ui.comboBox.setCurrentIndex(menu_index)
 
     def update_run_cocktail_menu(self):
-        new_menu = tim.get_menu_by_path(self.ui.comboBox.currentText())
-        if new_menu.path != self.run.cocktail_menu.path:
+        new_menu = tim.get_menu_by_basename(self.ui.comboBox.currentText())
+        if new_menu and new_menu.path != self.run.cocktail_menu.path:
             self.run.cocktail_menu = new_menu
             for i, image in enumerate(self.run.images):
-                image.cocktail = self.run.cocktail_menu.cocktails[image.well_number]
+                image.cocktail = self.run.cocktail_menu.cocktails[str(image.well_number)]
 
-    def update_run_name(self):
-        new_name = self.ui.lineEdit.text()
-        if new_name not in self.run_names and new_name != self.run.run_name:
-            if self.run.run_name in self.main_window.loaded_runs:
-                self.main_window.loaded_runs.pop(self.run.run_name)
-                self.main_window.loaded_runs[new_name] = self.run
-            if self.run.run_name in self.main_window.classified_runs:
-                self.main_window.classified_runs.pop(self.run.run_name)
-                self.main_window.loaded_runs[new_name] = self.run
-            self.run.run_name = new_name
-            # need to replace the item in the list widget
-            self.main_window.listWidget.clear()
-            self.main_window.listWidget.addItems(self.main_window.loaded_runs)
+    # def update_run_name(self):
+    #     new_name = self.ui.lineEdit.text()
+    #     if new_name not in self.run_names and new_name != self.run.run_name:
+    #         self.run.run_name = new_name
 
     def update_spectrum(self):
         new_spectrum = self.ui.comboBox_2.currentText()
@@ -102,7 +94,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             self.run.plate_id = new_id
     
     def update_run(self):
-        self.update_run_name()
+        # self.update_run_name()
         self.update_run_cocktail_menu()
         self.update_spectrum()
         self.update_plate_id()
