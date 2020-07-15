@@ -194,7 +194,7 @@ class RunOrganizer(QtWidgets.QWidget):
         # use run importer class to make the run
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
-            self.ui.runTree.add_runs_to_tree([new_run])
+            self._add_runs_to_tree([new_run])
         return new_run
         # message box failed to import?
    

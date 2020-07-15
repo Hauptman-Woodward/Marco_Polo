@@ -54,21 +54,6 @@ class RunImporter():
             return FileNotFoundError
     
     @staticmethod
-    def parse_HWI_filename_meta(HWI_image_file):
-        '''
-        HWI images have a standard file nameing schema that gives info about when
-        they are taken and well number and that kind of thing. This function returns
-        that data
-        '''
-        HWI_image_file = os.path.basename(str(HWI_image_file))
-        return (
-            HWI_image_file[:10],
-            int(HWI_image_file[10:14].lstrip('0')),
-            datetime.strptime(HWI_image_file[14:22], '%Y''%m''%d'),
-            HWI_image_file[22:]
-        )
-
-    @staticmethod
     def parse_hwi_dir_metadata(dir_name):
         try:
             dir_name = str(Path(dir_name).with_suffix('').name)
@@ -139,10 +124,8 @@ class RunImporter():
             if metadata and file_name_data:
                 image_type, plate_id, date, run_name = file_name_data
                 menu = tim.get_menu_by_date(date, 's')
-                new_run = HWIRun(
-                    image_dir=data_dir, run_name=run_name, cocktail_menu=menu,
-                    image_spectrum=image_type, date=date
-                )
+                # assuming soluble need to change based on metadata parse
+                new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
                 new_run.__dict__.update(metadata)  # from xml data
                 new_run.__dict__.update(kwargs)  # for user supplied data
                 # that could overwrite what is in metadata
@@ -159,34 +142,34 @@ class RunImporter():
             new_run.add_images_from_dir()
             return new_run
 
-    @staticmethod
-    def validate_run_name(text=None):
-        '''
-        Validates a given run name to ensure it can be used safely. Shows
-        an error message to the user if the run name is not valid and clears
-        the run name lineEdit widget.
+    # @staticmethod
+    # def validate_run_name(text=None, current_run_names=None):
+    #     '''
+    #     Validates a given run name to ensure it can be used safely. Shows
+    #     an error message to the user if the run name is not valid and clears
+    #     the run name lineEdit widget.
 
-        In order for a run name to be valid it must contain only UTF-8
-        codable characters and not already be in use by another
-        run object. This is because the run name is used as a key to refer
-        to the run object in other functions.
+    #     In order for a run name to be valid it must contain only UTF-8
+    #     codable characters and not already be in use by another
+    #     run object. This is because the run name is used as a key to refer
+    #     to the run object in other functions.
 
-        :param text: String. The run name to be validated.
-        '''
-        validator_result = run_name_validator(text, self.current_run_names)
-        message = None
-        if validator_result == UnicodeError:
-            message = 'Run name is not UTF-8 Compliant'
-        elif validator_result == TypeError:
-            message = 'Run name must not be empty.'
-        elif not validator_result:  # result is false already exists
-            message = 'Run name already exists, please pick a unique name.'
-            # TODO option to overwrite the run of that same name
+    #     :param text: String. The run name to be validated.
+    #     '''
+    #     validator_result = run_name_validator(text, self.current_run_names)
+    #     message = None
+    #     if validator_result == UnicodeError:
+    #         message = 'Run name is not UTF-8 Compliant'
+    #     elif validator_result == TypeError:
+    #         message = 'Run name must not be empty.'
+    #     elif not validator_result:  # result is false already exists
+    #         message = 'Run name already exists, please pick a unique name.'
+    #         # TODO option to overwrite the run of that same name
         
-        if message:
-            return make_message_box(message).exec_()
-        else:
-            return True
+    #     if message:
+    #         return make_message_box(message).exec_()
+    #     else:
+    #         return True
 
 
 class RunSerializer():
@@ -1150,19 +1133,20 @@ class BarTender():
         :return: menu matching the given date and type
         :rtype: Menu
         '''
-        if isinstance(date, datetime):
-            # search for a menu whos usage dates include this date
-            menus_keys_by_date = sorted(
+        menus_keys_by_date = sorted(
                 [key for key in self.menus.keys() if self.menus[key].type_ == type_],
                 # keys matching only the specified type
                 key=lambda key: self.menus[key].start_date
             )
+        if isinstance(date, datetime):
+            # search for a menu whos usage dates include this date
             # end up with a list of keys for menus of the specified type that
             # are sorted by the start date of their use at HWI cente
             for each_key in menus_keys_by_date:
                 if date < self.menus[each_key].start_date:
                     return self.menus[each_key]
-            return self.menus[menus_keys_by_date[-1]]
+        return self.menus[menus_keys_by_date[-1]]
+
 
     def get_menus_by_type(self, type_='s'):
         '''Returns all menus of a given screen type.
