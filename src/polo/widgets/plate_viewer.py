@@ -1,6 +1,7 @@
 import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap, QPixmapCache, QFont
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
@@ -20,6 +21,8 @@ from polo.threads.thread import QuickThread
 class plateViewer(QtWidgets.QGraphicsView):
 
     subgrid_dict = {16: (4, 4), 64: (8, 8), 96: (8, 12), 1536: (32, 48)}
+    changed_page_signal = pyqtSignal(int)
+    changed_images_per_page_signal = pyqtSignal(tuple)
 
     def __init__(self, parent, run=None, images_per_page=24):
         super(plateViewer, self).__init__(parent)
@@ -205,6 +208,10 @@ class plateViewer(QtWidgets.QGraphicsView):
             self.setScene(self.__scene)
             self.fitInView(self.__scene, self.preserve_aspect)
             QtWidgets.QApplication.restoreOverrideCursor()
+            self.changed_images_per_page_signal.emit(
+                self.subgrid_dict[self.__images_per_page]
+            )
+            self.changed_page_signal.emit(self.__current_page)
             
     def set_prerender_info(self, item, image):
         item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable)
@@ -268,7 +275,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         selection = self.__scene.selectedItems()
         if selection:
             image = selection[0].data(0)
-            pop_out = ImagePopDialog(image)
+            pop_out = ImagePopDialog(image, parent=self)
             pop_out.setWindowModality(Qt.ApplicationModal)
             pop_out.show()
             self.__scene.clearSelection()

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/plate_inspector_widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,15 +13,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_PlateInspector(object):
     def setupUi(self, PlateInspector):
         PlateInspector.setObjectName("PlateInspector")
-        PlateInspector.resize(949, 632)
-        self.gridLayout = QtWidgets.QGridLayout(PlateInspector)
-        self.gridLayout.setObjectName("gridLayout")
+        PlateInspector.resize(952, 635)
+        self.gridLayout_7 = QtWidgets.QGridLayout(PlateInspector)
+        self.gridLayout_7.setObjectName("gridLayout_7")
         self.label_18 = QtWidgets.QLabel(PlateInspector)
         self.label_18.setMaximumSize(QtCore.QSize(200, 30))
         self.label_18.setObjectName("label_18")
-        self.gridLayout.addWidget(self.label_18, 0, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 2, 1, 1, 1)
+        self.gridLayout_7.addWidget(self.label_18, 0, 0, 1, 1)
+        self.plateViewer = plateViewer(PlateInspector)
+        self.plateViewer.setMinimumSize(QtCore.QSize(200, 0))
+        self.plateViewer.setObjectName("plateViewer")
+        self.gridLayout_7.addWidget(self.plateViewer, 1, 0, 1, 2)
         self.groupBox_26 = QtWidgets.QGroupBox(PlateInspector)
         self.groupBox_26.setMaximumSize(QtCore.QSize(16777215, 200))
         self.groupBox_26.setObjectName("groupBox_26")
@@ -101,8 +103,8 @@ class Ui_PlateInspector(object):
         self.tab_8.setObjectName("tab_8")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.tab_8)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem1, 1, 2, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem, 1, 2, 1, 1)
         self.comboBox_3 = QtWidgets.QComboBox(self.tab_8)
         self.comboBox_3.setMinimumSize(QtCore.QSize(0, 20))
         self.comboBox_3.setMaximumSize(QtCore.QSize(300, 16777215))
@@ -209,8 +211,8 @@ class Ui_PlateInspector(object):
         self.checkBox_28.setChecked(True)
         self.checkBox_28.setObjectName("checkBox_28")
         self.gridLayout_6.addWidget(self.checkBox_28, 1, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_6.addItem(spacerItem2, 1, 3, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_6.addItem(spacerItem1, 1, 3, 1, 1)
         self.pushButton = QtWidgets.QPushButton(self.tab_9)
         self.pushButton.setObjectName("pushButton")
         self.gridLayout_6.addWidget(self.pushButton, 2, 5, 3, 1)
@@ -229,10 +231,16 @@ class Ui_PlateInspector(object):
         self.gridLayout_6.addWidget(self.line_2, 0, 4, 4, 1)
         self.tabWidget.addTab(self.tab_9, "")
         self.gridLayout_19.addWidget(self.tabWidget, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_26, 2, 0, 1, 1)
-        self.plateViewer = plateViewer(PlateInspector)
-        self.plateViewer.setObjectName("plateViewer")
-        self.gridLayout.addWidget(self.plateViewer, 1, 0, 1, 2)
+        self.gridLayout_7.addWidget(self.groupBox_26, 2, 0, 1, 1)
+        self.groupBox_3 = QtWidgets.QGroupBox(PlateInspector)
+        self.groupBox_3.setMaximumSize(QtCore.QSize(16777215, 200))
+        self.groupBox_3.setObjectName("groupBox_3")
+        self.gridLayout = QtWidgets.QGridLayout(self.groupBox_3)
+        self.gridLayout.setObjectName("gridLayout")
+        self.plateVis = PlateVisualizer(self.groupBox_3)
+        self.plateVis.setObjectName("plateVis")
+        self.gridLayout.addWidget(self.plateVis, 0, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.groupBox_3, 2, 1, 1, 1)
 
         self.retranslateUi(PlateInspector)
         self.tabWidget.setCurrentIndex(3)
@@ -242,6 +250,7 @@ class Ui_PlateInspector(object):
         _translate = QtCore.QCoreApplication.translate
         PlateInspector.setWindowTitle(_translate("PlateInspector", "Form"))
         self.label_18.setText(_translate("PlateInspector", "Viewing Page 0 of 0"))
+        self.plateViewer.setToolTip(_translate("PlateInspector", "Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate."))
         self.groupBox_26.setTitle(_translate("PlateInspector", "Controls"))
         self.groupBox_29.setTitle(_translate("PlateInspector", "Page Navigation"))
         self.pushButton_17.setToolTip(_translate("PlateInspector", "Navigate to previous page of images"))
@@ -300,5 +309,7 @@ class Ui_PlateInspector(object):
         self.pushButton_19.setText(_translate("PlateInspector", "Apply Plate Settings"))
         self.pushButton_19.setShortcut(_translate("PlateInspector", "A"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_9), _translate("PlateInspector", "Plate View"))
-        self.plateViewer.setToolTip(_translate("PlateInspector", "Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate."))
+        self.groupBox_3.setTitle(_translate("PlateInspector", "Plate Visualizer"))
+        self.plateVis.setToolTip(_translate("PlateInspector", "Representation of what part of the screening plate you are currently viewing."))
 from polo.widgets.plate_viewer import plateViewer
+from polo.widgets.plate_visualizer import PlateVisualizer

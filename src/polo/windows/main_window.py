@@ -70,6 +70,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.listWidget_3.currentTextChanged.connect(
             self.handle_plot_selection)
+        
+
+        
 
         self.set_tab_icons()
 
