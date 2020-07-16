@@ -22,8 +22,8 @@ class ImagePopDialog(QtWidgets.QDialog):
     :type image: Image
     '''
 
-    def __init__(self, image):
-        QtWidgets.QDialog.__init__(self)
+    def __init__(self, image, parent=None):
+        super(ImagePopDialog, self).__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.pushButton_2.clicked.connect(

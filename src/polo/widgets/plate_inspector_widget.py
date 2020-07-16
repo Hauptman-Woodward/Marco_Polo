@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
-
+from PyQt5.QtCore import Qt, pyqtSignal
 from polo import (ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS)
 from polo.crystallography.cocktail import SignedValue
 from polo.crystallography.image import Image
@@ -71,11 +71,15 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
         self.ui.comboBox_7.currentIndexChanged.connect(self.set_images_per_page)
 
-        self.ui.pushButton.clicked.connect(
-            self.ui.plateViewer.export_current_view)
-        
-        self.ui.spinBox.valueChanged.connect(self.set_current_page)
+        self.ui.plateViewer.changed_images_per_page_signal.connect(
+        self.ui.plateVis.setup_view
+        )
+        self.ui.plateViewer.changed_page_signal.connect(
+            self.ui.plateVis.set_selected_block)
+
+
         self.ui.spinBox.setRange(1, 1)
+        self.ui.spinBox.valueChanged.connect(self.set_current_page)
 
         self.set_time_resolved_buttons()
         self.set_alt_spectrum_buttons()
@@ -151,8 +155,6 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
         self.set_time_resolved_buttons()
         self.set_alt_spectrum_buttons()
-
-
 
     @property
     def selected_classifications(self):
@@ -278,6 +280,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         
         if next_view:
             self.ui.plateViewer.current_page += 1
+            
         elif prev_view:
             self.ui.plateViewer.current_page -= 1
 
