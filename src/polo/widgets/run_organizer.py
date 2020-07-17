@@ -216,7 +216,7 @@ class RunOrganizer(QtWidgets.QWidget):
                 if next_run and prev_run:  # cut condemned run out
                     next_run.previous_run = None
                     prev_run.next_run = None
-                    prev_run.link_to_decendent(next_run)
+                    prev_run.link_to_next_date(next_run)
                 
                 elif next_run:  # condemned run was first in the list
                     next_run.previous_run = None

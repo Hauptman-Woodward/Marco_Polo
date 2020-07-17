@@ -31,9 +31,21 @@ from polo.utils.math_utils import *
 logger = make_default_logger(__name__)
 
 class RunImporter():
+    '''Class to hold general use functions for importing runs into Polo.
+    '''
 
     @staticmethod
     def directory_validator(dir_path):
+        '''Check if a directory should proceed further down the import
+        pipeline. Includes checks to make sure the directory exists
+        is a directory and that the directory contains images of
+        filetypes that can be imported.
+
+        :param dir_path: Path to a directory
+        :type dir_path: str or Path
+        :return: True, if directory can be imported, an Exception otherwise
+        :rtype: bool or Exception
+        '''
         dir_path = str(dir_path)
         if os.path.exists(dir_path):
             if os.path.isdir(dir_path):
@@ -82,6 +94,13 @@ class RunImporter():
     
     @staticmethod
     def crack_open_a_rar_one(rar_path):
+        '''Method to open a compressed rar archive.
+
+        :param rar_path: Path to rar archive.
+        :type rar_path: str or Path
+        :return: Path to uncompressed archive if successful
+        :rtype: Path
+        '''
         if not isinstance(rar_path, Path):
             rar_path = Path(rar_path)
         parent_path = rar_path.parent
@@ -89,12 +108,29 @@ class RunImporter():
     
     @staticmethod
     def import_from_xtal_thread(xtal_path):
+        '''Given the path to an xtal file returns a QThread
+        which can be run to load the run serialized in the
+        xtal file.
+
+        :param xtal_path: File path to xtal file.
+        :type xtal_path: str
+        :return: QThread for deserializing the given xtal file.
+        :rtype: QThread
+        '''
         reader = RunDeserializer(xtal_path)
         if os.path.isfile(xtal_path):
             return reader.make_read_xtal_thread()
     
     @staticmethod
     def make_xtal_file_dialog(parent=None):
+        '''Create a file dialog specifically for browsing for
+        xtal files.
+
+        :param parent: Parent for the file dialog, defaults to None
+        :type parent: QDialog, optional
+        :return: QFileDialog
+        :rtype: QFileDialog
+        '''
         file_dlg = QtWidgets.QFileDialog(parent=parent)
         file_dlg.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
@@ -102,12 +138,29 @@ class RunImporter():
     
     @staticmethod
     def unpack_rar_archive_thread(archive_path):
+        '''Create a QuickThread that is setup to de-compress
+        a rar archive file.
+
+        :param archive_path: Path to rar archive.
+        :type archive_path: str or Path
+        :return: QuickThread that can be run to de-compress the given archive path.
+        :rtype: QuickThread
+        '''
         archive_path = str(archive_path)
         if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
             return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
 
     @staticmethod
     def import_run_from_directory(data_dir, **kwargs):
+        '''Imports a run from a local directory. First attempts to import
+        the run as an HWIRun and if this fails attempts an import as
+        a general Run object.
+
+        :param data_dir: Directory to build the Run from
+        :type data_dir: str or Path
+        :return: Run, HWIRun or False depending on directory content and if import succeeds.
+        :rtype: Run, HWIRun, bool
+        '''
         hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
         if isinstance(hwi_import_attempt, HWIRun):
             return hwi_import_attempt
@@ -116,13 +169,19 @@ class RunImporter():
 
     @staticmethod
     def import_hwi_run(data_dir, **kwargs):
+        '''Attempt to create a HWIRun from a directory of images.
+
+        :param data_dir: Directory to import from.
+        :type data_dir: str or Path
+        :return: HWIRun if import is successful, False otherwise
+        :rtype: HWIRun, bool
+        '''
         if RunImporter.directory_validator(data_dir) == True:
             from polo import tim
             metadata = XmlReader().find_and_read_plate_data(data_dir)
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
 
             if metadata and file_name_data:
-                image_type, plate_id, date, run_name = file_name_data
                 menu = tim.get_menu_by_date(date, 's')
                 # assuming soluble need to change based on metadata parse
                 new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
@@ -136,47 +195,24 @@ class RunImporter():
 
     @staticmethod
     def import_general_run(data_dir, **kwargs):
+        '''Attempt to import a Run from a directory of images. 
+
+        :param data_dir: [description]
+        :type data_dir: [type]
+        :return: [description]
+        :rtype: [type]
+        '''
         if RunImporter.directory_validator(data_dir) == True:
-            # add some rule if does not have run name and spectru
             new_run = Run(image_dir=data_dir, **kwargs)
             new_run.add_images_from_dir()
             return new_run
-
-    # @staticmethod
-    # def validate_run_name(text=None, current_run_names=None):
-    #     '''
-    #     Validates a given run name to ensure it can be used safely. Shows
-    #     an error message to the user if the run name is not valid and clears
-    #     the run name lineEdit widget.
-
-    #     In order for a run name to be valid it must contain only UTF-8
-    #     codable characters and not already be in use by another
-    #     run object. This is because the run name is used as a key to refer
-    #     to the run object in other functions.
-
-    #     :param text: String. The run name to be validated.
-    #     '''
-    #     validator_result = run_name_validator(text, self.current_run_names)
-    #     message = None
-    #     if validator_result == UnicodeError:
-    #         message = 'Run name is not UTF-8 Compliant'
-    #     elif validator_result == TypeError:
-    #         message = 'Run name must not be empty.'
-    #     elif not validator_result:  # result is false already exists
-    #         message = 'Run name already exists, please pick a unique name.'
-    #         # TODO option to overwrite the run of that same name
-        
-    #     if message:
-    #         return make_message_box(message).exec_()
-    #     else:
-    #         return True
+        return False
 
 
 class RunSerializer():
 
     def __init__(self, run):
         self.run = run
-        logger.info('Made RunSerializer {}'.format(self))
 
     @classmethod
     def make_thread(cls, job_function, **kwargs):
@@ -210,36 +246,10 @@ class RunSerializer():
             return None
 
     @staticmethod
-    def make_message_box(message, icon=QtWidgets.QMessageBox.Information,
-                         buttons=QtWidgets.QMessageBox.Ok,
-                         connected_function=None):
-        '''Return a QMessageBox instance to show to the user.
-
-        :param message: Message to be displayed to the user
-        :type message: str
-        :param icon: Icon for message box, defaults to QtWidgets.QMessageBox.Information
-        :type icon: QMessageBoxIcon, optional
-        :param buttons: [description], defaults to QtWidgets.QMessageBox.Ok
-        :type buttons: [type], optional
-        :param connected_function: [description], defaults to None
-        :type connected_function: [type], optional
-        :return: [description]
-        :rtype: [type]
-        '''
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(icon)
-        msg.setText(message)
-        msg.setStandardButtons(buttons)
-        if connected_function:
-            msg.buttonClicked.connect(connected_function)
-        logger.info('Made message box with message "{}"'.format(message))
-        return msg
-
-    @staticmethod
     def path_validator(path, parent=False):
         '''
         Tests to ensure a path exists. Passing parent = True will check for
-        the existance of the parent directory of the path.
+        the existence of the parent directory of the path.
         '''
 
         if isinstance(path, (str, Path)):
@@ -270,6 +280,9 @@ class HtmlWriter(RunSerializer):
         '''
         Given a path to an html file to serve as a jinja2 template, read the
         file and create a new template object.
+
+        :param template_path: Path to the jinja2 template file.
+        :type temlate_path: str
         '''
         if isinstance(template_path, Path):
             template_path = str(template_path)
@@ -279,8 +292,18 @@ class HtmlWriter(RunSerializer):
             return Template(contents)
 
     def write_complete_run(self, output_path, encode_images=True):
-        # write a run as html file with images and classifications
-        # and that kind of stuff
+        '''Create an HTML report from a Run or HWIRun instance.
+
+        :param output_path: Path to write html file to.
+        :type output_path: str or Path
+        :param encode_images: Write images as base64 directly to the html file,
+                              defaults to True. Greatly increases the file size
+                              but means that report will still contain images
+                              even if the originals are deleted or removed.
+        :type encode_images: bool, optional
+        :return: Path to html report if write succeeds, Exception otherwise. 
+        :rtype: str or Exception
+        '''
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
             output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             if output_path:
@@ -304,7 +327,7 @@ class HtmlWriter(RunSerializer):
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
-        '''Write the contents of optimization grid screen to an html file
+        '''Write the contents of optimization grid screen to an html file.
 
         :param output_path: Path to html file
         :type output_path: str
@@ -312,9 +335,9 @@ class HtmlWriter(RunSerializer):
         :type plate_list: list
         :param well_number: well number of hit screen is created from
         :type well_number: int or str
-        :param x_reagent: reagent varried in x direction
+        :param x_reagent: reagent varied in x direction
         :type x_reagent: Reagent
-        :param y_reagent: reagent varried in y direction
+        :param y_reagent: reagent varied in y direction
         :type y_reagent: Reagent
         :param well_volume: Volume of well used in screen
         :type well_volume: int or str
@@ -409,7 +432,7 @@ class RunCsvWriter(RunSerializer):
         headers and a list of dictionaries with each dictionary representing
         one row of csv data.
 
-        :raises e: Catch all exception. TODO: Make more specific
+        :raises e: Catch all exception.
         :return: Tuple, list of headers and list of dicts
         :rtype: tuple
         '''
@@ -458,6 +481,15 @@ class SceneExporter():
     
     @staticmethod
     def write_image(scene, file_path):
+        '''Write the contents of a QGraphicsScene to a png file.
+
+        :param scene: QGraphicsScene to convert to image file.
+        :type scene: QGraphicsScene
+        :param file_path: Path to save image to.
+        :type file_path: str
+        :return: File path to saved image if successful, Exception otherwise.
+        :rtype: str or Exception
+        '''
         try:
             image = QImage(scene.width(), scene.height(), QImage.Format_ARGB32_Premultiplied)
             painter = QPainter(image)
@@ -482,6 +514,18 @@ class MsoWriter(RunSerializer):
 
     @staticmethod
     def row_formater(cocktail_row):
+        '''Format a cocktail row as read from a cocktail csv
+        file to an mso file row. Main change is appending empty
+        strings to the cocktail row so list ends up always having
+        a length of 17. This is important because the image
+        classification code always occurs at the 18th item in
+        an mso file row.
+
+        :param cocktail_row: Cocktail row as read from cocktail csv file.
+        :type cocktail_row: list
+        :return: Cocktail row reformated for mso writing.
+        :rtype: list
+        '''
         # well number should be first index in the list
         # total list length should be 18 last item is the mso code
         return cocktail_row + ([''] * (len(cocktail_row) - 17))
@@ -489,18 +533,41 @@ class MsoWriter(RunSerializer):
     
     @property
     def first_line(self):
+        '''Create the first line of the mso file.
+
+        :return: List to write as the first line of the mso file.
+        :rtype: list
+        '''
         return [
             MsoWriter.path_suffix_checker(self.run.run_name, '.rar'), 
             self.mso_version
         ]
     
     def get_cocktail_csv_data(self):
+        '''Reads and returns the cocktail csv data assigned
+        to the `cocktail_menu` attribute of the MsoWriter's
+        `run` attribute.
+
+        :return: List of lists containing cocktail csv data.
+        :rtype: list
+        '''
         cocktail_menu = self.run.cocktail_menu.path
         with open(cocktail_menu, 'r') as menu_file:
             next(menu_file)  # skip first row
             return [row for row in csv.reader(menu_file)]
 
     def write_mso_file(self, use_marco_classifications=False):
+        '''Writes an mso formated file for use with MarcoScopeJ based on
+        the images and classifications of the Run stored in the MsoWriter's
+        `run` attribute.
+
+        :param use_marco_classifications: Include the MARCO classification
+                                          in the mso file instead of human
+                                          classifications, defaults to False
+        :type use_marco_classifications: bool, optional
+        :return: True if file is written successfully, False otherwise.
+        :rtype: bool
+        '''
         if isinstance(self.run, HWIRun):  # must be hwi run to write to mso
             cocktail_data = self.get_cocktail_csv_data()
             self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
@@ -524,8 +591,6 @@ class MsoWriter(RunSerializer):
         else:
             return False
             
-
-
 
 class XtalWriter(RunSerializer):
     header_flag = '<>'  # do not change unless very good reason
@@ -753,11 +818,6 @@ class RunDeserializer():  # convert saved file into a run
         '''
         return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
-        # def finished():
-        #     self.main_window.add_loaded_run(thread.result)
-
-        # thread.finished.connect(finished)
-        thread.start()
 
     def make_read_xtal_thread(self):
         return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
@@ -806,7 +866,25 @@ class RunDeserializer():  # convert saved file into a run
                 return FileNotFoundError
         except Exception as e:
             return e
+
+
 class PptxWriter():
+        '''Use for creating pptx presentation slides from Run instances.
+
+        :param output_path: Path to write pptx file to.
+        :type output_path: str or Path
+        :param included_attributes: [description], defaults to {}
+        :type included_attributes: dict, optional
+        :param image_types: Images included in the presentation
+        must have a classification in this set, defaults to None
+        :type image_types: set or list, optional
+        :param human: Use human classification as the image classification, defaults to False
+        :type human: bool, optional
+        :param marco: Use the MARCO classification as the image classification, defaults to False
+        :type marco: bool, optional
+        :param favorite: Only include images marked as favorite, defaults to False
+        :type favorite: bool, optional
+        '''
 
     # 13.33 x 7.5 
     def __init__(self, output_path, included_attributes={},
@@ -822,11 +900,18 @@ class PptxWriter():
         self.__slide_width = 10
         self.__slide_height = 6
         self.__presentation = Presentation()
-    
+        
     def delete_presentation(self):
+        '''Create a new clean presentation.
+        '''
         self.__presentation = Presentation()
     
     def delete_temp_images(self):
+        '''Delete an temporary images used to create the pptx presentation.
+
+        :return: True, if images are removed successfully, Exception otherwise.
+        :rtype: bool or Exception
+        '''
         try:
             [os.remove(img_path) for img_path in self.__temp_images]
             return True
@@ -834,6 +919,14 @@ class PptxWriter():
             return e
     
     def sort_runs_by_spectrum(self, runs):
+        '''Divids runs into two lists, one containing visible spectrum
+        runs and another containing all non-visible runs.
+
+        :param runs: List or runs
+        :type runs: list
+        :return: tuple, first item is visible runs second is non-visible runs
+        :rtype: tuple
+        '''
         visible, other = [], []
         for run in runs:
             if run.image_spectrum == IMAGE_SPECS[0]:
@@ -842,7 +935,28 @@ class PptxWriter():
                 other.append(run)
         return visible, other
            
-    def make_sample_presentation(self, sample_name, runs, title, subtitle, cocktail_data=True):
+    def make_sample_presentation(self, sample_name, runs, title,
+                                 subtitle, cocktail_data=True):
+        '''Create a pptx presentation from a collection of runs intended to
+        be all of the same sample. This allows for time resolved comparisons
+        and comparisons between spectrums. Should generally not include all
+        images in the presentation or with runs who's images do not exist
+        on the local machine. Doing so creates huge presentation files and
+        long write times.
+
+        :param sample_name: Name of the sample
+        :type sample_name: str
+        :param runs: List of runs to include in the presentation
+        :type runs: list
+        :param title: Title of the presentation
+        :type title: str
+        :param subtitle: Subtitle of the presentation
+        :type subtitle: str
+        :param cocktail_data: Include cocktail data if True, defaults to True
+        :type cocktail_data: bool, optional
+        :return: Path to presentation file if write is successful, False otherwise
+        :rtype: str or bool
+        '''
         visible, other = self.sort_runs_by_spectrum(runs)
         title_slide = self.add_new_slide(0)
         title_slide.shapes.title.text = title
@@ -880,12 +994,25 @@ class PptxWriter():
             
             self.__presentation.save(str(self.output_path))
             self.delete_temp_images()
+
+            return str(self.output_path)
                 
         else:
             return False
         
 
     def make_single_run_presentation(self, run, title, subtitle=None, cocktail_data=True):
+        '''Create a pptx presentation from a single run.
+
+        :param run: Run to create the presentation from
+        :type run: Run or HWIRun
+        :param title: Title of the presentation
+        :type title: str
+        :param subtitle: Subtitle of the presentation, defaults to None
+        :type subtitle: str, optional
+        :param cocktail_data: Include cocktail data if True, defaults to True
+        :type cocktail_data: bool, optional
+        '''
         title_slide = self.add_new_slide(0)
         title_slide.shapes.title.text = title
         if subtitle:
@@ -909,6 +1036,15 @@ class PptxWriter():
                 
     
     def add_classification_slide(self, well_number, rep_image):
+        '''Add a slide containing details about an images MARCO
+        and human classification in a table.
+
+        :param well_number: Well number (index) of image to use in
+                            the title of the slide 
+        :type well_number: int
+        :param rep_image: Image object to make slide from
+        :type rep_image: Image
+        '''
         new_slide = self.add_new_slide()
         title = 'Well {} Classifications'.format(well_number)
         new_slide.shapes.title.text = title
@@ -922,10 +1058,28 @@ class PptxWriter():
         # do for most recent human classification image if it exits
 
     def add_new_slide(self, template=5):
+        '''Adds a new slide to the current presentation.
+
+        :param template: Slide template number, defaults to 5
+        :type template: int, optional
+        :return: New slide
+        :rtype: Slide
+        '''
         return self.__presentation.slides.add_slide(
             self.__presentation.slide_layouts[template])
     
     def add_timeline_slide(self, images, well_number):
+        '''Create a timeline (time resolved) slide that
+        show the progression of a sample in a particular
+        well.
+
+        :param images: List of images to include in the slide
+        :type images: list
+        :param well_number: Well number to use in the title of the slide
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
         date_images = sorted(images, key=lambda i: i.date)
         new_slide = self.add_new_slide()
         labeler = lambda i: i.formated_date
@@ -938,6 +1092,16 @@ class PptxWriter():
     
 
     def add_multi_spectrum_slide(self, images, well_number):
+        '''Helper method for arranging multiple images on
+        the same slide.
+
+        :param images: Images to include on the slide
+        :type images: list
+        :param well_number: Well number to use in the slide title
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
         spec_images = sorted(images, key=lambda i: len(i.spectrum))
         new_slide = self.add_new_slide()
         labeler = lambda i: i.spectrum
@@ -1320,7 +1484,7 @@ class RunLinker():
     @staticmethod
     def link_runs_by_date(runs):
         for run in runs:
-            if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
+            if hasattr(run, 'link_to_next_date') and isinstance(run.date, datetime):
                 continue
             else:
                 return False
@@ -1330,7 +1494,7 @@ class RunLinker():
         # only visible runs liked by date
         if sorted_runs and len(sorted_runs) > 1:  # if length is only one will be linked to self
             for i in range(0, len(sorted_runs)-1):
-                sorted_runs[i].link_to_decendent(sorted_runs[i+1])
+                sorted_runs[i].link_to_next_date(sorted_runs[i+1])
         return list(set(runs).union(set(sorted_runs)))
         # sorted_runs will not contain non-visible runs so need to merge the
         # linked visible runs with the non-visible runs in a way that does

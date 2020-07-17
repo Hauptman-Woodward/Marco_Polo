@@ -107,7 +107,7 @@ class Carousel():
         :type prev_slide: bool
         '''
         if self.current_slide:
-            self.current_slide.image.recursive_delete_pixmap_data()
+            self.current_slide.image.delete_all_pixmap_data()
             if next_slide:
                 self.current_slide = self.current_slide.next_slide
             elif prev_slide:

@@ -104,6 +104,14 @@ class Image(QtGui.QPixmap):
 
     @classmethod
     def to_graphics_scene(cls, image):
+        '''Convert an Image object to a pyqt QGraphicsScene with
+        the Image added as a pixmap to the graphics scene.
+
+        :param image: Image instance
+        :type image: Image
+        :return: QGraphicsScene
+        :rtype: QGraphicsScene
+        '''
         scene = QtWidgets.QGraphicsScene()
         if image.isNull():
             image.setPixmap()
@@ -112,49 +120,19 @@ class Image(QtGui.QPixmap):
 
     @classmethod
     def no_image(cls):
+        '''Return an Image instance with the default image data.
+        Used to fill in for missing data and when filters cannot
+        find any matching results.
+
+        :return: Default image
+        :rtype: Image
+        '''
         # return default no images found image instance
         return cls(path=DEFAULT_IMAGE_PATH)
 
-    def setPixmap(self, scaling=None):
-        if os.path.exists(self.path):
-            self.load(self.path)
-        elif isinstance(self.bites, bytes):
-            self.loadFromData(base64.b64decode(self.bites))
-        if isinstance(scaling, float):
-            self.scaled(self.width*scaling, self.height *
-                        scaling, Qt.KeepAspectRatio)
-
-    def delete_pixmap_data(self):
-        self.swap(QPixmap())  # swap with null pixel map
-
-    def recursive_delete_pixmap_data(self):
-        for i in self.get_linked_images_by_date():
-            i.delete_pixmap_data()
-        for i in self.get_linked_images_by_spectrum():
-            i.delete_pixmap_data()
-
-    def height(self):
-        return self.size().height()
-
-    def width(self):
-        return self.size().width()
-
-    def __str__(self):
-        image_string = 'Well Num: {}\n'.format(str(self.well_number))
-        image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
-            str(self.machine_class), str(self.human_class))
-        if self.machine_class and self.prediction_dict and self.machine_class in self.prediction_dict:
-            image_string += 'MARCO Confidence: {} %\n'.format(
-                round(float(self.prediction_dict[self.machine_class]) * 100, 1)
-            )
-        image_string += 'Date: {}\n'.format(self.formated_date)
-        image_string += 'Spectrum: {}'.format(self.spectrum)
-
-        return image_string
-
     @property
-    def date(self):
-        return self.__date
+        def date(self):
+            return self.__date
 
     @date.setter
     def date(self, date):
@@ -235,16 +213,6 @@ class Image(QtGui.QPixmap):
 
     @human_class.setter
     def human_class(self, new_class):
-        '''Change the human classification of this image and any alternative
-        spectrum images it is linked to. The motivation for sharing human
-        classifications between spectrums is that in theory linked spectrums
-        are images of the exact same well just using a different photographic
-        technology. Therefore the classifications should be consistent across
-        the runs.
-
-        :param new_class: New image classification
-        :type new_class: str
-        '''
         if new_class in IMAGE_CLASSIFICATIONS:
             self.__human_class = new_class
             # if hasattr(self, 'alt_image') and self.alt_image:
@@ -260,10 +228,86 @@ class Image(QtGui.QPixmap):
     
     @property
     def formated_date(self):
+        '''Get the image's `data` attribute formated in the
+        month/date/year format. If image has no `date` returns
+        an empty string.
+
+        :return: Date
+        :rtype: str
+        '''
         if isinstance(self.date, datetime):
-            return datetime.strftime(self.date, '%m-%d-%Y')
+            return datetime.strftime(self.date, '%m/%d/%Y')
         else:
             return ''
+
+
+    def setPixmap(self, scaling=None):
+        '''Loads the images pixmap into memory which then allows for displaying
+        the image to the user. Images that are displayed before loading
+        will not appear. It is recommended to only load the image pixmap when
+        the image actually needs to be shown to the user as it is expensive
+        to hold in memory.
+
+        :param scaling: Scaler for the pixmap; between 0 and 1, defaults to None
+        :type scaling: float, optional
+        '''
+        if os.path.exists(self.path):
+            self.load(self.path)
+        elif isinstance(self.bites, bytes):
+            self.loadFromData(base64.b64decode(self.bites))
+        if isinstance(scaling, float):
+            self.scaled(self.width*scaling, self.height *
+                        scaling, Qt.KeepAspectRatio)
+
+    def delete_pixmap_data(self):
+        '''Replaces the Image's pixmap data with a null pixmap which
+        effectively deletes the existing pixmap data. Used to free up
+        memory after a pixmap is no longer needed.
+        '''
+        self.swap(QPixmap())  # swap with null pixel map
+
+    def delete_all_pixmap_data(self):
+        '''Deletes the pixmap data for the Image object this function is
+        called on and for any other images that this image is linked to. This
+        includes images stored in the `alt_image`, `next_image` and `previous_image`
+        attributes.
+        '''
+        for i in self.get_linked_images_by_date():
+            i.delete_pixmap_data()
+        for i in self.get_linked_images_by_spectrum():
+            i.delete_pixmap_data()
+
+    def height(self):
+        '''Get the height of the image's pixmap. The pixmap must be set
+        for this function to return an actual size.
+
+        :return: Height of the image's pixmap
+        :rtype: int
+        '''
+        return self.size().height()
+
+    def width(self):
+        '''Get the height of the image's pixmap. The pixmap must be set
+        for this function to return an actual size.
+
+        :return: Width of the image's pixmap
+        :rtype: int
+        '''
+        return self.size().width()
+
+    def __str__(self):
+        image_string = 'Well Num: {}\n'.format(str(self.well_number))
+        image_string += 'MARCO Class: {}\nHuman Class: {}\n'.format(
+            str(self.machine_class), str(self.human_class))
+        if self.machine_class and self.prediction_dict and self.machine_class in self.prediction_dict:
+            image_string += 'MARCO Confidence: {} %\n'.format(
+                round(float(self.prediction_dict[self.machine_class]) * 100, 1)
+            )
+        image_string += 'Date: {}\n'.format(self.formated_date)
+        image_string += 'Spectrum: {}'.format(self.spectrum)
+
+        return image_string
+
 
 
     def encode_base64(self):
@@ -284,22 +328,11 @@ class Image(QtGui.QPixmap):
             with open(self.path, 'rb') as image:
                 return base64.b64encode(image.read())
 
-    # def resize(self, x, y, preserve_aspect=True):
-    #     '''
-    #     Resizes an image given x and y resolution. Copy is true will copy
-    #     the image instead of overwriting it.
-    #     '''
-    #     pixel_map = self.get_pixel_map()
-    #     if preserve_aspect:
-    #         return pixel_map.scaled(x, y, QtCore.Qt.KeepAspectRatio)
-
     def get_tool_tip(self):
-        '''Format a string to use as a tooltip for this image instance.
+        '''Create a string to use as the tooltip for this image.
 
         :return: Tooltip string
         :rtype: str
-
-        # TODO Pick a better way to add cocktail to the tooltip
         '''
         if self.cocktail:
             cocktail = self.cocktail.number
@@ -311,13 +344,16 @@ class Image(QtGui.QPixmap):
             str(self.human_class)
         )
 
-    def __iter__(self):
-        attribs = [self.path, self.human_class, self.machine_class,
-                   self.well_number, self.plate_id, self.date]
-        for item in attribs:
-            yield item
-
     def get_linked_images_by_date(self):
+        '''Get all images that are linked to this Image instance by date. 
+        Image linking by date is accomplished by creating a bi-directional
+        linked list between Image instances, where each Image acts as a node
+        and the `next_image` and `previous_images` act as the forwards and
+        backwards pointers respectively.
+
+        :return: All Images connected to this Image by date
+        :rtype: list
+        '''
         linked_images = [self]
         if self.next_image:
             start_image = self.next_image
@@ -332,6 +368,15 @@ class Image(QtGui.QPixmap):
         return sorted(linked_images, key=lambda i: i.date)
 
     def get_linked_images_by_spectrum(self):
+        '''Get all images that are linked to this Image instance by
+        spectrum. Linking images by spectrum is accomplished by
+        creating a mono-directional circular linked list where
+        Image instances serve as nodes and their `alt_image` attribute
+        acts as the pointer to the next node.
+
+        :return: List of all Images linked to this Image by spectrum
+        :rtype: list
+        '''
         linked_images, paths = [self], set([])
         if self.alt_image:
             start_image = self.alt_image
@@ -341,12 +386,6 @@ class Image(QtGui.QPixmap):
                 linked_images.append(start_image)
                 paths.add(start_image.path)
                 start_image = start_image.alt_image
-
-            # Before added paths set check BUG would happen if loaded sample
-            # with linked dates and spectrum in the plateview. Opening the non
-            # visible run in plateview then swaping spectrum then navigate by
-            # date then next or previous page would cause this function to go
-            # into infinite loop
 
             return sorted(linked_images, key=lambda i: len(i.spectrum))
         else:

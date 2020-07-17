@@ -170,7 +170,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                             prev_date=False, alt_spec=False, label_dict={}):
         if self.run:
             QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
-            [item.data(0).recursive_delete_pixmap_data() for item in self.__scene.items() 
+            [item.data(0).delete_all_pixmap_data() for item in self.__scene.items() 
             if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
             # for now delete all previous pixmap data from ram
 
