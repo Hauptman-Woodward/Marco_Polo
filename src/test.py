@@ -1,11 +1,14 @@
-import time
-from random import randint
+import matplotlib.pyplot as plt
+import numpy as np
 
 
+total_images = 1536 * 8 * 2
 
-s = time.time()
-r = randint(0, 10^1000)
-if r == 0:
-    print('hello')
-e = time.time()
-print(e - s)
+rand_vals = np.random.rand(156, 156)
+ax = plt.imshow(rand_vals)
+ax.set_cmap('Spectral')
+
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+
+plt.show()
