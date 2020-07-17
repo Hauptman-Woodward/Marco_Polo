@@ -1092,8 +1092,8 @@ class PptxWriter():
     
 
     def add_multi_spectrum_slide(self, images, well_number):
-        '''Helper method for arranging multiple images on
-        the same slide.
+        '''Create a slide to show a all spectrums a well has been
+        imaged in.
 
         :param images: Images to include on the slide
         :type images: list
@@ -1112,11 +1112,31 @@ class PptxWriter():
         return new_slide
     
     def add_cocktail_slide(self, well, cocktail):
+        '''Add slide with details on cocktail information
+
+        :param well: Well number to use in slide title
+        :type well: int
+        :param cocktail: Cocktail to write as a slide
+        :type cocktail: Cocktail
+        '''
         new_slide = self.add_new_slide(5)
         title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
         new_slide.shapes.title.text = title
 
     def add_table_to_slide(self, slide, data, left, top):
+        '''General helper method for adding a table to a slide
+
+        :param slide: Slide to add the table to
+        :type slide: Slide
+        :param data: List of lists that has the data to write to the table
+        :type data: list
+        :param left: Left offset in inches to place to table
+        :type left: float
+        :param top: Top cordinate for placing the table
+        :type top: float
+        :return: Slide with table added
+        :rtype: slide
+        '''
         rows, cols = len(data), max([len(r) for r in data])
         shapes = slide.shapes
         
@@ -1134,6 +1154,18 @@ class PptxWriter():
         return slide
 
     def add_multi_image_slide(self, slide, images, labeler):
+        '''General helper method for adding a slide that will have multiple
+        images.
+
+        :param slide: Slide to add the images to 
+        :type slide: Slide
+        :param images: Images to add to the slide
+        :type images: list
+        :param labeler: Function to use to label the individual images
+        :type labeler: func
+        :return: Slide with images added
+        :rtype: Slide
+        '''
         top = 3
         img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
         if img_size >= 0.4 * self.__slide_height: img_size = 0.4 * self.__slide_height
@@ -1152,6 +1184,21 @@ class PptxWriter():
         return slide
     
     def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+        '''General helper method for adding a slide with a single image to a
+        presentation
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param title: Title to use for the slide
+        :type title: str
+        :param metadata: Additional information to write to the slide, defaults to None
+        :type metadata: str, optional
+        :param img_scaler: Scaler to apply to size of the image, defaults to 0.65
+                            ,should be between 0 and 1. 1 is full sized image.
+        :type img_scaler: float, optional
+        :return: The new slide with Image added
+        :rtype: Slide
+        '''
         new_slide = self.add_new_slide(5)
         new_slide.shapes.title.text = title
         img_size = self.__slide_height * img_scaler
@@ -1171,6 +1218,27 @@ class PptxWriter():
     
     def add_text_to_slide(self, slide, text, left, top, width, height,
                           rotation=0, font_size=14):
+        '''Helper method to add text to a slide
+
+        :param slide: Slide to add text to
+        :type slide: Slide
+        :param text: Text to add to the slide
+        :type text: str
+        :param left: Left cordinate location of the text in inches
+        :type left: float
+        :param top: Top cordinate location of the text in inches
+        :type top: float
+        :param width: Width of the text in inches
+        :type width: float
+        :param height: Height of the text in inches
+        :type height: float
+        :param rotation: Rotation to apply to the text in degrees, defaults to 0
+        :type rotation: int, optional
+        :param font_size: Font size of text, defaults to 14
+        :type font_size: int, optional
+        :return: Slide with text added
+        :rtype: Slide
+        '''
         text_box = slide.shapes.add_textbox(
             Inches(left), Inches(top), Inches(width), Inches(height))
         text_box.rotation = rotation
@@ -1183,8 +1251,27 @@ class PptxWriter():
         return text_box
     
     def add_image_to_slide(self, image, slide, left, top, height):
-        # if the image path does not exist then will have to encode
-        # is somehow or think about how that will work
+        '''Helper method for adding images to a slide. If the image
+        does not have a file written on the local machine as can be
+        the case with saved runs who's image data only exists in
+        their xtal files this method will write a temporary image
+        file to the Polo TEMP_DIR which then should be deleted after
+        the presentaton file is written.
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param slide: Slide to add the image to
+        :type slide: Slide
+        :param left: Left cordinate location of the image in inches
+        :type left: float
+        :param top: Top cordinate location of the image in inches
+        :type top: float
+        :param height: Height of the image in inches
+        :type height: float
+        :return: []
+        :rtype: [type]
+        '''
+        
         if os.path.isfile(image.path):
             img_path = image.path
         else:
@@ -1202,18 +1289,24 @@ class BarTender():
     '''Class for organizing and accessing cocktail menus'''
 
     def __init__(self, cocktail_dir, cocktail_meta):
-        '''Create instance of BarTender object. Probably only going to need
-        to make one instance since the bartender should organize all
-        available cocktail menus for the current Polo session. Currently,
-        the BarTender instance that is used everywhere is declared in polo
-        __init__ file.
+        '''Class for organizing and accessing cocktail menu data
 
-        :param cocktail_dir: Path to directory holding cocktail menu files
-        :type cocktail_dir: str
-        :param cocktail_meta: Path to csv file containing cocktail menu metadata.units
-        which includes things like when each menu was used, what kind.units
-        of screens it was used for, etc.
-        :type cocktail_meta: str
+        :param cocktail_dir: Directory containing cocktail menu csv files
+        :type cocktail_dir: str or Path
+        :param cocktail_meta: Path to cocktail metadata file which describes the contents of
+        each cocktail menu csv file
+        :type cocktail_meta: Path or str
+
+        Cocktail metadata file should be a csv file with the following
+        headers ordered from top to bottom. Each header name is followed by a
+        description.
+
+        .. code-block:: text
+
+            File Name: Name of cocktail menu file
+            Dates Used: Range of dates the cocktail menu was used (m/d/y-m/d/y)
+            Plate Number
+            Screen Type: 'm' for membrane screens, 's' for soluble screens
         '''
         self.cocktail_dir = cocktail_dir
         self.cocktail_meta = cocktail_meta
@@ -1472,9 +1565,22 @@ class CocktailMenuReader():
 
 
 class RunLinker():
+    '''Class to hold methods relating to linking runs either by
+    date or by spectrum.
+    '''
 
     @staticmethod
     def the_big_link(runs):
+        '''Wrapper method around :func:`~polo.utils.io_utils.link_runs_by_date`, 
+        :func:`~polo.utils.io_utils.link_runs_by_spectrum` and 
+        :func:`~polo.utils.io_utils.unlink_runs_completely`. Runs are first unlinked
+        from each other first and then relinked.
+
+        :param runs: List of runs to link together
+        :type runs: list
+        :return: List or runs after linking
+        :rtype: list
+        '''
         runs = RunLinker.unlink_runs_completly(runs)
         runs = RunLinker.link_runs_by_date(runs)
         runs = RunLinker.link_runs_by_spectrum(runs)
@@ -1483,6 +1589,18 @@ class RunLinker():
 
     @staticmethod
     def link_runs_by_date(runs):
+        '''Link a collection of runs by date into a linked list structure.
+        Only runs that are marked as visible (run's `image_spectrum` == 'Visible')
+        are linked by date. Linked list is bidirectional and the `next_run` and
+        `previous_run` attributes act as the forwards and backwards pointers. The
+        returned list of runs will also include non-visible runs that were not
+        linked together; no runs will be lost from the linking.
+
+        :param runs: List of runs to link together by date
+        :type runs: list
+        :return: List or runs linked by date
+        :rtype: list
+        '''
         for run in runs:
             if hasattr(run, 'link_to_next_date') and isinstance(run.date, datetime):
                 continue
@@ -1502,6 +1620,17 @@ class RunLinker():
 
     @staticmethod
     def link_runs_by_spectrum(runs):
+        '''Link a collection of runs together by spectrum. All non-visible
+        runs are linked together in a monodirectional circular linked list.
+        Each visible run will then point to the same non-visible run through
+        their `alt_spectrum` attribute as a way to access the non-visible
+        linked list.
+
+        :param runs: List of runs to link together
+        :type runs: list
+        :return: List of runs linked by spectrum
+        :rtype: list
+        '''
         # for now this links all runs of the sample to the alt spectrums when
         for run in runs:
             if hasattr(run, 'link_to_alt_spectrum'):
@@ -1536,8 +1665,15 @@ class RunLinker():
             # new current run
     @staticmethod
     def unlink_runs_completly(runs):
+        '''Cuts all links between runs and the images in those runs.
+
+        :param runs: List of runs
+        :type runs: list
+        :return: List of runs without any links
+        :rtype: list
+        '''
         for i, _ in enumerate(runs):
-            runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrun = None, None, None
+            runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrum = None, None, None
             for image in runs[i].images:
                 image.next_image, image.previous_image, image.alt_image = (
                     None, None, None
@@ -1565,10 +1701,29 @@ class XmlReader():
 
     @staticmethod
     def get_data_from_xml_element(xml_element):
+        '''Return the data stored in an xml_element. Helper method
+        for reading xml files.
+
+        :param xml_element: xml element to read data from
+        :type xml_element: [type]
+        :return: Dictionary of data stored in xml element
+        :rtype: dict
+        '''
         return {elem.tag: elem.text for elem in xml_element
                 if elem.tag and elem.text}
 
     def read_plate_data_xml(self, xml_path=None):
+        '''Read the data stored in an xml document. HWI includes metadata
+        about samples, imaging dates and other plate information in each
+        rar archive that is distrubted. This method is used to read that
+        data so it can be incorporated into HWIRun objects.
+
+        :param xml_path: Path to xml file to read, defaults to None.
+                         If None uses the xml path stored in `xml_path` attribute.
+        :type xml_path: str or Path, optional
+        :return: Dictionary of xml data if read was successful, Exception otherwise
+        :rtype: dict or Exception
+        '''
         if not xml_path:
             xml_path = self.xml_file
         xml_path = str(xml_path)
@@ -1586,6 +1741,13 @@ class XmlReader():
             return e
 
     def discover_xml_files(self, parent_dir):
+        '''Look for xml files in a given directory.
+
+        :param parent_dir: Directory to look for xml files in
+        :type parent_dir: str or Path
+        :return: List of xml file paths, if any exist
+        :rtype: list
+        '''
         parent_dir = Path(str(parent_dir))
         try:
             file_paths = [parent_dir.joinpath(f)
@@ -1596,6 +1758,15 @@ class XmlReader():
             return e
 
     def find_and_read_plate_data(self, parent_dir):
+        '''Find xml metadata files in a given directory. Read the
+        data from xml files that contain the `plate_def` key
+        string.
+
+        :param parent_dir: Directory to look for xml files
+        :type parent_dir: Path or str
+        :return: Dict if xml file found and read successfully, False otherwise
+        :rtype: dict or bool
+        '''
         xml_files = self.discover_xml_files(parent_dir)
         if isinstance(xml_files, list):
             for xml_file in xml_files:

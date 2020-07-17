@@ -62,12 +62,6 @@ class fileBrowser(QtWidgets.QTreeWidget):
 
         recursive_add(home_dir, self)
 
-    # def grow_tree_local(self, home_dir):
-
-    #     def recursive_add(cwd, tree):
-    #         pass
-    #     pass
-
     def get_checked_files(self, home_dir):
         '''Traverse the file tree and return the full paths to files that have
         been selected by the user. 
