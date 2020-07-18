@@ -469,6 +469,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                     break
 
     def adjust_unit(self, signed_value, new_unit):
+
         if signed_value.units == 'L':  # only convert volume for now
             if new_unit == 'ul':
                 return signed_value.scale('u')

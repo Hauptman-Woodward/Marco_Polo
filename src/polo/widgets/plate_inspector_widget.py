@@ -195,6 +195,14 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
 
     def parse_label_checkboxes(self):
+        '''Reads values from checkboxes related to image filtering.
+        Returns a dictionary where keys are the labels of the checkboxes
+        which should also be the possible image classifications and values
+        are the state of the checkbox (True or False).
+
+        :return: Dict of checkbox states.
+        :rtype: dict
+        '''
         boxes = [
                  self.ui.checkBox, self.ui.checkBox_2, self.ui.checkBox_3,
                  self.ui.checkBox_4, self.ui.checkBox_5
@@ -204,12 +212,23 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
     def navigate_plateview(self, next_page=False, prev_page=False,
                            alt_image=False, next_date=False, prev_date=False):
-        '''
-        Helper function that moves the view forward, backward or to an alt
-        view using boolean flags. Buttons that actually should preform these
+        '''Helper function that moves the view forward, backward or to an alt
+        view using boolean flags. Buttons that actually preform these
         functions should be connected using a lambda function that passes
-        True to whatever functionality is desired from this function.
+        True to whichever flag represents the button's functionality.
+
+        :param next_page: Navigate to next page if True, defaults to False
+        :type next_page: bool, optional
+        :param prev_page: Navigate to previous page if True, defaults to False
+        :type prev_page: bool, optional
+        :param alt_image: Show alt spectrum images if True, defaults to False
+        :type alt_image: bool, optional
+        :param next_date: Show next date images if True, defaults to False
+        :type next_date: bool, optional
+        :param prev_date: Show previous date images if True, defaults to False
+        :type prev_date: bool, optional
         '''
+
         if next_page:
             self.ui.plateViewer.current_page += 1
         elif prev_page:

@@ -884,9 +884,6 @@ class PptxWriter():
     :type marco: bool, optional
     :param favorite: Only include images marked as favorite, defaults to False
     :type favorite: bool, optional
-
-
-    TEST ADD HERE
     '''
 
     # 13.33 x 7.5 
