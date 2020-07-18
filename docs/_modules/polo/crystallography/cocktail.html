@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -153,6 +156,8 @@
             
   <h1>Source code for polo.crystallography.cocktail</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">NotASolutionError</span>
+<span class="c1">#from cockatoo.screen import _parse_cocktail_csv</span>
+<span class="c1">#from cockatoo.metric import distance</span>
 <span class="kn">from</span> <span class="nn">molmass</span> <span class="kn">import</span> <span class="n">Formula</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
@@ -161,7 +166,7 @@
 <div class="viewcode-block" id="Cocktail"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail">[docs]</a><span class="k">class</span> <span class="nc">Cocktail</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;Cocktail instances are used to hold a collection of reagents</span>
 <span class="sd">    that form one chemical cocktail screen. Also hold metadata including</span>
-<span class="sd">    their commerical code if one exists, the cocktail pH and the</span>
+<span class="sd">    their commercial code if one exists, the cocktail pH and the</span>
 <span class="sd">    well they are assigned to. Currently, cocktails are only supported</span>
 <span class="sd">    for HWIRuns.</span>
 
@@ -198,7 +203,7 @@
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>     
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="c1"># normal cocktail number format 13_C0001</span>
@@ -222,6 +227,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__well_assignment</span> <span class="o">=</span> <span class="n">value</span>
+    
 
 <div class="viewcode-block" id="Cocktail.add_reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.add_reagent">[docs]</a>    <span class="k">def</span> <span class="nf">add_reagent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_reagent</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Adds a reagent to the existing list of reagents stored in the</span>
@@ -233,6 +239,34 @@
         <span class="k">if</span> <span class="n">new_reagent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_reagent</span><span class="p">)</span></div>
 
+    <span class="c1"># def compute_distance(self, other_cocktail):</span>
+    <span class="c1">#     if isinstance(other_cocktail, Cocktail):</span>
+    <span class="c1">#         this_cockatoo_cocktail = self.to_cockatoo_cocktail()</span>
+    <span class="c1">#         other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()</span>
+    <span class="c1">#         if this_cockatoo_cocktail and other_cockatoo_cocktail:</span>
+    <span class="c1">#             return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)</span>
+    <span class="c1">#     return False </span>
+
+    <span class="c1"># def to_cockatoo_cocktail(self):</span>
+    <span class="c1">#     # convert cocktail object to a &quot;row&quot; as read from a csv file for use with</span>
+    <span class="c1">#     # cockatoo package</span>
+    <span class="c1">#     # name,overall_ph,[conc,unit,name,ph]*</span>
+    <span class="c1">#     row = [self.number, str(self.pH)]</span>
+    <span class="c1">#     for reagent in self.reagents:</span>
+    <span class="c1">#         if reagent.molarity != False:</span>
+    <span class="c1">#             reagent_row = [</span>
+    <span class="c1">#                 str(reagent.concentration.value),</span>
+    <span class="c1">#                 str(reagent.concentration.units),</span>
+    <span class="c1">#                 reagent.chemical_additive,</span>
+    <span class="c1">#                 self.pH]  # doesnt seem like reagent pH is used in distance calc</span>
+    <span class="c1">#             row += reagent_row</span>
+    <span class="c1">#             return _parse_cocktail_csv(row)  # should return cocktail object if it worked</span>
+    <span class="c1">#         # then can compare two cocktail objects</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             break</span>
+    <span class="c1">#     return False</span>
+
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 
@@ -243,14 +277,8 @@
         <span class="k">for</span> <span class="n">reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
             <span class="n">cocktail_string</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">reagent</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">,</span> <span class="n">reagent</span><span class="o">.</span><span class="n">concentration</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cocktail_string</span>
+        <span class="k">return</span> <span class="n">cocktail_string</span></div>
     
-<div class="viewcode-block" id="Cocktail.chemical_distance"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.chemical_distance">[docs]</a>    <span class="k">def</span> <span class="nf">chemical_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cocktail</span><span class="p">):</span>
-        <span class="c1"># pass</span>
-        <span class="k">pass</span>
-        <span class="k">for</span> <span class="n">each_reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
-            <span class="n">molar_concentration</span> <span class="o">=</span> <span class="n">each_reagent</span><span class="o">.</span><span class="n">molarity</span><span class="p">()</span>
-            <span class="k">pass</span></div></div>
 
 
 <div class="viewcode-block" id="Reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent">[docs]</a><span class="k">class</span> <span class="nc">Reagent</span><span class="p">():</span>
@@ -513,7 +541,7 @@
 <span class="sd">        :return: SignedValue converted to base unit of called SignedValue instance</span>
 <span class="sd">        :rtype: SignedValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -549,11 +577,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -564,7 +600,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

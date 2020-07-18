@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,15 +34,11 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polo.widgets package" href="polo.widgets.html" />
-    <link rel="prev" title="polo.utils package" href="polo.utils.html" /> 
+    <link rel="next" title="polo.utils package" href="polo.utils.html" />
+    <link rel="prev" title="polo.marco package" href="polo.marco.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,16 +94,15 @@
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.threads package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.threads.thread">polo.threads.thread module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.threads">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.widgets.html">polo.widgets package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.designer.html">polo.designer package</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
@@ -112,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -150,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -206,6 +208,11 @@
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">FTPDownloadThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ftp_connection</span></em>, <em class="sig-param"><span class="n">file_paths</span></em>, <em class="sig-param"><span class="n">save_dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#FTPDownloadThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
 <dl class="py attribute">
+<dt id="polo.threads.thread.FTPDownloadThread.download_path">
+<code class="sig-name descname">download_path</code><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.download_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt id="polo.threads.thread.FTPDownloadThread.file_downloaded">
 <code class="sig-name descname">file_downloaded</code><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.file_downloaded" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -221,43 +228,6 @@
 <dt id="polo.threads.thread.GraphThread">
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">GraphThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_object</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#GraphThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.GraphThread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="polo.threads.thread.PixmapMakerThread">
-<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">PixmapMakerThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PixmapMakerThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PixmapMakerThread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
-<dl class="py method">
-<dt id="polo.threads.thread.PixmapMakerThread.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PixmapMakerThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PixmapMakerThread.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="polo.threads.thread.PlateThread">
-<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">PlateThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">marco</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">start_index</span></em>, <em class="sig-param"><span class="n">end_index</span></em>, <em class="sig-param"><span class="n">graphics_view_dims</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PlateThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PlateThread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
-<dl class="py method">
-<dt id="polo.threads.thread.PlateThread.place_image_in_scene">
-<code class="sig-name descname">place_image_in_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scene</span></em>, <em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">pixel_map</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PlateThread.place_image_in_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PlateThread.place_image_in_scene" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.threads.thread.PlateThread.retrieve_images">
-<code class="sig-name descname">retrieve_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PlateThread.retrieve_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PlateThread.retrieve_images" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.threads.thread.PlateThread.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PlateThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PlateThread.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.threads.thread.PlateThread.tile_images_in_scene">
-<code class="sig-name descname">tile_images_in_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#PlateThread.tile_images_in_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.PlateThread.tile_images_in_scene" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -339,10 +309,10 @@ thread instance.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="polo.widgets.html" class="btn btn-neutral float-right" title="polo.widgets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="polo.utils.html" class="btn btn-neutral float-right" title="polo.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="polo.utils.html" class="btn btn-neutral float-left" title="polo.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="polo.marco.html" class="btn btn-neutral float-left" title="polo.marco package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -351,11 +321,19 @@ thread instance.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -366,7 +344,6 @@ thread instance.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

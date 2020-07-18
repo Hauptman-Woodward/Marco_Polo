@@ -46,7 +46,7 @@ class Cocktail():
         :rtype: int
         '''
         try:     
-            return int(s.split('_C')[-1].lstrip('0'))
+            return int(self.number.split('_C')[-1].lstrip('0'))
         except IndexError:
             return None
         # normal cocktail number format 13_C0001
@@ -122,12 +122,6 @@ class Cocktail():
                 reagent.chemical_additive, reagent.concentration)
         return cocktail_string
     
-    # def chemical_distance(self, other_cocktail):
-    #     # pass
-    #     pass
-    #     for each_reagent in self.reagents:
-    #         molar_concentration = each_reagent.molarity()
-    #         pass
 
 
 class Reagent():

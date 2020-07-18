@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,15 +34,11 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="polo.windows package" href="polo.windows.html" />
-    <link rel="prev" title="polo.threads package" href="polo.threads.html" /> 
+    <link rel="prev" title="polo.utils package" href="polo.utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,23 +94,27 @@
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.widgets package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.file_browser">polo.widgets.file_browser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.map_box">polo.widgets.map_box module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.optimize_widget">polo.widgets.optimize_widget module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-plate-inspector-widget-module">polo.widgets.plate_inspector_widget module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-plate-viewer-module">polo.widgets.plate_viewer module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-slideshow-inspector-module">polo.widgets.slideshow_inspector module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-slideshow-viewer-module">polo.widgets.slideshow_viewer module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-table-inspector-module">polo.widgets.table_inspector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.plate_inspector_widget">polo.widgets.plate_inspector_widget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.plate_viewer">polo.widgets.plate_viewer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.plate_visualizer">polo.widgets.plate_visualizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.run_organizer">polo.widgets.run_organizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.run_tree">polo.widgets.run_tree module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.slideshow_inspector">polo.widgets.slideshow_inspector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.slideshow_viewer">polo.widgets.slideshow_viewer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.table_inspector">polo.widgets.table_inspector module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.table_viewer">polo.widgets.table_viewer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.unit_combo">polo.widgets.unit_combo module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.designer.html">polo.designer package</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
@@ -119,6 +125,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -157,7 +164,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -198,12 +205,12 @@
 
 <dl class="py attribute">
 <dt id="polo.widgets.file_browser.fileBrowser.DIR_ICON">
-<code class="sig-name descname">DIR_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/dir.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.DIR_ICON" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DIR_ICON</code><em class="property"> = '/home/ethan/Documents/github/Marco_Polo/src/data/images/icons/dir.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.DIR_ICON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="polo.widgets.file_browser.fileBrowser.FILE_ICON">
-<code class="sig-name descname">FILE_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/file.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.FILE_ICON" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">FILE_ICON</code><em class="property"> = '/home/ethan/Documents/github/Marco_Polo/src/data/images/icons/file.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.FILE_ICON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -244,6 +251,25 @@ a user’s home directory of an ftp server using mlsd formating.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-polo.widgets.map_box">
+<span id="polo-widgets-map-box-module"></span><h2>polo.widgets.map_box module<a class="headerlink" href="#module-polo.widgets.map_box" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.map_box.MapBox">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.map_box.</code><code class="sig-name descname">MapBox</code><a class="reference internal" href="_modules/polo/widgets/map_box.html#MapBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.map_box.MapBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QComboBox</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.map_box.MapBox.current_value">
+<code class="sig-name descname">current_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/map_box.html#MapBox.current_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.map_box.MapBox.current_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.map_box.MapBox.mapping">
+<em class="property">property </em><code class="sig-name descname">mapping</code><a class="headerlink" href="#polo.widgets.map_box.MapBox.mapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-polo.widgets.optimize_widget">
 <span id="polo-widgets-optimize-widget-module"></span><h2>polo.widgets.optimize_widget module<a class="headerlink" href="#module-polo.widgets.optimize_widget" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
@@ -252,7 +278,7 @@ a user’s home directory of an ftp server using mlsd formating.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
 <dl class="py attribute">
 <dt id="polo.widgets.optimize_widget.OptimizeWidget.GRID_ICON">
-<code class="sig-name descname">GRID_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/grid.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.GRID_ICON" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">GRID_ICON</code><em class="property"> = '/home/ethan/Documents/github/Marco_Polo/src/data/images/icons/grid.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.GRID_ICON" title="Permalink to this definition">¶</a></dt>
 <dd><p>The OptimizeWidget is a primary run interface widget that allows
 users to create optimization screens around the crystallization conditions
 that yielded hits. The concept is very similar to the program MakeTray
@@ -274,7 +300,7 @@ general Run types.</p>
 
 <dl class="py attribute">
 <dt id="polo.widgets.optimize_widget.OptimizeWidget.HTML_ICON">
-<code class="sig-name descname">HTML_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/html.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.HTML_ICON" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">HTML_ICON</code><em class="property"> = '/home/ethan/Documents/github/Marco_Polo/src/data/images/icons/html.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.HTML_ICON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -575,20 +601,1030 @@ variance between y_reagent wells.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="polo-widgets-plate-inspector-widget-module">
-<h2>polo.widgets.plate_inspector_widget module<a class="headerlink" href="#polo-widgets-plate-inspector-widget-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.widgets.plate_inspector_widget">
+<span id="polo-widgets-plate-inspector-widget-module"></span><h2>polo.widgets.plate_inspector_widget module<a class="headerlink" href="#module-polo.widgets.plate_inspector_widget" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.plate_inspector_widget.</code><code class="sig-name descname">PlateInspectorWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_color_mapping">
+<code class="sig-name descname">apply_color_mapping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.apply_color_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_color_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the current color mapping to images. Changes the color of
+images based on their classifications. The color mapping is altered by
+the user by using the color combo boxes to select a color for each
+image classification (Crystal, Clear, …). The user can also select
+what classifier the image classifications should be in reference to;
+either Marco or human classifications.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_image_filters">
+<code class="sig-name descname">apply_image_filters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.apply_image_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_image_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper function around plateViewer <cite>deemphasize_filtered_images</cite>
+which changes the opacity of currently displayed images based on if
+their labels meet the currently selected image filter checkboxes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_plate_settings">
+<code class="sig-name descname">apply_plate_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.apply_plate_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_plate_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses checkboxes in the Plate View tab to determine what behavior
+for the plateViewer widget is requested by the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.color_mapping">
+<em class="property">property </em><code class="sig-name descname">color_mapping</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.color_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a color mapping dictionary from the current selections of the
+color selector comboboxes. Each image classification maps to a color
+or the string “none” to tell the plateViewer to not color that
+image type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.favorite">
+<em class="property">property </em><code class="sig-name descname">favorite</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.favorite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.human">
+<em class="property">property </em><code class="sig-name descname">human</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status of human image classification checkbox</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.images_per_page">
+<code class="sig-name descname">images_per_page</code><em class="property"> = [16, 64, 96]</em><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.images_per_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.marco">
+<em class="property">property </em><code class="sig-name descname">marco</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.marco" title="Permalink to this definition">¶</a></dt>
+<dd><p>Status of marco image classification checkbox</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.navigate_plateview">
+<code class="sig-name descname">navigate_plateview</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_page</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_page</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt_image</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.navigate_plateview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.navigate_plateview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that moves the view forward, backward or to an alt
+view using boolean flags. Buttons that actually should preform these
+functions should be connected using a lambda function that passes
+True to whatever functionality is desired from this function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.parse_label_checkboxes">
+<code class="sig-name descname">parse_label_checkboxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.parse_label_checkboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.parse_label_checkboxes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.reset_all">
+<code class="sig-name descname">reset_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.reset_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.reset_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to uncheck all user selected settings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.run">
+<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.selected_classifications">
+<em class="property">property </em><code class="sig-name descname">selected_classifications</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.selected_classifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list that includes only image classifications that are
+selected via the image filtering checkboxes. Also see
+<cite>image_type_checkboxes</cite> property.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_alt_spectrum_buttons">
+<code class="sig-name descname">set_alt_spectrum_buttons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_alt_spectrum_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_alt_spectrum_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_aspect_ratio_mode">
+<code class="sig-name descname">set_aspect_ratio_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_aspect_ratio_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_aspect_ratio_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the <cite>preserve_aspect</cite> attribute based on the status of
+the preserve aspect ratio checkbox available to the user. Preserving
+aspect ratio results in displaying undistorted crystallization images 
+but utilizes available display space less efficiently.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_color_comboboxs">
+<code class="sig-name descname">set_color_comboboxs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_color_comboboxs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_color_comboboxs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary that maps color selector comboboxes to the
+image classification they assign their current color to and label
+each combobox with that classification.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_color_options">
+<code class="sig-name descname">set_color_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_color_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_color_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the COLORS constant to set the color options for each 
+colorselector combobox in the image coloring tab.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_current_page">
+<code class="sig-name descname">set_current_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">page_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_current_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_current_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the current page number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>page_number</strong> (<em>int</em>) – The new page number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_image_count_options">
+<code class="sig-name descname">set_image_count_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_image_count_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_image_count_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method to be called in <cite>__init__</cite> that sets the options
+for number of images per view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_images_per_page">
+<code class="sig-name descname">set_images_per_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_images_per_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_images_per_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_plate_label">
+<code class="sig-name descname">set_plate_label</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_plate_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_plate_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changed the plate label to tell the user what view they are on out
+of total number of views. Number of views is dependent on the number
+of images per view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_spin_box_range">
+<code class="sig-name descname">set_spin_box_range</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_spin_box_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_spin_box_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the allowed range for the page navigation spinbox.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_time_resolved_buttons">
+<code class="sig-name descname">set_time_resolved_buttons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.set_time_resolved_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_time_resolved_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.show_current_plate">
+<code class="sig-name descname">show_current_plate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_view</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_view</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt_spec</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.show_current_plate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.show_current_plate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the images belonging to the current plate view to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>next_date</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag, if True show equivalent images from future 
+date, defaults to False</p></li>
+<li><p><strong>prev_date</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag, if True shows equivalent images from past
+date, defaults to False</p></li>
+<li><p><strong>alt_spec</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag if True shows equivalent images in alternative
+imaging spectrum, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="polo-widgets-plate-viewer-module">
-<h2>polo.widgets.plate_viewer module<a class="headerlink" href="#polo-widgets-plate-viewer-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.widgets.plate_viewer">
+<span id="polo-widgets-plate-viewer-module"></span><h2>polo.widgets.plate_viewer module<a class="headerlink" href="#module-polo.widgets.plate_viewer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.plate_viewer.plateViewer">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.plate_viewer.</code><code class="sig-name descname">plateViewer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">images_per_page</span><span class="o">=</span><span class="default_value">24</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsView</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.aspect_ratio">
+<em class="property">property </em><code class="sig-name descname">aspect_ratio</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.aspect_ratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_viewer.plateViewer.changed_images_per_page_signal">
+<code class="sig-name descname">changed_images_per_page_signal</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.changed_images_per_page_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_viewer.plateViewer.changed_page_signal">
+<code class="sig-name descname">changed_page_signal</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.changed_page_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.current_page">
+<em class="property">property </em><code class="sig-name descname">current_page</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.current_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.decolor_all_images">
+<code class="sig-name descname">decolor_all_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.decolor_all_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.decolor_all_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.emphasize_all_images">
+<code class="sig-name descname">emphasize_all_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.emphasize_all_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.emphasize_all_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.export_current_view">
+<code class="sig-name descname">export_current_view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.export_current_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.export_current_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.fitInView">
+<code class="sig-name descname">fitInView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRectF</span></em>, <em class="sig-param"><span class="n">mode</span><span class="p">:</span> <span class="n">Qt.AspectRatioMode</span> <span class="o">=</span> <span class="default_value">Qt.IgnoreAspectRatio</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.fitInView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.fitInView" title="Permalink to this definition">¶</a></dt>
+<dd><p>fitInView(self, QGraphicsItem, mode: Qt.AspectRatioMode = Qt.IgnoreAspectRatio)
+fitInView(self, float, float, float, float, mode: Qt.AspectRatioMode = Qt.IgnoreAspectRatio)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.get_visible_wells">
+<code class="sig-name descname">get_visible_wells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">page</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.get_visible_wells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.get_visible_wells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.images_per_page">
+<em class="property">property </em><code class="sig-name descname">images_per_page</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.images_per_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.make_image_label">
+<code class="sig-name descname">make_image_label</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">label_dict</span></em>, <em class="sig-param"><span class="n">font_size</span><span class="o">=</span><span class="default_value">35</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.make_image_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.make_image_label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.pop_out_selected_well">
+<code class="sig-name descname">pop_out_selected_well</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.pop_out_selected_well"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.pop_out_selected_well" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.run">
+<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.set_prerender_info">
+<code class="sig-name descname">set_prerender_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em>, <em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.set_prerender_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.set_prerender_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.set_scene_colors_from_filters">
+<code class="sig-name descname">set_scene_colors_from_filters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color_mapping</span></em>, <em class="sig-param"><span class="n">strength</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.set_scene_colors_from_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.set_scene_colors_from_filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.set_scene_opacity_from_filters">
+<code class="sig-name descname">set_scene_opacity_from_filters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">filtered_opacity</span><span class="o">=</span><span class="default_value">0.2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.set_scene_opacity_from_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.set_scene_opacity_from_filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_viewer.plateViewer.subgrid_dict">
+<code class="sig-name descname">subgrid_dict</code><em class="property"> = {16: (4, 4), 64: (8, 8), 96: (8, 12), 1536: (32, 48)}</em><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.subgrid_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.tile_graphics_wells">
+<code class="sig-name descname">tile_graphics_wells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt_spec</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">label_dict</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.tile_graphics_wells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.tile_graphics_wells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.total_pages">
+<em class="property">property </em><code class="sig-name descname">total_pages</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.total_pages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.view_dims">
+<em class="property">property </em><code class="sig-name descname">view_dims</code><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.view_dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.well_index_to_subgrid">
+<em class="property">static </em><code class="sig-name descname">well_index_to_subgrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em>, <em class="sig-param"><span class="n">c_r</span></em>, <em class="sig-param"><span class="n">c_c</span></em>, <em class="sig-param"><span class="n">p_r</span></em>, <em class="sig-param"><span class="n">p_c</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.well_index_to_subgrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.well_index_to_subgrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the linear index of the subgrid that a particular index belongs to
+within a larger grid. For example, ou are given a list of length 16. The list is reshaped into a 4 x 4
+2D list. We divide the new grid into 4 quadrants each 2 X 2 and label them
+with an index (0, 1, 2, 3). Given an index of the original list we want to
+find the subgrid it belongs to. 
+:param i: Index of point to locate in the 1D list
+:type i: int
+:param c_r: Number of rows in each subgrid
+:type c_r: int
+:param c_c: Number of columns in each subgrid
+:type c_c: int
+:param p_r: Number or rows in the entire grid
+:type p_r: int
+:param p_c: Number of columns in the entire grid
+:type p_c: int
+:return: Index of the subgrid the index <cite>i</cite> belongs to
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_viewer.plateViewer.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QWheelEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_viewer.html#plateViewer.wheelEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_viewer.plateViewer.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="polo-widgets-slideshow-inspector-module">
-<h2>polo.widgets.slideshow_inspector module<a class="headerlink" href="#polo-widgets-slideshow-inspector-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.widgets.plate_visualizer">
+<span id="polo-widgets-plate-visualizer-module"></span><h2>polo.widgets.plate_visualizer module<a class="headerlink" href="#module-polo.widgets.plate_visualizer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.plate_visualizer.</code><code class="sig-name descname">PlateVisualizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_visualizer.html#PlateVisualizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsView</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.block_dims">
+<em class="property">static </em><code class="sig-name descname">block_dims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plate_x</span></em>, <em class="sig-param"><span class="n">plate_y</span></em>, <em class="sig-param"><span class="n">grid_x</span></em>, <em class="sig-param"><span class="n">grid_y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_visualizer.html#PlateVisualizer.block_dims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.block_dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.default_brush">
+<code class="sig-name descname">default_brush</code><em class="property"> = &lt;PyQt5.QtGui.QBrush object&gt;</em><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.default_brush" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.default_pen">
+<code class="sig-name descname">default_pen</code><em class="property"> = &lt;PyQt5.QtGui.QPen object&gt;</em><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.default_pen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.plate_size">
+<code class="sig-name descname">plate_size</code><em class="property"> = (32, 48)</em><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.plate_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.plate_view_requested">
+<code class="sig-name descname">plate_view_requested</code><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.plate_view_requested" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.selected_brush">
+<code class="sig-name descname">selected_brush</code><em class="property"> = &lt;PyQt5.QtGui.QBrush object&gt;</em><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.selected_brush" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.set_selected_block">
+<code class="sig-name descname">set_selected_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">block_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_visualizer.html#PlateVisualizer.set_selected_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.set_selected_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.plate_visualizer.PlateVisualizer.setup_view">
+<code class="sig-name descname">setup_view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_cords</span></em>, <em class="sig-param"><span class="n">plate_size</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_visualizer.html#PlateVisualizer.setup_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_visualizer.PlateVisualizer.setup_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="polo-widgets-slideshow-viewer-module">
-<h2>polo.widgets.slideshow_viewer module<a class="headerlink" href="#polo-widgets-slideshow-viewer-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.widgets.run_organizer">
+<span id="polo-widgets-run-organizer-module"></span><h2>polo.widgets.run_organizer module<a class="headerlink" href="#module-polo.widgets.run_organizer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.run_organizer.RunOrganizer">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.run_organizer.</code><code class="sig-name descname">RunOrganizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">loaded_runs</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">classified_runs</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">auto_link_runs</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.add_run_from_directory">
+<code class="sig-name descname">add_run_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.add_run_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.add_run_from_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_organizer.RunOrganizer.classify_run">
+<code class="sig-name descname">classify_run</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.classify_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.clear_current_run">
+<code class="sig-name descname">clear_current_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.clear_current_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.clear_current_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.finished_ftp_download">
+<code class="sig-name descname">finished_ftp_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.finished_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.finished_ftp_download" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_organizer.RunOrganizer.ftp_download_status">
+<code class="sig-name descname">ftp_download_status</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.ftp_download_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.handle_classification_request">
+<code class="sig-name descname">handle_classification_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.handle_classification_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.handle_classification_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.handle_ftp_download">
+<code class="sig-name descname">handle_ftp_download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.handle_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.handle_ftp_download" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.handle_opening_run">
+<code class="sig-name descname">handle_opening_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.handle_opening_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.handle_opening_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.import_run_from_dialog">
+<code class="sig-name descname">import_run_from_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.import_run_from_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.import_run_from_dialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.import_run_from_ftp">
+<code class="sig-name descname">import_run_from_ftp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.import_run_from_ftp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.import_run_from_ftp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.import_saved_runs">
+<code class="sig-name descname">import_saved_runs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xtal_files</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.import_saved_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.import_saved_runs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.open_classification_thread">
+<code class="sig-name descname">open_classification_thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.open_classification_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.open_classification_thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_organizer.RunOrganizer.opening_run">
+<code class="sig-name descname">opening_run</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.opening_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.remove_run">
+<code class="sig-name descname">remove_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.remove_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.set_estimated_classification_time">
+<code class="sig-name descname">set_estimated_classification_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">num_images_remain</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.set_estimated_classification_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.set_estimated_classification_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.set_progress_value">
+<code class="sig-name descname">set_progress_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.set_progress_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.set_progress_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="polo-widgets-table-inspector-module">
-<h2>polo.widgets.table_inspector module<a class="headerlink" href="#polo-widgets-table-inspector-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.widgets.run_tree">
+<span id="polo-widgets-run-tree-module"></span><h2>polo.widgets.run_tree module<a class="headerlink" href="#module-polo.widgets.run_tree" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.run_tree.RunTree">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.run_tree.</code><code class="sig-name descname">RunTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_link</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QTreeWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.add_classified_run">
+<code class="sig-name descname">add_classified_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.add_classified_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.add_classified_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.add_run_node">
+<code class="sig-name descname">add_run_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">tree</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.add_run_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.add_run_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.add_run_to_tree">
+<code class="sig-name descname">add_run_to_tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.add_run_to_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.add_run_to_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.add_sample">
+<code class="sig-name descname">add_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_name</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.add_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.add_sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.contextMenuEvent">
+<code class="sig-name descname">contextMenuEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QContextMenuEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.current_run_names">
+<em class="property">property </em><code class="sig-name descname">current_run_names</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.current_run_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.link_sample">
+<code class="sig-name descname">link_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.link_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.link_sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_tree.RunTree.opening_run">
+<code class="sig-name descname">opening_run</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.opening_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.remove_run_from_view">
+<code class="sig-name descname">remove_run_from_view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.remove_run_from_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.remove_run_from_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_tree.RunTree.remove_run_signal">
+<code class="sig-name descname">remove_run_signal</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.remove_run_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_tree.RunTree.save_run_signal">
+<code class="sig-name descname">save_run_signal</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.save_run_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.widgets.slideshow_inspector">
+<span id="polo-widgets-slideshow-inspector-module"></span><h2>polo.widgets.slideshow_inspector module<a class="headerlink" href="#module-polo.widgets.slideshow_inspector" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.slideshow_inspector.</code><code class="sig-name descname">slideshowInspector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.classify_image">
+<code class="sig-name descname">classify_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classification</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.classify_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.classify_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the <cite>classify_current_image</cite> method of the slideshowViewer
+widget and increments the carousel to the next image and displays it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.current_image">
+<em class="property">property </em><code class="sig-name descname">current_image</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.current_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current Image object being displayed in the slideshowViewer widget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.current_sort_function">
+<em class="property">property </em><code class="sig-name descname">current_sort_function</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.current_sort_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.display_current_image">
+<code class="sig-name descname">display_current_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.display_current_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.display_current_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the current image as determined by the current_image
+attribute of the slideshowViewer widget and populates any widgets
+that display current image metadata.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.export_current_view">
+<code class="sig-name descname">export_current_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.export_current_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.export_current_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.favorites">
+<em class="property">property </em><code class="sig-name descname">favorites</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.favorites" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.human">
+<em class="property">property </em><code class="sig-name descname">human</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human image classifier boolean</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.marco">
+<em class="property">property </em><code class="sig-name descname">marco</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.marco" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marco image classifier boolean</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.mark_current_image_as_favorite">
+<code class="sig-name descname">mark_current_image_as_favorite</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.mark_current_image_as_favorite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.mark_current_image_as_favorite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the favorite label on the current image to the current
+value of the favorite checkbox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>favorite_status</strong> (<em>Bool</em>) – Whether this image is a favorite or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.navigate_carousel">
+<code class="sig-name descname">navigate_carousel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_image</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_image</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.navigate_carousel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.navigate_carousel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for moving between images in the current slideshow. Calls
+<cite>carousel_controls</cite> method of slideshowViewer widget passing
+boolean arguements as flags then displays the image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.run">
+<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.selected_classifications">
+<em class="property">property </em><code class="sig-name descname">selected_classifications</code><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.selected_classifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns image classification keywords for any image classification
+checkboxes that are checked. Used for filtering images down. If no
+image classifications are selected assume user wants images of all
+classifications and return the IMAGE_CLASSIFICATIONS constant</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_alt_image">
+<code class="sig-name descname">set_alt_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt_spec</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_alt_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_alt_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used boolean flags to provide alt image behavior by passing flags
+to <cite>set_alt_image</cite> of slideshowViewer widget. Then displays the
+current image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_alt_spectrum_buttons">
+<code class="sig-name descname">set_alt_spectrum_buttons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_alt_spectrum_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_alt_spectrum_buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns on / off alt spec functions depending on if the __run
+attribute has been linked to another spectrum.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_classification_button_labels">
+<code class="sig-name descname">set_classification_button_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_classification_button_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_classification_button_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>To be called in init function. Sets the classification button labels
+to those set in the IMAGE CLASSIFICATION constant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_favorite_checkbox">
+<code class="sig-name descname">set_favorite_checkbox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_favorite_checkbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_favorite_checkbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the favorite checkbox based on whether the current
+image is marked as a favorite or not. Should be used when loading an
+image into the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_image_class_checkbox_labels">
+<code class="sig-name descname">set_image_class_checkbox_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_image_class_checkbox_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_image_class_checkbox_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>To be called in the init method. Sets image filtering checkbox labels
+to those found in the image classifications constant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_image_name">
+<code class="sig-name descname">set_image_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_image_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_image_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the label_2 to the current image name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_slideshow_mode">
+<code class="sig-name descname">set_slideshow_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">show_all_dates</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">show_all_specs</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_slideshow_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_slideshow_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.set_time_resolved_functions">
+<code class="sig-name descname">set_time_resolved_functions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.set_time_resolved_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.set_time_resolved_functions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns on / off time resolved functions depending if the __run
+attribute has been linked to another run in time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.show_image_from_well_number">
+<code class="sig-name descname">show_image_from_well_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.show_image_from_well_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.show_image_from_well_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_cocktail_number">
+<em class="property">static </em><code class="sig-name descname">sort_images_by_cocktail_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_cocktail_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_cocktail_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">
+<em class="property">static </em><code class="sig-name descname">sort_images_by_marco_confidence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_marco_confidence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_well_number">
+<em class="property">static </em><code class="sig-name descname">sort_images_by_well_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_well_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_well_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.submit_filters">
+<code class="sig-name descname">submit_filters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.submit_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.submit_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes the current user selected image filters to the slideshowViewer
+so the current slideshow contents can be adjusted to reflect the
+new filters. Displays the current image after filtering.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.widgets.slideshow_viewer">
+<span id="polo-widgets-slideshow-viewer-module"></span><h2>polo.widgets.slideshow_viewer module<a class="headerlink" href="#module-polo.widgets.slideshow_viewer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.slideshow_viewer.Carousel">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.slideshow_viewer.</code><code class="sig-name descname">Carousel</code><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#Carousel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.Carousel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Carousel class instance control how individual slides are
+displayed and handles navigation between slides. It acts as the
+interface and constructor for liked list formed of a series of
+connected slides.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>current_slide</strong> – Slide. The current slide in the carousel.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.Carousel.add_slides">
+<code class="sig-name descname">add_slides</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ordered_images</span></em>, <em class="sig-param"><span class="n">sort_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#Carousel.add_slides"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.Carousel.add_slides" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up linked list consisting of nodes of Slide instances. The list
+is circular and bi-directional. Sets self.current_slide to the first
+slide in the linked list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ordered_images</strong> – a list of Image objects to create the linked list            from. The order of the images will be reflected by the linked list.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First slide in linked list</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide">Slide</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.Carousel.controls">
+<code class="sig-name descname">controls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_slide</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_slide</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#Carousel.controls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.Carousel.controls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that controls the navigation through the slides
+in the carousel. Does not control access to alternative
+images that may be available to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>next_slide</strong> (<em>bool</em>) – If set to True, tells the carousel to             advance one Slide</p></li>
+<li><p><strong>prev_slide</strong> (<em>bool</em>) – If set to True, tells the carousel to             retreat by one Slide</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.Carousel.current_slide">
+<em class="property">property </em><code class="sig-name descname">current_slide</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.Carousel.current_slide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.slideshow_viewer.</code><code class="sig-name descname">PhotoViewer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsView</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.add_pixmap">
+<code class="sig-name descname">add_pixmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pixmap</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.add_pixmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.add_pixmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.fitInView">
+<code class="sig-name descname">fitInView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QRectF</span></em>, <em class="sig-param"><span class="n">mode</span><span class="p">:</span> <span class="n">Qt.AspectRatioMode</span> <span class="o">=</span> <span class="default_value">Qt.IgnoreAspectRatio</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.fitInView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.fitInView" title="Permalink to this definition">¶</a></dt>
+<dd><p>fitInView(self, QGraphicsItem, mode: Qt.AspectRatioMode = Qt.IgnoreAspectRatio)
+fitInView(self, float, float, float, float, mode: Qt.AspectRatioMode = Qt.IgnoreAspectRatio)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.hasPhoto">
+<code class="sig-name descname">hasPhoto</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.hasPhoto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.hasPhoto" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.mousePressEvent">
+<code class="sig-name descname">mousePressEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles mouse press events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>QEvent</em>) – Mouse press event</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.photoClicked">
+<code class="sig-name descname">photoClicked</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.photoClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper class around QGraphicsView and displays image to the user
+in the slideshow viewer tab of the mainwindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a>) – Current run whose images are to be shown by the viewer.</p></li>
+<li><p><strong>parent</strong> (<em>QWidget</em>) – Parent Widget of this instance.</p></li>
+<li><p><strong>current_image</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a>) – Image that is currently displayed by the viewer.</p></li>
+<li><p><strong>__carousel</strong> (<a class="reference internal" href="#polo.widgets.slideshow_viewer.Carousel" title="polo.widgets.slideshow_viewer.Carousel"><em>Carousel</em></a>) – Carousel instance to control image navigation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.toggleDragMode">
+<code class="sig-name descname">toggleDragMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.toggleDragMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.toggleDragMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns drag mode on and off.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.PhotoViewer.wheelEvent">
+<code class="sig-name descname">wheelEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#PhotoViewer.wheelEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.PhotoViewer.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles mouse wheel events to allow for scaling for zooming in and
+out of the currently displayed image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>QEvent</em>) – Mouse scroll wheel event</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.widgets.slideshow_viewer.Slide">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.slideshow_viewer.</code><code class="sig-name descname">Slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">next_slide</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prev_slide</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">slide_number</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#Slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.Slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds an Image object to be shown in the current slide show. Slides are
+the nodes of the current slide show linked list. The list is navigated by
+instances of Carousel class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Image. Image object to be displayed for this slide.</p></li>
+<li><p><strong>next_slide</strong> – Slide. Next image in the slideshow to be displayed.</p></li>
+<li><p><strong>prev_slide</strong> – Slide. Previous slide in the slideshow to be displayed.</p></li>
+<li><p><strong>slide_number</strong> – Int. Index of the slide, should be base 0.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.slideshow_viewer.</code><code class="sig-name descname">SlideshowViewer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">current_image</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.widgets.slideshow_viewer.PhotoViewer" title="polo.widgets.slideshow_viewer.PhotoViewer"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.widgets.slideshow_viewer.PhotoViewer</span></code></a></p>
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.add_text_to_scene">
+<code class="sig-name descname">add_text_to_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">size</span><span class="o">=</span><span class="default_value">40</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.add_text_to_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.add_text_to_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.arrange_multi_image_scene">
+<code class="sig-name descname">arrange_multi_image_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_list</span></em>, <em class="sig-param"><span class="n">render_date</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.arrange_multi_image_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.arrange_multi_image_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.carousel_controls">
+<code class="sig-name descname">carousel_controls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_image</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">previous_image</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.carousel_controls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.carousel_controls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around the method <cite>controls</cite> in Carousel class. Sets the
+current_image attribute to the image contained in __carousel
+current slide after the advance or retreat operation is applied to
+the Carousel instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>next_image</strong> – If True, tells carousel to advance by one slide.</p></li>
+<li><p><strong>previous_image</strong> – If True, tells carousel to retreat by one slide.</p></li>
+</ul>
+</dd>
+</dl>
+<p>:returns The current image.
+:rtype Image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.classify_current_image">
+<code class="sig-name descname">classify_current_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classification</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.classify_current_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.classify_current_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the human classification of the current image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.display_current_image">
+<code class="sig-name descname">display_current_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.display_current_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.display_current_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the Image instance currently stored in the current_image            attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_cocktail_str">
+<code class="sig-name descname">get_cur_img_cocktail_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.get_cur_img_cocktail_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_cocktail_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if current image is of type Image and if True returns            the current image’s cocktail info as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current image cocktail string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_meta_str">
+<code class="sig-name descname">get_cur_img_meta_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.get_cur_img_meta_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_meta_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.photoClicked">
+<code class="sig-name descname">photoClicked</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.photoClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper class around QGraphicsView and displays image to the user
+in the slideshow viewer tab of the mainwindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a>) – Current run whose images are to be shown by the viewer.</p></li>
+<li><p><strong>parent</strong> (<em>QWidget</em>) – Parent Widget of this instance.</p></li>
+<li><p><strong>current_image</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a>) – Image that is currently displayed by the viewer.</p></li>
+<li><p><strong>__carousel</strong> (<a class="reference internal" href="#polo.widgets.slideshow_viewer.Carousel" title="polo.widgets.slideshow_viewer.Carousel"><em>Carousel</em></a>) – Carousel instance to control image navigation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.run">
+<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.set_all_dates_scene">
+<code class="sig-name descname">set_all_dates_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.set_all_dates_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.set_all_dates_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.set_all_spectrums_scene">
+<code class="sig-name descname">set_all_spectrums_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.set_all_spectrums_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.set_all_spectrums_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.set_alt_image">
+<code class="sig-name descname">set_alt_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt_spec</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.set_alt_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.set_alt_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current_image attribute to an alternative image            based on user selection.
+:param next_date: If True, set current image to the current_image’s            next image date.
+:type next_date: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.set_current_image_by_well_number">
+<code class="sig-name descname">set_current_image_by_well_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.set_current_image_by_well_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.set_current_image_by_well_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.set_single_image_scene">
+<code class="sig-name descname">set_single_image_scene</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.set_single_image_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.set_single_image_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">
+<code class="sig-name descname">update_slides_from_filters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">marco</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sort_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.update_slides_from_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new Carousel slides based on selected image filters.
+Sets the current_image attribute to the image contained at
+the current slide of __carousel attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_types</strong> (<em>set</em>) – Set of image classifications to include in results.</p></li>
+<li><p><strong>human</strong> (<em>bool</em>) – If True, image_types refers to human classifcation of the image.</p></li>
+<li><p><strong>marco</strong> (<em>bool</em>) – If True, image_types referes to the machine (MARCO) classificatio            of the image.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.widgets.table_inspector">
+<span id="polo-widgets-table-inspector-module"></span><h2>polo.widgets.table_inspector module<a class="headerlink" href="#module-polo.widgets.table_inspector" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.table_inspector.TableInspector">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.table_inspector.</code><code class="sig-name descname">TableInspector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_inspector.html#TableInspector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.assign_checkboxes_to_class">
+<code class="sig-name descname">assign_checkboxes_to_class</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_inspector.html#TableInspector.assign_checkboxes_to_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.assign_checkboxes_to_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.run">
+<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.selected_classifications">
+<em class="property">property </em><code class="sig-name descname">selected_classifications</code><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.selected_classifications" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.selected_headers">
+<em class="property">property </em><code class="sig-name descname">selected_headers</code><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.selected_headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.set_column_options">
+<code class="sig-name descname">set_column_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_inspector.html#TableInspector.set_column_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.set_column_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.table_inspector.TableInspector.update_table_view">
+<code class="sig-name descname">update_table_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_inspector.html#TableInspector.update_table_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_inspector.TableInspector.update_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-polo.widgets.table_viewer">
 <span id="polo-widgets-table-viewer-module"></span><h2>polo.widgets.table_viewer module<a class="headerlink" href="#module-polo.widgets.table_viewer" title="Permalink to this headline">¶</a></h2>
@@ -704,6 +1740,60 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-polo.widgets.unit_combo">
+<span id="polo-widgets-unit-combo-module"></span><h2>polo.widgets.unit_combo module<a class="headerlink" href="#module-polo.widgets.unit_combo" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.widgets.unit_combo.UnitComboBox">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.unit_combo.</code><code class="sig-name descname">UnitComboBox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">base_unit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scalers</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.get_value">
+<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.unit_combo.UnitComboBox.saved_scalers">
+<code class="sig-name descname">saved_scalers</code><em class="property"> = {'c': 0.01, 'm': 0.001, 'u': 1e-06}</em><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.saved_scalers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.scalers">
+<em class="property">property </em><code class="sig-name descname">scalers</code><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.scalers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.set_unit_combobox_text">
+<code class="sig-name descname">set_unit_combobox_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox.set_unit_combobox_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.set_unit_combobox_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.set_value">
+<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.set_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.set_zero">
+<code class="sig-name descname">set_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox.set_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.set_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.sorted_scalers">
+<em class="property">property </em><code class="sig-name descname">sorted_scalers</code><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.sorted_scalers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.unit_combobox_text">
+<em class="property">property </em><code class="sig-name descname">unit_combobox_text</code><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.unit_combobox_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.unit_combo.UnitComboBox.unit_text_parser">
+<code class="sig-name descname">unit_text_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unit_text</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/unit_combo.html#UnitComboBox.unit_text_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.unit_combo.UnitComboBox.unit_text_parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-polo.widgets">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polo.widgets" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -720,7 +1810,7 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
         <a href="polo.windows.html" class="btn btn-neutral float-right" title="polo.windows package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="polo.threads.html" class="btn btn-neutral float-left" title="polo.threads package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="polo.utils.html" class="btn btn-neutral float-left" title="polo.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -729,11 +1819,19 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -744,7 +1842,6 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

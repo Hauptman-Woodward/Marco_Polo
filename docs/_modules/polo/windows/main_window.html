@@ -1,0 +1,698 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.windows.main_window &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.windows.main_window</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.windows.main_window</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_qt5agg</span> <span class="kn">import</span> \
+    <span class="n">NavigationToolbar2QT</span> <span class="k">as</span> <span class="n">NavigationToolbar</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">uic</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QPixmapCache</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QApplication</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">polo.designer.UI_main_window</span> <span class="kn">import</span> <span class="n">Ui_MainWindow</span>
+<span class="kn">from</span> <span class="nn">polo.plots.plots</span> <span class="kn">import</span> <span class="n">MplCanvas</span><span class="p">,</span> <span class="n">MplWidget</span><span class="p">,</span> <span class="n">StaticCanvas</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="n">best_aspect_ratio</span><span class="p">,</span> <span class="n">get_cell_image_dims</span>
+<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
+<span class="kn">from</span> <span class="nn">polo.widgets.plate_viewer</span> <span class="kn">import</span> <span class="n">plateViewer</span>
+<span class="kn">from</span> <span class="nn">polo.widgets.slideshow_viewer</span> <span class="kn">import</span> <span class="n">SlideshowViewer</span>
+
+<span class="kn">from</span> <span class="nn">polo.windows.ftp_dialog</span> <span class="kn">import</span> <span class="n">FTPDialog</span>
+<span class="kn">from</span> <span class="nn">polo.windows.image_pop_dialog</span> <span class="kn">import</span> <span class="n">ImagePopDialog</span>
+<span class="kn">from</span> <span class="nn">polo.windows.log_dialog</span> <span class="kn">import</span> <span class="n">LogDialog</span>
+<span class="c1"># from polo.windows.run_updater_dialog import RunUpdaterDialog</span>
+<span class="kn">from</span> <span class="nn">polo.windows.pptx_dialog</span> <span class="kn">import</span> <span class="n">PptxDesignerDialog</span>
+
+<span class="kn">from</span> <span class="nn">polo.windows.spectrum_dialog</span> <span class="kn">import</span> <span class="n">SpectrumDialog</span>
+<span class="kn">from</span> <span class="nn">polo.windows.time_res_dialog</span> <span class="kn">import</span> <span class="n">TimeResDialog</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MainWindow"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow">[docs]</a><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMainWindow</span><span class="p">,</span> <span class="n">Ui_MainWindow</span><span class="p">):</span>
+    <span class="n">BAR_COLORS</span> <span class="o">=</span> <span class="p">[</span><span class="n">Qt</span><span class="o">.</span><span class="n">darkBlue</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">darkRed</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">darkGreen</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">darkGray</span><span class="p">]</span>
+    <span class="c1"># cocktails sorted from earliest to latest (most recent last)</span>
+    <span class="n">CRYSTAL_ICON</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;crystal&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Initialize main window object. polo is drawn from QT designer generated</span>
+<span class="sd">        file in the designer folder. All button logic is also set up here.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMainWindow</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">runOrganizer</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_opening_run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuImport</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_image_import</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuExport</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_export</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuHelp</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_help_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuFile</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_file_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_changed_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBeta_Testers</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BETA</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_viewer_layout</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupBox_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span> <span class="o">=</span> <span class="n">StaticCanvas</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">groupBox_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_viewer_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span> <span class="o">=</span> <span class="n">NavigationToolbar</span><span class="p">(</span>
+            <span class="n">canvas</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">groupBox_4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_viewer_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">listWidget_3</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_plot_selection</span><span class="p">)</span>
+        
+
+        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_tab_icons</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created mainWindow object&#39;</span><span class="p">)</span>
+
+    <span class="c1"># ICON setup</span>
+    <span class="c1"># ========================================================================</span>
+
+<div class="viewcode-block" id="MainWindow.set_tab_icons"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.set_tab_icons">[docs]</a>    <span class="k">def</span> <span class="nf">set_tab_icons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Assigns icons to each of the main run interface tabs</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;camera&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;plate&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;table&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">])))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">setTabIcon</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">])))</span></div>
+
+    <span class="c1"># Run IO</span>
+    <span class="c1"># =========================================================================</span>
+
+    <span class="c1"># remove the current run add dialog that asks if they are sure they want to</span>
+    <span class="c1"># drop the run</span>
+
+    <span class="c1"># def remove_run(self):</span>
+    <span class="c1">#     # NOTE IN PROGRESS</span>
+    <span class="c1">#     message = &#39;Are you sure you want to remove run {}.&#39;.format(</span>
+    <span class="c1">#         self.current_run.run_name)</span>
+    <span class="c1">#     warning = self.make_message_box(</span>
+    <span class="c1">#         message, icon=QtWidgets.QMessageBox.Warning,</span>
+    <span class="c1">#         buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     choice = warning.exec_()</span>
+    <span class="c1">#     if choice == 1024:</span>
+    <span class="c1">#         self.loaded_runs.pop(self.current_run.run_name)</span>
+    <span class="c1">#         if self.current_run.run_name in self.classified_runs:</span>
+    <span class="c1">#             self.classified_runs.pop(self.current_run.run_name)</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         logging.info(&#39;Canceled remove run&#39;)</span>
+
+<div class="viewcode-block" id="MainWindow.add_loaded_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.add_loaded_run">[docs]</a>    <span class="k">def</span> <span class="nf">add_loaded_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a run object to the loaded_runs attribute and add the run name to</span>
+<span class="sd">        the available runs listWidget so the user may select this run for</span>
+<span class="sd">        viewing. After this function call the run will be recoverable using</span>
+<span class="sd">        its run name as a key in the loaded_runs dictionary.</span>
+
+<span class="sd">        :param run: Run Object. New run to make available to the user.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QListWidgetItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
+        <span class="c1"># self.listWidget.addItem(item)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loaded run named </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MainWindow.open_run_import_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_run_import_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_run_import_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Creates an instance of the RunImporterDialog class and displays</span>
+<span class="sd">        that dialog. After the instance is closed by the user checks to see</span>
+<span class="sd">        if a new run has been created and stored in the new_run attribute of</span>
+<span class="sd">        the RunImporterDialog instance. If one is present makes it available</span>
+<span class="sd">        to the user by passing contents of new_run to add_loaded_run.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">importer_dialog</span> <span class="o">=</span> <span class="n">RunImporterDialog</span><span class="p">(</span>
+            <span class="n">current_run_names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">importer_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">importer_dialog</span><span class="o">.</span><span class="n">new_run</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_loaded_run</span><span class="p">(</span><span class="n">importer_dialog</span><span class="o">.</span><span class="n">new_run</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added run successfully&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Attempted to open empty run at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">open_run_import_dialog</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MainWindow.handle_image_import"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_image_import">[docs]</a>    <span class="k">def</span> <span class="nf">handle_image_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles when the user attempts to import images into Polo. Effectively</span>
+<span class="sd">        a wrapper around other methods that call provide the functionality to</span>
+<span class="sd">        each option in the import menu.</span>
+
+<span class="sd">        :param selection: QAction. QAction from user menu selection.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">selection_text</span> <span class="o">=</span> <span class="n">selection</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionFrom_FTP</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">runOrganizer</span><span class="o">.</span><span class="n">import_run_from_ftp</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionFrom_Saved_Run_3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">runOrganizer</span><span class="o">.</span><span class="n">import_saved_runs</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionFrom_Directory</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">runOrganizer</span><span class="o">.</span><span class="n">import_run_from_dialog</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionCocktails</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Import request matched no QActions at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle_image_import</span><span class="p">))</span></div>
+        <span class="c1"># TODO allow users to add cocktail files</span>
+
+<div class="viewcode-block" id="MainWindow.tab_limiter"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.tab_limiter">[docs]</a>    <span class="k">def</span> <span class="nf">tab_limiter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+            <span class="c1"># need to disable stuff that requires cocktails</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># optimize tab</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_2</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># plate view tab</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.&#39;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_2</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.handle_opening_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles whenever a loaded run from the loaded runs list is</span>
+<span class="sd">        doubleclicked. First sets the selected run to the current_run. If the</span>
+<span class="sd">        run has not been classified and therefore does not exist in the</span>
+<span class="sd">        classified_runs dictionary it is classified via the</span>
+<span class="sd">        open_classification_thread method. If the run has been classified previously</span>
+<span class="sd">        then it is displayed. Additionally checks the run type to determine what</span>
+<span class="sd">        plotting methods should be available and enables the navigation by date</span>
+<span class="sd">        push Buttons if the run has either a next or previous run</span>
+<span class="sd">        connected to it.</span>
+
+<span class="sd">        :param q: List</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">unload_all_pixmaps</span><span class="p">()</span>
+                <span class="n">QPixmapCache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="c1"># only keep the pixmaps for the current run loaded</span>
+            <span class="c1"># other pixmaps from other runs will be loaded if the user</span>
+            <span class="c1"># switches between dates or spectrums though</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="s1">&#39;insert_into_alt_spec_chain&#39;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">insert_into_alt_spec_chain</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slideshowInspector</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tableInspector</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tableInspector</span><span class="o">.</span><span class="n">update_table_view</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizeWidget</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plateInspector</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab_limiter</span><span class="p">()</span>  <span class="c1"># set allowed tabs by run type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot_limiter</span><span class="p">()</span>  <span class="c1"># set allowed polo.plots</span></div>
+            <span class="c1"># enable nav by time if has linked runs</span>
+
+<div class="viewcode-block" id="MainWindow.handle_export"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_export">[docs]</a>    <span class="k">def</span> <span class="nf">handle_export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">export_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles when user wants to export the current run. Creates an instance</span>
+<span class="sd">        of exporterDialog class and displays that dialog to the user.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>        
+            <span class="k">if</span> <span class="n">action</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAs_PPTX</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">export_path</span><span class="p">:</span>
+                    <span class="n">export_path</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Save Run&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">export_path</span><span class="p">:</span>
+                    <span class="n">export_path</span><span class="p">,</span> <span class="n">export_results</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">export_path</span><span class="p">),</span> <span class="kc">None</span>
+                
+                    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAs_HTML</span><span class="p">:</span>
+                        <span class="n">writer</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span>
+                        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                        <span class="n">export_results</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">(</span>
+                            <span class="n">export_path</span><span class="p">,</span> <span class="n">encode_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAs_CSV</span><span class="p">:</span>
+                        <span class="n">export_path</span> <span class="o">=</span> <span class="n">export_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+                        <span class="n">csv_exporter</span> <span class="o">=</span> <span class="n">RunCsvWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="n">export_path</span><span class="p">)</span>
+                        <span class="n">export_results</span> <span class="o">=</span> <span class="n">csv_exporter</span><span class="o">.</span><span class="n">write_csv</span><span class="p">()</span>
+
+                    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAs_MSO</span><span class="p">:</span>
+                        <span class="n">writer</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="n">export_path</span><span class="p">)</span>
+                        <span class="n">export_results</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_mso_file</span><span class="p">()</span>
+
+                    <span class="c1"># check if need to show an error message</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">export_results</span> <span class="o">!=</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">export_results</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Export failed&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">presentation_maker</span> <span class="o">=</span> <span class="n">PptxDesignerDialog</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">runOrganizer</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">all_runs</span><span class="p">)</span>
+                <span class="n">presentation_maker</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Please load a run first&#39;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.handle_file_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_file_menu">[docs]</a>    <span class="k">def</span> <span class="nf">handle_file_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method that handles all selection possiblities under</span>
+<span class="sd">        the file menu. Calls the appropriate methods based on the</span>
+<span class="sd">        value of selection arguement.</span>
+
+<span class="sd">        :param selection: QAction. QAction returned by user selecting an item\</span>
+<span class="sd">            from the file menu.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+            <span class="n">current_run_saver</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionSave_Run</span><span class="p">:</span>
+                <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">save_file_path</span>
+                <span class="k">if</span> <span class="n">sp</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sp</span><span class="p">):</span>  <span class="c1"># save run path already exist</span>
+                    <span class="n">save_path</span> <span class="o">=</span> <span class="n">sp</span>
+            <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionSave_Run_As</span> <span class="ow">or</span> <span class="n">save_path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">save_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_file_dialog</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">save_path</span><span class="p">:</span>  <span class="c1"># double check wonky stuff happening in save dialog</span>
+                <span class="n">current_run_saver</span><span class="o">.</span><span class="n">write_xtal_file_on_thread</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;No suitable filepath was given.&#39;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+
+    <span class="c1"># General Utilities</span>
+    <span class="c1"># =========================================================================    </span>
+
+<div class="viewcode-block" id="MainWindow.get_widget_dims"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.get_widget_dims">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Returns the width and height as a tuple of a given widget.</span>
+
+<span class="sd">        :param widget: QWidget</span>
+<span class="sd">        :type widget: QWidget</span>
+<span class="sd">        :return: width and height of the widget</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">widget</span><span class="o">.</span><span class="n">height</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.layout_widget_lister"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.layout_widget_lister">[docs]</a>    <span class="k">def</span> <span class="nf">layout_widget_lister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span></div>
+    
+<div class="viewcode-block" id="MainWindow.handle_help_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_help_menu">[docs]</a>    <span class="k">def</span> <span class="nf">handle_help_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionQuickstart_Guide</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QUICKSTART</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionDocumentation</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">DOCS</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionFAQ</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">FAQS</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionUser_Guide</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">USER_GUIDE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAbout</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">ABOUT</span><span class="p">)</span></div>
+
+    <span class="c1"># Plot Window Methods</span>
+    <span class="c1"># =========================================================================</span>
+
+      <span class="c1"># clears the current plot and draws an empty figure in theory</span>
+
+<div class="viewcode-block" id="MainWindow.handle_plot_selection"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_plot_selection">[docs]</a>    <span class="k">def</span> <span class="nf">handle_plot_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+            <span class="n">current_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listWidget_3</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">current_item</span><span class="p">:</span>
+                <span class="n">current_text</span> <span class="o">=</span> <span class="n">current_item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">current_text</span> <span class="o">==</span> <span class="s1">&#39;Plate Heatmaps&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="o">.</span><span class="n">plot_plate_heatmaps</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">current_text</span> <span class="o">==</span> <span class="s1">&#39;MARCO Accuracy&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="o">.</span><span class="n">plot_meta_stats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">current_text</span> <span class="o">==</span> <span class="s1">&#39;Classification Counts&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">current_text</span> <span class="o">==</span> <span class="s1">&#39;Classification Progress&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="o">.</span><span class="n">plot_classification_progress</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">current_text</span> <span class="o">==</span> <span class="s1">&#39;Cocktail&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matplotlib_widget</span><span class="o">.</span><span class="n">plot_additive_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">)</span></div>
+
+    <span class="c1"># allow or disallow access to ploting methods based on run object type</span>
+<div class="viewcode-block" id="MainWindow.plot_limiter"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.plot_limiter">[docs]</a>    <span class="k">def</span> <span class="nf">plot_limiter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">listWidget_3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">listWidget_3</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">AllOWED_PLOTS</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.get_current_plot_selections"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.get_current_plot_selections">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_plot_selections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+            <span class="s1">&#39;x_axis&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+            <span class="s1">&#39;y_axis&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="MainWindow.get_current_plot_labels"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.get_current_plot_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_plot_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+            <span class="s1">&#39;x_lab&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+            <span class="s1">&#39;y_lab&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_4</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="MainWindow.apply_plot_selection_logic"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.apply_plot_selection_logic">[docs]</a>    <span class="k">def</span> <span class="nf">apply_plot_selection_logic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">BAR_X_VARS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Human Classification&#39;</span><span class="p">,</span> <span class="s1">&#39;MARCO Classicication&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;&#39;</span><span class="p">]</span>
+        <span class="n">BAR_Y_VARS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Number Images&#39;</span><span class="p">]</span>
+        <span class="n">VIOLIN_X_VARS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Human Classification&#39;</span><span class="p">,</span> <span class="s1">&#39;MARCO Classification&#39;</span><span class="p">]</span>
+        <span class="n">VIOLIN_Y_VARS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Cocktail pH&#39;</span><span class="p">,</span> <span class="s1">&#39;Number Images&#39;</span><span class="p">]</span>
+
+        <span class="c1"># method for enableing and disabling selections based on other selections</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Plate Heatmaps&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Bar&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_and_set_variable_boxes</span><span class="p">(</span><span class="n">BAR_X_VARS</span><span class="p">,</span> <span class="n">BAR_Y_VARS</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Violin&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_and_set_variable_boxes</span><span class="p">(</span><span class="n">VIOLIN_X_VARS</span><span class="p">,</span> <span class="n">VIOLIN_Y_VARS</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_default_plot_labels</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.set_default_plot_labels"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.set_default_plot_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_plot_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># set title</span>
+        <span class="n">x_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> vs. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">x_var</span><span class="p">,</span> <span class="n">y_var</span>
+        <span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">x_var</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit_4</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">y_var</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindow.clear_and_set_variable_boxes"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.clear_and_set_variable_boxes">[docs]</a>    <span class="k">def</span> <span class="nf">clear_and_set_variable_boxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_vars</span><span class="p">,</span> <span class="n">y_vars</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Helper function for apply_plot_selection_logic that clears the</span>
+<span class="sd">        two variable combo boxes and sets new values to the values</span>
+<span class="sd">        contained in the x_vars and y_vars lists.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">x_vars</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">y_vars</span><span class="p">)</span></div>
+
+    <span class="c1"># Dialog Windows (Open and Handle Methods)</span>
+    <span class="c1"># =========================================================================</span>
+
+<div class="viewcode-block" id="MainWindow.open_run_updater_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_run_updater_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_run_updater_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+            <span class="n">run_updater</span> <span class="o">=</span> <span class="n">RunUpdaterDialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Please load a run first.&#39;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.open_spectra_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_spectra_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_spectra_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">spec_dialog</span> <span class="o">=</span> <span class="n">SpectrumDialog</span><span class="p">(</span><span class="n">loaded_runs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_runs</span> <span class="o">=</span> <span class="n">spec_dialog</span><span class="o">.</span><span class="n">loaded_runs</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plateInspector</span><span class="o">.</span><span class="n">set_alt_spectrum_buttons</span><span class="p">(</span><span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slideshowInspector</span><span class="o">.</span><span class="n">set_alt_spectrum_buttons</span><span class="p">()</span></div>
+            <span class="c1"># enable alt spectrum selections</span>
+
+<div class="viewcode-block" id="MainWindow.open_time_link_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_time_link_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_time_link_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">time_dialog</span> <span class="o">=</span> <span class="n">TimeResDialog</span><span class="p">(</span><span class="n">available_runs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span> <span class="o">=</span> <span class="n">time_dialog</span><span class="o">.</span><span class="n">available_runs</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>  <span class="c1"># run is open</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MainWindow.save_file_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.save_file_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">save_file_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Save Run&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MainWindow.open_settings_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_settings_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_settings_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">settingsDialog</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.handle_advanced_tools"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.handle_advanced_tools">[docs]</a>    <span class="k">def</span> <span class="nf">handle_advanced_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionTime_Resolved</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_time_link_dialog</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionView_Log_2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_log_dialog</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionAdd_Image_Type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_spectra_dialog</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionEdit_Current_Run_Data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">open_run_updater_dialog</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindow.open_file_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_file_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_file_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialog_type</span><span class="o">=</span><span class="s1">&#39;Dir&#39;</span><span class="p">):</span>
+        <span class="n">file_dlg</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dialog_type</span> <span class="o">==</span> <span class="s1">&#39;Dir&#39;</span><span class="p">:</span>
+            <span class="n">file_dlg</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">Directory</span><span class="p">)</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">file_dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="n">filenames</span> <span class="o">=</span> <span class="n">file_dlg</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="MainWindow.open_log_dialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.open_log_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">open_log_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log_dialog</span> <span class="o">=</span> <span class="n">LogDialog</span><span class="p">()</span></div>
+
+
+    <span class="c1"># Inter Tab Controls and Other</span>
+    <span class="c1"># =========================================================================</span>
+
+<div class="viewcode-block" id="MainWindow.on_changed_tab"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.on_changed_tab">[docs]</a>    <span class="k">def</span> <span class="nf">on_changed_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles GUI behavior when a user switches to one tab to another.</span>
+
+<span class="sd">        :param i: Int. The index of the current tab, after user has changed tabs.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># make sure its actually an int</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1"># self.new_slideshow_image_routine()</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handle_plot_selection</span><span class="p">()</span>  <span class="c1"># refresh the current plot</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>  <span class="c1"># run data editor</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plainTextEdit</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizeWidget</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MainWindow.show_error_message"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.show_error_message">[docs]</a>    <span class="k">def</span> <span class="nf">show_error_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Error :(&#39;</span><span class="p">):</span>
+        <span class="n">error_dlg</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QErrorMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">error_dlg</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">error_dlg</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div></div>
+
+    <span class="c1"># Depreciated Methods</span>
+    <span class="c1"># =========================================================================</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

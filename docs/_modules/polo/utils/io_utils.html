@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -162,30 +165,211 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
+<span class="kn">from</span> <span class="nn">pptx</span> <span class="kn">import</span> <span class="n">Presentation</span>
+<span class="kn">from</span> <span class="nn">pptx.util</span> <span class="kn">import</span> <span class="n">Inches</span><span class="p">,</span> <span class="n">Pt</span>
+
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QImage</span><span class="p">,</span> <span class="n">QPainter</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QGridLayout</span>
 
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ALLOWED_IMAGE_TYPES</span><span class="p">,</span> <span class="n">COCKTAIL_DATA_PATH</span><span class="p">,</span> <span class="n">COCKTAIL_META_DATA</span><span class="p">,</span>
-                  <span class="n">RUN_HTML_TEMPLATE</span><span class="p">,</span> <span class="n">SCREEN_HTML_TEMPLATE</span><span class="p">,</span> <span class="n">__version__</span><span class="p">,</span>
-                  <span class="n">make_default_logger</span><span class="p">,</span> <span class="n">num_regex</span><span class="p">,</span> <span class="n">unit_regex</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">Cocktail</span><span class="p">,</span> <span class="n">Reagent</span><span class="p">,</span> <span class="n">SignedValue</span>
-<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">PixmapMakerThread</span><span class="p">,</span> <span class="n">QuickThread</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
 <span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">EmptyRunNameError</span><span class="p">,</span> <span class="n">ForbiddenImageTypeError</span>
-<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="n">best_aspect_ratio</span><span class="p">,</span> <span class="n">get_cell_image_dims</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.unrar_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RunImporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter">[docs]</a><span class="k">class</span> <span class="nc">RunImporter</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;Class to hold general use functions for importing runs into Polo.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="RunImporter.directory_validator"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.directory_validator">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">directory_validator</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Check if a directory should proceed further down the import</span>
+<span class="sd">        pipeline. Includes checks to make sure the directory exists</span>
+<span class="sd">        is a directory and that the directory contains images of</span>
+<span class="sd">        filetypes that can be imported.</span>
+
+<span class="sd">        :param dir_path: Path to a directory</span>
+<span class="sd">        :type dir_path: str or Path</span>
+<span class="sd">        :return: True, if directory can be imported, an Exception otherwise</span>
+<span class="sd">        :rtype: bool or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">dir_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">e</span> <span class="o">=</span> <span class="n">ForbiddenImageTypeError</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="ne">NotADirectoryError</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">e</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="ne">FileNotFoundError</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="ne">FileNotFoundError</span></div>
+    
+<div class="viewcode-block" id="RunImporter.parse_hwi_dir_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dir_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">image_type</span> <span class="o">=</span> <span class="n">dir_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">image_type</span> <span class="ow">in</span> <span class="n">SPEC_KEYS</span><span class="p">:</span>
+                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">SPEC_KEYS</span><span class="p">[</span><span class="n">image_type</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># default to visible</span>
+            <span class="n">plate_id</span> <span class="o">=</span> <span class="n">dir_name</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dir_name</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                    <span class="s1">&#39;%Y&#39;&#39;%m&#39;&#39;</span><span class="si">%d</span><span class="s1">&#39;&#39;%H&#39;&#39;%M&#39;</span><span class="p">)</span>
+            
+            <span class="c1">#return image_type, plate_id, date, run_name  # last is suggeseted run name</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="n">image_spectrum</span><span class="p">,</span>
+                <span class="s1">&#39;plate_id&#39;</span><span class="p">:</span> <span class="n">plate_id</span><span class="p">,</span>
+                <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+                <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="n">dir_name</span>
+                <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1"> attempting to parse </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">e</span><span class="p">,</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">,</span> <span class="n">dir_name</span>
+            <span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+    
+<div class="viewcode-block" id="RunImporter.crack_open_a_rar_one"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.crack_open_a_rar_one">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">crack_open_a_rar_one</span><span class="p">(</span><span class="n">rar_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to open a compressed rar archive.</span>
+
+<span class="sd">        :param rar_path: Path to rar archive.</span>
+<span class="sd">        :type rar_path: str or Path</span>
+<span class="sd">        :return: Path to uncompressed archive if successful</span>
+<span class="sd">        :rtype: Path</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">rar_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">rar_path</span><span class="p">)</span>
+        <span class="n">parent_path</span> <span class="o">=</span> <span class="n">rar_path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">return</span> <span class="n">unrar_archive</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="RunImporter.import_from_xtal_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_from_xtal_thread">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">import_from_xtal_thread</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Given the path to an xtal file returns a QThread</span>
+<span class="sd">        which can be run to load the run serialized in the</span>
+<span class="sd">        xtal file.</span>
+
+<span class="sd">        :param xtal_path: File path to xtal file.</span>
+<span class="sd">        :type xtal_path: str</span>
+<span class="sd">        :return: QThread for deserializing the given xtal file.</span>
+<span class="sd">        :rtype: QThread</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">reader</span><span class="o">.</span><span class="n">make_read_xtal_thread</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="RunImporter.make_xtal_file_dialog"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.make_xtal_file_dialog">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_xtal_file_dialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a file dialog specifically for browsing for</span>
+<span class="sd">        xtal files.</span>
+
+<span class="sd">        :param parent: Parent for the file dialog, defaults to None</span>
+<span class="sd">        :type parent: QDialog, optional</span>
+<span class="sd">        :return: QFileDialog</span>
+<span class="sd">        :rtype: QFileDialog</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">file_dlg</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">file_dlg</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ExistingFiles</span><span class="p">)</span>
+        <span class="n">file_dlg</span><span class="o">.</span><span class="n">setNameFilter</span><span class="p">(</span><span class="s1">&#39;xtal or xtals (*.xtal *.xtals)&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_dlg</span></div>
+    
+<div class="viewcode-block" id="RunImporter.unpack_rar_archive_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.unpack_rar_archive_thread">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unpack_rar_archive_thread</span><span class="p">(</span><span class="n">archive_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a QuickThread that is setup to de-compress</span>
+<span class="sd">        a rar archive file.</span>
+
+<span class="sd">        :param archive_path: Path to rar archive.</span>
+<span class="sd">        :type archive_path: str or Path</span>
+<span class="sd">        :return: QuickThread that can be run to de-compress the given archive path.</span>
+<span class="sd">        :rtype: QuickThread</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">archive_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="n">job_func</span><span class="o">=</span><span class="n">RunImporter</span><span class="o">.</span><span class="n">crack_open_a_rar_one</span><span class="p">,</span> <span class="n">rar_path</span><span class="o">=</span><span class="n">archive_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporter.import_run_from_directory"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_run_from_directory">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">import_run_from_directory</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Imports a run from a local directory. First attempts to import</span>
+<span class="sd">        the run as an HWIRun and if this fails attempts an import as</span>
+<span class="sd">        a general Run object.</span>
+
+<span class="sd">        :param data_dir: Directory to build the Run from</span>
+<span class="sd">        :type data_dir: str or Path</span>
+<span class="sd">        :return: Run, HWIRun or False depending on directory content and if import succeeds.</span>
+<span class="sd">        :rtype: Run, HWIRun, bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">hwi_import_attempt</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_hwi_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hwi_import_attempt</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">hwi_import_attempt</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_general_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporter.import_hwi_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_hwi_run">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">import_hwi_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Attempt to create a HWIRun from a directory of images.</span>
+
+<span class="sd">        :param data_dir: Directory to import from.</span>
+<span class="sd">        :type data_dir: str or Path</span>
+<span class="sd">        :return: HWIRun if import is successful, False otherwise</span>
+<span class="sd">        :rtype: HWIRun, bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">()</span><span class="o">.</span><span class="n">find_and_read_plate_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+            <span class="n">file_name_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">file_name_data</span><span class="p">:</span>
+                <span class="n">menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+                <span class="c1"># assuming soluble need to change based on metadata parse</span>
+                <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">menu</span><span class="p">,</span> <span class="o">**</span><span class="n">file_name_data</span><span class="p">)</span>
+                <span class="n">new_run</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>  <span class="c1"># from xml data</span>
+                <span class="n">new_run</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># for user supplied data</span>
+                <span class="c1"># that could overwrite what is in metadata</span>
+                <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">new_run</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="RunImporter.import_general_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_general_run">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">import_general_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Attempt to import a Run from a directory of images. </span>
+
+<span class="sd">        :param data_dir: [description]</span>
+<span class="sd">        :type data_dir: [type]</span>
+<span class="sd">        :return: [description]</span>
+<span class="sd">        :rtype: [type]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">new_run</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
 
 
 <div class="viewcode-block" id="RunSerializer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer">[docs]</a><span class="k">class</span> <span class="nc">RunSerializer</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Made RunSerializer </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
 <div class="viewcode-block" id="RunSerializer.make_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.make_thread">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">make_thread</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">job_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -207,45 +391,22 @@
 
 <span class="sd">        :param desired_suffix: File extension for given file path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="n">desired_suffix</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">desired_suffix</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="RunSerializer.make_message_box"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.make_message_box">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Information</span><span class="p">,</span>
-                         <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">,</span>
-                         <span class="n">connected_function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return a QMessageBox instance to show to the user.</span>
-
-<span class="sd">        :param message: Message to be displayed to the user</span>
-<span class="sd">        :type message: str</span>
-<span class="sd">        :param icon: Icon for message box, defaults to QtWidgets.QMessageBox.Information</span>
-<span class="sd">        :type icon: QMessageBoxIcon, optional</span>
-<span class="sd">        :param buttons: [description], defaults to QtWidgets.QMessageBox.Ok</span>
-<span class="sd">        :type buttons: [type], optional</span>
-<span class="sd">        :param connected_function: [description], defaults to None</span>
-<span class="sd">        :type connected_function: [type], optional</span>
-<span class="sd">        :return: [description]</span>
-<span class="sd">        :rtype: [type]</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">connected_function</span><span class="p">:</span>
-            <span class="n">msg</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">connected_function</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Made message box with message &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">msg</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">desired_suffix</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="n">desired_suffix</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">desired_suffix</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="RunSerializer.path_validator"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.path_validator">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">path_validator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Tests to ensure a path exists. Passing parent = True will check for</span>
-<span class="sd">        the existance of the parent directory of the path.</span>
+<span class="sd">        the existence of the parent directory of the path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
@@ -276,6 +437,9 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Given a path to an html file to serve as a jinja2 template, read the</span>
 <span class="sd">        file and create a new template object.</span>
+
+<span class="sd">        :param template_path: Path to the jinja2 template file.</span>
+<span class="sd">        :type temlate_path: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="n">template_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
@@ -284,54 +448,43 @@
             <span class="n">contents</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="HtmlWriter.write_complete_run_on_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_complete_run_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">write_complete_run_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">encode_images</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Wrapper around `write_complete_run` that executes on a seperate</span>
-<span class="sd">        Qthread.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_thread</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
-            <span class="n">encode_images</span><span class="o">=</span><span class="n">encode_images</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finished_writing</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Writing </span><span class="si">{}</span><span class="s1"> as html to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">,</span> <span class="n">output_path</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="HtmlWriter.finished_writing"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.finished_writing">[docs]</a>    <span class="k">def</span> <span class="nf">finished_writing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># should only be called from connection to thread</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Method to connect to Qthread instance. Should not be called from</span>
-<span class="sd">        anything other than a Qthread instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Export to </span><span class="si">{}</span><span class="s1"> was successful&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Export to HTML file failed. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Html write attempt status: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
-        <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="HtmlWriter.write_complete_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_complete_run">[docs]</a>    <span class="k">def</span> <span class="nf">write_complete_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">encode_images</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="c1"># write a run as html file with images and classifications</span>
-        <span class="c1"># and that kind of stuff</span>
+        <span class="sd">&#39;&#39;&#39;Create an HTML report from a Run or HWIRun instance.</span>
+
+<span class="sd">        :param output_path: Path to write html file to.</span>
+<span class="sd">        :type output_path: str or Path</span>
+<span class="sd">        :param encode_images: Write images as base64 directly to the html file,</span>
+<span class="sd">                              defaults to True. Greatly increases the file size</span>
+<span class="sd">                              but means that report will still contain images</span>
+<span class="sd">                              even if the originals are deleted or removed.</span>
+<span class="sd">        :type encode_images: bool, optional</span>
+<span class="sd">        :return: Path to html report if write succeeds, Exception otherwise. </span>
+<span class="sd">        :rtype: str or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">encode_images</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
-            <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">encode_images</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
+                <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
+                <span class="p">[</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;_Image__bites&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
 
-            <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
-                <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
-                    <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span>
-                    <span class="n">annotations</span><span class="o">=</span><span class="s1">&#39;No annotations&#39;</span><span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">html_file</span><span class="p">:</span>
-                    <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">output_path</span></div>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                            <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span>
+                            <span class="n">annotations</span><span class="o">=</span><span class="s1">&#39;No annotations&#39;</span><span class="p">)</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">html_file</span><span class="p">:</span>
+                            <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="kc">True</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.write_grid_screen"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_grid_screen">[docs]</a>    <span class="k">def</span> <span class="nf">write_grid_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">plate_list</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span>
                           <span class="n">x_reagent</span><span class="p">,</span> <span class="n">y_reagent</span><span class="p">,</span> <span class="n">well_volume</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Write the contents of optimization grid screen to an html file</span>
+        <span class="sd">&#39;&#39;&#39;Write the contents of optimization grid screen to an html file.</span>
 
 <span class="sd">        :param output_path: Path to html file</span>
 <span class="sd">        :type output_path: str</span>
@@ -339,9 +492,9 @@
 <span class="sd">        :type plate_list: list</span>
 <span class="sd">        :param well_number: well number of hit screen is created from</span>
 <span class="sd">        :type well_number: int or str</span>
-<span class="sd">        :param x_reagent: reagent varried in x direction</span>
+<span class="sd">        :param x_reagent: reagent varied in x direction</span>
 <span class="sd">        :type x_reagent: Reagent</span>
-<span class="sd">        :param y_reagent: reagent varried in y direction</span>
+<span class="sd">        :param y_reagent: reagent varied in y direction</span>
 <span class="sd">        :type y_reagent: Reagent</span>
 <span class="sd">        :param well_volume: Volume of well used in screen</span>
 <span class="sd">        :type well_volume: int or str</span>
@@ -349,7 +502,7 @@
 <span class="sd">        :type run_name: str, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">ouput_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
             <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">SCREEN_HTML_TEMPLATE</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">run_name</span><span class="p">:</span>
                 <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
@@ -436,7 +589,7 @@
 <span class="sd">        headers and a list of dictionaries with each dictionary representing</span>
 <span class="sd">        one row of csv data.</span>
 
-<span class="sd">        :raises e: Catch all exception. TODO: Make more specific</span>
+<span class="sd">        :raises e: Catch all exception.</span>
 <span class="sd">        :return: Tuple, list of headers and list of dicts</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -477,6 +630,124 @@
         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">RunCsvWriter</span><span class="o">.</span><span class="n">image_to_row</span><span class="p">(</span><span class="n">image</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="SceneExporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.SceneExporter">[docs]</a><span class="k">class</span> <span class="nc">SceneExporter</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphics_scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graphics_scene</span> <span class="o">=</span> <span class="n">graphics_scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+    
+<div class="viewcode-block" id="SceneExporter.write_image"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.SceneExporter.write_image">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_image</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Write the contents of a QGraphicsScene to a png file.</span>
+
+<span class="sd">        :param scene: QGraphicsScene to convert to image file.</span>
+<span class="sd">        :type scene: QGraphicsScene</span>
+<span class="sd">        :param file_path: Path to save image to.</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        :return: File path to saved image if successful, Exception otherwise.</span>
+<span class="sd">        :rtype: str or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">QImage</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">scene</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">QImage</span><span class="o">.</span><span class="n">Format_ARGB32_Premultiplied</span><span class="p">)</span>
+            <span class="n">painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">file_path</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div>
+    
+<div class="viewcode-block" id="SceneExporter.write"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.SceneExporter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SceneExporter</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graphics_scene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MsoWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoWriter">[docs]</a><span class="k">class</span> <span class="nc">MsoWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
+
+    <span class="n">mso_version</span> <span class="o">=</span> <span class="s1">&#39;msoversion2&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
+
+<div class="viewcode-block" id="MsoWriter.row_formater"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoWriter.row_formater">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">row_formater</span><span class="p">(</span><span class="n">cocktail_row</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Format a cocktail row as read from a cocktail csv</span>
+<span class="sd">        file to an mso file row. Main change is appending empty</span>
+<span class="sd">        strings to the cocktail row so list ends up always having</span>
+<span class="sd">        a length of 17. This is important because the image</span>
+<span class="sd">        classification code always occurs at the 18th item in</span>
+<span class="sd">        an mso file row.</span>
+
+<span class="sd">        :param cocktail_row: Cocktail row as read from cocktail csv file.</span>
+<span class="sd">        :type cocktail_row: list</span>
+<span class="sd">        :return: Cocktail row reformated for mso writing.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># well number should be first index in the list</span>
+        <span class="c1"># total list length should be 18 last item is the mso code</span>
+        <span class="k">return</span> <span class="n">cocktail_row</span> <span class="o">+</span> <span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cocktail_row</span><span class="p">)</span> <span class="o">-</span> <span class="mi">17</span><span class="p">))</span></div>
+
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">first_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create the first line of the mso file.</span>
+
+<span class="sd">        :return: List to write as the first line of the mso file.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">MsoWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span> <span class="s1">&#39;.rar&#39;</span><span class="p">),</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">mso_version</span>
+        <span class="p">]</span>
+    
+<div class="viewcode-block" id="MsoWriter.get_cocktail_csv_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoWriter.get_cocktail_csv_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_cocktail_csv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Reads and returns the cocktail csv data assigned</span>
+<span class="sd">        to the `cocktail_menu` attribute of the MsoWriter&#39;s</span>
+<span class="sd">        `run` attribute.</span>
+
+<span class="sd">        :return: List of lists containing cocktail csv data.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cocktail_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cocktail_menu</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">menu_file</span><span class="p">:</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">menu_file</span><span class="p">)</span>  <span class="c1"># skip first row</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">menu_file</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="MsoWriter.write_mso_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoWriter.write_mso_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_mso_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_marco_classifications</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Writes an mso formated file for use with MarcoScopeJ based on</span>
+<span class="sd">        the images and classifications of the Run stored in the MsoWriter&#39;s</span>
+<span class="sd">        `run` attribute.</span>
+
+<span class="sd">        :param use_marco_classifications: Include the MARCO classification</span>
+<span class="sd">                                          in the mso file instead of human</span>
+<span class="sd">                                          classifications, defaults to False</span>
+<span class="sd">        :type use_marco_classifications: bool, optional</span>
+<span class="sd">        :return: True if file is written successfully, False otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>  <span class="c1"># must be hwi run to write to mso</span>
+            <span class="n">cocktail_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cocktail_csv_data</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">MsoWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.mso&#39;</span><span class="p">))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mso_file</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">mso_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">cocktail_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># header row</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cocktail_data</span><span class="p">:</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="o">.</span><span class="n">row_formater</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                    <span class="n">well_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+                    <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">well_num</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">image</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
+                        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">use_marco_classifications</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
+                        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
+            
 
 <div class="viewcode-block" id="XtalWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter">[docs]</a><span class="k">class</span> <span class="nc">XtalWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
     <span class="n">header_flag</span> <span class="o">=</span> <span class="s1">&#39;&lt;&gt;&#39;</span>  <span class="c1"># do not change unless very good reason</span>
@@ -560,7 +831,7 @@
 
         <span class="n">XtalWriter</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="XtalWriter.write_xtal_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.write_xtal_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_xtal_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<div class="viewcode-block" id="XtalWriter.write_xtal_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.write_xtal_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_xtal_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Method to serialize run object to xtal file format.</span>
 
 <span class="sd">        :param output_path: Xtal file path</span>
@@ -623,12 +894,11 @@
 
 <div class="viewcode-block" id="RunDeserializer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer">[docs]</a><span class="k">class</span> <span class="nc">RunDeserializer</span><span class="p">():</span>  <span class="c1"># convert saved file into a run</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_path</span><span class="p">,</span> <span class="n">main_window</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span> <span class="o">=</span> <span class="n">xtal_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
 
 <div class="viewcode-block" id="RunDeserializer.clean_base64_string"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.clean_base64_string">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">clean_base64_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">clean_base64_string</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">out_fmt</span><span class="o">=</span><span class="nb">bytes</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Image instances may contain byte strings that store their actual</span>
 <span class="sd">        crystallization image encoded as base64. Previously, these byte strings</span>
 <span class="sd">        were written directly into the json file as strings causing the b&#39;</span>
@@ -648,8 +918,12 @@
                 <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">:</span>
                 <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">string</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">string</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out_fmt</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">string</span></div>
+            
 
 <div class="viewcode-block" id="RunDeserializer.dict_to_obj"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.dict_to_obj">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">dict_to_obj</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -699,13 +973,11 @@
 <span class="sd">        loaded_run dictionary to signify that the run has been loaded and is</span>
 <span class="sd">        ready for further operations.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span></div>
 
-        <span class="k">def</span> <span class="nf">finished</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">add_loaded_run</span><span class="p">(</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="n">thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">finished</span><span class="p">)</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+<div class="viewcode-block" id="RunDeserializer.make_read_xtal_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.make_read_xtal_thread">[docs]</a>    <span class="k">def</span> <span class="nf">make_read_xtal_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.xtal_header_reader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_header_reader">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_header_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_file_io</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Reads the header section of an open xtal file. Should always be</span>
@@ -733,36 +1005,468 @@
 <span class="sd">        :return: Run object encoded by an xtal file</span>
 <span class="sd">        :rtype: Run</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;xtal_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">xtal_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xtal_path&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;xtal_path&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">xtal_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xtal_path&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">xtal_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_data</span><span class="p">:</span>
+                    <span class="n">header_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_header_reader</span><span class="p">(</span>
+                        <span class="n">xtal_data</span><span class="p">)</span>  <span class="c1"># must read header first</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xtal_data</span><span class="p">,</span>  <span class="c1"># update date since datetime goes right to string</span>
+                                <span class="n">object_hook</span><span class="o">=</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">)</span>
+                    <span class="n">r</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">datetime_converter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+                    <span class="n">r</span><span class="o">.</span><span class="n">save_file_path</span> <span class="o">=</span> <span class="n">xtal_path</span>
+                    <span class="k">return</span> <span class="n">r</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="ne">FileNotFoundError</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div></div>
+
+
+<div class="viewcode-block" id="PptxWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter">[docs]</a><span class="k">class</span> <span class="nc">PptxWriter</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;Use for creating pptx presentation slides from Run instances.</span>
+
+<span class="sd">    :param output_path: Path to write pptx file to.</span>
+<span class="sd">    :type output_path: str or Path</span>
+<span class="sd">    :param included_attributes: [description], defaults to {}</span>
+<span class="sd">    :type included_attributes: dict, optional</span>
+<span class="sd">    :param image_types: Images included in the presentation</span>
+<span class="sd">    must have a classification in this set, defaults to None</span>
+<span class="sd">    :type image_types: set or list, optional</span>
+<span class="sd">    :param human: Use human classification as the image classification, defaults to False</span>
+<span class="sd">    :type human: bool, optional</span>
+<span class="sd">    :param marco: Use the MARCO classification as the image classification, defaults to False</span>
+<span class="sd">    :type marco: bool, optional</span>
+<span class="sd">    :param favorite: Only include images marked as favorite, defaults to False</span>
+<span class="sd">    :type favorite: bool, optional</span>
+
+
+<span class="sd">    TEST ADD HERE</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># 13.33 x 7.5 </span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">included_attributes</span><span class="o">=</span><span class="p">{},</span>
+                 <span class="n">image_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included_attributes</span> <span class="o">=</span> <span class="n">included_attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">human</span> <span class="o">=</span> <span class="n">human</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marco</span> <span class="o">=</span> <span class="n">marco</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="n">favorite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span> <span class="o">=</span> <span class="n">image_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="PptxWriter.delete_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">delete_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a new clean presentation.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.delete_temp_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_temp_images">[docs]</a>    <span class="k">def</span> <span class="nf">delete_temp_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Delete an temporary images used to create the pptx presentation.</span>
+
+<span class="sd">        :return: True, if images are removed successfully, Exception otherwise.</span>
+<span class="sd">        :rtype: bool or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.sort_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">sort_runs_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Divids runs into two lists, one containing visible spectrum</span>
+<span class="sd">        runs and another containing all non-visible runs.</span>
+
+<span class="sd">        :param runs: List or runs</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: tuple, first item is visible runs second is non-visible runs</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">visible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visible</span><span class="p">,</span> <span class="n">other</span></div>
+           
+<div class="viewcode-block" id="PptxWriter.make_sample_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_sample_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_sample_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_name</span><span class="p">,</span> <span class="n">runs</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span>
+                                 <span class="n">subtitle</span><span class="p">,</span> <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a pptx presentation from a collection of runs intended to</span>
+<span class="sd">        be all of the same sample. This allows for time resolved comparisons</span>
+<span class="sd">        and comparisons between spectrums. Should generally not include all</span>
+<span class="sd">        images in the presentation or with runs who&#39;s images do not exist</span>
+<span class="sd">        on the local machine. Doing so creates huge presentation files and</span>
+<span class="sd">        long write times.</span>
+
+<span class="sd">        :param sample_name: Name of the sample</span>
+<span class="sd">        :type sample_name: str</span>
+<span class="sd">        :param runs: List of runs to include in the presentation</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :param title: Title of the presentation</span>
+<span class="sd">        :type title: str</span>
+<span class="sd">        :param subtitle: Subtitle of the presentation</span>
+<span class="sd">        :type subtitle: str</span>
+<span class="sd">        :param cocktail_data: Include cocktail data if True, defaults to True</span>
+<span class="sd">        :type cocktail_data: bool, optional</span>
+<span class="sd">        :return: Path to presentation file if write is successful, False otherwise</span>
+<span class="sd">        :rtype: str or bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_runs_by_spectrum</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+        <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
+            <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
+
+        <span class="k">if</span> <span class="n">visible</span> <span class="ow">or</span> <span class="n">other</span><span class="p">:</span>
+            <span class="n">show_all_dates</span><span class="p">,</span> <span class="n">show_single_image</span><span class="p">,</span> <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">visible</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visible</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">show_single_image</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">other</span><span class="p">:</span>
+                <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">show_all_dates</span> <span class="ow">or</span> <span class="n">show_single_image</span><span class="p">:</span>
+                <span class="n">rep_run</span> <span class="o">=</span> <span class="n">visible</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rep_run</span> <span class="o">=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">visible</span><span class="p">],</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">show_single_image</span><span class="p">:</span>
+                    <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cocktail_data</span><span class="p">:</span>
+                        <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+                    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">show_alt_specs</span><span class="p">:</span>
+                    <span class="n">well_number</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_spectrum_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">other</span><span class="p">],</span> <span class="n">well_number</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
+                
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">xtal_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span>
-        <span class="k">if</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_data</span><span class="p">:</span>
-                <span class="n">header_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_header_reader</span><span class="p">(</span>
-                    <span class="n">xtal_data</span><span class="p">)</span>  <span class="c1"># must read header first</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">xtal_data</span><span class="p">,</span>  <span class="c1"># update date since datetime goes right to string</span>
-                              <span class="n">object_hook</span><span class="o">=</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">)</span>
-                <span class="n">r</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">datetime_converter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">r</span></div></div>
+            <span class="k">return</span> <span class="kc">False</span></div>
+        
+
+<div class="viewcode-block" id="PptxWriter.make_single_run_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_single_run_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_single_run_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a pptx presentation from a single run.</span>
+
+<span class="sd">        :param run: Run to create the presentation from</span>
+<span class="sd">        :type run: Run or HWIRun</span>
+<span class="sd">        :param title: Title of the presentation</span>
+<span class="sd">        :type title: str</span>
+<span class="sd">        :param subtitle: Subtitle of the presentation, defaults to None</span>
+<span class="sd">        :type subtitle: str, optional</span>
+<span class="sd">        :param cocktail_data: Include cocktail data if True, defaults to True</span>
+<span class="sd">        :type cocktail_data: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
+            <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
+        
+        <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
+                <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
+                    <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span>
+                    <span class="n">image</span><span class="p">,</span> 
+                    <span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
+                    <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+                    <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span></div>
+                
+    
+<div class="viewcode-block" id="PptxWriter.add_classification_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_classification_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_classification_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span> <span class="n">rep_image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add a slide containing details about an images MARCO</span>
+<span class="sd">        and human classification in a table.</span>
+
+<span class="sd">        :param well_number: Well number (index) of image to use in</span>
+<span class="sd">                            the title of the slide </span>
+<span class="sd">        :type well_number: int</span>
+<span class="sd">        :param rep_image: Image object to make slide from</span>
+<span class="sd">        :type rep_image: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Classifications&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
+        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s1">&#39;Human Classification&#39;</span><span class="p">,</span> <span class="s1">&#39;MARCO Classification&#39;</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">rep_image</span><span class="o">.</span><span class="n">human_class</span><span class="p">,</span> <span class="n">rep_image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">]</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_table_to_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+        <span class="c1"># do for most recent human classification image if it exits</span>
+
+<div class="viewcode-block" id="PptxWriter.add_new_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_new_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Adds a new slide to the current presentation.</span>
+
+<span class="sd">        :param template: Slide template number, defaults to 5</span>
+<span class="sd">        :type template: int, optional</span>
+<span class="sd">        :return: New slide</span>
+<span class="sd">        :rtype: Slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.add_timeline_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_timeline_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_timeline_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a timeline (time resolved) slide that</span>
+<span class="sd">        show the progression of a sample in a particular</span>
+<span class="sd">        well.</span>
+
+<span class="sd">        :param images: List of images to include in the slide</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :param well_number: Well number to use in the title of the slide</span>
+<span class="sd">        :type well_number: int</span>
+<span class="sd">        :return: New slide</span>
+<span class="sd">        :rtype: slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">date_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
+        <span class="n">labeler</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">formated_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">well_number</span><span class="p">,</span> <span class="n">date_images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">formated_date</span><span class="p">,</span> <span class="n">date_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">formated_date</span><span class="p">)</span>
+        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+
+        <span class="k">return</span> <span class="n">new_slide</span></div>
+    
+
+<div class="viewcode-block" id="PptxWriter.add_multi_spectrum_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_multi_spectrum_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_multi_spectrum_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a slide to show a all spectrums a well has been</span>
+<span class="sd">        imaged in.</span>
+
+<span class="sd">        :param images: Images to include on the slide</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :param well_number: Well number to use in the slide title</span>
+<span class="sd">        :type well_number: int</span>
+<span class="sd">        :return: New slide</span>
+<span class="sd">        :rtype: slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spec_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">spectrum</span><span class="p">))</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
+        <span class="n">labeler</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">spectrum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Alternate Imagers&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
+        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+
+        <span class="k">return</span> <span class="n">new_slide</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.add_cocktail_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_cocktail_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_cocktail_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well</span><span class="p">,</span> <span class="n">cocktail</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add slide with details on cocktail information</span>
+
+<span class="sd">        :param well: Well number to use in slide title</span>
+<span class="sd">        :type well: int</span>
+<span class="sd">        :param cocktail: Cocktail to write as a slide</span>
+<span class="sd">        :type cocktail: Cocktail</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Cocktail: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well</span><span class="p">,</span> <span class="n">cocktail</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span></div>
+
+<div class="viewcode-block" id="PptxWriter.add_table_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_table_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_table_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;General helper method for adding a table to a slide</span>
+
+<span class="sd">        :param slide: Slide to add the table to</span>
+<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :param data: List of lists that has the data to write to the table</span>
+<span class="sd">        :type data: list</span>
+<span class="sd">        :param left: Left offset in inches to place to table</span>
+<span class="sd">        :type left: float</span>
+<span class="sd">        :param top: Top cordinate for placing the table</span>
+<span class="sd">        :type top: float</span>
+<span class="sd">        :return: Slide with table added</span>
+<span class="sd">        :rtype: slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">max</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+        <span class="n">shapes</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span>
+        
+        <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">shapes</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> 
+                                 <span class="n">Inches</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_size</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">cols</span>
+            <span class="c1"># set column width</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">slide</span></div>
+
+<div class="viewcode-block" id="PptxWriter.add_multi_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_multi_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_multi_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;General helper method for adding a slide that will have multiple</span>
+<span class="sd">        images.</span>
+
+<span class="sd">        :param slide: Slide to add the images to </span>
+<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :param images: Images to add to the slide</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :param labeler: Function to use to label the individual images</span>
+<span class="sd">        :type labeler: func</span>
+<span class="sd">        :return: Slide with images added</span>
+<span class="sd">        :rtype: Slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">img_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_size</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span><span class="p">:</span> <span class="n">img_size</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.2</span>
+
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">img_size</span>
+            <span class="p">)</span>
+            <span class="n">label_text</span> <span class="o">=</span> <span class="n">labeler</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
+                <span class="n">slide</span><span class="p">,</span> <span class="n">label_text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">img_size</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> 
+                <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="n">img_size</span>
+        <span class="k">return</span> <span class="n">slide</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.add_single_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_single_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_single_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">img_scaler</span><span class="o">=</span><span class="mf">0.65</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;General helper method for adding a slide with a single image to a</span>
+<span class="sd">        presentation</span>
+
+<span class="sd">        :param image: Image to add to the slide</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        :param title: Title to use for the slide</span>
+<span class="sd">        :type title: str</span>
+<span class="sd">        :param metadata: Additional information to write to the slide, defaults to None</span>
+<span class="sd">        :type metadata: str, optional</span>
+<span class="sd">        :param img_scaler: Scaler to apply to size of the image, defaults to 0.65</span>
+<span class="sd">                            ,should be between 0 and 1. 1 is full sized image.</span>
+<span class="sd">        :type img_scaler: float, optional</span>
+<span class="sd">        :return: The new slide with Image added</span>
+<span class="sd">        :rtype: Slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="n">img_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">*</span> <span class="n">img_scaler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
+            <span class="n">image</span><span class="p">,</span> <span class="n">new_slide</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="n">metadata_offset</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">+</span> <span class="n">img_size</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
+            <span class="n">metadata_left</span> <span class="o">=</span> <span class="n">img_size</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">metadata_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="n">metadata_left</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
+            <span class="n">metadata_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
+                <span class="n">new_slide</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">metadata_left</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">metadata_width</span><span class="p">,</span>
+                <span class="n">metadata_height</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_slide</span></div>
+        
+    
+<div class="viewcode-block" id="PptxWriter.add_text_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_text_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_text_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+                          <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to add text to a slide</span>
+
+<span class="sd">        :param slide: Slide to add text to</span>
+<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :param text: Text to add to the slide</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :param left: Left cordinate location of the text in inches</span>
+<span class="sd">        :type left: float</span>
+<span class="sd">        :param top: Top cordinate location of the text in inches</span>
+<span class="sd">        :type top: float</span>
+<span class="sd">        :param width: Width of the text in inches</span>
+<span class="sd">        :type width: float</span>
+<span class="sd">        :param height: Height of the text in inches</span>
+<span class="sd">        :type height: float</span>
+<span class="sd">        :param rotation: Rotation to apply to the text in degrees, defaults to 0</span>
+<span class="sd">        :type rotation: int, optional</span>
+<span class="sd">        :param font_size: Font size of text, defaults to 14</span>
+<span class="sd">        :type font_size: int, optional</span>
+<span class="sd">        :return: Slide with text added</span>
+<span class="sd">        :rtype: Slide</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">text_box</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">add_textbox</span><span class="p">(</span>
+            <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span>
+        <span class="n">text_box</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">rotation</span>
+        <span class="n">tf</span> <span class="o">=</span> <span class="n">text_box</span><span class="o">.</span><span class="n">text_frame</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">word_wrap</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text_box</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.add_image_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_image_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_image_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method for adding images to a slide. If the image</span>
+<span class="sd">        does not have a file written on the local machine as can be</span>
+<span class="sd">        the case with saved runs who&#39;s image data only exists in</span>
+<span class="sd">        their xtal files this method will write a temporary image</span>
+<span class="sd">        file to the Polo TEMP_DIR which then should be deleted after</span>
+<span class="sd">        the presentaton file is written.</span>
+
+<span class="sd">        :param image: Image to add to the slide</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        :param slide: Slide to add the image to</span>
+<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :param left: Left cordinate location of the image in inches</span>
+<span class="sd">        :type left: float</span>
+<span class="sd">        :param top: Top cordinate location of the image in inches</span>
+<span class="sd">        :type top: float</span>
+<span class="sd">        :param height: Height of the image in inches</span>
+<span class="sd">        :type height: float</span>
+<span class="sd">        :return: []</span>
+<span class="sd">        :rtype: [type]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">img_path</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+                <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">decodebytes</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+            <span class="n">img_path</span> <span class="o">=</span> <span class="n">temp_path</span>
+        
+        <span class="k">return</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">add_picture</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> 
+                                        <span class="n">height</span><span class="o">=</span><span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="BarTender"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender">[docs]</a><span class="k">class</span> <span class="nc">BarTender</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;Class for organizing and accessing cocktail menus&#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cocktail_dir</span><span class="p">,</span> <span class="n">cocktail_meta</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create instance of BarTender object. Probably only going to need</span>
-<span class="sd">        to make one instance since the bartender should organize all</span>
-<span class="sd">        available cocktail menus for the current Polo session. Currently,</span>
-<span class="sd">        the BarTender instance that is used everywhere is declared in polo</span>
-<span class="sd">        __init__ file.</span>
+        <span class="sd">&#39;&#39;&#39;Class for organizing and accessing cocktail menu data</span>
 
-<span class="sd">        :param cocktail_dir: Path to directory holding cocktail menu files</span>
-<span class="sd">        :type cocktail_dir: str</span>
-<span class="sd">        :param cocktail_meta: Path to csv file containing cocktail menu metadata.units</span>
-<span class="sd">        which includes things like when each menu was used, what kind.units</span>
-<span class="sd">        of screens it was used for, etc.</span>
-<span class="sd">        :type cocktail_meta: str</span>
+<span class="sd">        :param cocktail_dir: Directory containing cocktail menu csv files</span>
+<span class="sd">        :type cocktail_dir: str or Path</span>
+<span class="sd">        :param cocktail_meta: Path to cocktail metadata file which describes the contents of</span>
+<span class="sd">        each cocktail menu csv file</span>
+<span class="sd">        :type cocktail_meta: Path or str</span>
+
+<span class="sd">        Cocktail metadata file should be a csv file with the following</span>
+<span class="sd">        headers ordered from top to bottom. Each header name is followed by a</span>
+<span class="sd">        description.</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            File Name: Name of cocktail menu file</span>
+<span class="sd">            Dates Used: Range of dates the cocktail menu was used (m/d/y-m/d/y)</span>
+<span class="sd">            Plate Number</span>
+<span class="sd">            Screen Type: &#39;m&#39; for membrane screens, &#39;s&#39; for soluble screens</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_dir</span> <span class="o">=</span> <span class="n">cocktail_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_meta</span> <span class="o">=</span> <span class="n">cocktail_meta</span>
@@ -832,7 +1536,7 @@
                     <span class="c1"># add new menu to menus dict path to csv file is the menu</span>
                     <span class="c1"># key</span>
 
-<div class="viewcode-block" id="BarTender.get_menu_by_date"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_by_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+<div class="viewcode-block" id="BarTender.get_menu_by_date"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_by_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Get a menu instance who&#39;s usage dates include the given date and</span>
 <span class="sd">        match the given screen type.</span>
 
@@ -846,21 +1550,22 @@
 <span class="sd">        :return: menu matching the given date and type</span>
 <span class="sd">        :rtype: Menu</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
-            <span class="c1"># search for a menu whos usage dates include this date</span>
-            <span class="n">menus_keys_by_date</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">menus_keys_by_date</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="n">type_</span><span class="p">],</span>
                 <span class="c1"># keys matching only the specified type</span>
                 <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">start_date</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="c1"># search for a menu whos usage dates include this date</span>
             <span class="c1"># end up with a list of keys for menus of the specified type that</span>
             <span class="c1"># are sorted by the start date of their use at HWI cente</span>
             <span class="k">for</span> <span class="n">each_key</span> <span class="ow">in</span> <span class="n">menus_keys_by_date</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">date</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">each_key</span><span class="p">]</span><span class="o">.</span><span class="n">start_date</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">each_key</span><span class="p">]</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">menus_keys_by_date</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">menus_keys_by_date</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span></div>
 
-<div class="viewcode-block" id="BarTender.get_menus_by_type"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menus_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_menus_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BarTender.get_menus_by_type"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menus_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_menus_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns all menus of a given screen type.</span>
 
 <span class="sd">        &#39;s&#39; for soluble screens and &#39;m&#39; for membrane screens. No other</span>
@@ -956,7 +1661,7 @@
 <span class="sd">                    attributes</span>
 <span class="sd">        :type map: dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">cocktail_map</span> <span class="o">=</span> <span class="n">cocktail_map</span></div>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">cocktail_map</span> <span class="o">=</span> <span class="nb">map</span></div>
 
 <div class="viewcode-block" id="CocktailMenuReader.set_formula_pos"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader.set_formula_pos">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_formula_pos</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
@@ -1019,12 +1724,129 @@
         <span class="k">return</span> <span class="n">cocktail_menu</span></div></div>
 
 
+<div class="viewcode-block" id="RunLinker"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker">[docs]</a><span class="k">class</span> <span class="nc">RunLinker</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;Class to hold methods relating to linking runs either by</span>
+<span class="sd">    date or by spectrum.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="RunLinker.the_big_link"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.the_big_link">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">the_big_link</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper method around :func:`~polo.utils.io_utils.link_runs_by_date`, </span>
+<span class="sd">        :func:`~polo.utils.io_utils.link_runs_by_spectrum` and </span>
+<span class="sd">        :func:`~polo.utils.io_utils.unlink_runs_completely`. Runs are first unlinked</span>
+<span class="sd">        from each other first and then relinked.</span>
+
+<span class="sd">        :param runs: List of runs to link together</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: List or runs after linking</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">unlink_runs_completly</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">link_runs_by_date</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">link_runs_by_spectrum</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">runs</span></div>
+
+<div class="viewcode-block" id="RunLinker.link_runs_by_date"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.link_runs_by_date">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">link_runs_by_date</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Link a collection of runs by date into a linked list structure.</span>
+<span class="sd">        Only runs that are marked as visible (run&#39;s `image_spectrum` == &#39;Visible&#39;)</span>
+<span class="sd">        are linked by date. Linked list is bidirectional and the `next_run` and</span>
+<span class="sd">        `previous_run` attributes act as the forwards and backwards pointers. The</span>
+<span class="sd">        returned list of runs will also include non-visible runs that were not</span>
+<span class="sd">        linked together; no runs will be lost from the linking.</span>
+
+<span class="sd">        :param runs: List of runs to link together by date</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: List or runs linked by date</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s1">&#39;link_to_next_date&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">sorted_runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">runs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="c1"># only visible runs liked by date</span>
+        <span class="k">if</span> <span class="n">sorted_runs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># if length is only one will be linked to self</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">sorted_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)))</span></div>
+        <span class="c1"># sorted_runs will not contain non-visible runs so need to merge the</span>
+        <span class="c1"># linked visible runs with the non-visible runs in a way that does</span>
+        <span class="c1"># not create duplicates</span>
+
+<div class="viewcode-block" id="RunLinker.link_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.link_runs_by_spectrum">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">link_runs_by_spectrum</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Link a collection of runs together by spectrum. All non-visible</span>
+<span class="sd">        runs are linked together in a monodirectional circular linked list.</span>
+<span class="sd">        Each visible run will then point to the same non-visible run through</span>
+<span class="sd">        their `alt_spectrum` attribute as a way to access the non-visible</span>
+<span class="sd">        linked list.</span>
+
+<span class="sd">        :param runs: List of runs to link together</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: List of runs linked by spectrum</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># for now this links all runs of the sample to the alt spectrums when</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s1">&#39;link_to_alt_spectrum&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># visible images only</span>
+                <span class="n">visible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">other</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">other</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">)))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">other</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">other</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">visible</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">visible</span><span class="p">:</span>
+                    <span class="n">run</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># link to first run of alts</span>
+        <span class="k">return</span> <span class="n">runs</span></div>
+
+            <span class="c1"># setting up the linked list structure</span>
+            <span class="c1"># all alt spectrum (non visible) runs get linked together in a</span>
+            <span class="c1"># circular linked list. Visible runs then point at the one</span>
+            <span class="c1"># alt spectrum run. When a run is loaded in if it is in the visible</span>
+            <span class="c1"># spectrum the visible run is temprorarly inserted into the alt</span>
+            <span class="c1"># spec linked list and reconnected. If a new visible run is selected</span>
+            <span class="c1"># the current visible run in the linked list is replaced with the</span>
+            <span class="c1"># new current run</span>
+<div class="viewcode-block" id="RunLinker.unlink_runs_completly"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.unlink_runs_completly">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unlink_runs_completly</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Cuts all links between runs and the images in those runs.</span>
+
+<span class="sd">        :param runs: List of runs</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: List of runs without any links</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+            <span class="n">runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">previous_run</span><span class="p">,</span> <span class="n">runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="n">runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">runs</span></div></div>
+
+
 <div class="viewcode-block" id="XmlReader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader">[docs]</a><span class="k">class</span> <span class="nc">XmlReader</span><span class="p">():</span>
 
     <span class="n">platedef_key</span> <span class="o">=</span> <span class="s1">&#39;platedef&#39;</span>  <span class="c1"># keyword that is always in plate definition</span>
     <span class="c1"># xml file names</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="p">,</span> <span class="n">xml_files</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml_files</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&#39;&#39;&#39;XmlReader class can be used to read the xml metadata files that are</span>
 <span class="sd">        included in HWI screening run rar archives. Currently, is primarily ment</span>
 <span class="sd">        to extract metadata about the plate and the sample in that plate</span>
@@ -1039,10 +1861,29 @@
 
 <div class="viewcode-block" id="XmlReader.get_data_from_xml_element"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.get_data_from_xml_element">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_data_from_xml_element</span><span class="p">(</span><span class="n">xml_element</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return the data stored in an xml_element. Helper method</span>
+<span class="sd">        for reading xml files.</span>
+
+<span class="sd">        :param xml_element: xml element to read data from</span>
+<span class="sd">        :type xml_element: [type]</span>
+<span class="sd">        :return: Dictionary of data stored in xml element</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">elem</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">xml_element</span>
                 <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="ow">and</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="XmlReader.read_plate_data_xml"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.read_plate_data_xml">[docs]</a>    <span class="k">def</span> <span class="nf">read_plate_data_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Read the data stored in an xml document. HWI includes metadata</span>
+<span class="sd">        about samples, imaging dates and other plate information in each</span>
+<span class="sd">        rar archive that is distrubted. This method is used to read that</span>
+<span class="sd">        data so it can be incorporated into HWIRun objects.</span>
+
+<span class="sd">        :param xml_path: Path to xml file to read, defaults to None.</span>
+<span class="sd">                         If None uses the xml path stored in `xml_path` attribute.</span>
+<span class="sd">        :type xml_path: str or Path, optional</span>
+<span class="sd">        :return: Dictionary of xml data if read was successful, Exception otherwise</span>
+<span class="sd">        :rtype: dict or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">xml_path</span><span class="p">:</span>
             <span class="n">xml_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_file</span>
         <span class="n">xml_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml_path</span><span class="p">)</span>
@@ -1050,14 +1891,23 @@
             <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_path</span><span class="p">)</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 
-            <span class="k">return</span> <span class="n">XmlReader</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">XmlReader</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span>
-                
+            <span class="k">return</span> <span class="n">d</span>
+
         <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XmlReader.discover_xml_files"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.discover_xml_files">[docs]</a>    <span class="k">def</span> <span class="nf">discover_xml_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Look for xml files in a given directory.</span>
+
+<span class="sd">        :param parent_dir: Directory to look for xml files in</span>
+<span class="sd">        :type parent_dir: str or Path</span>
+<span class="sd">        :return: List of xml file paths, if any exist</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1068,6 +1918,15 @@
             <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XmlReader.find_and_read_plate_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.find_and_read_plate_data">[docs]</a>    <span class="k">def</span> <span class="nf">find_and_read_plate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Find xml metadata files in a given directory. Read the</span>
+<span class="sd">        data from xml files that contain the `plate_def` key</span>
+<span class="sd">        string.</span>
+
+<span class="sd">        :param parent_dir: Directory to look for xml files</span>
+<span class="sd">        :type parent_dir: Path or str</span>
+<span class="sd">        :return: Dict if xml file found and read successfully, False otherwise</span>
+<span class="sd">        :rtype: dict or bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">xml_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">discover_xml_files</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xml_files</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">xml_file</span> <span class="ow">in</span> <span class="n">xml_files</span><span class="p">:</span>
@@ -1082,12 +1941,12 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">cocktails</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&#39;&#39;&#39;Creates a Menu instance. Menu objects are used to organize a single</span>
 <span class="sd">        screening run plate set up. They should contain 1536 unique screening</span>
-<span class="sd">        conditions; one for each well in the HWI highthrouput plate. HWI</span>
+<span class="sd">        conditions; one for each well in the HWI high-throughput plate. HWI</span>
 <span class="sd">        has altered what cocktails are used in each of the 1536 wells over the</span>
 <span class="sd">        years and so many versions of cocktail menus have been used. A single</span>
 <span class="sd">        Menu instance represents one of these versions and accordingly has a</span>
 <span class="sd">        start and end date to identify when the menu was used. Additionally, </span>
-<span class="sd">        HWI offers two types of high throughput screens; membrane or solulbe</span>
+<span class="sd">        HWI offers two types of high throughput screens; membrane or soluble</span>
 <span class="sd">        screens. Both use 1536 well plates but have very different chemical</span>
 <span class="sd">        conditions at the same well index. </span>
 
@@ -1119,35 +1978,18 @@
         <span class="k">if</span> <span class="n">new_cocktails</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">new_cocktails</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span>
 
-    <span class="c1"># @property</span>
-    <span class="c1"># def path(self):</span>
-    <span class="c1">#     &#39;&#39;&#39;Property to return the Menu instance&#39;s path attribute</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
-    <span class="c1">#     :return: The path attribute</span>
-    <span class="c1">#     :rtype: str or IO</span>
-    <span class="c1">#     &#39;&#39;&#39;</span>
-    <span class="c1">#     return self.__path</span>
 
-    <span class="c1"># @path.setter</span>
-    <span class="c1"># def path(self, new_path):</span>
-    <span class="c1">#     &#39;&#39;&#39;Setter function for path attribute. Creates an instance of</span>
-    <span class="c1">#     a CocktailMenuReader class and passes the path attribute to it.</span>
-    <span class="c1">#     Then uses the CocktailMenuReader instance to read the contents of</span>
-    <span class="c1">#     the new_path (which should be a csv file) as Cocktail objects.</span>
-    <span class="c1">#     Cocktail instances are added to the __cocktail dict by their</span>
-    <span class="c1">#     well number assignment.</span>
-
-    <span class="c1">#     :param new_path: [description]</span>
-    <span class="c1">#     :type new_path: [type]</span>
-    <span class="c1">#     &#39;&#39;&#39;</span>
-    <span class="c1">#     self.__path = new_path  # set the path to the new_path</span>
-    <span class="c1">#     print(&#39;new path made&#39;)</span>
-    <span class="c1">#     cocktail_reader = CocktailMenuReader(open(self.path))</span>
-    <span class="c1">#     for i, cocktail in enumerate(cocktail_reader):</span>
-    <span class="c1">#         self.cocktails[cocktail.well_assignment] = cocktail</span>
-        <span class="c1"># create dictionary from cocktails, key is the well number (assignment)</span>
 
 
 <div class="viewcode-block" id="BulkImporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BulkImporter">[docs]</a><span class="k">class</span> <span class="nc">BulkImporter</span><span class="p">():</span>
@@ -1294,6 +2136,8 @@
             <span class="k">return</span> <span class="n">e</span>
 
     <span class="k">return</span> <span class="n">path</span></div>
+
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
            </div>
@@ -1306,11 +2150,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1321,7 +2173,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

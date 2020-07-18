@@ -4,6 +4,14 @@ polo.utils package
 Submodules
 ----------
 
+polo.utils.dialog\_utils module
+-------------------------------
+
+.. automodule:: polo.utils.dialog_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 polo.utils.exceptions module
 ----------------------------
 
@@ -32,6 +40,14 @@ polo.utils.math\_utils module
 -----------------------------
 
 .. automodule:: polo.utils.math_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polo.utils.unrar\_utils module
+------------------------------
+
+.. automodule:: polo.utils.unrar_utils
    :members:
    :undoc-members:
    :show-inheritance:
