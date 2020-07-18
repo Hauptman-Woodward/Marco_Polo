@@ -169,8 +169,7 @@
 
 
 <div class="viewcode-block" id="Slide"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.Slide">[docs]</a><span class="k">class</span> <span class="nc">Slide</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Holds an Image object to be shown in the current slide show. Slides are</span>
+    <span class="sd">&#39;&#39;&#39;Holds an Image object to be shown in the current slide show. Slides are</span>
 <span class="sd">    the nodes of the current slide show linked list. The list is navigated by</span>
 <span class="sd">    instances of Carousel class.</span>
 
@@ -181,21 +180,32 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">next_slide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prev_slide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slide_number</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Acts like a slide in a slideshow carousel. Holds an Image object instance</span>
+<span class="sd">        as the contents of the slide. Forms a linked list with other slides through</span>
+<span class="sd">        the `next_slide` and `prev_slide` attributes which act as the forwards</span>
+<span class="sd">        and backwards pointers to other slides.</span>
+
+<span class="sd">        :param image: Image that this slide will display</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        :param next_slide: Next slide in the slideshow, defaults to None</span>
+<span class="sd">        :type next_slide: Slide, optional</span>
+<span class="sd">        :param prev_slide: Previous slide in the slideshow, defaults to None</span>
+<span class="sd">        :type prev_slide: Slide, optional</span>
+<span class="sd">        :param slide_number: Index of this slide in the slideshow, defaults to None</span>
+<span class="sd">        :type slide_number: int, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>  <span class="c1"># image object holds well data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_slide</span> <span class="o">=</span> <span class="n">next_slide</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_slide</span> <span class="o">=</span> <span class="n">prev_slide</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slide_number</span> <span class="o">=</span> <span class="n">slide_number</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slide_number</span> <span class="o">=</span> <span class="n">slide_number</span>
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slide_number</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Carousel"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.Carousel">[docs]</a><span class="k">class</span> <span class="nc">Carousel</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Carousel class instance control how individual slides are</span>
-<span class="sd">    displayed and handles navigation between slides. It acts as the</span>
-<span class="sd">    interface and constructor for liked list formed of a series of</span>
-<span class="sd">    connected slides.</span>
-
-<span class="sd">    :param current_slide: Slide. The current slide in the carousel.</span>
+    <span class="sd">&#39;&#39;&#39;The Carousel class handles navigation between `Slide` instances.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># linked list class to hold the current slides in</span>
@@ -204,10 +214,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">current_slide</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Carousel.add_slides"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.Carousel.add_slides">[docs]</a>    <span class="k">def</span> <span class="nf">add_slides</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ordered_images</span><span class="p">,</span> <span class="n">sort_function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets up linked list consisting of nodes of Slide instances. The list</span>
+        <span class="sd">&#39;&#39;&#39;Sets up linked list consisting of nodes of Slide instances. The list</span>
 <span class="sd">        is circular and bi-directional. Sets self.current_slide to the first</span>
-<span class="sd">        slide in the linked list.</span>
+<span class="sd">        slide in the linked list. The order of the slides in the linked list</span>
+<span class="sd">        will reflect the order of the images in the `ordered_images` argument.</span>
 
 <span class="sd">        :param ordered_images: a list of Image objects to create the linked list\</span>
 <span class="sd">            from. The order of the images will be reflected by the linked list.</span>
@@ -251,8 +261,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__current_slide</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Carousel.controls"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.Carousel.controls">[docs]</a>    <span class="k">def</span> <span class="nf">controls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_slide</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_slide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Function that controls the navigation through the slides</span>
+        <span class="sd">&#39;&#39;&#39;Controls the navigation through the slides</span>
 <span class="sd">        in the carousel. Does not control access to alternative</span>
 <span class="sd">        images that may be available to the user.</span>
 
@@ -376,9 +385,8 @@
 
 <div class="viewcode-block" id="SlideshowViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer">[docs]</a><span class="k">class</span> <span class="nc">SlideshowViewer</span><span class="p">(</span><span class="n">PhotoViewer</span><span class="p">):</span>
     <span class="n">photoClicked</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPoint</span><span class="p">)</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Wrapper class around QGraphicsView and displays image to the user</span>
-<span class="sd">    in the slideshow viewer tab of the mainwindow.</span>
+    <span class="sd">&#39;&#39;&#39;Wrapper class around QGraphicsView and displays image to the user</span>
+<span class="sd">    in the slideshow viewer tab of the main window.</span>
 
 <span class="sd">    :param run: Current run whose images are to be shown by the viewer.</span>
 <span class="sd">    :type run: Run</span>
@@ -425,6 +433,67 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="k">def</span> <span class="nf">_set_all_dates_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that creates a time resolved view from the Image passed</span>
+<span class="sd">        to the `image` argument by traversing the date based</span>
+<span class="sd">        linked list the passed image may be a node in. </span>
+
+<span class="sd">        :param image: Image to create time resolved view from</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
+            <span class="n">all_dates</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_dates</span><span class="p">,</span> <span class="n">render_date</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">_set_all_spectrums_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that creates a view that includes all alt spectrums the Image</span>
+<span class="sd">        passed via the `image` argument is linked to.</span>
+
+<span class="sd">        :param image: Image to create the view from</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
+            <span class="n">all_specs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_specs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+            
+    <span class="k">def</span> <span class="nf">_set_single_image_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that creates a standard single image view from the image</span>
+<span class="sd">        passed to the `image` argument.</span>
+
+<span class="sd">        :param image: Image to display</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">isNull</span><span class="p">():</span>
+                <span class="n">image</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+            
+    <span class="k">def</span> <span class="nf">__add_text_to_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to add text on top of an image.</span>
+
+<span class="sd">        :param text: Text to add to image</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :param x: X cordinate of text</span>
+<span class="sd">        :type x: int</span>
+<span class="sd">        :param y: Y cordinate of text</span>
+<span class="sd">        :type y: int</span>
+<span class="sd">        :param size: Size of text, defaults to 40</span>
+<span class="sd">        :type size: int, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsTextItem</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
 <div class="viewcode-block" id="SlideshowViewer.set_current_image_by_well_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_current_image_by_well_number">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_image_by_well_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -434,11 +503,8 @@
                     <span class="s1">&#39;Attempted to set current image to non-existant well number&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.carousel_controls"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.carousel_controls">[docs]</a>    <span class="k">def</span> <span class="nf">carousel_controls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">previous_image</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Wrapper around the method `controls` in Carousel class. Sets the</span>
-<span class="sd">        current_image attribute to the image contained in __carousel</span>
-<span class="sd">        current slide after the advance or retreat operation is applied to</span>
-<span class="sd">        the Carousel instance.</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper around the :func:`~polo.widgets.slideshow_viewer.Carousel.controls`</span>
+<span class="sd">        method. </span>
 
 <span class="sd">        :param next_image: If True, tells carousel to advance by one slide.</span>
 <span class="sd">        :param previous_image: If True, tells carousel to retreat by one slide.</span>
@@ -458,16 +524,15 @@
             <span class="c1"># self.display_current_image()</span>
 
 <div class="viewcode-block" id="SlideshowViewer.update_slides_from_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">[docs]</a>    <span class="k">def</span> <span class="nf">update_slides_from_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Creates new Carousel slides based on selected image filters.</span>
+        <span class="sd">&#39;&#39;&#39;Creates new Carousel slides based on selected image filters.</span>
 <span class="sd">        Sets the current_image attribute to the image contained at</span>
 <span class="sd">        the current slide of __carousel attribute.</span>
 
 <span class="sd">        :param image_types: Set of image classifications to include in results.</span>
 <span class="sd">        :type image_types: set</span>
-<span class="sd">        :param human: If True, image_types refers to human classifcation of the image.</span>
+<span class="sd">        :param human: If True, `image_types` refers to human classification of the image.</span>
 <span class="sd">        :type human: bool</span>
-<span class="sd">        :param marco: If True, image_types referes to the machine (MARCO) classificatio\</span>
+<span class="sd">        :param marco: If True, `image_types` refers to the machine (MARCO) classification</span>
 <span class="sd">            of the image.</span>
 <span class="sd">        :type marco: bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -476,18 +541,16 @@
                 <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__carousel</span><span class="o">.</span><span class="n">add_slides</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">sort_function</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">image</span></div>
-    
-<div class="viewcode-block" id="SlideshowViewer.add_text_to_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.add_text_to_scene">[docs]</a>    <span class="k">def</span> <span class="nf">add_text_to_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsTextItem</span><span class="p">()</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="SlideshowViewer.arrange_multi_image_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.arrange_multi_image_scene">[docs]</a>    <span class="k">def</span> <span class="nf">arrange_multi_image_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">render_date</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to arrange multiple images into the same</span>
+<span class="sd">        view.</span>
+
+<span class="sd">        :param image_list: List of images to add to the view</span>
+<span class="sd">        :type image_list: list</span>
+<span class="sd">        :param render_date: If True adds a date label to each image, defaults to False</span>
+<span class="sd">        :type render_date: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># set starting cords</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>  <span class="c1"># 2D list</span>
@@ -503,77 +566,53 @@
                 <span class="n">scene_item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_tool_tip</span><span class="p">())</span>
                 <span class="n">scene_item</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">render_date</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_scene</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">formated_date</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_text_to_scene</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">formated_date</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
                 <span class="n">x</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">width</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="SlideshowViewer.set_all_dates_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_all_dates_scene">[docs]</a>    <span class="k">def</span> <span class="nf">set_all_dates_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="n">all_dates</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_dates</span><span class="p">,</span> <span class="n">render_date</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="SlideshowViewer.set_all_spectrums_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_all_spectrums_scene">[docs]</a>    <span class="k">def</span> <span class="nf">set_all_spectrums_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="n">all_specs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_specs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
-            
-    
-<div class="viewcode-block" id="SlideshowViewer.set_single_image_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_single_image_scene">[docs]</a>    <span class="k">def</span> <span class="nf">set_single_image_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">isNull</span><span class="p">():</span>
-                <span class="n">image</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
-
 <div class="viewcode-block" id="SlideshowViewer.display_current_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.display_current_image">[docs]</a>    <span class="k">def</span> <span class="nf">display_current_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Renders the Image instance currently stored in the current_image\</span>
-<span class="sd">            attribute.</span>
-
-<span class="sd">        :returns: None</span>
+        <span class="sd">&#39;&#39;&#39;Renders the Image instance currently stored in the `current_image`</span>
+<span class="sd">        attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cur_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cur_img</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
             <span class="c1"># parse the flags on how to display the image here</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_all_dates</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_all_dates_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_all_dates_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_all_specs</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_all_spectrums_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_all_spectrums_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_single_image_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to set current image to </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="bp">self</span>
-            <span class="p">))</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_single_image_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.get_cur_img_cocktail_str"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_cocktail_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_cur_img_cocktail_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Checks if current image is of type Image and if True returns\</span>
-<span class="sd">            the current image&#39;s cocktail info as a string.</span>
+        <span class="sd">&#39;&#39;&#39;Retruns the `current_image` cocktail information</span>
+<span class="sd">        as a string.</span>
 
-<span class="sd">        :returns: Current image cocktail string</span>
-<span class="sd">        :rtype: String</span>
+<span class="sd">        :return: Cocktail information string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.get_cur_img_meta_str"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_meta_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_cur_img_meta_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Returns the `current_image` metadata as a string.</span>
+
+<span class="sd">        :return: Metadata string</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.set_alt_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the current_image attribute to an alternative image\</span>
-<span class="sd">            based on user selection.</span>
-<span class="sd">        :param next_date: If True, set current image to the current_image&#39;s\</span>
-<span class="sd">            next image date.</span>
-<span class="sd">        :type next_date: bool</span>
+        <span class="sd">&#39;&#39;&#39;Sets the `current_image` attribute to a linked image specified by</span>
+<span class="sd">        one of the tree boolean flags.</span>
+
+<span class="sd">        :param next_date: If True, sets the `current_image`</span>
+<span class="sd">                          to the next image by date</span>
+<span class="sd">        :param prev_date: If True, sets the `current_image`</span>
+<span class="sd">                          to the previous image by date</span>
+<span class="sd">        :param alt_spec: If True, sets the `current_image`</span>
+<span class="sd">                         to an alt spectrum image</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cur_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span>
         <span class="k">if</span> <span class="n">next_date</span> <span class="ow">and</span> <span class="n">cur_img</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>

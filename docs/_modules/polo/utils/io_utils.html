@@ -337,8 +337,10 @@
             <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">()</span><span class="o">.</span><span class="n">find_and_read_plate_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">file_name_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-
+                
             <span class="k">if</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">file_name_data</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">file_name_data</span><span class="p">)</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="n">file_name_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
                 <span class="n">menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
                 <span class="c1"># assuming soluble need to change based on metadata parse</span>
                 <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">menu</span><span class="p">,</span> <span class="o">**</span><span class="n">file_name_data</span><span class="p">)</span>
@@ -561,7 +563,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># could use more efficent way of determining feildnames</span>
-        <span class="sd">&#39;&#39;&#39;Get the current fieldnames bases on the data stored in the</span>
+        <span class="sd">&#39;&#39;&#39;Get the current fieldnames based on the data stored in the</span>
 <span class="sd">        `run` attribute. Currently is somewhat expensive to call since it</span>
 <span class="sd">        requires parsing all records in `run` in order to determine all the</span>
 <span class="sd">        fieldnames that should be included in order to definitely avoid</span>
@@ -1033,7 +1035,7 @@
 <span class="sd">    :param included_attributes: [description], defaults to {}</span>
 <span class="sd">    :type included_attributes: dict, optional</span>
 <span class="sd">    :param image_types: Images included in the presentation</span>
-<span class="sd">    must have a classification in this set, defaults to None</span>
+<span class="sd">                        must have a classification in this set, defaults to None</span>
 <span class="sd">    :type image_types: set or list, optional</span>
 <span class="sd">    :param human: Use human classification as the image classification, defaults to False</span>
 <span class="sd">    :type human: bool, optional</span>
@@ -1041,9 +1043,6 @@
 <span class="sd">    :type marco: bool, optional</span>
 <span class="sd">    :param favorite: Only include images marked as favorite, defaults to False</span>
 <span class="sd">    :type favorite: bool, optional</span>
-
-
-<span class="sd">    TEST ADD HERE</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># 13.33 x 7.5 </span>
@@ -1223,7 +1222,7 @@
 <span class="sd">        :param template: Slide template number, defaults to 5</span>
 <span class="sd">        :type template: int, optional</span>
 <span class="sd">        :return: New slide</span>
-<span class="sd">        :rtype: Slide</span>
+<span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
@@ -1287,7 +1286,7 @@
         <span class="sd">&#39;&#39;&#39;General helper method for adding a table to a slide</span>
 
 <span class="sd">        :param slide: Slide to add the table to</span>
-<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :type slide: slide</span>
 <span class="sd">        :param data: List of lists that has the data to write to the table</span>
 <span class="sd">        :type data: list</span>
 <span class="sd">        :param left: Left offset in inches to place to table</span>
@@ -1318,13 +1317,13 @@
 <span class="sd">        images.</span>
 
 <span class="sd">        :param slide: Slide to add the images to </span>
-<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :type slide: slide</span>
 <span class="sd">        :param images: Images to add to the slide</span>
 <span class="sd">        :type images: list</span>
 <span class="sd">        :param labeler: Function to use to label the individual images</span>
 <span class="sd">        :type labeler: func</span>
-<span class="sd">        :return: Slide with images added</span>
-<span class="sd">        :rtype: Slide</span>
+<span class="sd">        :return: slide with images added</span>
+<span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">img_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
@@ -1357,7 +1356,7 @@
 <span class="sd">                            ,should be between 0 and 1. 1 is full sized image.</span>
 <span class="sd">        :type img_scaler: float, optional</span>
 <span class="sd">        :return: The new slide with Image added</span>
-<span class="sd">        :rtype: Slide</span>
+<span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
@@ -1381,7 +1380,7 @@
         <span class="sd">&#39;&#39;&#39;Helper method to add text to a slide</span>
 
 <span class="sd">        :param slide: Slide to add text to</span>
-<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :type slide: slide</span>
 <span class="sd">        :param text: Text to add to the slide</span>
 <span class="sd">        :type text: str</span>
 <span class="sd">        :param left: Left cordinate location of the text in inches</span>
@@ -1397,7 +1396,7 @@
 <span class="sd">        :param font_size: Font size of text, defaults to 14</span>
 <span class="sd">        :type font_size: int, optional</span>
 <span class="sd">        :return: Slide with text added</span>
-<span class="sd">        :rtype: Slide</span>
+<span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">text_box</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">add_textbox</span><span class="p">(</span>
             <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span>
@@ -1421,7 +1420,7 @@
 <span class="sd">        :param image: Image to add to the slide</span>
 <span class="sd">        :type image: Image</span>
 <span class="sd">        :param slide: Slide to add the image to</span>
-<span class="sd">        :type slide: Slide</span>
+<span class="sd">        :type slide: slide</span>
 <span class="sd">        :param left: Left cordinate location of the image in inches</span>
 <span class="sd">        :type left: float</span>
 <span class="sd">        :param top: Top cordinate location of the image in inches</span>

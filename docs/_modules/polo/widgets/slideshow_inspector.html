@@ -184,30 +184,30 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_4</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">spinBox</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-           <span class="bp">self</span><span class="o">.</span><span class="n">show_image_from_well_number</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_image_from_well_number</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_classification_button_labels</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_image_class_checkbox_labels</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_classification_button_labels</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_image_class_checkbox_labels</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_6</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigate_carousel</span><span class="p">(</span><span class="n">next_image</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navigate_carousel</span><span class="p">(</span><span class="n">next_image</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_7</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_current_view</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_4</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigate_carousel</span><span class="p">(</span><span class="n">prev_image</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_11</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submit_filters</span><span class="p">)</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navigate_carousel</span><span class="p">(</span><span class="n">prev_image</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_11</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_submit_filters</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_10</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_alt_image</span><span class="p">(</span><span class="n">next_date</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
@@ -218,59 +218,46 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_alt_image</span><span class="p">(</span><span class="n">alt_spec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mark_current_image_as_favorite</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mark_current_image_as_favorite</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_9</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_slideshow_mode</span><span class="p">(</span><span class="n">show_all_dates</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_slideshow_mode</span><span class="p">(</span><span class="n">show_all_dates</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_10</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_slideshow_mode</span><span class="p">(</span><span class="n">show_all_specs</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_slideshow_mode</span><span class="p">(</span><span class="n">show_all_specs</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
         <span class="p">)</span>
-    
-<div class="viewcode-block" id="slideshowInspector.set_slideshow_mode"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_slideshow_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_slideshow_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">show_all_specs</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_specs</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_specs</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="slideshowInspector.set_classification_button_labels"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_classification_button_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_classification_button_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        To be called in init function. Sets the classification button labels</span>
-<span class="sd">        to those set in the IMAGE CLASSIFICATION constant.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">each_butt</span><span class="p">,</span> <span class="n">img_class</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">,</span>
-                                        <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">):</span>
-            <span class="n">each_butt</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">img_class</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="slideshowInspector.set_image_class_checkbox_labels"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_image_class_checkbox_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_class_checkbox_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        To be called in the init method. Sets image filtering checkbox labels</span>
-<span class="sd">        to those found in the image classifications constant.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">each_checkbox</span><span class="p">,</span> <span class="n">im_cls</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_checkboxs</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">):</span>
-            <span class="n">each_checkbox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">im_cls</span><span class="p">)</span></div>
-    
 <div class="viewcode-block" id="slideshowInspector.sort_images_by_marco_confidence"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">sort_images_by_marco_confidence</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to sort a collection of images by their MARCO</span>
+<span class="sd">        classification confidence. Does not descriminate based on</span>
+<span class="sd">        image classification.</span>
+
+<span class="sd">        :param images: List of images to sort</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :return: List of images sorted by prediction confidence</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="n">images</span><span class="p">,</span>
                 <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">prediction_dict</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">machine_class</span><span class="p">]),</span>
                 <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
-                <span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
-    
+
 <div class="viewcode-block" id="slideshowInspector.sort_images_by_cocktail_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_cocktail_number">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">sort_images_by_cocktail_number</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method that sorts a collection of images by their</span>
+<span class="sd">        cocktail number. Returns False if the images cannot be sorted</span>
+<span class="sd">        by their cocktail number.</span>
+
+<span class="sd">        :param images: List of images to be sorted</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :return: List of images sorted by cocktail number, False if cannot be sorted</span>
+<span class="sd">        :rtype: list, bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="n">images</span><span class="p">,</span>
@@ -278,9 +265,18 @@
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
-    
+
 <div class="viewcode-block" id="slideshowInspector.sort_images_by_well_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_well_number">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">sort_images_by_well_number</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to sort a collection of images by their well number.</span>
+<span class="sd">        If images cannot be sorted by well number (which in theory shouldn&#39;t happen)</span>
+<span class="sd">        returns False</span>
+
+<span class="sd">        :param images: List of images to be sorted</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :return: List os images sorted by well number</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="n">images</span><span class="p">,</span>
@@ -301,9 +297,9 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__run</span> <span class="o">=</span> <span class="n">new_run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">new_run</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_time_resolved_functions</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_alt_spectrum_buttons</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_time_resolved_functions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_alt_spectrum_buttons</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_classifications</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -323,7 +319,7 @@
     <span class="k">def</span> <span class="nf">human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Human image classifier boolean&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_5</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">favorites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_8</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
@@ -332,14 +328,20 @@
     <span class="k">def</span> <span class="nf">marco</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Marco image classifier boolean&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_6</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Current Image object being displayed in the slideshowViewer widget&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">current_image</span>
-    
-    <span class="nd">@property</span> 
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_sort_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return a function to use for image sorting based on current user</span>
+<span class="sd">        radiobutton selections.</span>
+
+<span class="sd">        :return: Sort function</span>
+<span class="sd">        :rtype: func</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_marco_confidence</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
@@ -348,52 +350,104 @@
             <span class="k">return</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_well_number</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-            
 
-<div class="viewcode-block" id="slideshowInspector.show_image_from_well_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.show_image_from_well_number">[docs]</a>    <span class="k">def</span> <span class="nf">show_image_from_well_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_set_slideshow_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to set the slideshowViewer mode. Either to display</span>
+<span class="sd">        a single image, all dates or all spectrums.</span>
+
+<span class="sd">        :param show_all_dates: If True sets slideshowViewer to show all</span>
+<span class="sd">                               dates, defaults to False</span>
+<span class="sd">        :type show_all_dates: bool, optional</span>
+<span class="sd">        :param show_all_specs: If True sets slideshowViewer to show all</span>
+<span class="sd">                               spectrums, defaults to False</span>
+<span class="sd">        :type show_all_specs: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">show_all_specs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_specs</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_specs</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_set_classification_button_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the labels of image classification</span>
+<span class="sd">        buttons based on the `IMAGE_CLASSIFICATIONS` constant. Should be called</span>
+<span class="sd">        in the `__init__` function.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">for</span> <span class="n">each_butt</span><span class="p">,</span> <span class="n">img_class</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_buttons</span><span class="p">,</span>
+                                        <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">):</span>
+            <span class="n">each_butt</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">img_class</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_image_class_checkbox_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to the checkbox labels for imaging filtering</span>
+<span class="sd">        from the `IMAGE_CLASSIFICATIONS` constant. Should be called in</span>
+<span class="sd">        the `__init__` function.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">each_checkbox</span><span class="p">,</span> <span class="n">im_cls</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_checkboxs</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">):</span>
+            <span class="n">each_checkbox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">im_cls</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_show_image_from_well_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to display an image by well number.</span>
+
+<span class="sd">        :param well_number: Well number of image to display</span>
+<span class="sd">        :type well_number: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">set_current_image_by_well_number</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="slideshowInspector.set_favorite_checkbox"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_favorite_checkbox">[docs]</a>    <span class="k">def</span> <span class="nf">set_favorite_checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Sets the value of the favorite checkbox based on whether the current</span>
-<span class="sd">        image is marked as a favorite or not. Should be used when loading an</span>
-<span class="sd">        image into the view.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_favorite_checkbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the value of the favorite checkbox based</span>
+<span class="sd">        on whether the current image is marked as a favorite or not.</span>
+<span class="sd">        Should be used when loading an image into the view.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
-    
-<div class="viewcode-block" id="slideshowInspector.mark_current_image_as_favorite"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.mark_current_image_as_favorite">[docs]</a>    <span class="k">def</span> <span class="nf">mark_current_image_as_favorite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Sets the favorite label on the current image to the current</span>
-<span class="sd">        value of the favorite checkbox.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_mark_current_image_as_favorite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the favorite label on the current</span>
+<span class="sd">        image to the current value of the favorite checkbox.</span>
 
 <span class="sd">        :param favorite_status: Whether this image is a favorite or not</span>
-<span class="sd">        :type favorite_status: Bool</span>
+<span class="sd">        :type favorite_status: bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
 
-<div class="viewcode-block" id="slideshowInspector.classify_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classification</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calls the `classify_current_image` method of the slideshowViewer</span>
-<span class="sd">        widget and increments the carousel to the next image and displays it.</span>
+    <span class="k">def</span> <span class="nf">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classification</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to change the human classification of the current</span>
+<span class="sd">        image.</span>
+
+<span class="sd">        :param classification: Image classification</span>
+<span class="sd">        :type classification: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">classify_current_image</span><span class="p">(</span><span class="n">classification</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">navigate_carousel</span><span class="p">(</span><span class="n">next_image</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_navigate_carousel</span><span class="p">(</span><span class="n">next_image</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="slideshowInspector.navigate_carousel"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.navigate_carousel">[docs]</a>    <span class="k">def</span> <span class="nf">navigate_carousel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_image</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Method for moving between images in the current slideshow. Calls</span>
-<span class="sd">        `carousel_controls` method of slideshowViewer widget passing</span>
-<span class="sd">        boolean arguements as flags then displays the image.</span>
+    <span class="k">def</span> <span class="nf">_navigate_carousel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_image</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to control the carousel using boolean flags. Calls </span>
+<span class="sd">        :func:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.</span>
+
+<span class="sd">        :param next_image: If True navigates to next image in carousel, defaults to False</span>
+<span class="sd">        :type next_image: bool, optional</span>
+<span class="sd">        :param prev_image: If True navigates to previous image in carousel, defaults to False</span>
+<span class="sd">        :type prev_image: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">carousel_controls</span><span class="p">(</span><span class="n">next_image</span><span class="p">,</span> <span class="n">prev_image</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="slideshowInspector.display_current_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.display_current_image">[docs]</a>    <span class="k">def</span> <span class="nf">display_current_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Displays the current image as determined by the current_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">carousel_controls</span><span class="p">(</span><span class="n">next_image</span><span class="p">,</span> <span class="n">prev_image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_display_current_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Displays the current image as determined by the `current_image`</span>
 <span class="sd">        attribute of the slideshowViewer widget and populates any widgets</span>
 <span class="sd">        that display current image metadata.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -403,47 +457,56 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">get_cur_img_cocktail_str</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_image_name</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_favorite_checkbox</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_time_resolved_functions</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_alt_spectrum_buttons</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_image_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_favorite_checkbox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_time_resolved_functions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_alt_spectrum_buttons</span><span class="p">()</span>
 
-<div class="viewcode-block" id="slideshowInspector.submit_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.submit_filters">[docs]</a>    <span class="k">def</span> <span class="nf">submit_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Passes the current user selected image filters to the slideshowViewer</span>
-<span class="sd">        so the current slideshow contents can be adjusted to reflect the</span>
+    <span class="k">def</span> <span class="nf">_submit_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that passes the current user selected</span>
+<span class="sd">        image filters to the slideshowViewer so the current</span>
+<span class="sd">        slideshow contents can be adjusted to reflect the</span>
 <span class="sd">        new filters. Displays the current image after filtering.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">update_slides_from_filters</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">selected_classifications</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorites</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_sort_function</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
-    
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
 
-<div class="viewcode-block" id="slideshowInspector.set_alt_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Used boolean flags to provide alt image behavior by passing flags</span>
-<span class="sd">        to `set_alt_image` of slideshowViewer widget. Then displays the</span>
-<span class="sd">        current image.</span>
+    <span class="k">def</span> <span class="nf">_set_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Display an image linked to the current image based on</span>
+<span class="sd">        boolean flags.</span>
+
+<span class="sd">        :param next_date: If True show the current image&#39;s next</span>
+<span class="sd">                          image by date, defaults to False</span>
+<span class="sd">        :type next_date: bool, optional</span>
+<span class="sd">        :param prev_date: If True, show the current image&#39;s previous</span>
+<span class="sd">                          image by date, defaults to False</span>
+<span class="sd">        :type prev_date: bool, optional</span>
+<span class="sd">        :param alt_spec: If True, show the current image&#39;s alt</span>
+<span class="sd">                         spectrum image, defaults to False</span>
+<span class="sd">        :type alt_spec: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">set_alt_image</span><span class="p">(</span><span class="n">next_date</span><span class="p">,</span> <span class="n">prev_date</span><span class="p">,</span>
                                               <span class="n">alt_spec</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_current_image</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="slideshowInspector.set_image_name"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_image_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets the label_2 to the current image name.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_image_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets current image label to the</span>
+<span class="sd">        image&#39;s filepath basename.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="n">ci</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span>
         <span class="k">if</span> <span class="n">ci</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ci</span><span class="o">.</span><span class="n">path</span><span class="p">)))</span></div>
-    
-<div class="viewcode-block" id="slideshowInspector.set_time_resolved_functions"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_time_resolved_functions">[docs]</a>    <span class="k">def</span> <span class="nf">set_time_resolved_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Turns on / off time resolved functions depending if the __run</span>
-<span class="sd">        attribute has been linked to another run in time.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ci</span><span class="o">.</span><span class="n">path</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">_set_time_resolved_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Turns time resolved functions on or off depending on contents</span>
+<span class="sd">        of the run stored in the `_run` attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -453,32 +516,32 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_9</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_9</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-            
+
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_9</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="slideshowInspector.set_alt_spectrum_buttons"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.set_alt_spectrum_buttons">[docs]</a>    <span class="k">def</span> <span class="nf">set_alt_spectrum_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Turns on / off alt spec functions depending on if the __run</span>
-<span class="sd">        attribute has been linked to another spectrum.</span>
+    <span class="k">def</span> <span class="nf">_set_alt_spectrum_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Turns alt spectrum functions on or off depending on contents</span>
+<span class="sd">        of the run stored in the `_run` attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_12</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_12</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_12</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-    
 <div class="viewcode-block" id="slideshowInspector.export_current_view"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.export_current_view">[docs]</a>    <span class="k">def</span> <span class="nf">export_current_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># get file path here from dialog</span>
+        <span class="sd">&#39;&#39;&#39;Export the current view to a png file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">save_path</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Save View&#39;</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">save_path</span><span class="p">:</span>
             <span class="n">save_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
         <span class="n">write_result</span> <span class="o">=</span> <span class="n">SceneExporter</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
-        
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">write_result</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;View saved to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">write_result</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -486,9 +549,6 @@
                 <span class="n">save_path</span><span class="p">,</span> <span class="n">write_result</span>
             <span class="p">)</span>
         <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div></div>
-
-
-    
 </pre></div>
 
            </div>

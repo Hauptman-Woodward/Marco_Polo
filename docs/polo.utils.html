@@ -703,19 +703,14 @@ classifications, defaults to False</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>output_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to write pptx file to.</p></li>
 <li><p><strong>included_attributes</strong> (<em>dict</em><em>, </em><em>optional</em>) – [description], defaults to {}</p></li>
-<li><p><strong>image_types</strong> – Images included in the presentation</p></li>
+<li><p><strong>image_types</strong> (<em>set</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – Images included in the presentation
+must have a classification in this set, defaults to None</p></li>
+<li><p><strong>human</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use human classification as the image classification, defaults to False</p></li>
+<li><p><strong>marco</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use the MARCO classification as the image classification, defaults to False</p></li>
+<li><p><strong>favorite</strong> (<em>bool</em><em>, </em><em>optional</em>) – Only include images marked as favorite, defaults to False</p></li>
 </ul>
 </dd>
 </dl>
-<p>must have a classification in this set, defaults to None
-:type image_types: set or list, optional
-:param human: Use human classification as the image classification, defaults to False
-:type human: bool, optional
-:param marco: Use the MARCO classification as the image classification, defaults to False
-:type marco: bool, optional
-:param favorite: Only include images marked as favorite, defaults to False
-:type favorite: bool, optional</p>
-<p>TEST ADD HERE</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_classification_slide">
 <code class="sig-name descname">add_classification_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well_number</span></em>, <em class="sig-param"><span class="n">rep_image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_classification_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_classification_slide" title="Permalink to this definition">¶</a></dt>
@@ -759,7 +754,7 @@ the presentaton file is written.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>image</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a>) – Image to add to the slide</p></li>
-<li><p><strong>slide</strong> (<a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide"><em>Slide</em></a>) – Slide to add the image to</p></li>
+<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add the image to</p></li>
 <li><p><strong>left</strong> (<em>float</em>) – Left cordinate location of the image in inches</p></li>
 <li><p><strong>top</strong> (<em>float</em>) – Top cordinate location of the image in inches</p></li>
 <li><p><strong>height</strong> (<em>float</em>) – Height of the image in inches</p></li>
@@ -782,16 +777,16 @@ images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>slide</strong> (<a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide"><em>Slide</em></a>) – Slide to add the images to</p></li>
+<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add the images to</p></li>
 <li><p><strong>images</strong> (<em>list</em>) – Images to add to the slide</p></li>
 <li><p><strong>labeler</strong> (<em>func</em>) – Function to use to label the individual images</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Slide with images added</p>
+<dd class="field-even"><p>slide with images added</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide">Slide</a></p>
+<dd class="field-odd"><p>slide</p>
 </dd>
 </dl>
 </dd></dl>
@@ -829,7 +824,7 @@ imaged in.</p>
 <dd class="field-even"><p>New slide</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide">Slide</a></p>
+<dd class="field-odd"><p>slide</p>
 </dd>
 </dl>
 </dd></dl>
@@ -853,7 +848,7 @@ presentation</p>
 <dd class="field-even"><p>The new slide with Image added</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide">Slide</a></p>
+<dd class="field-odd"><p>slide</p>
 </dd>
 </dl>
 </dd></dl>
@@ -865,7 +860,7 @@ presentation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>slide</strong> (<a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide"><em>Slide</em></a>) – Slide to add the table to</p></li>
+<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add the table to</p></li>
 <li><p><strong>data</strong> (<em>list</em>) – List of lists that has the data to write to the table</p></li>
 <li><p><strong>left</strong> (<em>float</em>) – Left offset in inches to place to table</p></li>
 <li><p><strong>top</strong> (<em>float</em>) – Top cordinate for placing the table</p></li>
@@ -887,7 +882,7 @@ presentation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>slide</strong> (<a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide"><em>Slide</em></a>) – Slide to add text to</p></li>
+<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add text to</p></li>
 <li><p><strong>text</strong> (<em>str</em>) – Text to add to the slide</p></li>
 <li><p><strong>left</strong> (<em>float</em>) – Left cordinate location of the text in inches</p></li>
 <li><p><strong>top</strong> (<em>float</em>) – Top cordinate location of the text in inches</p></li>
@@ -901,7 +896,7 @@ presentation</p>
 <dd class="field-even"><p>Slide with text added</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.widgets.html#polo.widgets.slideshow_viewer.Slide" title="polo.widgets.slideshow_viewer.Slide">Slide</a></p>
+<dd class="field-odd"><p>slide</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1019,7 +1014,7 @@ runs and another containing all non-visible runs.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunCsvWriter.fieldnames">
 <em class="property">property </em><code class="sig-name descname">fieldnames</code><a class="headerlink" href="#polo.utils.io_utils.RunCsvWriter.fieldnames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the current fieldnames bases on the data stored in the
+<dd><p>Get the current fieldnames based on the data stored in the
 <cite>run</cite> attribute. Currently is somewhat expensive to call since it
 requires parsing all records in <cite>run</cite> in order to determine all the
 fieldnames that should be included in order to definitely avoid

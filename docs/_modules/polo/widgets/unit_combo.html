@@ -197,10 +197,40 @@
 
 
 <div class="viewcode-block" id="UnitComboBox"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox">[docs]</a><span class="k">class</span> <span class="nc">UnitComboBox</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Widget that is a combination of a spinbox and a</span>
+<span class="sd">    comboBox that allows a user to select a value using the</span>
+<span class="sd">    spinBox and a unit using the comboBox.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    Lets say we want to create a UnitComboBox that allows someone</span>
+<span class="sd">    to select a Molar concentration using micro-molar, milli-molar,</span>
+<span class="sd">    centi-molar or molar.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # create the scaler dictionary</span>
+<span class="sd">        s = {</span>
+<span class="sd">            &#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2</span>
+<span class="sd">        }</span>
+<span class="sd">        # values are in reference to the base unit</span>
+<span class="sd">        unit_combo = UnitComboBox(</span>
+<span class="sd">            parent=None, base_unit=&#39;M&#39;, scalers=s</span>
+<span class="sd">            )</span>
+
+<span class="sd">    :param parent: Parent widget, defaults to None</span>
+<span class="sd">    :type parent: QWidget, optional</span>
+<span class="sd">    :param base_unit: Base unit string, defaults to None</span>
+<span class="sd">    :type base_unit: str, optional</span>
+<span class="sd">    :param scalers: Dictionary of prefixes to apply to the baseunit.</span>
+<span class="sd">                    Keys should be string prefixes and values should</span>
+<span class="sd">                    be value that scales the baseunit, defaults to {}</span>
+<span class="sd">    :type scalers: dict, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">saved_scalers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalers</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalers</span><span class="o">=</span><span class="p">{}):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">UnitComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_unitCombo</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -213,9 +243,6 @@
 
     <span class="nd">@scalers</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">scalers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaler_list</span><span class="p">):</span>
-        <span class="c1"># units should be list of scaler prefixes if they are not predefined</span>
-        <span class="c1"># in scalers then should be a tuple with first value the scaler char</span>
-        <span class="c1"># and the second how it modifies the base unit</span>
         <span class="k">if</span> <span class="n">scaler_list</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__scalers</span> <span class="o">=</span> <span class="n">scaler_list</span>
         <span class="k">else</span><span class="p">:</span>
@@ -230,7 +257,7 @@
                     <span class="n">scalers</span><span class="p">[</span><span class="n">each_scaler</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">each_scaler</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__scalers</span> <span class="o">=</span> <span class="n">scalers</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_unit_combobox_text</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_unit_combobox_text</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sorted_scalers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -249,12 +276,18 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="UnitComboBox.set_unit_combobox_text"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_unit_combobox_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_set_unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to add units to the unit comboBox based</span>
+<span class="sd">        on the `base_unit` and the `scalers`.</span>
+
+<span class="sd">        :return: Items added to the comboBox</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_combobox_text</span>
         <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># set t base unit</span>
-        <span class="k">return</span> <span class="n">items</span></div>
+        <span class="k">return</span> <span class="n">items</span>
 
 <div class="viewcode-block" id="UnitComboBox.unit_text_parser"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.unit_text_parser">[docs]</a>    <span class="k">def</span> <span class="nf">unit_text_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">unit_text</span><span class="p">:</span>
@@ -266,16 +299,30 @@
                 <span class="k">return</span> <span class="n">unit_text</span></div>
 
 <div class="viewcode-block" id="UnitComboBox.get_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># base == True means return value in reference to the base unit</span>
+        <span class="sd">&#39;&#39;&#39;Return a SignedValue constructed from the value of the</span>
+<span class="sd">        spinBox value and unit from the comboBox.</span>
+
+<span class="sd">        :return: SignedValue constructed from current spinBox </span>
+<span class="sd">                 value and comboBox unit</span>
+<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="n">unit_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit_text</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="UnitComboBox.set_zero"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_zero">[docs]</a>    <span class="k">def</span> <span class="nf">set_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the spinbox value to 0</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="UnitComboBox.set_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the spinBox value and the comboBox unit based on the value and</span>
+<span class="sd">        unit of a `SignedValue` instance</span>
+
+<span class="sd">        :param value: SignedValue</span>
+<span class="sd">        :type value: SignedValue</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">SignedValue</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="n">unit_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>

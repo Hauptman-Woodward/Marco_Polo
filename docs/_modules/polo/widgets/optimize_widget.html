@@ -626,6 +626,7 @@
                     <span class="k">break</span></div>
 
 <div class="viewcode-block" id="OptimizeWidget.adjust_unit"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget.adjust_unit">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signed_value</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+
         <span class="k">if</span> <span class="n">signed_value</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span>  <span class="c1"># only convert volume for now</span>
             <span class="k">if</span> <span class="n">new_unit</span> <span class="o">==</span> <span class="s1">&#39;ul&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">signed_value</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
