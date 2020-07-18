@@ -15,7 +15,16 @@ from polo import make_default_logger
 
 logger = make_default_logger(__name__)
 
+
 class TableInspector(QtWidgets.QWidget):
+    '''TableInspector class displays a run's data in a spreadsheet
+    type view.
+
+    :param parent: Parent widget, defaults to None
+    :type parent: QWidget, optional
+    :param run: Run to display in the table, defaults to None
+    :type run: Run or HWIRun, optional
+    '''
 
     def __init__(self, parent=None, run=None):
         self.run = run
@@ -26,19 +35,20 @@ class TableInspector(QtWidgets.QWidget):
             self.ui.checkBox_7, self.ui.checkBox_8,
             self.ui.checkBox_9, self.ui.checkBox_10]
 
-        self.assign_checkboxes_to_class()
+        self._assign_checkboxes_to_class()
         self.ui.pushButton.clicked.connect(self.update_table_view)
-
-    def assign_checkboxes_to_class(self):
-        for i, checkBox in enumerate(self.image_type_checks):
-            checkBox.setText(IMAGE_CLASSIFICATIONS[i])
 
     @property
     def run(self):
-        return self.__run
+        return self._run
 
     @property
     def selected_headers(self):
+        '''Return the headers that have been selected by the user.
+
+        :return: Names of column headers that are currently selected
+        :rtype: set
+        '''
         checked_col_names = set([])
         for index in range(self.ui.listWidget.count()):
             if self.ui.listWidget.item(index).checkState() == Qt.Checked:
@@ -47,6 +57,11 @@ class TableInspector(QtWidgets.QWidget):
 
     @property
     def selected_classifications(self):
+        '''Return image classifications that are currently selected.
+
+        :return: List of selected image classifications
+        :rtype: set
+        '''
         image_types = set([])
         for checkBox in self.image_type_checks:
             if checkBox.isChecked():
@@ -55,12 +70,25 @@ class TableInspector(QtWidgets.QWidget):
 
     @run.setter
     def run(self, new_run):
-        self.__run = new_run
+        self._run = new_run
         if self.run:
             self.ui.tableViewer.run = new_run
-            self.set_column_options()
+            self._set_column_options()
 
-    def set_column_options(self):
+    def _assign_checkboxes_to_class(self):
+        '''Private method that assigns filtering checkboxs to an
+        image classification from the `IMAGE_CLASSIFICATION` constant.
+        '''
+        for i, checkBox in enumerate(self.image_type_checks):
+            checkBox.setText(IMAGE_CLASSIFICATIONS[i])
+
+    def _set_column_options(self):
+        '''Private method that sets the availabe columns to display
+        based on the attributes of the run stored in the `run` attribute.
+        Adds a checkbox widget for each attribute.
+
+        TODO: formating for private attributes to make them prettier
+        '''
         if self.run:
             for fieldname in self.ui.tableViewer.fieldnames:
                 item = QtWidgets.QListWidgetItem(self.ui.listWidget)
@@ -70,6 +98,9 @@ class TableInspector(QtWidgets.QWidget):
                 self.ui.listWidget.addItem(item)
 
     def update_table_view(self):
+        '''Private method that updates the data being displayed
+        in the tableViewer.
+        '''
         if self.run:
             self.ui.tableViewer.selected_headers = self.selected_headers
             self.ui.tableViewer.populate_table(

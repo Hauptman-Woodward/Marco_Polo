@@ -180,8 +180,10 @@ class RunImporter():
             from polo import tim
             metadata = XmlReader().find_and_read_plate_data(data_dir)
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-
+                
             if metadata and file_name_data:
+                print(file_name_data)
+                date = file_name_data['date']
                 menu = tim.get_menu_by_date(date, 's')
                 # assuming soluble need to change based on metadata parse
                 new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)

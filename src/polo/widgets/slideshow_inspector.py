@@ -27,30 +27,30 @@ class slideshowInspector(QtWidgets.QWidget):
                                 self.ui.checkBox_3, self.ui.checkBox_4]
 
         self.ui.spinBox.valueChanged.connect(
-           self.show_image_from_well_number
+            self._show_image_from_well_number
         )
-        self.set_classification_button_labels()
-        self.set_image_class_checkbox_labels()
+        self._set_classification_button_labels()
+        self._set_image_class_checkbox_labels()
 
         self.class_buttons[0].clicked.connect(
-            lambda: self.classify_image(self.class_buttons[0].text())
+            lambda: self._classify_image(self.class_buttons[0].text())
         )
         self.class_buttons[1].clicked.connect(
-            lambda: self.classify_image(self.class_buttons[1].text())
+            lambda: self._classify_image(self.class_buttons[1].text())
         )
         self.class_buttons[2].clicked.connect(
-            lambda: self.classify_image(self.class_buttons[2].text())
+            lambda: self._classify_image(self.class_buttons[2].text())
         )
         self.class_buttons[3].clicked.connect(
-            lambda: self.classify_image(self.class_buttons[3].text())
+            lambda: self._classify_image(self.class_buttons[3].text())
         )
 
         self.ui.pushButton_6.clicked.connect(
-            lambda: self.navigate_carousel(next_image=True))
+            lambda: self._navigate_carousel(next_image=True))
         self.ui.pushButton_7.clicked.connect(self.export_current_view)
         self.ui.pushButton_4.clicked.connect(
-            lambda: self.navigate_carousel(prev_image=True))
-        self.ui.pushButton_11.clicked.connect(self.submit_filters)
+            lambda: self._navigate_carousel(prev_image=True))
+        self.ui.pushButton_11.clicked.connect(self._submit_filters)
 
         self.ui.pushButton_10.clicked.connect(
             lambda: self.set_alt_image(next_date=True))
@@ -61,59 +61,46 @@ class slideshowInspector(QtWidgets.QWidget):
             lambda: self.set_alt_image(alt_spec=True)
         )
         self.ui.checkBox_7.stateChanged.connect(
-            self.mark_current_image_as_favorite
+            self._mark_current_image_as_favorite
         )
         self.ui.checkBox_9.stateChanged.connect(
-            lambda x: self.set_slideshow_mode(show_all_dates=x)
+            lambda x: self._set_slideshow_mode(show_all_dates=x)
         )
         self.ui.checkBox_10.stateChanged.connect(
-            lambda x: self.set_slideshow_mode(show_all_specs=x)
+            lambda x: self._set_slideshow_mode(show_all_specs=x)
         )
-    
-    def set_slideshow_mode(self, show_all_dates=False, show_all_specs=False):
-        if show_all_dates:
-            self.ui.slideshowViewer.show_all_dates = True
-            if self.run:
-                self.display_current_image()
-        else:
-            self.ui.slideshowViewer.show_all_dates = False
-        if show_all_specs:
-            self.ui.slideshowViewer.show_all_specs = True
-            if self.run:
-                self.display_current_image()
-        else:
-            self.ui.slideshowViewer.show_all_specs = False
 
-    def set_classification_button_labels(self):
-        '''
-        To be called in init function. Sets the classification button labels
-        to those set in the IMAGE CLASSIFICATION constant.
-        '''
-        for each_butt, img_class in zip(self.class_buttons,
-                                        IMAGE_CLASSIFICATIONS):
-            each_butt.setText(img_class)
-
-    def set_image_class_checkbox_labels(self):
-        '''
-        To be called in the init method. Sets image filtering checkbox labels
-        to those found in the image classifications constant.
-        '''
-        for each_checkbox, im_cls in zip(self.class_checkboxs, IMAGE_CLASSIFICATIONS):
-            each_checkbox.setText(im_cls)
-    
     @staticmethod
     def sort_images_by_marco_confidence(images):
+        '''Helper method to sort a collection of images by their MARCO
+        classification confidence. Does not descriminate based on
+        image classification.
+
+        :param images: List of images to sort
+        :type images: list
+        :return: List of images sorted by prediction confidence
+        :rtype: list
+        '''
         try:
             return sorted(
                 images,
                 key=lambda i: float(i.prediction_dict[i.machine_class]),
                 reverse=True
-                )
+            )
         except Exception:
             return False
-    
+
     @staticmethod
     def sort_images_by_cocktail_number(images):
+        '''Helper method that sorts a collection of images by their
+        cocktail number. Returns False if the images cannot be sorted
+        by their cocktail number.
+
+        :param images: List of images to be sorted
+        :type images: list
+        :return: List of images sorted by cocktail number, False if cannot be sorted
+        :rtype: list, bool
+        '''
         try:
             return sorted(
                 images,
@@ -121,9 +108,18 @@ class slideshowInspector(QtWidgets.QWidget):
             )
         except Exception:
             return False
-    
+
     @staticmethod
     def sort_images_by_well_number(images):
+        '''Helper method to sort a collection of images by their well number.
+        If images cannot be sorted by well number (which in theory shouldn't happen)
+        returns False
+
+        :param images: List of images to be sorted
+        :type images: list
+        :return: List os images sorted by well number
+        :rtype: list
+        '''
         try:
             return sorted(
                 images,
@@ -144,9 +140,9 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         self.__run = new_run
         self.ui.slideshowViewer.run = new_run
-        self.display_current_image()
-        self.set_time_resolved_functions()
-        self.set_alt_spectrum_buttons()
+        self._display_current_image()
+        self._set_time_resolved_functions()
+        self._set_alt_spectrum_buttons()
 
     @property
     def selected_classifications(self):
@@ -166,7 +162,7 @@ class slideshowInspector(QtWidgets.QWidget):
     def human(self):
         '''Human image classifier boolean'''
         return self.ui.checkBox_5.isChecked()
-    
+
     @property
     def favorites(self):
         return self.ui.checkBox_8.isChecked()
@@ -175,14 +171,20 @@ class slideshowInspector(QtWidgets.QWidget):
     def marco(self):
         '''Marco image classifier boolean'''
         return self.ui.checkBox_6.isChecked()
-    
+
     @property
     def current_image(self):
         '''Current Image object being displayed in the slideshowViewer widget'''
         return self.ui.slideshowViewer.current_image
-    
-    @property 
+
+    @property
     def current_sort_function(self):
+        '''Return a function to use for image sorting based on current user
+        radiobutton selections.
+
+        :return: Sort function
+        :rtype: func
+        '''
         if self.ui.radioButton.isChecked():
             return slideshowInspector.sort_images_by_marco_confidence
         elif self.ui.radioButton_2.isChecked():
@@ -191,52 +193,104 @@ class slideshowInspector(QtWidgets.QWidget):
             return slideshowInspector.sort_images_by_well_number
         else:
             return None
-            
 
-    def show_image_from_well_number(self, well_number):
+    def _set_slideshow_mode(self, show_all_dates=False, show_all_specs=False):
+        '''Private method to set the slideshowViewer mode. Either to display
+        a single image, all dates or all spectrums.
+
+        :param show_all_dates: If True sets slideshowViewer to show all
+                               dates, defaults to False
+        :type show_all_dates: bool, optional
+        :param show_all_specs: If True sets slideshowViewer to show all
+                               spectrums, defaults to False
+        :type show_all_specs: bool, optional
+        '''
+        if show_all_dates:
+            self.ui.slideshowViewer.show_all_dates = True
+            if self.run:
+                self._display_current_image()
+        else:
+            self.ui.slideshowViewer.show_all_dates = False
+        if show_all_specs:
+            self.ui.slideshowViewer.show_all_specs = True
+            if self.run:
+                self._display_current_image()
+        else:
+            self.ui.slideshowViewer.show_all_specs = False
+
+    def _set_classification_button_labels(self):
+        '''Private method that sets the labels of image classification
+        buttons based on the `IMAGE_CLASSIFICATIONS` constant. Should be called
+        in the `__init__` function.
+        '''
+
+        for each_butt, img_class in zip(self.class_buttons,
+                                        IMAGE_CLASSIFICATIONS):
+            each_butt.setText(img_class)
+
+    def _set_image_class_checkbox_labels(self):
+        '''Private method to the checkbox labels for imaging filtering
+        from the `IMAGE_CLASSIFICATIONS` constant. Should be called in
+        the `__init__` function.
+        '''
+        for each_checkbox, im_cls in zip(self.class_checkboxs, IMAGE_CLASSIFICATIONS):
+            each_checkbox.setText(im_cls)
+
+    def _show_image_from_well_number(self, well_number):
+        '''Private method to display an image by well number.
+
+        :param well_number: Well number of image to display
+        :type well_number: int
+        '''
         self.ui.slideshowViewer.set_current_image_by_well_number(well_number)
-        self.display_current_image()
-    
-    def set_favorite_checkbox(self):
-        '''Sets the value of the favorite checkbox based on whether the current
-        image is marked as a favorite or not. Should be used when loading an
-        image into the view.
+        self._display_current_image()
+
+    def _set_favorite_checkbox(self):
+        '''Private method that sets the value of the favorite checkbox based
+        on whether the current image is marked as a favorite or not.
+        Should be used when loading an image into the view.
         '''
         if self.current_image and self.current_image.favorite:
             self.ui.checkBox_7.setChecked(True)
         else:
             self.ui.checkBox_7.setChecked(False)
-    
-    def mark_current_image_as_favorite(self):
-        '''Sets the favorite label on the current image to the current
-        value of the favorite checkbox.
+
+    def _mark_current_image_as_favorite(self):
+        '''Private method that sets the favorite label on the current
+        image to the current value of the favorite checkbox.
 
         :param favorite_status: Whether this image is a favorite or not
-        :type favorite_status: Bool
+        :type favorite_status: bool
         '''
         if self.current_image:
             self.current_image.favorite = self.ui.checkBox_7.isChecked()
 
-    def classify_image(self, classification):
+    def _classify_image(self, classification):
+        '''Private method to change the human classification of the current
+        image.
+
+        :param classification: Image classification
+        :type classification: str
         '''
-        Calls the `classify_current_image` method of the slideshowViewer
-        widget and increments the carousel to the next image and displays it.
-        '''
+
         self.ui.slideshowViewer.classify_current_image(classification)
-        self.navigate_carousel(next_image=True)
+        self._navigate_carousel(next_image=True)
 
-    def navigate_carousel(self, next_image=False, prev_image=False):
+    def _navigate_carousel(self, next_image=False, prev_image=False):
+        '''Private method to control the carousel using boolean flags. Calls 
+        :func:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.
+
+        :param next_image: If True navigates to next image in carousel, defaults to False
+        :type next_image: bool, optional
+        :param prev_image: If True navigates to previous image in carousel, defaults to False
+        :type prev_image: bool, optional
         '''
-        Method for moving between images in the current slideshow. Calls
-        `carousel_controls` method of slideshowViewer widget passing
-        boolean arguements as flags then displays the image.
-        '''
+
         self.ui.slideshowViewer.carousel_controls(next_image, prev_image)
-        self.display_current_image()
+        self._display_current_image()
 
-    def display_current_image(self):
-        '''
-        Displays the current image as determined by the current_image
+    def _display_current_image(self):
+        '''Displays the current image as determined by the `current_image`
         attribute of the slideshowViewer widget and populates any widgets
         that display current image metadata.
         '''
@@ -246,47 +300,56 @@ class slideshowInspector(QtWidgets.QWidget):
         self.ui.textBrowser.setText(
             self.ui.slideshowViewer.get_cur_img_cocktail_str()
         )
-        self.set_image_name()
-        self.set_favorite_checkbox()
-        self.set_time_resolved_functions()
-        self.set_alt_spectrum_buttons()
+        self._set_image_name()
+        self._set_favorite_checkbox()
+        self._set_time_resolved_functions()
+        self._set_alt_spectrum_buttons()
 
-    def submit_filters(self):
-        '''
-        Passes the current user selected image filters to the slideshowViewer
-        so the current slideshow contents can be adjusted to reflect the
+    def _submit_filters(self):
+        '''Private method that passes the current user selected
+        image filters to the slideshowViewer so the current
+        slideshow contents can be adjusted to reflect the
         new filters. Displays the current image after filtering.
         '''
         self.ui.slideshowViewer.update_slides_from_filters(
             self.selected_classifications, self.human, self.marco, self.favorites,
             self.current_sort_function
         )
-        self.display_current_image()
-    
+        self._display_current_image()
 
-    def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
+    def _set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
+        '''Display an image linked to the current image based on
+        boolean flags.
+
+        :param next_date: If True show the current image's next
+                          image by date, defaults to False
+        :type next_date: bool, optional
+        :param prev_date: If True, show the current image's previous
+                          image by date, defaults to False
+        :type prev_date: bool, optional
+        :param alt_spec: If True, show the current image's alt
+                         spectrum image, defaults to False
+        :type alt_spec: bool, optional
         '''
-        Used boolean flags to provide alt image behavior by passing flags
-        to `set_alt_image` of slideshowViewer widget. Then displays the
-        current image.
-        '''
+
         self.ui.slideshowViewer.set_alt_image(next_date, prev_date,
                                               alt_spec)
-        self.display_current_image()
-    
-    def set_image_name(self):
+        self._display_current_image()
+
+    def _set_image_name(self):
+        '''Private method that sets current image label to the
+        image's filepath basename.
         '''
-        Sets the label_2 to the current image name.
-        '''
+
         ci = self.current_image
         if ci:
             self.ui.label_2.setText(os.path.basename(str(ci.path)))
-    
-    def set_time_resolved_functions(self):
+
+    def _set_time_resolved_functions(self):
+        '''Turns time resolved functions on or off depending on contents
+        of the run stored in the `_run` attribute.
         '''
-        Turns on / off time resolved functions depending if the __run
-        attribute has been linked to another run in time.
-        '''
+
         if self.current_image:
             if self.current_image.next_image:
                 self.ui.pushButton_10.setEnabled(True)
@@ -296,32 +359,32 @@ class slideshowInspector(QtWidgets.QWidget):
                 self.ui.pushButton_9.setEnabled(True)
             else:
                 self.ui.pushButton_9.setEnabled(False)
-            
+
         else:
             self.ui.pushButton_9.setEnabled(False)
             self.ui.pushButton_10.setEnabled(False)
 
-    def set_alt_spectrum_buttons(self):
+    def _set_alt_spectrum_buttons(self):
+        '''Turns alt spectrum functions on or off depending on contents
+        of the run stored in the `_run` attribute.
         '''
-        Turns on / off alt spec functions depending on if the __run
-        attribute has been linked to another spectrum.
-        '''
+
         if self.current_image and self.current_image.alt_image:
             self.ui.pushButton_12.setEnabled(True)
         else:
             self.ui.pushButton_12.setEnabled(False)
 
-    
     def export_current_view(self):
-        # get file path here from dialog
+        '''Export the current view to a png file
+        '''
         save_path = QtWidgets.QFileDialog.getSaveFileName(
             self, 'Save View'
         )[0]
         if save_path:
             save_path = RunSerializer.path_suffix_checker(save_path, '.png')
         write_result = SceneExporter.write_image(
-                self.ui.slideshowViewer.scene, save_path)
-        
+            self.ui.slideshowViewer.scene, save_path)
+
         if isinstance(write_result, str):
             message = 'View saved to {}'.format(write_result)
         else:
@@ -329,6 +392,3 @@ class slideshowInspector(QtWidgets.QWidget):
                 save_path, write_result
             )
         make_message_box(parent=self, message=message).exec_()
-
-
-    
