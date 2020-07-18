@@ -215,7 +215,6 @@ class plateViewer(QtWidgets.QGraphicsView):
              if isinstance(item, QtWidgets.QGraphicsPixmapItem)]
             # for now delete all previous pixmap data from ram
 
-            visible_wells = self._get_visible_wells()
             _, stride = self.subgrid_dict[self.images_per_page]
             cur_x_pos, cur_y_pos = 0, 0  # position to place image in pixels
             row_height = 0  # height of tallest image in a given row of images

@@ -41,10 +41,10 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_image_count_options()
 
         self.ui.pushButton_18.clicked.connect(
-            lambda: self.navigate_plateview(next_view=True)
+            lambda: self.show_current_plate(next_view=True)
         )
         self.ui.pushButton_17.clicked.connect(
-            lambda: self.navigate_plateview(prev_view=True)
+            lambda: self.show_current_plate(prev_view=True)
         )
         self.image_type_checkboxes = dict(zip(IMAGE_CLASSIFICATIONS,
         [self.ui.checkBox_23, self.ui.checkBox_24, self.ui.checkBox_25,
@@ -60,9 +60,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         # self.ui.pushButton_24.clicked.connect(self.reset_all)
         self.ui.pushButton_23.clicked.connect(self.show_current_plate)
         self.ui.pushButton_21.clicked.connect(
-            lambda: self.navigate_plateview(next_date=True))
+            lambda: self.show_current_plate(next_date=True))
         self.ui.pushButton_20.clicked.connect(
-            lambda: self.navigate_plateview(prev_date=True)
+            lambda: self.show_current_plate(prev_date=True)
         )
         self.ui.pushButton_22.clicked.connect(
             lambda: self.navigate_plateview(alt_spec=True)
@@ -374,4 +374,4 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_plate_label()
         self._set_time_resolved_buttons()
         self._set_alt_spectrum_buttons()
-        self.set_spin_box_range()
+        self._set_spin_box_range()
