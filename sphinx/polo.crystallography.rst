@@ -4,14 +4,6 @@ polo.crystallography package
 Submodules
 ----------
 
-polo.crystallography.broke module
----------------------------------
-
-.. automodule:: polo.crystallography.broke
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 polo.crystallography.cocktail module
 ------------------------------------
 
@@ -24,14 +16,6 @@ polo.crystallography.image module
 ---------------------------------
 
 .. automodule:: polo.crystallography.image
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-polo.crystallography.make\_screen module
-----------------------------------------
-
-.. automodule:: polo.crystallography.make_screen
    :members:
    :undoc-members:
    :show-inheritance:

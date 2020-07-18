@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets package &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.widgets package &mdash; Polo 0.0.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,22 +98,22 @@
 <li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.widgets package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.file_browser">polo.widgets.file_browser module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.optimize_widget">polo.widgets.optimize_widget module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-file-browser-module">polo.widgets.file_browser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-optimize-widget-module">polo.widgets.optimize_widget module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-widgets-plate-inspector-widget-module">polo.widgets.plate_inspector_widget module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-widgets-plate-viewer-module">polo.widgets.plate_viewer module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-widgets-slideshow-inspector-module">polo.widgets.slideshow_inspector module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-widgets-slideshow-viewer-module">polo.widgets.slideshow_viewer module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-widgets-table-inspector-module">polo.widgets.table_inspector module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets.table_viewer">polo.widgets.table_viewer module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.widgets">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polo-widgets-table-viewer-module">polo.widgets.table_viewer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.designer.html">polo.designer package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -119,6 +121,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -157,7 +160,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -185,395 +188,11 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-polo.widgets.file_browser">
-<span id="polo-widgets-file-browser-module"></span><h2>polo.widgets.file_browser module<a class="headerlink" href="#module-polo.widgets.file_browser" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="polo.widgets.file_browser.fileBrowser">
-<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.file_browser.</code><code class="sig-name descname">fileBrowser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/file_browser.html#fileBrowser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QTreeWidget</span></code></p>
-<dl class="py attribute">
-<dt id="polo.widgets.file_browser.fileBrowser.DATA_INDEX">
-<code class="sig-name descname">DATA_INDEX</code><em class="property"> = 5</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.DATA_INDEX" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polo.widgets.file_browser.fileBrowser.DIR_ICON">
-<code class="sig-name descname">DIR_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/dir.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.DIR_ICON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polo.widgets.file_browser.fileBrowser.FILE_ICON">
-<code class="sig-name descname">FILE_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/file.png'</em><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.FILE_ICON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.file_browser.fileBrowser.get_checked_files">
-<code class="sig-name descname">get_checked_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">home_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/file_browser.html#fileBrowser.get_checked_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.get_checked_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Traverse the file tree and return the full paths to files that have
-been selected by the user.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>home_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – User’s home directory. This path is the parent of all
-returned files.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of checked Paths</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.file_browser.fileBrowser.grow_tree_using_mlsd">
-<code class="sig-name descname">grow_tree_using_mlsd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ftp</span></em>, <em class="sig-param"><span class="n">home_dir</span></em>, <em class="sig-param"><span class="n">set_checkable</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/file_browser.html#fileBrowser.grow_tree_using_mlsd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.file_browser.fileBrowser.grow_tree_using_mlsd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rescursively add child nodes to the fileBrowser tree by traversing
-a user’s home directory of an ftp server using mlsd formating.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ftp</strong> (<em>FTP</em>) – FTP object with valid connection</p></li>
-<li><p><strong>home_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to the user’s home directory</p></li>
-<li><p><strong>set_checkable</strong> (<em>bool</em><em>, </em><em>optional</em>) – Set files and dirs to checkable, defaults to True</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="polo-widgets-file-browser-module">
+<h2>polo.widgets.file_browser module<a class="headerlink" href="#polo-widgets-file-browser-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-polo.widgets.optimize_widget">
-<span id="polo-widgets-optimize-widget-module"></span><h2>polo.widgets.optimize_widget module<a class="headerlink" href="#module-polo.widgets.optimize_widget" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget">
-<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.optimize_widget.</code><code class="sig-name descname">OptimizeWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
-<dl class="py attribute">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.GRID_ICON">
-<code class="sig-name descname">GRID_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/grid.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.GRID_ICON" title="Permalink to this definition">¶</a></dt>
-<dd><p>The OptimizeWidget is a primary run interface widget that allows
-users to create optimization screens around the crystallization conditions
-that yielded hits. The concept is very similar to the program MakeTray
-available from Hampton Research. Currently, users cannot specify their
-own conditions and are limited to the predetermined conditions of the
-HWI cocktail menu that was selected when the run was originally imported
-into Polo. Additionally, OptimizeWidget is only available to HWIRuns
-as the cocktail to well mapping cannot be inferred for other more
-general Run types.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<em>QWidget</em>) – Parent Widget</p></li>
-<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a><em>, </em><em>optional</em>) – Run to screen for hits from, defaults to None</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.HTML_ICON">
-<code class="sig-name descname">HTML_ICON</code><em class="property"> = '/home/ethan/Documents/github/Polo_Builder/src/data/images/icons/html.png'</em><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.HTML_ICON" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.adjust_unit">
-<code class="sig-name descname">adjust_unit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signed_value</span></em>, <em class="sig-param"><span class="n">new_unit</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.adjust_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.adjust_unit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.change_constant_reagent_stock_con">
-<code class="sig-name descname">change_constant_reagent_stock_con</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.change_constant_reagent_stock_con"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.change_constant_reagent_stock_con" title="Permalink to this definition">¶</a></dt>
-<dd><p>Changes the stock concentration of the currently selected
-constant reagent to the concentration of the doublespinbox widget
-associated with the constant reagents tab.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>float</em>) – new concentration in mols / liter</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.change_reagent_stock_con">
-<code class="sig-name descname">change_reagent_stock_con</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">reagent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.change_reagent_stock_con"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.change_reagent_stock_con" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the stock concentration of a give reagent to a new value.
-TODO: Support more units besides molarity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>value</strong> (<em>float</em>) – The new concentration in mols / liter</p></li>
-<li><p><strong>reagent</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a>) – The reagent who’s stock con is being changed</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.changed_tab_update">
-<code class="sig-name descname">changed_tab_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.changed_tab_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.changed_tab_update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method used for when user leaves the optimize widget tab and then
-returns. Want to maintain the current screen selection but update
-the available hit wells because they may have classified additional
-wells as crystal hits.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.check_for_overflow">
-<code class="sig-name descname">check_for_overflow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">volume_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.check_for_overflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.check_for_overflow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check to see if the volume of reagents in a given well exceeds
-the well volume.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>volume_list</strong> (<em>list</em>) – List of SignedValues that make up all contents             of a given well. Currently assumes units are all liters.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the sum of the values of volume_list are less than            the current well volume, False otherwise.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.constant_reagents">
-<em class="property">property </em><code class="sig-name descname">constant_reagents</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.constant_reagents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieved a set of reagents that are not included as either the
-x reagent of the y reagent but are still part of the crystallization
-cocktail and therefore need to be included in the screen. Unlike
-either the x or y reagents, constant reagents do not change their
-concentration across the screening plate.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.error_checker">
-<code class="sig-name descname">error_checker</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.error_checker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.error_checker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if all widgets and attributes have allowed values before
-calculating the actual grid screen. Show error message if there is
-a conflict.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.export_screen">
-<code class="sig-name descname">export_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.export_screen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.export_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the screen to html.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.gradient">
-<code class="sig-name descname">gradient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reagent</span></em>, <em class="sig-param"><span class="n">num_wells</span></em>, <em class="sig-param"><span class="n">step</span></em>, <em class="sig-param"><span class="n">stock</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this method for varying the concentration of a given
-reagent along either the x or y axis of the optimization plate. The
-gradient of concentrations are always centered around the hit
-concentration for the reagent being varied.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reagent</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a>) – Reagent to vary concentration</p></li>
-<li><p><strong>num_wells</strong> (<em>int</em>) – Number of wells to vary concentration across</p></li>
-<li><p><strong>step</strong> (<em>float &lt; 1</em>) – Proportion of hit concentration to vary each well by</p></li>
-<li><p><strong>stock</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, vary the stock volume not the hit             concentration unit, defaults to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of SignedValues that make up the gradient</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.handle_reagent_change">
-<code class="sig-name descname">handle_reagent_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">const</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.handle_reagent_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.handle_reagent_change" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.hit_images">
-<em class="property">property </em><code class="sig-name descname">hit_images</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.hit_images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves a list of Image object instances that have the human
-classification (human_class attribute) of Crystals. Used to
-determine what wells to allow the user to optimize. Currently, only
-allow the user to optimize wells that they have marked as crystal.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.make_plate_list">
-<code class="sig-name descname">make_plate_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.make_plate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.make_plate_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts the concents of the tablewidget (assuming that a optimization
-screen has been already rendered to the user) to a list of lists that
-is easier to write to html using the jinja2 template.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>tableWidget contents converted to list</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.make_well_html">
-<code class="sig-name descname">make_well_html</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_con</span></em>, <em class="sig-param"><span class="n">x_stock</span></em>, <em class="sig-param"><span class="n">y_con</span></em>, <em class="sig-param"><span class="n">y_stock</span></em>, <em class="sig-param"><span class="n">constants</span></em>, <em class="sig-param"><span class="n">water</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.make_well_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.make_well_html" title="Permalink to this definition">¶</a></dt>
-<dd><p>Format the information that describes the contents of an
-individual well into nice html that can be displayed to the user
-in a textBrowser widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x_con</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Concentration of x reagent in this well</p></li>
-<li><p><strong>x_stock</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Volume of x reagent stock in this well</p></li>
-<li><p><strong>y_con</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Concentration of y reagent in this well</p></li>
-<li><p><strong>y_stock</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Volume of y reagent stock in this well</p></li>
-<li><p><strong>constants</strong> (<em>list of tuples</em>) – Tuples of constant reagents to be included in each well</p></li>
-<li><p><strong>water</strong> (<em>Signed Value</em>) – Volume of water to be added to this well</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Html string to be rendered to the user</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.run">
-<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.selected_constant">
-<em class="property">property </em><code class="sig-name descname">selected_constant</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.selected_constant" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_constant_reagent_stock_con">
-<code class="sig-name descname">set_constant_reagent_stock_con</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_constant_reagent_stock_con"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_constant_reagent_stock_con" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display the currently selected constant reagent’s stock
-concentration in the constant reagent double spin box widget.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_constant_reagents">
-<code class="sig-name descname">set_constant_reagents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_constant_reagents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_constant_reagents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method that populates the listWidget with constant reagents to display
-to the user.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_hit_well_choices">
-<code class="sig-name descname">set_hit_well_choices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_hit_well_choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_hit_well_choices" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the hit well comboBox widget choices based on the images
-in the __run attribute that are human classified as crystal.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_reagent_choices">
-<code class="sig-name descname">set_reagent_choices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_reagent_choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_reagent_choices" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set reagent choices for the x and y reagents based on the currently
-selected well. Reagents must come from the cocktail associated with
-the selected well.</p>
-<p>TODO: Add the option to vary pH instead of a reagent along either
-axis. This would also mean that the constant reagents would need to
-be updated.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_reagent_stock_con">
-<code class="sig-name descname">set_reagent_stock_con</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_reagent_stock_con"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_reagent_stock_con" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the value of either the x or y reagent concentration double
-spin box to the value for its respective reagent stock concentration.
-This method is how we show the user what the current stock concentration
-of a selected reagent is.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_reagent_stock_con_values">
-<code class="sig-name descname">set_reagent_stock_con_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">const</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_reagent_stock_con_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_reagent_stock_con_values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.set_up_unit_comboboxes">
-<code class="sig-name descname">set_up_unit_comboboxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.set_up_unit_comboboxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.set_up_unit_comboboxes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to update reagents and wells selectable to the user after
-they have made additional classifications that would increase or
-decrease the pool of crystal classified images.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.update_current_reagents">
-<code class="sig-name descname">update_current_reagents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_index</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.update_current_reagents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.update_current_reagents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates x and y comboBox widgets to show what reagents are contained
-in the currently selected well.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.well_volume">
-<em class="property">property </em><code class="sig-name descname">well_volume</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.well_volume" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the well volume set by the user modifed by whatever well
-volume unit is currently selected.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.write_optimization_screen">
-<code class="sig-name descname">write_optimization_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.write_optimization_screen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.write_optimization_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to call to write the current to the table widget for display
-to the user.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.x_reagent">
-<em class="property">property </em><code class="sig-name descname">x_reagent</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.x_reagent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Used to retrieve the Reagent object that is to be varied along
-the x axis of the optimization plate.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.x_step">
-<em class="property">property </em><code class="sig-name descname">x_step</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.x_step" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves the x_step divided by 100. Determines the percent
-variance between x_reagent wells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.x_wells">
-<em class="property">property </em><code class="sig-name descname">x_wells</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.x_wells" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns spinBox value that is to be interpreted as number x wells</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.y_reagent">
-<em class="property">property </em><code class="sig-name descname">y_reagent</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.y_reagent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Used to retreive the Reagent object that is to be varied along
-the y axis of the optimization plate</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.y_step">
-<em class="property">property </em><code class="sig-name descname">y_step</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.y_step" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves the y_step divided by 100. Determines the percent
-variance between y_reagent wells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.y_wells">
-<em class="property">property </em><code class="sig-name descname">y_wells</code><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.y_wells" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns spinBox value that is number of y wells</p>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="polo-widgets-optimize-widget-module">
+<h2>polo.widgets.optimize_widget module<a class="headerlink" href="#polo-widgets-optimize-widget-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="polo-widgets-plate-inspector-widget-module">
 <h2>polo.widgets.plate_inspector_widget module<a class="headerlink" href="#polo-widgets-plate-inspector-widget-module" title="Permalink to this headline">¶</a></h2>
@@ -590,122 +209,11 @@ variance between y_reagent wells.</p>
 <div class="section" id="polo-widgets-table-inspector-module">
 <h2>polo.widgets.table_inspector module<a class="headerlink" href="#polo-widgets-table-inspector-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-polo.widgets.table_viewer">
-<span id="polo-widgets-table-viewer-module"></span><h2>polo.widgets.table_viewer module<a class="headerlink" href="#module-polo.widgets.table_viewer" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="polo.widgets.table_viewer.TableViewer">
-<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.table_viewer.</code><code class="sig-name descname">TableViewer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_viewer.html#TableViewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QTableWidget</span></code></p>
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.fieldnames">
-<em class="property">property </em><code class="sig-name descname">fieldnames</code><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.fieldnames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return just the fieldnames for the current run. Should only be
-used when setting the values for the listWidget in a tableInspector
-instance</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>list of fieldnames</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.filter">
-<em class="property">static </em><code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">image_classes</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">marco</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_viewer.html#TableViewer.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method to determine if a row should be included based on
-the image filters the user has selected</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>row</strong> (<em>dict</em>) – row data</p></li>
-<li><p><strong>image_classes</strong> (<em>set</em><em> or </em><em>list</em>) – types of images to include, i.e Crystals, Clear</p></li>
-<li><p><strong>human</strong> (<em>Bool</em>) – If image_classes should be in reference to human classifier</p></li>
-<li><p><strong>marco</strong> (<em>Bool</em>) – If image_classes should be in reference to machine classifier</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If image should be filtered, False means do not filter image</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.make_header_map">
-<code class="sig-name descname">make_header_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">headers</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_viewer.html#TableViewer.make_header_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.make_header_map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method to map header keywords to their index (order). Need
-because headers come as a set and need to keep the order consistent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>headers</strong> (<em>set</em>) – set of headers strings</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary of header strings mapped to indices</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.populate_table">
-<code class="sig-name descname">populate_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_classes</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">marco</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/table_viewer.html#TableViewer.populate_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.populate_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Populates the table and displays data to the user based on their
-header and image filtering selections.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>image_classes</strong> (<em>set</em><em> or </em><em>list</em>) – types of images to include, i.e Crystals, Clear</p></li>
-<li><p><strong>human</strong> (<em>Bool</em>) – If image_classes should be in reference to human classifier</p></li>
-<li><p><strong>marco</strong> (<em>Bool</em>) – If image_classes should be in reference to machine classifier</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>If image should be filtered, False means do not filter image</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.run">
-<em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the run object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Run object</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.table_viewer.TableViewer.table_data">
-<em class="property">property </em><code class="sig-name descname">table_data</code><a class="headerlink" href="#polo.widgets.table_viewer.TableViewer.table_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Property to retrieve the current table fieldnames and table data
-using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>fieldnames, table data</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="polo-widgets-table-viewer-module">
+<h2>polo.widgets.table_viewer module<a class="headerlink" href="#polo-widgets-table-viewer-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-polo.widgets">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polo.widgets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -729,11 +237,19 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan T. Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -744,7 +260,6 @@ using <cite>get_csv_data</cite> function of the RunCsvWriter class</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -131,8 +131,8 @@ class Image(QtGui.QPixmap):
         return cls(path=DEFAULT_IMAGE_PATH)
 
     @property
-        def date(self):
-            return self.__date
+    def date(self):
+        return self.__date
 
     @date.setter
     def date(self, date):

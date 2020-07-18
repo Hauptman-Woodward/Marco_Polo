@@ -36,10 +36,26 @@ polo.windows.main\_window module
    :undoc-members:
    :show-inheritance:
 
-polo.windows.run\_importer\_dialog module
------------------------------------------
+polo.windows.pptx\_dialog module
+--------------------------------
 
-.. automodule:: polo.windows.run_importer_dialog
+.. automodule:: polo.windows.pptx_dialog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polo.windows.run\_importer module
+---------------------------------
+
+.. automodule:: polo.windows.run_importer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+polo.windows.run\_updater\_dialog module
+----------------------------------------
+
+.. automodule:: polo.windows.run_updater_dialog
    :members:
    :undoc-members:
    :show-inheritance:
