@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.crystallography.image &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.crystallography.image &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -157,17 +157,22 @@
   <h1>Source code for polo.crystallography.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
-
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">MODEL</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">make_default_logger</span>
-<span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">classify_image</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">DEFAULT_IMAGE_PATH</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
-<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">():</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QGraphicsColorizeEffect</span><span class="p">,</span> <span class="n">QGraphicsScene</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DEFAULT_IMAGE_PATH</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">MODEL</span><span class="p">,</span>
+                  <span class="n">make_default_logger</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">classify_image</span>
+
+
+
+<div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">):</span>
 
     <span class="sd">&#39;&#39;&#39;Image objects hold the data relating to one image of a particular</span>
 <span class="sd">    screening well in a larger run. Images encode the actual image file as</span>
@@ -211,9 +216,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bites</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">well_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">human_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">machine_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prediction_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">plate_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cocktail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">previous_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alt_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                 <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                 <span class="n">previous_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alt_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
+        <span class="nb">super</span><span class="p">(</span><span class="n">Image</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">bites</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">human_class</span>
@@ -228,8 +234,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="n">next_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="n">favorite</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span> <span class="o">=</span> <span class="kc">None</span>
-    
+
 <div class="viewcode-block" id="Image.clean_base64_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.clean_base64_string">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">clean_base64_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Image instances may contain byte strings that store their actual</span>
@@ -245,70 +250,59 @@
 <span class="sd">        :rtype: bytes</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">string</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span> <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span>  <span class="c1"># bytes string written directly to string</span>
                 <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">:</span>
                 <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">string</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
-    
+
+<div class="viewcode-block" id="Image.to_graphics_scene"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.to_graphics_scene">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_graphics_scene</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Convert an Image object to a pyqt QGraphicsScene with</span>
+<span class="sd">        the Image added as a pixmap to the graphics scene.</span>
+
+<span class="sd">        :param image: Image instance</span>
+<span class="sd">        :type image: Image</span>
+<span class="sd">        :return: QGraphicsScene</span>
+<span class="sd">        :rtype: QGraphicsScene</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">isNull</span><span class="p">():</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scene</span></div>
+
 <div class="viewcode-block" id="Image.no_image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.no_image">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">no_image</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return an Image instance with the default image data.</span>
+<span class="sd">        Used to fill in for missing data and when filters cannot</span>
+<span class="sd">        find any matching results.</span>
+
+<span class="sd">        :return: Default image</span>
+<span class="sd">        :rtype: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># return default no images found image instance</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">DEFAULT_IMAGE_PATH</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">image_string</span> <span class="o">=</span> <span class="s1">&#39;Well Num: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">))</span>
-        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">))</span>
-        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Date: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">))</span>
-        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">image_string</span>
-
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_pixmap</span><span class="p">()</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pixmap</span>
-    
-    <span class="c1"># @pixmap.setter</span>
-    <span class="c1"># def pixmap(self, new_map):</span>
-    <span class="c1">#     if new_map</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__date</span>
 
-<div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span></div>
-    
-<div class="viewcode-block" id="Image.make_pixmap"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.make_pixmap">[docs]</a>    <span class="k">def</span> <span class="nf">make_pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">pm</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
-            <span class="n">pm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-            <span class="n">pm</span><span class="o">.</span><span class="n">loadFromData</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">pm</span></div>
-    
-    <span class="c1"># @pixmap.setter</span>
-    <span class="c1"># def pixmap(self, new_data):</span>
-    <span class="c1">#     if os.path.exists(self.path):</span>
-    <span class="c1">#         self.__pixmap = QPixmap(new_data)</span>
-    <span class="c1">#     elif isinstance(new_data, bytes):</span>
-    <span class="c1">#         pm = QPixmap()</span>
-    <span class="c1">#         pm.loadFromData(new_data)</span>
-    <span class="c1">#         pm.loadFromData(base64.b64decode(new_data))</span>
-    <span class="c1">#         self.__pixmap = pm</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         self.__pixmap = None</span>
-    
+    <span class="nd">@date</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">datetime_converter</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__date</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__date</span> <span class="o">=</span> <span class="n">date</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__path</span>
-    
+
     <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">new_path</span><span class="p">:</span>
@@ -317,11 +311,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="n">new_path</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__path</span> <span class="o">=</span> <span class="kc">None</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bites</span>
-    
+
     <span class="nd">@bites</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">bites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_bites</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
@@ -339,7 +333,7 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__marco_class</span>
-    
+
     <span class="nd">@marco_class</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">marco_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Setter method for `__marco_class`. If this image has alt images</span>
@@ -361,10 +355,10 @@
                 <span class="n">alt_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span>
                 <span class="k">while</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="ow">and</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
                     <span class="n">alt_image</span><span class="o">.</span><span class="n">__marco_class</span> <span class="o">=</span> <span class="n">new_class</span>
-                    <span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">alt_image</span>       
+                    <span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">alt_image</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__marco_class</span> <span class="o">=</span> <span class="kc">None</span>
-    
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">human_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Return the `__human_class` hidden attribute</span>
@@ -373,32 +367,110 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__human_class</span>
-    
+
     <span class="nd">@human_class</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">human_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Change the human classification of this image and any alternative</span>
-<span class="sd">        spectrum images it is linked to. The motivation for sharing human</span>
-<span class="sd">        classifications between spectrums is that in theory linked spectrums</span>
-<span class="sd">        are images of the exact same well just using a different photographic</span>
-<span class="sd">        technology. Therefore the classifications should be consistent across</span>
-<span class="sd">        the runs.</span>
-
-<span class="sd">        :param new_class: New image classification</span>
-<span class="sd">        :type new_class: str</span>
-<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">new_class</span> <span class="ow">in</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__human_class</span> <span class="o">=</span> <span class="n">new_class</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;alt_image&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
-                <span class="c1"># alt images inherit their linked classifications</span>
-                <span class="n">alt_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span>
-                <span class="k">while</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="ow">and</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                    <span class="n">alt_image</span><span class="o">.</span><span class="n">__human_class</span> <span class="o">=</span> <span class="n">new_class</span>
-                    <span class="c1"># assign directly to hidden attr to avoid creating an</span>
-                    <span class="c1"># endless recursive call loop</span>
-                    <span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">alt_image</span>        
+            <span class="c1"># if hasattr(self, &#39;alt_image&#39;) and self.alt_image:</span>
+            <span class="c1">#     # alt images inherit their linked classifications</span>
+            <span class="c1">#     alt_image = self.alt_image</span>
+            <span class="c1">#     while alt_image.path and alt_image.path != self.path:</span>
+            <span class="c1">#         alt_image.__human_class = new_class</span>
+            <span class="c1">#         # assign directly to hidden attr to avoid creating an</span>
+            <span class="c1">#         # endless recursive call loop</span>
+            <span class="c1">#         alt_image = alt_image.alt_image</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__human_class</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">formated_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the image&#39;s `data` attribute formated in the</span>
+<span class="sd">        month/date/year format. If image has no `date` returns</span>
+<span class="sd">        an empty string.</span>
 
+<span class="sd">        :return: Date</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="Image.setPixmap"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.setPixmap">[docs]</a>    <span class="k">def</span> <span class="nf">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Loads the images pixmap into memory which then allows for displaying</span>
+<span class="sd">        the image to the user. Images that are displayed before loading</span>
+<span class="sd">        will not appear. It is recommended to only load the image pixmap when</span>
+<span class="sd">        the image actually needs to be shown to the user as it is expensive</span>
+<span class="sd">        to hold in memory.</span>
+
+<span class="sd">        :param scaling: Scaler for the pixmap; between 0 and 1, defaults to None</span>
+<span class="sd">        :type scaling: float, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loadFromData</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scaling</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">*</span><span class="n">scaling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span>
+                        <span class="n">scaling</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Image.delete_pixmap_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.delete_pixmap_data">[docs]</a>    <span class="k">def</span> <span class="nf">delete_pixmap_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Replaces the Image&#39;s pixmap data with a null pixmap which</span>
+<span class="sd">        effectively deletes the existing pixmap data. Used to free up</span>
+<span class="sd">        memory after a pixmap is no longer needed.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">())</span>  <span class="c1"># swap with null pixel map</span></div>
+
+<div class="viewcode-block" id="Image.delete_all_pixmap_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.delete_all_pixmap_data">[docs]</a>    <span class="k">def</span> <span class="nf">delete_all_pixmap_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Deletes the pixmap data for the Image object this function is</span>
+<span class="sd">        called on and for any other images that this image is linked to. This</span>
+<span class="sd">        includes images stored in the `alt_image`, `next_image` and `previous_image`</span>
+<span class="sd">        attributes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">():</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">():</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.height"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.height">[docs]</a>    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the height of the image&#39;s pixmap. The pixmap must be set</span>
+<span class="sd">        for this function to return an actual size.</span>
+
+<span class="sd">        :return: Height of the image&#39;s pixmap</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Image.width"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.width">[docs]</a>    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the height of the image&#39;s pixmap. The pixmap must be set</span>
+<span class="sd">        for this function to return an actual size.</span>
+
+<span class="sd">        :return: Width of the image&#39;s pixmap</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">image_string</span> <span class="o">=</span> <span class="s1">&#39;Well Num: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">))</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span><span class="p">:</span>
+            <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;MARCO Confidence: </span><span class="si">{}</span><span class="s1"> %</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Date: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formated_date</span><span class="p">)</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image_string</span>
+
+
+
+<div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bites</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Image.encode_bytes"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">encode_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;If the `path` attribute exists and is an image file then encodes</span>
@@ -413,42 +485,68 @@
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Image.resize"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">preserve_aspect</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Resizes an image given x and y resolution. Copy is true will copy</span>
-<span class="sd">        the image instead of overwriting it.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">pixel_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">preserve_aspect</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pixel_map</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span></div>
-    
 <div class="viewcode-block" id="Image.get_tool_tip"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_tool_tip">[docs]</a>    <span class="k">def</span> <span class="nf">get_tool_tip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Format a string to use as a tooltip for this image instance.</span>
+        <span class="sd">&#39;&#39;&#39;Create a string to use as the tooltip for this image.</span>
 
 <span class="sd">        :return: Tooltip string</span>
 <span class="sd">        :rtype: str</span>
-
-<span class="sd">        # TODO Pick a better way to add cocktail to the tooltip</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail</span><span class="p">:</span>
             <span class="n">cocktail</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail</span><span class="o">.</span><span class="n">number</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cocktail</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="s1">&#39;Well: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Cocktail: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span> <span class="n">cocktail</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span>
+        <span class="k">return</span> <span class="s1">&#39;Well: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Cocktail: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Date: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">MARCO Class: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Human Class: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span> <span class="n">cocktail</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">),</span>
             <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">)</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="Image.get_linked_images_by_date"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_linked_images_by_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get all images that are linked to this Image instance by date. </span>
+<span class="sd">        Image linking by date is accomplished by creating a bi-directional</span>
+<span class="sd">        linked list between Image instances, where each Image acts as a node</span>
+<span class="sd">        and the `next_image` and `previous_images` act as the forwards and</span>
+<span class="sd">        backwards pointers respectively.</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">attribs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">well_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">attribs</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">item</span>
-    
+<span class="sd">        :return: All Images connected to this Image by date</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">linked_images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
+            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span>
+            <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+                <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">next_image</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
+            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span>
+            <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+                <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">previous_image</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">linked_images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span></div>
 
-        <span class="c1"># if path does exist and there is no base64 encoding then</span>
-        <span class="c1"># there is goin to be an issue</span>
+<div class="viewcode-block" id="Image.get_linked_images_by_spectrum"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">get_linked_images_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get all images that are linked to this Image instance by</span>
+<span class="sd">        spectrum. Linking images by spectrum is accomplished by</span>
+<span class="sd">        creating a mono-directional circular linked list where</span>
+<span class="sd">        Image instances serve as nodes and their `alt_image` attribute</span>
+<span class="sd">        acts as the pointer to the next node.</span>
+
+<span class="sd">        :return: List of all Images linked to this Image by spectrum</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">linked_images</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">],</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
+            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+                   <span class="ow">and</span> <span class="n">start_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+                   <span class="ow">and</span> <span class="n">start_image</span><span class="o">.</span><span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">):</span>
+                <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">start_image</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">alt_image</span>
+
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">linked_images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">spectrum</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">linked_images</span></div>
 
 <div class="viewcode-block" id="Image.classify_image"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Classify the image using the MARCO CNN model. Sets the </span>
@@ -459,13 +557,42 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="o">=</span> <span class="n">classify_image</span><span class="p">(</span><span class="n">MODEL</span><span class="p">,</span>
                                                                       <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">e</span></div></div>
-        <span class="c1"># exception in case there is not image stored for that well. Maybe it</span>
-        <span class="c1"># got deleted for something</span>
-        <span class="c1"># at some point probably want an image that is a default image not found</span>
-        <span class="c1"># and can have a warning pop up if import from HWIrun and there are</span>
-        <span class="c1"># still null images in run.images</span>
+            <span class="k">return</span> <span class="n">e</span></div>
 
+<div class="viewcode-block" id="Image.standard_filter"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.standard_filter">[docs]</a>    <span class="k">def</span> <span class="nf">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method that determines if this image should be included in a set</span>
+<span class="sd">        of filtered images based on given image types and a classifier: human,</span>
+<span class="sd">        marco or both. </span>
+
+<span class="sd">        :param image_types: [description]</span>
+<span class="sd">        :type image_types: [type]</span>
+<span class="sd">        :param human: [description]</span>
+<span class="sd">        :type human: [type]</span>
+<span class="sd">        :param marco: [description]</span>
+<span class="sd">        :type marco: [type]</span>
+<span class="sd">        :return: [description]</span>
+<span class="sd">        :rtype: [type]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">favorite</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">image_types</span><span class="p">:</span>  <span class="c1"># have specificed some image types</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span> <span class="ow">and</span> <span class="n">human</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">and</span> <span class="n">marco</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">in</span> <span class="n">image_types</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">human</span> <span class="ow">or</span> <span class="n">marco</span><span class="p">:</span>  <span class="c1"># set at least one classifier filter</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">human</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">human_class</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">marco</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># set no filters so return True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
+
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span>
 </pre></div>
 
            </div>
@@ -479,7 +606,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

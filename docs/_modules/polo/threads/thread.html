@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.threads.thread &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.threads.thread &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -155,21 +155,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for polo.threads.thread</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="c1"># from polo.utils.io_utils import save_run_as_json</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">BLANK_IMAGE</span>
-
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
-<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="n">get_cell_image_dims</span><span class="p">,</span> <span class="n">best_aspect_ratio</span>
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
-<span class="c1"># from polo.utils.io_utils import load_run_object</span>
-<span class="c1"># from polo.ui.widgets.plate_viewer import graphicsWell</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">BLANK_IMAGE</span>
+<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="n">best_aspect_ratio</span><span class="p">,</span> <span class="n">get_cell_image_dims</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 
 
@@ -183,19 +179,20 @@
 <span class="sd">    :param parent: parent widget, defaults to None</span>
 <span class="sd">    :type parent: QWidget, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">existing</span><span class="o">=</span><span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">existing</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-    
+
 <div class="viewcode-block" id="thread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.thread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="ne">NotImplementedError</span></div></div>
 
+
 <div class="viewcode-block" id="QuickThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.QuickThread">[docs]</a><span class="k">class</span> <span class="nc">QuickThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
-    
+
     <span class="sd">&#39;&#39;&#39;QuickThreads are very similar</span>
 <span class="sd">    to thread objects except instead of writing code that would be</span>
 <span class="sd">    executed by the `run` function directly, the function to be run</span>
@@ -235,20 +232,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_func</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">func_args</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="PixmapMakerThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PixmapMakerThread">[docs]</a><span class="k">class</span> <span class="nc">PixmapMakerThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
-    
-<div class="viewcode-block" id="PixmapMakerThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PixmapMakerThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-                <span class="n">image</span><span class="o">.</span><span class="n">pixmap</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;aded image&#39;</span><span class="p">)</span></div></div>
-
-
 <div class="viewcode-block" id="ClassificationThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.ClassificationThread">[docs]</a><span class="k">class</span> <span class="nc">ClassificationThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
     <span class="n">change_value</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">estimated_time</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
@@ -265,35 +248,33 @@
                 <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">change_value</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">estimated_time</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classification_run</span><span class="o">.</span><span class="n">images</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div></div>
-
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimated_time</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                    <span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classification_run</span><span class="o">.</span><span class="n">images</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span></div></div>
             <span class="c1"># emit signal so know to move progress par forward</span>
+
 
 <div class="viewcode-block" id="FTPDownloadThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.FTPDownloadThread">[docs]</a><span class="k">class</span> <span class="nc">FTPDownloadThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
     <span class="n">file_downloaded</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    
+    <span class="n">download_path</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ftp_connection</span><span class="p">,</span> <span class="n">file_paths</span><span class="p">,</span> <span class="n">save_dir_path</span><span class="p">):</span>
         <span class="n">thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span> <span class="o">=</span> <span class="n">ftp_connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_paths</span> <span class="o">=</span> <span class="n">file_paths</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_dir_path</span> <span class="o">=</span> <span class="n">save_dir_path</span>
-    
+
 <div class="viewcode-block" id="FTPDownloadThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.FTPDownloadThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">remote_file_path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_paths</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;downloading&#39;</span><span class="p">,</span> <span class="n">remote_file_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="p">:</span>
                 <span class="n">local_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                     <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_dir_path</span><span class="p">),</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">remote_file_path</span><span class="p">))</span> 
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">remote_file_path</span><span class="p">))</span>
                 <span class="p">)</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">local_file</span><span class="p">:</span>
                     <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;RETR </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">remote_file_path</span><span class="p">)</span>
                     <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp</span><span class="o">.</span><span class="n">retrbinary</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">local_file</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;downloaded file &#39;</span><span class="p">,</span> <span class="n">remote_file_path</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file_downloaded</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div></div>
-            
-
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_downloaded</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_path</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="GraphThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.GraphThread">[docs]</a><span class="k">class</span> <span class="nc">GraphThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
@@ -315,64 +296,64 @@
         <span class="n">save_run_as_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_to_save</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="PlateThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PlateThread">[docs]</a><span class="k">class</span> <span class="nc">PlateThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
+<span class="c1"># class PlateThread(thread):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">start_index</span><span class="p">,</span> <span class="n">end_index</span><span class="p">,</span> <span class="n">graphics_view_dims</span><span class="p">):</span>
-        <span class="n">thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span> <span class="o">=</span> <span class="n">image_types</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">marco</span> <span class="o">=</span> <span class="n">marco</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">human</span> <span class="o">=</span> <span class="n">human</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start_index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end_index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">empty_map</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="s1">&#39;/home/ethan/Pictures/polo.png&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graphics_view_dims</span> <span class="o">=</span> <span class="n">graphics_view_dims</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="c1">#     def __init__(self, run, image_types, marco, human, start_index, end_index, graphics_view_dims):</span>
+<span class="c1">#         thread.__init__(self)</span>
+<span class="c1">#         self.run = run</span>
+<span class="c1">#         self.image_types = image_types</span>
+<span class="c1">#         self.marco = marco</span>
+<span class="c1">#         self.human = human</span>
+<span class="c1">#         self.start = start_index</span>
+<span class="c1">#         self.end = end_index</span>
+<span class="c1">#         self.empty_map = QPixmap(&#39;/home/ethan/Pictures/polo.png&#39;)</span>
+<span class="c1">#         self.graphics_view_dims = graphics_view_dims</span>
+<span class="c1">#         self.scene = None</span>
 
-<div class="viewcode-block" id="PlateThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PlateThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve_images</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">tile_images_in_scene</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">scene</span></div>
+<span class="c1">#     def run(self):</span>
+<span class="c1">#         images = self.retrieve_images()</span>
+<span class="c1">#         self.scene = tile_images_in_scene(images)</span>
+<span class="c1">#         return scene</span>
 
-<div class="viewcode-block" id="PlateThread.retrieve_images"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PlateThread.retrieve_images">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">))</span>
-        <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
-                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">images</span></div>
+<span class="c1">#     def retrieve_images(self):</span>
+<span class="c1">#         indices = set(self.run.image_filter_query(</span>
+<span class="c1">#             self.image_types, self.human, self.marco))</span>
+<span class="c1">#         images = []</span>
+<span class="c1">#         for i in range(self.start, self.end):</span>
+<span class="c1">#             if i in indices:</span>
+<span class="c1">#                 images.append(self.current_run[i])</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 images.append(None)</span>
+<span class="c1">#         return images</span>
 
-<div class="viewcode-block" id="PlateThread.tile_images_in_scene"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PlateThread.tile_images_in_scene">[docs]</a>    <span class="k">def</span> <span class="nf">tile_images_in_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
-        <span class="n">scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">()</span>
-        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graphics_view_dims</span>
-        <span class="n">a_w</span><span class="p">,</span> <span class="n">a_h</span> <span class="o">=</span> <span class="n">best_aspect_ratio</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">a_h</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">a_w</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">image</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
-                    <span class="n">pixel_map</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_pixel_map</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">pixel_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty_map</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">pixel_map</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">j</span><span class="p">,</span>
-                        <span class="n">pixel_map</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">i</span>
-                    <span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">place_image_in_scene</span><span class="p">(</span>
-                        <span class="n">scene</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">pixel_map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
-                    <span class="p">)</span>
-        <span class="k">return</span> <span class="n">scene</span>  <span class="c1"># scene now inludes all images</span></div>
+<span class="c1">#     def tile_images_in_scene(self, images):</span>
+<span class="c1">#         scene = QtWidgets.QGraphicsScene()</span>
+<span class="c1">#         w, h = self.graphics_view_dims</span>
+<span class="c1">#         a_w, a_h = best_aspect_ratio(w, h, len(images))</span>
+<span class="c1">#         for i in range(1, a_h+1):</span>
+<span class="c1">#             for j in range(1, a_w+1):</span>
+<span class="c1">#                 image = images.pop(0)</span>
+<span class="c1">#                 if image:</span>
+<span class="c1">#                     pixel_map = image.get_pixel_map()</span>
+<span class="c1">#                 else:</span>
+<span class="c1">#                     pixel_map = self.empty_map</span>
+<span class="c1">#                     x, y = (</span>
+<span class="c1">#                         pixel_map.size().width() * j,</span>
+<span class="c1">#                         pixel_map.size().height() * i</span>
+<span class="c1">#                     )</span>
+<span class="c1">#                     self.place_image_in_scene(</span>
+<span class="c1">#                         scene, image, pixel_map, x, y</span>
+<span class="c1">#                     )</span>
+<span class="c1">#         return scene  # scene now inludes all images</span>
 
-<div class="viewcode-block" id="PlateThread.place_image_in_scene"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.PlateThread.place_image_in_scene">[docs]</a>    <span class="k">def</span> <span class="nf">place_image_in_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">pixel_map</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="n">item</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="p">(</span><span class="n">pixel_map</span><span class="p">)</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">setFlat</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>  <span class="c1"># store image object in data</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_tool_tip</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+<span class="c1">#     def place_image_in_scene(self, scene, image, pixel_map, x, y):</span>
+<span class="c1">#         item = QtWidgets.QGraphicsItem(pixel_map)</span>
+<span class="c1">#         item.setFlat(QtWidgets.QGraphicsItem.ItemIsSelectable)</span>
+<span class="c1">#         if image:</span>
+<span class="c1">#             item.setData(0, image)  # store image object in data</span>
+<span class="c1">#             item.setToolTip(image.get_tool_tip())</span>
+<span class="c1">#         self.scene.addItem(item)</span>
+<span class="c1">#         item.setPos(x, y)</span>
 </pre></div>
 
            </div>
@@ -386,7 +367,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests.test_plate_inspector &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../tests.html">tests</a> &raquo;</li>
+        
+      <li>tests.test_plate_inspector</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tests.test_plate_inspector</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtTest</span> <span class="kn">import</span> <span class="n">QTest</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">polo.widgets.plate_inspector_widget</span> <span class="kn">import</span> <span class="n">PlateInspectorWidget</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunDeserializer</span>
+
+
+<span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+
+<span class="c1"># helper functions</span>
+<div class="viewcode-block" id="scene_pixmaps"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.scene_pixmaps">[docs]</a><span class="k">def</span> <span class="nf">scene_pixmaps</span><span class="p">(</span><span class="n">plate_viewer</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">plate_viewer</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsPixmapItem</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.run">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">test_run</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;test_files/xtals/test_vis.xtal&#39;</span><span class="p">))</span>
+    <span class="n">test_run</span> <span class="o">=</span> <span class="n">test_run</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">test_run</span></div>
+
+
+<div class="viewcode-block" id="plate_inspector"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.plate_inspector">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">plate_inspector</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">PlateInspectorWidget</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plate_inspec_run"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.plate_inspec_run">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">plate_inspec_run</span><span class="p">(</span><span class="n">plate_inspector</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+    <span class="n">plate_inspector</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+    <span class="k">return</span> <span class="n">plate_inspector</span></div>
+
+
+<div class="viewcode-block" id="image_save_path"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.image_save_path">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">image_save_path</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;test_files/write_bin/dummy.png&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_loading_run"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_loading_run">[docs]</a><span class="k">def</span> <span class="nf">test_loading_run</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">,</span> <span class="n">plate_inspector</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+    <span class="n">plate_inspector</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plate_inspector</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_reload_view"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_reload_view">[docs]</a><span class="k">def</span> <span class="nf">test_reload_view</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span>  <span class="c1"># raise assertion error</span></div>
+
+
+<div class="viewcode-block" id="test_navigation"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_navigation">[docs]</a><span class="k">def</span> <span class="nf">test_navigation</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+    <span class="n">current_page</span> <span class="o">=</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">current_page</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">(</span><span class="n">next_view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">current_page</span>
+    <span class="k">assert</span> <span class="n">current_page</span> <span class="o">&lt;</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">total_pages</span>
+    <span class="k">assert</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+    <span class="n">current_page</span> <span class="o">=</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">current_page</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">(</span><span class="n">prev_view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">current_page</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">current_page</span>
+    <span class="k">assert</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_filtering"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_filtering">[docs]</a><span class="k">def</span> <span class="nf">test_filtering</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_27</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># turn on filtering</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">()</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_21</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">apply_plate_settings</span><span class="p">()</span>
+    <span class="c1"># test human classified images highlighted</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">scene_pixmaps</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">opacity</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">opacity</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="c1"># set up to highlight marco classified crystal images</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_21</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_22</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_23</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">apply_plate_settings</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">scene_pixmaps</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">machine_class</span> <span class="o">==</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># crystals</span>
+            <span class="k">assert</span> <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">opacity</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">opacity</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span>
+
+    <span class="c1"># turn off image filtering</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_27</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">apply_plate_settings</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">scene_pixmaps</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">opacity</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="test_images_per_plate"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_images_per_plate">[docs]</a><span class="k">def</span> <span class="nf">test_images_per_plate</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+
+    <span class="n">combo</span> <span class="o">=</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">combo</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+        <span class="n">combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>  <span class="c1"># go through all indices</span>
+        <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">()</span>  <span class="c1"># render the plate</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">scene_pixmaps</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">combo</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="test_save_view"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_save_view">[docs]</a><span class="k">def</span> <span class="nf">test_save_view</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">,</span> <span class="n">image_save_path</span><span class="p">):</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">()</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">export_current_view</span><span class="p">(</span>
+        <span class="n">save_path</span><span class="o">=</span><span class="n">image_save_path</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="p">,</span> <span class="s1">&#39;export_thread&#39;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">export_thread</span><span class="o">.</span><span class="n">isRunning</span><span class="p">():</span>
+        <span class="k">continue</span>
+    <span class="c1"># wait until thread is finished</span>
+    <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">image_save_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">image_save_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">image_save_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_image_labeling"><a class="viewcode-back" href="../../tests.html#tests.test_plate_inspector.test_image_labeling">[docs]</a><span class="k">def</span> <span class="nf">test_image_labeling</span><span class="p">(</span><span class="n">plate_inspec_run</span><span class="p">):</span>
+    <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">show_current_plate</span><span class="p">()</span>
+    <span class="n">check_status</span> <span class="o">=</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">parse_label_checkboxes</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">plate_inspec_run</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsTextItem</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">check_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

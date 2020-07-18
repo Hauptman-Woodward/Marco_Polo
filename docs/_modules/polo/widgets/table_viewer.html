@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets.table_viewer &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.widgets.table_viewer &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -166,13 +166,7 @@
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunCsvWriter</span><span class="p">,</span> <span class="n">write_screen_html</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">make_default_logger</span>
 
-<span class="c1"># Jun 16 BUG</span>
-<span class="c1"># changing headers causings issues with stuff lining up with each other</span>
-<span class="c1"># possible if one image has none for a spefic header need to look</span>
-<span class="c1"># more into this</span>
 
-<span class="c1"># seems like headers are not being updated from the list of selected headers</span>
-<span class="c1"># but from the feildnames calculated on the first view</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TableViewer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_viewer.TableViewer">[docs]</a><span class="k">class</span> <span class="nc">TableViewer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">):</span>
@@ -331,7 +325,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

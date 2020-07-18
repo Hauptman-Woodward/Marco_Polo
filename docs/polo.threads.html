@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.threads package &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.threads package &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polo.widgets package" href="polo.widgets.html" />
-    <link rel="prev" title="polo.utils package" href="polo.utils.html" /> 
+    <link rel="next" title="polo.utils package" href="polo.utils.html" />
+    <link rel="prev" title="polo.marco package" href="polo.marco.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,19 +94,18 @@
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.threads package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-threads-thread-module">polo.threads.thread module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.threads.thread">polo.threads.thread module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-polo.threads">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="polo.utils.html">polo.utils package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.widgets.html">polo.widgets package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.designer.html">polo.designer package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -181,11 +180,124 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="polo-threads-thread-module">
-<h2>polo.threads.thread module<a class="headerlink" href="#polo-threads-thread-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-polo.threads.thread">
+<span id="polo-threads-thread-module"></span><h2>polo.threads.thread module<a class="headerlink" href="#module-polo.threads.thread" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polo.threads.thread.ClassificationThread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">ClassificationThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_object</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#ClassificationThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.ClassificationThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<dl class="py attribute">
+<dt id="polo.threads.thread.ClassificationThread.change_value">
+<code class="sig-name descname">change_value</code><a class="headerlink" href="#polo.threads.thread.ClassificationThread.change_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.threads.thread.ClassificationThread.estimated_time">
+<code class="sig-name descname">estimated_time</code><a class="headerlink" href="#polo.threads.thread.ClassificationThread.estimated_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.threads.thread.ClassificationThread.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#ClassificationThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.ClassificationThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.threads.thread.FTPDownloadThread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">FTPDownloadThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ftp_connection</span></em>, <em class="sig-param"><span class="n">file_paths</span></em>, <em class="sig-param"><span class="n">save_dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#FTPDownloadThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<dl class="py attribute">
+<dt id="polo.threads.thread.FTPDownloadThread.download_path">
+<code class="sig-name descname">download_path</code><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.download_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.threads.thread.FTPDownloadThread.file_downloaded">
+<code class="sig-name descname">file_downloaded</code><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.file_downloaded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.threads.thread.FTPDownloadThread.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#FTPDownloadThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.threads.thread.GraphThread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">GraphThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_object</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#GraphThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.GraphThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.threads.thread.QuickThread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">QuickThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_func</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#QuickThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.QuickThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<p>QuickThreads are very similar
+to thread objects except instead of writing code that would be
+executed by the <cite>run</cite> function directly, the function to be run
+on the thread is passed as an argument to <cite>job_func</cite> and any arguments
+that the passed function requires are passed as key word arguements.
+When the thread is started the key word arguments are passed to the
+job_func and the results of the call are stored in the <cite>results</cite> attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span>
+<span class="n">my_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="n">job_func</span><span class="o">=</span><span class="n">my_func</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="c1"># set up the thread with my_func and the args we want to pass</span>
+<span class="n">my_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="c1"># my_thread.result will = 100 (x + y)</span>
+</pre></div>
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_func</strong> (<em>[</em><em>type</em><em>]</em>) – function to execute on the thread</p></li>
+<li><p><strong>parent</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.threads.thread.QuickThread.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#QuickThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.QuickThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.threads.thread.SaveThread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">SaveThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">main_window</span></em>, <em class="sig-param"><span class="n">run_to_save</span></em>, <em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#SaveThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.SaveThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<dl class="py method">
+<dt id="polo.threads.thread.SaveThread.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#SaveThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.SaveThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.threads.thread.thread">
+<em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QThread</span></code></p>
+<p>Very basic wrapper class around Qthread class. Should be
+inherited by a more specific class and then the <cite>run</cite> method
+can be overwritten do run the code that should be executed on the
+thread instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – parent widget, defaults to None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.threads.thread.thread.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#thread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.thread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polo.threads">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polo.threads" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -197,10 +309,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="polo.widgets.html" class="btn btn-neutral float-right" title="polo.widgets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="polo.utils.html" class="btn btn-neutral float-right" title="polo.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="polo.utils.html" class="btn btn-neutral float-left" title="polo.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="polo.marco.html" class="btn btn-neutral float-left" title="polo.marco package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -210,7 +322,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

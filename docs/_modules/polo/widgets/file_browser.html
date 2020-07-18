@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets.file_browser &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.widgets.file_browser &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -165,6 +165,8 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PurePosixPath</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunLinker</span>
 
 
 <div class="viewcode-block" id="fileBrowser"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.file_browser.fileBrowser">[docs]</a><span class="k">class</span> <span class="nc">fileBrowser</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidget</span><span class="p">):</span>
@@ -217,12 +219,6 @@
 
         <span class="n">recursive_add</span><span class="p">(</span><span class="n">home_dir</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-    <span class="c1"># def grow_tree_local(self, home_dir):</span>
-
-    <span class="c1">#     def recursive_add(cwd, tree):</span>
-    <span class="c1">#         pass</span>
-    <span class="c1">#     pass</span>
-
 <div class="viewcode-block" id="fileBrowser.get_checked_files"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.file_browser.fileBrowser.get_checked_files">[docs]</a>    <span class="k">def</span> <span class="nf">get_checked_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">home_dir</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Traverse the file tree and return the full paths to files that have</span>
 <span class="sd">        been selected by the user. </span>
@@ -261,7 +257,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

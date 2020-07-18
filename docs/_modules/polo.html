@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo &mdash; Polo 0.0.1 documentation</title>
+  <title>polo &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -175,7 +175,7 @@
 <span class="n">APP_ICON</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo.png&#39;</span><span class="p">)</span>
 <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">UNRAR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>
-
+<span class="n">TEMP_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;polo/.tmp&#39;</span><span class="p">)</span>
 
 <span class="n">COCKTAIL_DATA_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_data&#39;</span><span class="p">)</span>
 <span class="n">COCKTAIL_META_DATA</span> <span class="o">=</span> <span class="n">COCKTAIL_DATA_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_meta.csv&#39;</span><span class="p">)</span>
@@ -194,8 +194,10 @@
 
 
 <span class="c1"># HTML jinja2 templates</span>
-<span class="n">RUN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportRunTemplate.html&#39;</span><span class="p">)</span>
-<span class="n">SCREEN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;polo/templates/exportPlatesTemplate.html&#39;</span><span class="p">)</span>
+
+
+<span class="n">RUN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;templates/exportRunTemplate.html&#39;</span><span class="p">)</span>
+<span class="n">SCREEN_HTML_TEMPLATE</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;templates/exportPlatesTemplate.html&#39;</span><span class="p">)</span>
 <span class="n">BLANK_IMAGE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data/images/default_images/blank_image.png&#39;</span><span class="p">)</span>
 
 <span class="c1"># icons for tabs and buttons of the GUI</span>
@@ -224,6 +226,18 @@
 <span class="n">ALLOWED_IMAGE_COUNTS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">786</span><span class="p">,</span> <span class="mi">1536</span><span class="p">]</span>
 
 <span class="n">IMAGE_SPECS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Visible&#39;</span><span class="p">,</span> <span class="s1">&#39;UV-TPEF&#39;</span><span class="p">,</span> <span class="s1">&#39;SHG&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+<span class="n">SPEC_KEYS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;uvt&#39;</span><span class="p">,</span> <span class="s1">&#39;shg&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">],</span> <span class="n">IMAGE_SPECS</span><span class="p">))</span>
+
+<span class="n">MSO_DICT</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># translate between marco encodings and mso encodings</span>
+    <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">90</span><span class="p">,</span>  <span class="c1"># xtal</span>
+    <span class="c1">#IMAGE_CLASSIFICATIONS[3]: 60,  # skin</span>
+    <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># precipitate</span>
+    <span class="c1">#IMAGE_CLASSIFICATIONS[2]: 25,  # phase</span>
+    <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># clear</span>
+    <span class="c1">#IMAGE_CLASSIFICATIONS[3]: 5,   # garbage</span>
+    <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">0</span>    <span class="c1"># unsure</span>
+<span class="p">}</span>
+
 
 
 <span class="c1"># UNRAR EXE</span>
@@ -232,7 +246,7 @@
 <span class="n">unrar_versions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">OS</span> <span class="k">for</span> <span class="n">OS</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">))])</span>
 <span class="n">platform</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">platform</span> <span class="ow">in</span> <span class="n">unrar_versions</span><span class="p">:</span>
-    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">,</span> <span class="n">platform</span><span class="p">))</span>
+    <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">UNRAR</span><span class="p">),</span> <span class="n">platform</span><span class="p">))</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">UNRAR_DIR</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -281,11 +295,10 @@
 <span class="n">BETA</span> <span class="o">=</span> <span class="s1">&#39;https://ethanholleman.github.io/Marco_Polo/beta_testers.html&#39;</span>
 
 <span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">Cocktail</span><span class="p">,</span> <span class="n">Reagent</span><span class="p">,</span> <span class="n">SignedValue</span>
-<span class="kn">from</span> <span class="nn">polo.threads</span> <span class="kn">import</span> <span class="n">thread</span>
-<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span><span class="p">,</span> <span class="n">Menu</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span><span class="p">,</span> <span class="n">Menu</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
-
+<span class="kn">from</span> <span class="nn">polo.threads</span> <span class="kn">import</span> <span class="n">thread</span>
 
 <span class="c1"># best bartender at Cunneen&#39;s bar in Rodger&#39;s Park</span>
 <span class="n">tim</span> <span class="o">=</span> <span class="n">BarTender</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_META_DATA</span><span class="p">))</span>
@@ -302,7 +315,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>

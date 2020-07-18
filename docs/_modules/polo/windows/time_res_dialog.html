@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.windows.time_res_dialog &mdash; Polo 0.0.1 documentation</title>
+  <title>polo.windows.time_res_dialog &mdash; Polo 0.0.5 documentation</title>
   
 
   
@@ -202,13 +202,12 @@
         <span class="n">temp_runs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_runs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
         <span class="c1"># sorted from earliest to latest</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_runs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">temp_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_decendent</span><span class="p">(</span><span class="n">temp_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">temp_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="s1">&#39;FROM THE DIALOG DEBUG&#39;</span><span class="p">)</span>
+            <span class="n">temp_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">temp_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
         
         
         <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">temp_runs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_runs</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;run time degiuggg&#39;</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">available_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
@@ -234,7 +233,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2020, Ethan T. Holleman
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
