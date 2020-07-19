@@ -164,11 +164,22 @@
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QGridLayout</span>
 <span class="kn">from</span> <span class="nn">polo.designer.UI_run_updater_dialog</span> <span class="kn">import</span> <span class="n">Ui_runUpdater</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">tim</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">tim</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">make_default_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RunUpdaterDialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog">[docs]</a><span class="k">class</span> <span class="nc">RunUpdaterDialog</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Small dialog for displaying the contents of the Polo log file</span>
+    <span class="sd">&#39;&#39;&#39;Small dialog for updating basic information about a run after</span>
+<span class="sd">    it has been imported. Includes updating the plate ID, the cocktail</span>
+<span class="sd">    menu used and the image spectrum.</span>
+
+<span class="sd">    :param run: Run to update</span>
+<span class="sd">    :type run: Run or HWIRun</span>
+<span class="sd">    :param run_names: Names of already loaded runs.</span>
+<span class="sd">    :type run_names: list or set</span>
+<span class="sd">    :param parent: Parent widget, defaults to None</span>
+<span class="sd">    :type parent: QWidget, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">run_names</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -178,38 +189,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_names</span> <span class="o">=</span> <span class="n">run_names</span>  <span class="c1"># all currently used run names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_2</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_cocktail_menu</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">select_run_menu</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_run_date</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_cocktail_menu</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_select_run_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_run_date</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">IMAGE_SPECS</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_menus</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_menus</span>
 
     <span class="nd">@current_menus</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">current_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_key</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">type_key</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">type_key</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>  <span class="c1"># soluble or membrane</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__current_menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="n">type_key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="n">type_key</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__run</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span>
 
     <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Opened new run </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">))</span>
     
-<div class="viewcode-block" id="RunUpdaterDialog.set_run_date"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.set_run_date">[docs]</a>    <span class="k">def</span> <span class="nf">set_run_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._set_run_date"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._set_run_date">[docs]</a>    <span class="k">def</span> <span class="nf">_set_run_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the `date` attribute of the `run` based on</span>
+<span class="sd">        the value in the dateEdit widget.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit</span><span class="o">.</span><span class="n">setDate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">date</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RunUpdaterDialog.set_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.set_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">set_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._set_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._set_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private methof that display cocktails in the cocktail comboBox based on</span>
+<span class="sd">        the current menu type selection. Either displays</span>
+<span class="sd">        soluble or membrane cocktail menus.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_menus</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span>
@@ -220,41 +239,59 @@
             <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">menu</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_menus</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">start_date</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="RunUpdaterDialog.select_run_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.select_run_menu">[docs]</a>    <span class="k">def</span> <span class="nf">select_run_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._select_run_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._select_run_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_select_run_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the current index of the comboBox based on the current</span>
+<span class="sd">        `cocktail_menu` in the `run`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">run_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span>
         <span class="n">menu_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">run_menu</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">menu_index</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">menu_index</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RunUpdaterDialog.update_run_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.update_run_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">update_run_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._update_run_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_run_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_update_run_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates the `cocktail_menu` attribute of the `run` based on the</span>
+<span class="sd">        current cocktail comboBox selection.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">new_menu</span> <span class="ow">and</span> <span class="n">new_menu</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span> <span class="o">=</span> <span class="n">new_menu</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
                 <span class="n">image</span><span class="o">.</span><span class="n">cocktail</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span><span class="o">.</span><span class="n">cocktails</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)]</span></div>
 
+    <span class="c1"># NOTE: Currently working on doing this one. Updating run name is a much bigger</span>
+    <span class="c1"># deal since it is used as the key for identifying a run</span>
+
     <span class="c1"># def update_run_name(self):</span>
     <span class="c1">#     new_name = self.ui.lineEdit.text()</span>
     <span class="c1">#     if new_name not in self.run_names and new_name != self.run.run_name:</span>
     <span class="c1">#         self.run.run_name = new_name</span>
 
-<div class="viewcode-block" id="RunUpdaterDialog.update_spectrum"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.update_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">update_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._update_spectrum"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">_update_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that update the spectrum of the `run` and the images in that run</span>
+<span class="sd">        based on the current selection of the spectrum comboBox.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_spectrum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">new_spectrum</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">new_spectrum</span>
             <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
                 <span class="n">image</span><span class="o">.</span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">new_spectrum</span></div>
 
-<div class="viewcode-block" id="RunUpdaterDialog.update_plate_id"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.update_plate_id">[docs]</a>    <span class="k">def</span> <span class="nf">update_plate_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._update_plate_id"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_plate_id">[docs]</a>    <span class="k">def</span> <span class="nf">_update_plate_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates the `plate_id` of the `run` based on the contents</span>
+<span class="sd">        of the plate ID lineEdit widget.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_2</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">new_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">plate_id</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">plate_id</span> <span class="o">=</span> <span class="n">new_id</span></div>
     
-<div class="viewcode-block" id="RunUpdaterDialog.update_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.update_run">[docs]</a>    <span class="k">def</span> <span class="nf">update_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunUpdaterDialog._update_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_run">[docs]</a>    <span class="k">def</span> <span class="nf">_update_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private wrapper method that calls all other update methods</span>
+<span class="sd">        and then closes the dialog.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># self.update_run_name()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_run_cocktail_menu</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_spectrum</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_plate_id</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_run_cocktail_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_spectrum</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_plate_id</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 </pre></div>
 

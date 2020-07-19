@@ -259,11 +259,11 @@ used in a screening cocktail.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>chemical_additive</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the reagent chemical,
 defaults to None</p></li>
-<li><p><strong>concentration</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a><em>, </em><em>optional</em>) – Concentration of the reagent in a given well,
+<li><p><strong>concentration</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue"><em>UnitValue</em></a><em>, </em><em>optional</em>) – Concentration of the reagent in a given well,
 defaults to None</p></li>
 <li><p><strong>chemical_formula</strong> (<em>str</em><em>, </em><em>optional</em>) – Chemical formula for this reagent, defaults
 to None</p></li>
-<li><p><strong>stock_con</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a><em>, </em><em>optional</em>) – Concentration of this reagent’s stock solution,
+<li><p><strong>stock_con</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue"><em>UnitValue</em></a><em>, </em><em>optional</em>) – Concentration of this reagent’s stock solution,
 defaults to None</p></li>
 </ul>
 </dd>
@@ -293,7 +293,7 @@ utimately refers back to a condition in a specific screening well.</p>
 <dd class="field-odd"><p>Chemical concentration</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -309,7 +309,7 @@ possible. Return False if cannot be calculated.</p>
 <dd class="field-odd"><p>Molarity or False</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or False</p>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a> or False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -329,7 +329,7 @@ concentration cannot be converted to mols / liter then returns false.</p>
 <dd class="field-odd"><p>molarity or False</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or Bool</p>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a> or Bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -364,13 +364,13 @@ stock_con is not set or the molarity of the reagent can not be
 calculated this method will return False.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>target_volume</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue"><em>SignedValue</em></a>) – Volume in which stock will be diluted into</p>
+<dd class="field-odd"><p><strong>target_volume</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue"><em>UnitValue</em></a>) – Volume in which stock will be diluted into</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Volume of stock or False</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a> or False</p>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a> or False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,57 +383,57 @@ calculated this method will return False.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="polo.crystallography.cocktail.SignedValue">
-<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.cocktail.</code><code class="sig-name descname">SignedValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue">
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.cocktail.</code><code class="sig-name descname">UnitValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>SignedValues are used to help handle numbers with units. They
+<p>UnitValues are used to help handle numbers with units. They
 are not the most robust but help to keep things more organized.
-SignedValues can be created by either passing values to the
+UnitValues can be created by either passing values to the
 <cite>values</cite> and <cite>units</cite> args explicitly or by calling the classmethod
 <cite>make_from_string</cite> which will use regex to pull out supported units and
 values.</p>
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.make_from_string">
-<em class="property">classmethod </em><code class="sig-name descname">make_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.make_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.make_from_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a SignedValue from a string containing a value and a unit.
+<dt id="polo.crystallography.cocktail.UnitValue.make_from_string">
+<em class="property">classmethod </em><code class="sig-name descname">make_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue.make_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.make_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a UnitValue from a string containing a value and a unit.
 Used the <cite>unit_regex</cite> to pull out the units.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">unit_string</span> <span class="o">=</span> <span class="s1">&#39;10.0 M&#39;</span>  <span class="c1"># concentration of 10 molar</span>
-<span class="n">sv</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">unit_string</span><span class="p">)</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">UnitValue</span><span class="o">.</span><span class="n">make_from_string</span><span class="p">(</span><span class="n">unit_string</span><span class="p">)</span>
 <span class="c1"># sv.value = 10 sv.units = &#39;M&#39;</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – The string to extract the SignedValue from</p>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – The string to extract the UnitValue from</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>SignedValue instance</p>
+<dd class="field-even"><p>UnitValue instance</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.round">
-<code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">digits</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.round" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue.round">
+<code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">digits</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue.round"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.round" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="polo.crystallography.cocktail.SignedValue.saved_scalers">
-<code class="sig-name descname">saved_scalers</code><em class="property"> = {'c': 0.01, 'm': 0.001, 'u': 1e-06}</em><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.saved_scalers" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue.saved_scalers">
+<code class="sig-name descname">saved_scalers</code><em class="property"> = {'c': 0.01, 'm': 0.001, 'u': 1e-06}</em><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.saved_scalers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.scale">
-<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale_key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale the value of the SignedValue instance using a key character
+<dt id="polo.crystallography.cocktail.UnitValue.scale">
+<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale_key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the value of the UnitValue instance using a key character
 in the <cite>saved_scalers</cite> dictionary. First converts the value to its
 base unit and then divides by the <cite>scale_key</cite> value. The <cite>scale_key</cite>
 can be thought of as a SI prefix for a base unit.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># self.saved_scalers = {&#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2}</span>
-<span class="n">v_one</span> <span class="o">=</span> <span class="n">SignedValue</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>  <span class="c1"># value of 10 liters</span>
+<span class="n">v_one</span> <span class="o">=</span> <span class="n">UnitValue</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>  <span class="c1"># value of 10 liters</span>
 <span class="n">v_one</span> <span class="o">=</span> <span class="n">v_one</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>  <span class="c1"># get v_one in microliters</span>
 </pre></div>
 </div>
@@ -442,37 +442,37 @@ can be thought of as a SI prefix for a base unit.</p>
 <dd class="field-odd"><p><strong>scale_key</strong> (<em>str</em>) – Character in <cite>saved_scalers</cite> to convert value to.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>SignedValue converted to scale_key unit prefix</p>
+<dd class="field-even"><p>UnitValue converted to scale_key unit prefix</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.set_from_string">
-<code class="sig-name descname">set_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.set_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.set_from_string" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue.set_from_string">
+<code class="sig-name descname">set_from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue.set_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.set_from_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.to_base">
-<code class="sig-name descname">to_base</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#SignedValue.to_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.to_base" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue.to_base">
+<code class="sig-name descname">to_base</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#UnitValue.to_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.to_base" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the value to the base unit, if it is not already in the
 base unit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>SignedValue converted to base unit of called SignedValue instance</p>
+<dd class="field-odd"><p>UnitValue converted to base unit of called UnitValue instance</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.SignedValue" title="polo.crystallography.cocktail.SignedValue">SignedValue</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.crystallography.cocktail.SignedValue.value">
-<em class="property">property </em><code class="sig-name descname">value</code><a class="headerlink" href="#polo.crystallography.cocktail.SignedValue.value" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.crystallography.cocktail.UnitValue.value">
+<em class="property">property </em><code class="sig-name descname">value</code><a class="headerlink" href="#polo.crystallography.cocktail.UnitValue.value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -819,7 +819,7 @@ stored as a dictionary in the mainWindow object.</p>
 <dt id="polo.crystallography.run.HWIRun.get_linked_alt_runs">
 <code class="sig-name descname">get_linked_alt_runs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.get_linked_alt_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.get_linked_alt_runs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all runs that this run is linked to by spectrum. See
-:func:<a href="#id1"><span class="problematic" id="id2">`</span></a>~polo.crystallography.HWIRun.link_to_alt_spectrum</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">link_to_alt_spectrum()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>List of runs linked to this run by spectrum</p>
@@ -847,7 +847,7 @@ spectrum images will then point to one non-visible spectrum run via their
 spectrum run to all alt spectrum runs but not get back to the visible spectrum
 run. Therefore, before a run is set to be viewed by the user this method
 temporary inserts it into the alt spectrum circular linked list. Also see
-:func:<a href="#id3"><span class="problematic" id="id4">`</span></a>~polo.crystallography.HWIRun.link_to_alt_spectrum.</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">link_to_alt_spectrum()</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">

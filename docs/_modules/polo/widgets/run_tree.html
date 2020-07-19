@@ -164,10 +164,12 @@
 <span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QGridLayout</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ICON_DICT</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">SPEC_KEYS</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ICON_DICT</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">SPEC_KEYS</span><span class="p">,</span> <span class="n">make_default_logger</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunDeserializer</span><span class="p">,</span> <span class="n">RunLinker</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 <span class="kn">from</span> <span class="nn">polo.windows.run_updater_dialog</span> <span class="kn">import</span> <span class="n">RunUpdaterDialog</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RunTree"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree">[docs]</a><span class="k">class</span> <span class="nc">RunTree</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidget</span><span class="p">):</span>
@@ -192,6 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">auto_link</span> <span class="o">=</span> <span class="n">auto_link</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RunTree</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOn</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_run_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -200,10 +203,10 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">_open_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+<div class="viewcode-block" id="RunTree._open_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._open_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_open_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_edit_data_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RunTree._edit_data_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._edit_data_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_edit_data_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
             <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -217,9 +220,9 @@
             <span class="c1">#     run_node = self._get_run_node(run)</span>
             <span class="c1">#     if run_node:</span>
             <span class="c1">#         run_node.setText(0, updater.run.run_name)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span></div>
 
-    <span class="k">def</span> <span class="nf">_add_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RunTree._add_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._add_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_add_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Helper method to add a new run node to the RunTree.</span>
 
 <span class="sd">        :param run: Run to add to the tree</span>
@@ -239,9 +242,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handle_dup_run_import</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
-        <span class="k">return</span> <span class="n">new_node</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added new run: </span><span class="si">{}</span><span class="s1"> with name </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">run</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
+            <span class="p">))</span>
+        <span class="k">return</span> <span class="n">new_node</span></div>
 
-    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+<div class="viewcode-block" id="RunTree._get_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._get_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private helper method that returns the QTreeWidget item</span>
 <span class="sd">        corresponding to a given run.</span>
 
@@ -258,17 +264,17 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">parent_node</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
             <span class="n">child_node</span> <span class="o">=</span> <span class="n">parent_node</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">run_name</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">child_node</span>
+                <span class="k">return</span> <span class="n">child_node</span></div>
 
-    <span class="k">def</span> <span class="nf">_remove_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RunTree._remove_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Slot to connect to contextmenu popup to remove the selected run</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
             <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
+<div class="viewcode-block" id="RunTree._remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to remove a run completely from Polo interface.</span>
 
 <span class="sd">        :param run_name: Run name of run to remove</span>
@@ -289,6 +295,7 @@
                 <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remove_run_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="n">run</span><span class="p">])</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Attempting to remove run: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">))</span></div>
         <span class="c1"># BUG: run unlinking not working for non visible images</span>
         <span class="c1"># the images within a run are unlinked but not the actual run objects</span>
         <span class="c1"># the above is a temp fix</span>
@@ -345,7 +352,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_name</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_node</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">parent_item</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_node</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">parent_item</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added sample: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_name</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="RunTree.link_sample"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.link_sample">[docs]</a>    <span class="k">def</span> <span class="nf">link_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Links all runs in a given sample together by both date</span>

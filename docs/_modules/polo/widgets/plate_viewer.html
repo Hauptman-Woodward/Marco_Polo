@@ -282,7 +282,7 @@
             <span class="n">new_page_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_page</span> <span class="o">=</span> <span class="n">new_page_number</span>
 
-    <span class="k">def</span> <span class="nf">_get_visible_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plateViewer._get_visible_wells"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer._get_visible_wells">[docs]</a>    <span class="k">def</span> <span class="nf">_get_visible_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Return indices of images that should be shown in the</span>
 <span class="sd">        current page. A page is equivalent to a subsection of a</span>
 <span class="sd">        larger screening plate.</span>
@@ -303,9 +303,9 @@
             <span class="n">plate_index</span> <span class="o">=</span> <span class="n">plateViewer</span><span class="o">.</span><span class="n">well_index_to_subgrid</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">p_r</span><span class="p">,</span> <span class="n">p_c</span><span class="p">)</span>
             <span class="n">plate_index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">plate_index</span> <span class="o">==</span> <span class="n">page</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">i</span>
+                <span class="k">yield</span> <span class="n">i</span></div>
 
-    <span class="k">def</span> <span class="nf">_make_image_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">label_dict</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">35</span><span class="p">):</span>
+<div class="viewcode-block" id="plateViewer._make_image_label"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer._make_image_label">[docs]</a>    <span class="k">def</span> <span class="nf">_make_image_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">label_dict</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">35</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Helper method for creating label strings to overlay onto</span>
 <span class="sd">        each image in the view.</span>
 
@@ -338,9 +338,9 @@
             <span class="n">f</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
             <span class="n">t</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="n">t</span>
+            <span class="k">return</span> <span class="n">t</span></div>
 
-    <span class="k">def</span> <span class="nf">_set_prerender_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<div class="viewcode-block" id="plateViewer._set_prerender_info"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer._set_prerender_info">[docs]</a>    <span class="k">def</span> <span class="nf">_set_prerender_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private helper method that sets flags and the tooltip for</span>
 <span class="sd">        GraphicsItems before they are added to the GraphicsScene.</span>
 
@@ -354,7 +354,7 @@
         <span class="n">item</span><span class="o">.</span><span class="n">setFlag</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsItem</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_tool_tip</span><span class="p">())</span>  <span class="c1"># pixmap is Image</span>
 
-        <span class="k">return</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">item</span></div>
 
 <div class="viewcode-block" id="plateViewer.tile_images_onto_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.tile_images_onto_scene">[docs]</a>    <span class="k">def</span> <span class="nf">tile_images_onto_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_dict</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&#39;&#39;&#39;Calculates images that should be shown based on the current page</span>

@@ -7,7 +7,9 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo.designer.UI_run_updater_dialog import Ui_runUpdater
 
-from polo import LOG_PATH, tim, IMAGE_SPECS
+from polo import LOG_PATH, tim, IMAGE_SPECS, make_default_logger
+
+logger = make_default_logger(__name__)
 
 
 class RunUpdaterDialog(QtWidgets.QDialog):
@@ -40,22 +42,23 @@ class RunUpdaterDialog(QtWidgets.QDialog):
 
     @property
     def current_menus(self):
-        return self.__current_menus
+        return self._current_menus
 
     @current_menus.setter
     def current_menus(self, type_key):
         if type_key == 's' or type_key == 'm':  # soluble or membrane
-            self.__current_menus = tim.get_menus_by_type(type_key)
+            self._current_menus = tim.get_menus_by_type(type_key)
         else:
             return []
 
     @property
     def run(self):
-        return self.__run
+        return self._run
 
     @run.setter
     def run(self, new_run):
-        self.__run = new_run
+        self._run = new_run
+        logger.info('Opened new run {}'.format(self._run))
     
     def _set_run_date(self):
         '''Set the `date` attribute of the `run` based on

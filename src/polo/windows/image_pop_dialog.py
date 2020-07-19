@@ -45,6 +45,7 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(
             self.change_favorite_status
         )
+        logger.info('Created {}'.format(self))
         # must set image before any other widget population
 
     @property

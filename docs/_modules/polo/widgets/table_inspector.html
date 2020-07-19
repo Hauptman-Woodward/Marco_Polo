@@ -194,10 +194,21 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_assign_checkboxes_to_class</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_table_view</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span>
+
+    <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableViewer</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">new_run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_column_options</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Opened new run </span><span class="si">{}</span><span class="s1"> with name </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="o">.</span><span class="n">run_name</span>
+            <span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -225,21 +236,14 @@
                 <span class="n">image_types</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">checkBox</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">image_types</span>
 
-    <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">tableViewer</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">new_run</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_column_options</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_assign_checkboxes_to_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TableInspector._assign_checkboxes_to_class"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_inspector.TableInspector._assign_checkboxes_to_class">[docs]</a>    <span class="k">def</span> <span class="nf">_assign_checkboxes_to_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that assigns filtering checkboxs to an</span>
 <span class="sd">        image classification from the `IMAGE_CLASSIFICATION` constant.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">checkBox</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_type_checks</span><span class="p">):</span>
-            <span class="n">checkBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">checkBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">_set_column_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TableInspector._set_column_options"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_inspector.TableInspector._set_column_options">[docs]</a>    <span class="k">def</span> <span class="nf">_set_column_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that sets the availabe columns to display</span>
 <span class="sd">        based on the attributes of the run stored in the `run` attribute.</span>
 <span class="sd">        Adds a checkbox widget for each attribute.</span>
@@ -252,7 +256,7 @@
                 <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
                 <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsUserCheckable</span><span class="p">)</span>
                 <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TableInspector.update_table_view"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_inspector.TableInspector.update_table_view">[docs]</a>    <span class="k">def</span> <span class="nf">update_table_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that updates the data being displayed</span>

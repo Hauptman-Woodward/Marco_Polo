@@ -45,11 +45,10 @@ class FTPDialog(QtWidgets.QDialog):
         self.download_files = None
         self.save_dir = None
         self.home_dir = None
-    
 
         self.ui.pushButton_2.setIcon(QIcon(self.DOWNLOAD_ICON))
 
-        logger.info('Opened FTP Dialog')
+        logger.info('Created {}'.format(self))
         
     @property
     def host(self):

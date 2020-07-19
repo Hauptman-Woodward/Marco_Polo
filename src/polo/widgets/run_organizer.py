@@ -49,6 +49,8 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
 
+        logger.info('Created {}'.format(self))
+
     def _clear_current_run(self, run_list):
         '''Clear out the current run from other widgets by emiting a
         `opening_run` signal with a list that does not contain
@@ -99,10 +101,15 @@ class RunOrganizer(QtWidgets.QWidget):
         def classification_cleanup():
             self.ui.runTree.setEnabled(True)
             self.ui.runTree.add_classified_run(run)
+            logger.info('Closed classification thread: {}'.format(
+                self.classification_thread
+            ))
 
         self.classification_thread.finished.connect(classification_cleanup)
         self.ui.runTree.setEnabled(False)
         self.classification_thread.start()
+        logger.info('Opened classification thread: {}'.format(
+            self.classification_thread))
 
     def _set_progress_value(self, val):
         '''Private helper method to increment the classification
@@ -159,6 +166,9 @@ class RunOrganizer(QtWidgets.QWidget):
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
             self._add_runs_to_tree([new_run])
+            logger.info('Added run {} with name {} from directory'.format(
+                new_run, new_run.run_name
+            ))
         return new_run
         # message box failed to import?
    
@@ -226,6 +236,7 @@ class RunOrganizer(QtWidgets.QWidget):
                     if isinstance(new_run, (HWIRun, Run)):
                         runs_to_add.append(new_run)
             self._add_runs_to_tree(runs_to_add)
+            logger.info('Added {} runs from saved files'.format(runs_to_add))
             QApplication.restoreOverrideCursor()
 
     def import_run_from_dialog(self):
@@ -236,6 +247,9 @@ class RunOrganizer(QtWidgets.QWidget):
             parent=self)
         run_importer_dialog.exec_()
         self._add_runs_to_tree(run_importer_dialog.imported_runs.values())
+        logger.info('Added {} runs from file dialog'.format(
+            run_importer_dialog.imported_runs.values()
+        ))
         # for run_name, run in run_importer_dialog.imported_runs.items():
         #     self._add_run_to_tree(run)
 
@@ -275,10 +289,16 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ftp_download_status.emit(True)
             self.ftp_download_counter[1] = len(ftp_browser.download_files)
             self.ftp_download_thread.start()
+            logger.info('Started FTP download thread {}'.format(
+                self.ftp_download_thread
+            ))
 
     def finished_ftp_download(self):
         self.ftp_download_status.emit(False)
         self.ftp_download_counter = [0, 0]  # reset the counter
+        logger.info('Finished FTP download thread {}'.format(
+            self.ftp_download_thread
+        ))
         make_message_box(
             message='All FTP downloads completed!', parent=self
         ).exec_()

@@ -195,6 +195,17 @@
 <dt id="polo.windows.ftp_dialog.FTPDialog">
 <em class="property">class </em><code class="sig-prename descclassname">polo.windows.ftp_dialog.</code><code class="sig-name descname">FTPDialog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ftp_connection</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/ftp_dialog.html#FTPDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<p>FTPDialog class acts as the interface for interacting
+with a remote FTP server. Allows for browsing and downloading
+files stored on the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ftp_connection</strong> (<em>FTP</em><em>, </em><em>optional</em>) – Existing FTP connection, defaults to None</p></li>
+<li><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – Parent widget, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="polo.windows.ftp_dialog.FTPDialog.CONNECTED_ICON">
 <code class="sig-name descname">CONNECTED_ICON</code><em class="property"> = '/home/ethan/Documents/github/Marco_Polo/src/data/images/icons/connected.png'</em><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog.CONNECTED_ICON" title="Permalink to this definition">¶</a></dt>
@@ -215,8 +226,8 @@
 <code class="sig-name descname">connect_ftp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/ftp_dialog.html#FTPDialog.connect_ftp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog.connect_ftp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempt to establish connection to ftp server. If the connection is
 successful then recursively walk through the user’s home directory
-and display available directories and files to the user via the
-fileBrowser widget. If the user has an extremely large number of
+and display available directories and files via the
+<cite>fileBrowser</cite> widget. If the user has an extremely large number of
 files this can take a while. If the connection fails show the user
 the error code thrown by ftplib.</p>
 </dd></dl>
@@ -224,10 +235,10 @@ the error code thrown by ftplib.</p>
 <dl class="py method">
 <dt id="polo.windows.ftp_dialog.FTPDialog.download_selected_files">
 <code class="sig-name descname">download_selected_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/ftp_dialog.html#FTPDialog.download_selected_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog.download_selected_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Signals to the fileBrowser widget to download all files / dirs the
+<dd><p>Signals to the <cite>fileBrowser</cite> widget to download all files / dirs the
 user has selected. Downloading occurs in the background and the FTP
 browser dialog is closed after a download has successfully begun.
-Additionally, another download should not be initiated while one is
+Another download should not be initiated while one is
 already in progress.</p>
 </dd></dl>
 
@@ -266,13 +277,7 @@ already in progress.</p>
 to the user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em><em>, </em><em>optional</em>) – If FTP confection is successful, defaults to False</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em><em>, </em><em>optional</em>) – If FTP connection is successful, defaults to False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -301,7 +306,7 @@ to the user</p>
 <em class="property">class </em><code class="sig-prename descclassname">polo.windows.image_pop_dialog.</code><code class="sig-name descname">ImagePopDialog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/image_pop_dialog.html#ImagePopDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.image_pop_dialog.ImagePopDialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
 <p>Pop up that displays a selected image in a larger view. Intended
-to be used with the PlateViewer widget when a user selects an
+to be used with the <cite>PlateViewer</cite> widget when a user selects an
 image from the grid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -311,7 +316,9 @@ image from the grid.</p>
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.change_favorite_status">
 <code class="sig-name descname">change_favorite_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/image_pop_dialog.html#ImagePopDialog.change_favorite_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.image_pop_dialog.ImagePopDialog.change_favorite_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update the favorite status of the current image to the
+state of the favorite radioButton.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.classify_image">
@@ -337,7 +344,14 @@ image from the grid.</p>
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.set_allowed_navigation_functions">
 <code class="sig-name descname">set_allowed_navigation_functions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/image_pop_dialog.html#ImagePopDialog.set_allowed_navigation_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.image_pop_dialog.ImagePopDialog.set_allowed_navigation_functions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Enable or disable navigation by date or spectrum buttons
+based on the content of the current image. Tests the Image
+stored in the <cite>image</cite> attribute to determine if it is linked to
+a future date, previous date or alt spectrum image through it’s
+<cite>next_image</cite>, <cite>previous_image</cite> and <cite>alt_image</cite> attributes
+respectively. If an attribute == None, then the button that
+requires that attribute will be disabled.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.set_cocktail_details">
@@ -354,7 +368,9 @@ image from the grid.</p>
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.set_image_details">
 <code class="sig-name descname">set_image_details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/image_pop_dialog.html#ImagePopDialog.set_image_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.image_pop_dialog.ImagePopDialog.set_image_details" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Displays the current image metadata in a
+testBrowser widget.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.show">
@@ -365,7 +381,20 @@ image from the grid.</p>
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.show_alt_image">
 <code class="sig-name descname">show_alt_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">next_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">prev_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alt</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/image_pop_dialog.html#ImagePopDialog.show_alt_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.image_pop_dialog.ImagePopDialog.show_alt_image" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Show a linked image based on boolean flags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>next_date</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, set <cite>image</cite> attribute to next
+available imaging date, defaults to False</p></li>
+<li><p><strong>prev_date</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, set <cite>image</cite> attribute to previous 
+imaging date, defaults to False</p></li>
+<li><p><strong>alt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, set <cite>image</cite> attribute to alt spectrum
+image, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.windows.image_pop_dialog.ImagePopDialog.show_image">
@@ -411,6 +440,8 @@ for display to the user.</p>
 <dt id="polo.windows.main_window.MainWindow">
 <em class="property">class </em><code class="sig-prename descclassname">polo.windows.main_window.</code><code class="sig-name descname">MainWindow</code><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMainWindow</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">polo.designer.UI_main_window.Ui_MainWindow</span></code></p>
+<p>QMainWindow that ultimately is the parent of all other
+included widgets.</p>
 <dl class="py attribute">
 <dt id="polo.windows.main_window.MainWindow.BAR_COLORS">
 <code class="sig-name descname">BAR_COLORS</code><em class="property"> = [15, 13, 14, 4]</em><a class="headerlink" href="#polo.windows.main_window.MainWindow.BAR_COLORS" title="Permalink to this definition">¶</a></dt>
@@ -422,45 +453,139 @@ for display to the user.</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.add_loaded_run">
-<code class="sig-name descname">add_loaded_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.add_loaded_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.add_loaded_run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a run object to the loaded_runs attribute and add the run name to
-the available runs listWidget so the user may select this run for
-viewing. After this function call the run will be recoverable using
-its run name as a key in the loaded_runs dictionary.</p>
+<dt id="polo.windows.main_window.MainWindow._handle_export">
+<code class="sig-name descname">_handle_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em>, <em class="sig-param"><span class="n">export_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to handle when a user requests to export a run
+to a non-xtal file format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run</strong> – Run Object. New run to make available to the user.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> (<em>QAction</em>) – QAction that describes the export type the user has requested</p></li>
+<li><p><strong>export_path</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to export file to, defaults to None</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.apply_plot_selection_logic">
-<code class="sig-name descname">apply_plot_selection_logic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.apply_plot_selection_logic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.apply_plot_selection_logic" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.clear_and_set_variable_boxes">
-<code class="sig-name descname">clear_and_set_variable_boxes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_vars</span></em>, <em class="sig-param"><span class="n">y_vars</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.clear_and_set_variable_boxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.clear_and_set_variable_boxes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper function for apply_plot_selection_logic that clears the
-two variable combo boxes and sets new values to the values
-contained in the x_vars and y_vars lists.</p>
+<dt id="polo.windows.main_window.MainWindow._handle_file_menu">
+<code class="sig-name descname">_handle_file_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_file_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_file_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to handle user interaction with the file menu;
+this usually means saving a run as an xtal file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>selection</strong> (<em>QAction</em>) – QAction that describes user selection</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.get_current_plot_labels">
-<code class="sig-name descname">get_current_plot_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.get_current_plot_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.get_current_plot_labels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="polo.windows.main_window.MainWindow._handle_help_menu">
+<code class="sig-name descname">_handle_help_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_help_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_help_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle user interaction with the help menu. All selections
+open links to various pages of the documentation website.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>action</strong> (<em>QAction</em>) – QAction that describes the user’s selection</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.get_current_plot_selections">
-<code class="sig-name descname">get_current_plot_selections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.get_current_plot_selections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.get_current_plot_selections" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="polo.windows.main_window.MainWindow._handle_image_import">
+<code class="sig-name descname">_handle_image_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_image_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_image_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that handles when the user attempts to import images into Polo. 
+Effectively a wrapper around other methods that provide the functionality to
+each option in the import menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>selection</strong> – QAction. QAction from user menu selection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._handle_opening_run">
+<code class="sig-name descname">_handle_opening_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_opening_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_opening_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that handles opening a run. For the most part,
+this means setting the <cite>run</cite> attribute of other widgets to the
+new run. The setter methods of these widgets should then handle
+updating their interfaces to reflect the new run being
+opened. Also calls <a class="reference internal" href="#polo.windows.main_window.MainWindow._tab_limiter" title="polo.windows.main_window.MainWindow._tab_limiter"><code class="xref py py-func docutils literal notranslate"><span class="pre">_tab_limiter()</span></code></a>
+and <a class="reference internal" href="#polo.windows.main_window.MainWindow._plot_limiter" title="polo.windows.main_window.MainWindow._plot_limiter"><code class="xref py py-func docutils literal notranslate"><span class="pre">_plot_limiter()</span></code></a> to set 
+allowed functions for the user based on the type of run they open.</p>
+<p>Additionally, if this is not the first run to be opened, before
+the <cite>new_run</cite> is set as the <cite>current_run</cite> the pixmaps of the <cite>current_run</cite>
+are unloaded to free up memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>q</strong> (<em>list</em>) – List containing the run to be opened. Likely originating from
+the <cite>RunOrganizer</cite> widget.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._handle_plot_selection">
+<code class="sig-name descname">_handle_plot_selection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_plot_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_plot_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to handle user plot selections.</p>
+<p>TODO: Move all plot methods into their own widget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._on_changed_tab">
+<code class="sig-name descname">_on_changed_tab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._on_changed_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._on_changed_tab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that handles GUI behavior when a user
+switches from one tab to another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>i</strong> – Int. The index of the current tab, after user has changed tabs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._plot_limiter">
+<code class="sig-name descname">_plot_limiter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._plot_limiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._plot_limiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to limit the types of plots that can be shown
+based on the type of the <cite>current_run</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._save_file_dialog">
+<code class="sig-name descname">_save_file_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._save_file_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._save_file_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to open a QFileDialog to get a location
+to save a run to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Path to save file to</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._set_tab_icons">
+<code class="sig-name descname">_set_tab_icons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._set_tab_icons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._set_tab_icons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that assigns icons to each of the main run 
+interface tabs. Should be called in the <cite>__init__</cite> method before
+the main window is shown to the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._tab_limiter">
+<code class="sig-name descname">_tab_limiter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._tab_limiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._tab_limiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that limits the interfaces that a user is allowed
+to interact with based on the type of run they have loaded and
+selected. Currently, <cite>Run</cite> functionality is limited due to the fact
+cocktails cannot be mapped to images.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.windows.main_window.MainWindow.get_widget_dims">
-<code class="sig-name descname">get_widget_dims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.get_widget_dims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.get_widget_dims" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">get_widget_dims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">widget</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.get_widget_dims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.get_widget_dims" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the width and height as a tuple of a given widget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -476,158 +601,21 @@ contained in the x_vars and y_vars lists.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_advanced_tools">
-<code class="sig-name descname">handle_advanced_tools</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_advanced_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_advanced_tools" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_export">
-<code class="sig-name descname">handle_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em>, <em class="sig-param"><span class="n">export_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_export" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles when user wants to export the current run. Creates an instance
-of exporterDialog class and displays that dialog to the user.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_file_menu">
-<code class="sig-name descname">handle_file_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_file_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_file_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method that handles all selection possiblities under
-the file menu. Calls the appropriate methods based on the
-value of selection arguement.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>selection</strong> – QAction. QAction returned by user selecting an item            from the file menu.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_help_menu">
-<code class="sig-name descname">handle_help_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_help_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_help_menu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_image_import">
-<code class="sig-name descname">handle_image_import</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_image_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_image_import" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles when the user attempts to import images into Polo. Effectively
-a wrapper around other methods that call provide the functionality to
-each option in the import menu.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>selection</strong> – QAction. QAction from user menu selection.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_opening_run">
-<code class="sig-name descname">handle_opening_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_opening_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_opening_run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles whenever a loaded run from the loaded runs list is
-doubleclicked. First sets the selected run to the current_run. If the
-run has not been classified and therefore does not exist in the
-classified_runs dictionary it is classified via the
-open_classification_thread method. If the run has been classified previously
-then it is displayed. Additionally checks the run type to determine what
-plotting methods should be available and enables the navigation by date
-push Buttons if the run has either a next or previous run
-connected to it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>q</strong> – List</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.handle_plot_selection">
-<code class="sig-name descname">handle_plot_selection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.handle_plot_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.handle_plot_selection" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt id="polo.windows.main_window.MainWindow.layout_widget_lister">
-<code class="sig-name descname">layout_widget_lister</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layout</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.layout_widget_lister"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.layout_widget_lister" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.on_changed_tab">
-<code class="sig-name descname">on_changed_tab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.on_changed_tab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.on_changed_tab" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles GUI behavior when a user switches to one tab to another.</p>
+<em class="property">static </em><code class="sig-name descname">layout_widget_lister</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">layout</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.layout_widget_lister"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.layout_widget_lister" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all widgets in a given layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>i</strong> – Int. The index of the current tab, after user has changed tabs.</p>
+<dd class="field-odd"><p><strong>layout</strong> (<em>QLayout</em>) – QLayout that contains widgets</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple of widgets in the given layout</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_file_dialog">
-<code class="sig-name descname">open_file_dialog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dialog_type</span><span class="o">=</span><span class="default_value">'Dir'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_file_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_file_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_log_dialog">
-<code class="sig-name descname">open_log_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_log_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_log_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_run_import_dialog">
-<code class="sig-name descname">open_run_import_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_run_import_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_run_import_dialog" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates an instance of the RunImporterDialog class and displays
-that dialog. After the instance is closed by the user checks to see
-if a new run has been created and stored in the new_run attribute of
-the RunImporterDialog instance. If one is present makes it available
-to the user by passing contents of new_run to add_loaded_run.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_run_updater_dialog">
-<code class="sig-name descname">open_run_updater_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_run_updater_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_run_updater_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_settings_dialog">
-<code class="sig-name descname">open_settings_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_settings_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_settings_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_spectra_dialog">
-<code class="sig-name descname">open_spectra_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_spectra_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_spectra_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.open_time_link_dialog">
-<code class="sig-name descname">open_time_link_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.open_time_link_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.open_time_link_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.plot_limiter">
-<code class="sig-name descname">plot_limiter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.plot_limiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.plot_limiter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.save_file_dialog">
-<code class="sig-name descname">save_file_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.save_file_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.save_file_dialog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.set_default_plot_labels">
-<code class="sig-name descname">set_default_plot_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.set_default_plot_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.set_default_plot_labels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.set_tab_icons">
-<code class="sig-name descname">set_tab_icons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.set_tab_icons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.set_tab_icons" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assigns icons to each of the main run interface tabs</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.show_error_message">
-<code class="sig-name descname">show_error_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="o">=</span><span class="default_value">'Error :('</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.show_error_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.show_error_message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.main_window.MainWindow.tab_limiter">
-<code class="sig-name descname">tab_limiter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow.tab_limiter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow.tab_limiter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -723,8 +711,14 @@ to the user by passing contents of new_run to add_loaded_run.</p>
 <dt id="polo.windows.run_importer.RunImporterDialog">
 <em class="property">class </em><code class="sig-prename descclassname">polo.windows.run_importer.</code><code class="sig-name descname">RunImporterDialog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current_run_names</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
-<p>Dialog that allows and controls how the user creates run objects from
-directories of images.</p>
+<p>RunImporterDialog instances are the user interface for importing
+runs from rar archives or directories on the local machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>current_run_names</strong> (<em>list</em><em> or </em><em>set</em>) – Runnames that are already in use by the
+current Polo session (Run names should be unique)</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="polo.windows.run_importer.RunImporterDialog.HWI_INDEX">
 <code class="sig-name descname">HWI_INDEX</code><em class="property"> = 0</em><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog.HWI_INDEX" title="Permalink to this definition">¶</a></dt>
@@ -741,18 +735,253 @@ directories of images.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._add_import_candidates">
+<code class="sig-name descname">_add_import_candidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_candidates</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._add_import_candidates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._add_import_candidates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add <cite>ImportCandidates</cite> to the <cite>import_candidates</cite> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_candidates</strong> (<em>list</em>) – List of <cite>ImportCandidates</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._could_not_import_message">
+<code class="sig-name descname">_could_not_import_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span></em>, <em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._could_not_import_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._could_not_import_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that creates an message box popup for when imports fail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> (<em>str</em>) – First part of the error message. Something
+like “Could not import the following files:”</p></li>
+<li><p><strong>paths</strong> (<em>list</em>) – List of filepaths that could not be imported</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>QMessageBox</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>QMessageBox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._disable_hwi_import_tools">
+<code class="sig-name descname">_disable_hwi_import_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._disable_hwi_import_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._disable_hwi_import_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to disable widgets that should only be used for
+HWIRun imports.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._display_candidate_paths">
+<code class="sig-name descname">_display_candidate_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._display_candidate_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._display_candidate_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that updates the dialog’s listWidget with the
+file paths of the current import candidates in the <cite>import_candidates</cite>
+attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._display_cocktail_files">
+<code class="sig-name descname">_display_cocktail_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">menu_type</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._display_cocktail_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._display_cocktail_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._enable_hwi_import_tools">
+<code class="sig-name descname">_enable_hwi_import_tools</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._enable_hwi_import_tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._enable_hwi_import_tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to enable widgets that should only be used
+for HWIRun imports.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._handle_candidate_change">
+<code class="sig-name descname">_handle_candidate_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._handle_candidate_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._handle_candidate_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that calls 
+<a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._update_selected_candidate" title="polo.windows.run_importer.RunImporterDialog._update_selected_candidate"><code class="xref py py-func docutils literal notranslate"><span class="pre">_update_selected_candidate()</span></code></a>
+and then  <a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._populate_fields" title="polo.windows.run_importer.RunImporterDialog._populate_fields"><code class="xref py py-func docutils literal notranslate"><span class="pre">_populate_fields()</span></code></a>. This updates
+the data of the previously selected <cite>ImportCandidate</cite> if it has been changed and then
+updates data display widgets with the information from the currently selected
+<cite>ImportCandidate</cite> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._import_files">
+<code class="sig-name descname">_import_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rar</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._import_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._import_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._import_run">
+<code class="sig-name descname">_import_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">import_candidate</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._import_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._import_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private helper method that is called by
+<a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._import_runs" title="polo.windows.run_importer.RunImporterDialog._import_runs"><code class="xref py py-func docutils literal notranslate"><span class="pre">_import_runs()</span></code></a> that
+attempts to import a run from an <cite>ImportCandidate</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>import_candidate</strong> (<a class="reference internal" href="#polo.windows.run_importer.ImportCandidate" title="polo.windows.run_importer.ImportCandidate"><em>ImportCandidate</em></a>) – <cite>ImportCandidate</cite> to create run from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Run or HWIRun if successful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a> or <a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun">HWIRun</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._import_runs">
+<code class="sig-name descname">_import_runs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._import_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._import_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that attempts to create run objects from all available
+<cite>ImportCandidates</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._open_browser">
+<code class="sig-name descname">_open_browser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rar</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._open_browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._open_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that opens a QFileBrowser that allows the user to select
+files for import. They type of file import allowed is set using the <cite>rar</cite> flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rar</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, allow user to only import Rar archive files defaults to True. IF False
+only allows the user to import directories.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of files the user has selected for import</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._populate_fields">
+<code class="sig-name descname">_populate_fields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">import_candidate</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._populate_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._populate_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to populate candidate data to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>import_candidate</strong> (<a class="reference internal" href="#polo.windows.run_importer.ImportCandidate" title="polo.windows.run_importer.ImportCandidate"><em>ImportCandidate</em></a>) – ImportCandidate to display</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._remove_run">
+<code class="sig-name descname">_remove_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._remove_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a run as an import candidate and refreshes the listWidget
+to reflect the removal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._restore_defaults">
+<code class="sig-name descname">_restore_defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._restore_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._restore_defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore suggested import settings for an <cite>ImportCandidate</cite> in case
+the user has changed them and then wants to undo those changes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._set_cocktail_menu">
+<code class="sig-name descname">_set_cocktail_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._set_cocktail_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that sets the cocktail comboBox based on the
+cocktail menu stored in the <cite>selected_candidate</cite>. Used to convey to
+the user which cocktail menu has been selected for a given
+<cite>ImportCandidate</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._set_cocktail_menu_type_radiobuttons">
+<code class="sig-name descname">_set_cocktail_menu_type_radiobuttons</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type_</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._set_cocktail_menu_type_radiobuttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu_type_radiobuttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pirvate method that sets the cocktail menu type radioButtons
+given a cocktail menu type key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>type</strong> – Cocktail menu type key. If <cite>type_</cite> == ‘s’ then soluble</p>
+</dd>
+</dl>
+<p>menu radioButton state is set to True. If ‘type_` == ‘m’ then
+membrane radiobutton state is set to True
+:type <a href="#id1"><span class="problematic" id="id2">type_</span></a>: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._set_image_spectrum">
+<code class="sig-name descname">_set_image_spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spectrum</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._set_image_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._set_image_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that sets the image spectrum comboBox
+based on the <cite>spectrum</cite> argument. Should be used to display
+the inferred spectrum of an import candidate to the user when
+that candidate is selected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spectrum</strong> (<em>str</em>) – Spectrum key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._test_candidate_paths">
+<code class="sig-name descname">_test_candidate_paths</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._test_candidate_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._test_candidate_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that validates file paths to ensure they could be
+imported into Polo</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_paths</strong> (<em>list</em>) – List of filepaths to be imported</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple with first item being verified paths and second being
+list of paths that failed verification tests.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._unrar_candidate_paths">
+<code class="sig-name descname">_unrar_candidate_paths</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidate_paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._unrar_candidate_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._unrar_candidate_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that attempts to un-compress a collection of rar
+archive files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>candidate_paths</strong> (<em>list</em>) – List of filepaths to unrar</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple, first being list of paths that were successfully unrared and the
+second being list of filepaths that could not be unrared</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._update_candidate_run_data">
+<code class="sig-name descname">_update_candidate_run_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._update_candidate_run_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to allow the user to update <cite>ImportCandidate</cite>
+instance’s data from the Widgets in the <cite>RunImporterDialog</cite>. Updates the
+<cite>ImportCandidate</cite>’s <cite>data</cite> attribute dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._update_selected_candidate">
+<code class="sig-name descname">_update_selected_candidate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._update_selected_candidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._update_selected_candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that updates currently selected <cite>ImportCandidate</cite> by
+calling <a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data" title="polo.windows.run_importer.RunImporterDialog._update_candidate_run_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">_update_candidate_run_data()</span></code></a>
+and then updating the display by calling
+<a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._populate_fields" title="polo.windows.run_importer.RunImporterDialog._populate_fields"><code class="xref py py-func docutils literal notranslate"><span class="pre">_populate_fields()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._verify_run_name">
+<code class="sig-name descname">_verify_run_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._verify_run_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._verify_run_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to verify a run name. If run name fails verification
+clears the runname lineEdit widget and shows an error message to the user.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog.all_run_names">
 <em class="property">property </em><code class="sig-name descname">all_run_names</code><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog.all_run_names" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_importer.RunImporterDialog.make_run">
-<code class="sig-name descname">make_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">import_candidate</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog.make_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog.make_run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_importer.RunImporterDialog.open_file_browser">
-<code class="sig-name descname">open_file_browser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rar</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dir</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog.open_file_browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog.open_file_browser" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -763,7 +992,27 @@ directories of images.</p>
 <dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog.selection_dict">
 <em class="property">property </em><code class="sig-name descname">selection_dict</code><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog.selection_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a dictionary who’s keys are <cite>Run</cite> attributes and values
+are the values of <cite>RunImporterDialog</cite> widgets that correspond to
+these attributes.</p>
+<p>Example of the dictionary returned below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;cocktail_menu&#39;</span><span class="p">:</span> <span class="n">CocktailMenu</span><span class="p">,</span>
+    <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span>
+    <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -774,7 +1023,68 @@ directories of images.</p>
 <dt id="polo.windows.run_updater_dialog.RunUpdaterDialog">
 <em class="property">class </em><code class="sig-prename descclassname">polo.windows.run_updater_dialog.</code><code class="sig-name descname">RunUpdaterDialog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">run_names</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
-<p>Small dialog for displaying the contents of the Polo log file</p>
+<p>Small dialog for updating basic information about a run after
+it has been imported. Includes updating the plate ID, the cocktail
+menu used and the image spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run to update</p></li>
+<li><p><strong>run_names</strong> (<em>list</em><em> or </em><em>set</em>) – Names of already loaded runs.</p></li>
+<li><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – Parent widget, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._select_run_menu">
+<code class="sig-name descname">_select_run_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._select_run_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._select_run_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that sets the current index of the comboBox based on the current
+<cite>cocktail_menu</cite> in the <cite>run</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._set_cocktail_menu">
+<code class="sig-name descname">_set_cocktail_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._set_cocktail_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._set_cocktail_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private methof that display cocktails in the cocktail comboBox based on
+the current menu type selection. Either displays
+soluble or membrane cocktail menus.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._set_run_date">
+<code class="sig-name descname">_set_run_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._set_run_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._set_run_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <cite>date</cite> attribute of the <cite>run</cite> based on
+the value in the dateEdit widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._update_plate_id">
+<code class="sig-name descname">_update_plate_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._update_plate_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._update_plate_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that updates the <cite>plate_id</cite> of the <cite>run</cite> based on the contents
+of the plate ID lineEdit widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._update_run">
+<code class="sig-name descname">_update_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._update_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._update_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private wrapper method that calls all other update methods
+and then closes the dialog.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._update_run_cocktail_menu">
+<code class="sig-name descname">_update_run_cocktail_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._update_run_cocktail_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._update_run_cocktail_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that updates the <cite>cocktail_menu</cite> attribute of the <cite>run</cite> based on the
+current cocktail comboBox selection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog._update_spectrum">
+<code class="sig-name descname">_update_spectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog._update_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog._update_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that update the spectrum of the <cite>run</cite> and the images in that run
+based on the current selection of the spectrum comboBox.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.current_menus">
 <em class="property">property </em><code class="sig-name descname">current_menus</code><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.current_menus" title="Permalink to this definition">¶</a></dt>
@@ -783,41 +1093,6 @@ directories of images.</p>
 <dl class="py method">
 <dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.run">
 <em class="property">property </em><code class="sig-name descname">run</code><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.select_run_menu">
-<code class="sig-name descname">select_run_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.select_run_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.select_run_menu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.set_cocktail_menu">
-<code class="sig-name descname">set_cocktail_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.set_cocktail_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.set_cocktail_menu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.set_run_date">
-<code class="sig-name descname">set_run_date</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.set_run_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.set_run_date" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.update_plate_id">
-<code class="sig-name descname">update_plate_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.update_plate_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.update_plate_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.update_run">
-<code class="sig-name descname">update_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.update_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.update_run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.update_run_cocktail_menu">
-<code class="sig-name descname">update_run_cocktail_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.update_run_cocktail_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.update_run_cocktail_menu" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_updater_dialog.RunUpdaterDialog.update_spectrum">
-<code class="sig-name descname">update_spectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_updater_dialog.html#RunUpdaterDialog.update_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_updater_dialog.RunUpdaterDialog.update_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

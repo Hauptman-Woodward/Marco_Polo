@@ -175,6 +175,15 @@
 
 
 <div class="viewcode-block" id="FTPDialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.ftp_dialog.FTPDialog">[docs]</a><span class="k">class</span> <span class="nc">FTPDialog</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;FTPDialog class acts as the interface for interacting</span>
+<span class="sd">    with a remote FTP server. Allows for browsing and downloading</span>
+<span class="sd">    files stored on the server.</span>
+
+<span class="sd">    :param ftp_connection: Existing FTP connection, defaults to None</span>
+<span class="sd">    :type ftp_connection: FTP, optional</span>
+<span class="sd">    :param parent: Parent widget, defaults to None</span>
+<span class="sd">    :type parent: QWidget, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">DOWNLOAD_ICON</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;download&#39;</span><span class="p">])</span>
     <span class="n">CONNECTED_ICON</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;connected&#39;</span><span class="p">])</span>
@@ -193,11 +202,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">download_files</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">home_dir</span> <span class="o">=</span> <span class="kc">None</span>
-    
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_2</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DOWNLOAD_ICON</span><span class="p">))</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Opened FTP Dialog&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">host</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -229,8 +237,8 @@
 <div class="viewcode-block" id="FTPDialog.connect_ftp"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.ftp_dialog.FTPDialog.connect_ftp">[docs]</a>    <span class="k">def</span> <span class="nf">connect_ftp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Attempt to establish connection to ftp server. If the connection is</span>
 <span class="sd">        successful then recursively walk through the user&#39;s home directory</span>
-<span class="sd">        and display available directories and files to the user via the</span>
-<span class="sd">        fileBrowser widget. If the user has an extremely large number of</span>
+<span class="sd">        and display available directories and files via the</span>
+<span class="sd">        `fileBrowser` widget. If the user has an extremely large number of</span>
 <span class="sd">        files this can take a while. If the connection fails show the user</span>
 <span class="sd">        the error code thrown by ftplib.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -305,10 +313,8 @@
         <span class="sd">&#39;&#39;&#39;Change the Qlabel that displays the current connection status</span>
 <span class="sd">        to the user</span>
 
-<span class="sd">        :param connected: If FTP confection is successful, defaults to False</span>
+<span class="sd">        :param connected: If FTP connection is successful, defaults to False</span>
 <span class="sd">        :type connected: bool, optional</span>
-<span class="sd">        :return: None</span>
-<span class="sd">        :rtype: None</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">connected</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_3</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Connected&#39;</span><span class="p">)</span>
@@ -318,10 +324,10 @@
         <span class="c1"># want to return the error message as some kind of flash</span>
 
 <div class="viewcode-block" id="FTPDialog.download_selected_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.ftp_dialog.FTPDialog.download_selected_files">[docs]</a>    <span class="k">def</span> <span class="nf">download_selected_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Signals to the fileBrowser widget to download all files / dirs the</span>
+        <span class="sd">&#39;&#39;&#39;Signals to the `fileBrowser` widget to download all files / dirs the</span>
 <span class="sd">        user has selected. Downloading occurs in the background and the FTP</span>
 <span class="sd">        browser dialog is closed after a download has successfully begun.</span>
-<span class="sd">        Additionally, another download should not be initiated while one is</span>
+<span class="sd">        Another download should not be initiated while one is</span>
 <span class="sd">        already in progress.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">file_dlg</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">()</span>

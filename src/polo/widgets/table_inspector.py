@@ -37,10 +37,21 @@ class TableInspector(QtWidgets.QWidget):
 
         self._assign_checkboxes_to_class()
         self.ui.pushButton.clicked.connect(self.update_table_view)
+        logger.info('Created {}'.format(self))
 
     @property
     def run(self):
         return self._run
+
+    @run.setter
+    def run(self, new_run):
+        self._run = new_run
+        if self.run:
+            self.ui.tableViewer.run = new_run
+            self._set_column_options()
+            logger.info('Opened new run {} with name {}'.format(
+                self._run, self._run.run_name
+            ))
 
     @property
     def selected_headers(self):
@@ -67,13 +78,6 @@ class TableInspector(QtWidgets.QWidget):
             if checkBox.isChecked():
                 image_types.add(checkBox.text())
         return image_types
-
-    @run.setter
-    def run(self, new_run):
-        self._run = new_run
-        if self.run:
-            self.ui.tableViewer.run = new_run
-            self._set_column_options()
 
     def _assign_checkboxes_to_class(self):
         '''Private method that assigns filtering checkboxs to an

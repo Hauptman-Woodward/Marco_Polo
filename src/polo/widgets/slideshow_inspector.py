@@ -11,7 +11,9 @@ from polo.utils.dialog_utils import make_message_box
 from polo.designer.UI_slideshow_inspector import Ui_slideshowInspector
 from polo.utils.io_utils import SceneExporter, RunSerializer
 import copy
-from polo import ICON_DICT
+from polo import ICON_DICT, make_default_logger
+
+logger = make_default_logger(__name__)
 
 
 class slideshowInspector(QtWidgets.QWidget):
@@ -143,6 +145,9 @@ class slideshowInspector(QtWidgets.QWidget):
         self._display_current_image()
         self._set_time_resolved_functions()
         self._set_alt_spectrum_buttons()
+        logger.info('Opened new run: {} with name {}'.format(
+            self.__run, self.__run.run_name
+        ))
 
     @property
     def selected_classifications(self):

@@ -7,10 +7,12 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
-from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
+from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS, make_default_logger
 from polo.utils.io_utils import RunDeserializer, RunLinker
 from polo.crystallography.run import HWIRun, Run
 from polo.windows.run_updater_dialog import RunUpdaterDialog
+
+logger = make_default_logger(__name__)
 
 
 class RunTree(QtWidgets.QTreeWidget):
@@ -35,6 +37,7 @@ class RunTree(QtWidgets.QTreeWidget):
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        logger.info('Created {}'.format(self))
 
     @property
     def current_run_names(self):
@@ -82,6 +85,9 @@ class RunTree(QtWidgets.QTreeWidget):
             self.handle_dup_run_import()
         else:
             self.loaded_runs[run.run_name] = run
+            logger.info('Added new run: {} with name {}'.format(
+                run, run.run_name
+            ))
         return new_node
 
     def _get_run_node(self, run):
@@ -132,6 +138,7 @@ class RunTree(QtWidgets.QTreeWidget):
                 ):
                 self.loaded_runs[run].alt_spectrum = None
         self.remove_run_signal.emit([run])
+        logger.info('Attempting to remove run: {}'.format(run))
         # BUG: run unlinking not working for non visible images
         # the images within a run are unlinked but not the actual run objects
         # the above is a temp fix
@@ -189,6 +196,7 @@ class RunTree(QtWidgets.QTreeWidget):
         for run in args:
             if isinstance(run, (Run, HWIRun)):
                 self._add_run_node(run, parent_item)
+        logger.info('Added sample: {}'.format(sample_name))
 
     def link_sample(self, sample_name):
         '''Links all runs in a given sample together by both date

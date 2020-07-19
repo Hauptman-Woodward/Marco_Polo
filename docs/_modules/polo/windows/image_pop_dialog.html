@@ -172,7 +172,7 @@
 
 <div class="viewcode-block" id="ImagePopDialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog">[docs]</a><span class="k">class</span> <span class="nc">ImagePopDialog</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Pop up that displays a selected image in a larger view. Intended</span>
-<span class="sd">    to be used with the PlateViewer widget when a user selects an</span>
+<span class="sd">    to be used with the `PlateViewer` widget when a user selects an</span>
 <span class="sd">    image from the grid.</span>
 
 <span class="sd">    :param image: Image to show</span>
@@ -202,15 +202,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">change_favorite_status</span>
         <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="c1"># must set image before any other widget population</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__image</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
 
     <span class="nd">@image</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_image</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__image</span> <span class="o">=</span> <span class="n">new_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span> <span class="o">=</span> <span class="n">new_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_image</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ImagePopDialog.show"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -232,10 +233,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">))</span></div>
     
 <div class="viewcode-block" id="ImagePopDialog.change_favorite_status"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.change_favorite_status">[docs]</a>    <span class="k">def</span> <span class="nf">change_favorite_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Update the favorite status of the current image to the</span>
+<span class="sd">        state of the favorite radioButton.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog.set_image_details"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.set_image_details">[docs]</a>    <span class="k">def</span> <span class="nf">set_image_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Displays the current image metadata in a</span>
+<span class="sd">        testBrowser widget.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">))</span></div>
 
@@ -279,6 +286,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog.show_alt_image"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.show_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">show_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Show a linked image based on boolean flags. </span>
+
+<span class="sd">        :param next_date: If True, set `image` attribute to next</span>
+<span class="sd">                          available imaging date, defaults to False</span>
+<span class="sd">        :type next_date: bool, optional</span>
+<span class="sd">        :param prev_date: If True, set `image` attribute to previous </span>
+<span class="sd">                          imaging date, defaults to False</span>
+<span class="sd">        :type prev_date: bool, optional</span>
+<span class="sd">        :param alt: If True, set `image` attribute to alt spectrum</span>
+<span class="sd">                    image, defaults to False</span>
+<span class="sd">        :type alt: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">next_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span>
         <span class="k">elif</span> <span class="n">prev_date</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
@@ -287,6 +306,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog.set_allowed_navigation_functions"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.set_allowed_navigation_functions">[docs]</a>    <span class="k">def</span> <span class="nf">set_allowed_navigation_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Enable or disable navigation by date or spectrum buttons</span>
+<span class="sd">        based on the content of the current image. Tests the Image</span>
+<span class="sd">        stored in the `image` attribute to determine if it is linked to</span>
+<span class="sd">        a future date, previous date or alt spectrum image through it&#39;s</span>
+<span class="sd">        `next_image`, `previous_image` and `alt_image` attributes</span>
+<span class="sd">        respectively. If an attribute == None, then the button that</span>
+<span class="sd">        requires that attribute will be disabled.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -299,17 +326,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_7</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_7</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div></div>
-
-    <span class="c1"># def set_allowed_navigation_functions(self):</span>
-    <span class="c1">#     nav_buttons = [self.ui.pushButton,</span>
-    <span class="c1">#                    self.ui.pushButton_6, self.ui.pushButton_7]</span>
-    <span class="c1">#     imgs = [self.image.next_image,</span>
-    <span class="c1">#             self.image.previous_image, self.image.alt_image]</span>
-    <span class="c1">#     for button, image in zip(nav_buttons, imgs):</span>
-    <span class="c1">#         if isinstance(image, Image):</span>
-    <span class="c1">#             button.setEnabled(True)</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#             button.setEnabled(False)</span>
 </pre></div>
 
            </div>

@@ -298,9 +298,9 @@ class Reagent():
 
 class UnitValue():
     # class for handling anything that comes with a unit
-    '''SignedValues are used to help handle numbers with units. They
+    '''UnitValues are used to help handle numbers with units. They
     are not the most robust but help to keep things more organized.
-    SignedValues can be created by either passing values to the
+    UnitValues can be created by either passing values to the
     `values` and `units` args explicitly or by calling the classmethod
     `make_from_string` which will use regex to pull out supported units and
     values.

@@ -158,7 +158,7 @@
 <span></span><span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
 
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">COLORS</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
-<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">SignedValue</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">UnitValue</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 <span class="kn">from</span> <span class="nn">polo.designer.UI_unit_combo</span> <span class="kn">import</span> <span class="n">Ui_unitCombo</span>
 <span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="o">*</span>
@@ -276,7 +276,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">_set_unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitComboBox._set_unit_combobox_text"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox._set_unit_combobox_text">[docs]</a>    <span class="k">def</span> <span class="nf">_set_unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to add units to the unit comboBox based</span>
 <span class="sd">        on the `base_unit` and the `scalers`.</span>
 
@@ -287,7 +287,7 @@
         <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># set t base unit</span>
-        <span class="k">return</span> <span class="n">items</span>
+        <span class="k">return</span> <span class="n">items</span></div>
 
 <div class="viewcode-block" id="UnitComboBox.unit_text_parser"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.unit_text_parser">[docs]</a>    <span class="k">def</span> <span class="nf">unit_text_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">unit_text</span><span class="p">:</span>
@@ -299,17 +299,17 @@
                 <span class="k">return</span> <span class="n">unit_text</span></div>
 
 <div class="viewcode-block" id="UnitComboBox.get_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return a SignedValue constructed from the value of the</span>
+        <span class="sd">&#39;&#39;&#39;Return a UnitValue constructed from the value of the</span>
 <span class="sd">        spinBox value and unit from the comboBox.</span>
 
-<span class="sd">        :return: SignedValue constructed from current spinBox </span>
+<span class="sd">        :return: UnitValue constructed from current spinBox </span>
 <span class="sd">                 value and comboBox unit</span>
-<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
         <span class="n">unit_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit_text</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit_text</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="UnitComboBox.set_zero"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_zero">[docs]</a>    <span class="k">def</span> <span class="nf">set_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Set the spinbox value to 0</span>
@@ -318,12 +318,12 @@
     
 <div class="viewcode-block" id="UnitComboBox.set_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Set the spinBox value and the comboBox unit based on the value and</span>
-<span class="sd">        unit of a `SignedValue` instance</span>
+<span class="sd">        unit of a `UnitValue` instance</span>
 
-<span class="sd">        :param value: SignedValue</span>
-<span class="sd">        :type value: SignedValue</span>
+<span class="sd">        :param value: UnitValue</span>
+<span class="sd">        :type value: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">SignedValue</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">UnitValue</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="n">unit_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">unit_index</span><span class="p">)</span>

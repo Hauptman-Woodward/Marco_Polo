@@ -88,7 +88,7 @@ class Carousel():
 
     @property
     def current_slide(self):
-        return self.__current_slide
+        return self._current_slide
 
     @current_slide.setter
     def current_slide(self, new_slide):
@@ -99,9 +99,9 @@ class Carousel():
         :type new_slide: Slide 
         '''
         if new_slide:
-            self.__current_slide = new_slide
+            self._current_slide = new_slide
         else:
-            self.__current_slide = None
+            self._current_slide = None
 
     def controls(self, next_slide=False, prev_slide=False):
         '''Controls the navigation through the slides
@@ -143,10 +143,10 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         super(PhotoViewer, self).__init__(parent)
         self.show_all_dates = False
         self.show_all_specs = False
-        self.__zoom = 0
-        self.__empty = True
+        self._zoom = 0
+        self._empty = True
         self.scene = QtWidgets.QGraphicsScene(self)
-        #  self.__photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
+        #  self._photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
         self.setScene(self.scene)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -158,16 +158,16 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
     # current image will be an actual image to show to the screen
     # slideshow images are images in the que that are ready to go
-    # self.set_image(self.__photo)  need to use scene here
+    # self.set_image(self._photo)  need to use scene here
 
     def hasPhoto(self):
-        return not self.__empty
+        return not self._empty
 
     def fitInView(self, scale=True):
         rect = self.scene.itemsBoundingRect()
-        #rect = QtCore.QRectF(self.__photo.pixmap().rect())
+        #rect = QtCore.QRectF(self._photo.pixmap().rect())
         if not rect.isNull():
-            self.__empty = False
+            self._empty = False
             self.setSceneRect(rect)
             self.setScene(self.scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
@@ -178,9 +178,9 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                 factor = min(viewrect.width() / scenerect.width(),
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
-            self.__zoom = 0
+            self._zoom = 0
         else:
-            self.__empty = True
+            self._empty = True
     
     def add_pixmap(self, pixmap):
         self.scene.addPixmap(pixmap)
@@ -196,23 +196,23 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         if self.hasPhoto():
             if event.angleDelta().y() > 0:
                 factor = 1.25
-                self.__zoom += 1
+                self._zoom += 1
             else:
                 factor = 0.8
-                self.__zoom -= 1
-            if self.__zoom > 0:
+                self._zoom -= 1
+            if self._zoom > 0:
                 self.scale(factor, factor)
-            elif self.__zoom == 0:
+            elif self._zoom == 0:
                 self.fitInView()
             else:
-                self.__zoom = 0
+                self._zoom = 0
 
     def toggleDragMode(self):
         '''Turns drag mode on and off.
         '''
         if self.dragMode() == QtWidgets.QGraphicsView.ScrollHandDrag:
             self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-        elif not self.__photo.pixmap().isNull():
+        elif not self._photo.pixmap().isNull():
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
     def mousePressEvent(self, event):
@@ -245,12 +245,12 @@ class SlideshowViewer(PhotoViewer):
         super(SlideshowViewer, self).__init__(parent)
         self.run = run
         self.current_image = current_image
-        self.__carousel = Carousel()
+        self._carousel = Carousel()
         logger.info('Made {}'.format(self))
 
     @property
     def run(self):
-        return self.__run
+        return self._run
 
     @run.setter
     def run(self, new_run):
@@ -264,15 +264,18 @@ class SlideshowViewer(PhotoViewer):
         :type new_run: Run
         '''
         if isinstance(new_run, Run) or isinstance(new_run, HWIRun):
-            self.__run = new_run
+            self._run = new_run
             logger.info(
-                'Run attribute of {} set to {}'.format(self, self.__run))
+                'Run attribute of {} set to {}'.format(self, self._run))
             self.update_slides_from_filters(
                 image_types=set([]), human=False, marco=False
             )
+            logger.info('Opened new run {} with name {}'.format(
+                new_run, new_run.run_name
+            ))
         else:  # if run is none then interpret as request to delete current run
-            self.__run = None
-            self.__carousel = Carousel()
+            self._run = None
+            self._carousel = Carousel()
             self.scene.clear()
             self.current_image = None
 
@@ -355,13 +358,13 @@ class SlideshowViewer(PhotoViewer):
         :returns The current image.
         :rtype Image
         '''
-        if isinstance(self.__carousel, Carousel) and self.__carousel.current_slide:
+        if isinstance(self._carousel, Carousel) and self._carousel.current_slide:
             if next_image:
-                self.__carousel.controls(next_slide=True)
+                self._carousel.controls(next_slide=True)
             elif previous_image:
-                self.__carousel.controls(prev_slide=True)
+                self._carousel.controls(prev_slide=True)
 
-            self.current_image = self.__carousel.current_slide.image
+            self.current_image = self._carousel.current_slide.image
             return self.current_image
 
             # self.display_current_image()
@@ -382,8 +385,8 @@ class SlideshowViewer(PhotoViewer):
         if self.run:
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
-            self.__carousel.add_slides(images, sort_function)
-            self.current_image = self.__carousel.current_slide.image
+            self._carousel.add_slides(images, sort_function)
+            self.current_image = self._carousel.current_slide.image
 
     def arrange_multi_image_scene(self, image_list, render_date=False):
         '''Helper method to arrange multiple images into the same
