@@ -39,25 +39,25 @@ logger = make_default_logger(__name__)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    '''QMainWindow that ultimately is the parent of all other
+    included widgets.
+    '''
     BAR_COLORS = [Qt.darkBlue, Qt.darkRed, Qt.darkGreen, Qt.darkGray]
     # cocktails sorted from earliest to latest (most recent last)
     CRYSTAL_ICON = str(ICON_DICT['crystal'])
 
     def __init__(self):
-        '''
-        Initialize main window object. polo is drawn from QT designer generated
-        file in the designer folder. All button logic is also set up here.
-        '''
+
         QtWidgets.QMainWindow.__init__(self)
         self.setupUi(self)
         self.current_run = None
-        self.runOrganizer.opening_run.connect(self.handle_opening_run)
-        self.menuImport.triggered[QAction].connect(self.handle_image_import)
+        self.runOrganizer.opening_run.connect(self._handle_opening_run)
+        self.menuImport.triggered[QAction].connect(self._handle_image_import)
 
-        self.menuExport.triggered[QAction].connect(self.handle_export)
-        self.menuHelp.triggered[QAction].connect(self.handle_help_menu)
-        self.menuFile.triggered[QAction].connect(self.handle_file_menu)
-        self.run_interface.currentChanged.connect(self.on_changed_tab)
+        self.menuExport.triggered[QAction].connect(self._handle_export)
+        self.menuHelp.triggered[QAction].connect(self._handle_help_menu)
+        self.menuFile.triggered[QAction].connect(self._handle_file_menu)
+        self.run_interface.currentChanged.connect(self._on_changed_tab)
         self.menuBeta_Testers.triggered[QAction].connect(
             lambda: webbrowser.open(BETA))
 
@@ -69,20 +69,38 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.plot_viewer_layout.addWidget(self.toolbar)
 
         self.listWidget_3.currentTextChanged.connect(
-            self.handle_plot_selection)
+            self._handle_plot_selection)
         
-
-        
-
-        self.set_tab_icons()
+        self._set_tab_icons()
 
         logger.info('Created mainWindow object')
+    
+    @staticmethod
+    def get_widget_dims(self, widget):
+        '''Returns the width and height as a tuple of a given widget.
 
-    # ICON setup
-    # ========================================================================
+        :param widget: QWidget
+        :type widget: QWidget
+        :return: width and height of the widget
+        :rtype: tuple
+        '''
+        return widget.width(), widget.height()
 
-    def set_tab_icons(self):
-        '''Assigns icons to each of the main run interface tabs
+    @staticmethod
+    def layout_widget_lister(self, layout):
+        '''List all widgets in a given layout.
+
+        :param layout: QLayout that contains widgets    
+        :type layout: QLayout
+        :return: Tuple of widgets in the given layout
+        :rtype: tuple
+        '''
+        return (layout.itemAt(i) for i in range(layout.count()))
+
+    def _set_tab_icons(self):
+        '''Private method that assigns icons to each of the main run 
+        interface tabs. Should be called in the `__init__` method before
+        the main window is shown to the user.
         '''
         self.run_interface.setTabIcon(0, QIcon(str(ICON_DICT['camera'])))
         self.run_interface.setTabIcon(1, QIcon(str(ICON_DICT['plate'])))
@@ -90,84 +108,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.run_interface.setTabIcon(3, QIcon(str(ICON_DICT['graph'])))
         self.run_interface.setTabIcon(4, QIcon(str(ICON_DICT['target'])))
 
-    # Run IO
-    # =========================================================================
-
-    # remove the current run add dialog that asks if they are sure they want to
-    # drop the run
-
-    # def remove_run(self):
-    #     # NOTE IN PROGRESS
-    #     message = 'Are you sure you want to remove run {}.'.format(
-    #         self.current_run.run_name)
-    #     warning = self.make_message_box(
-    #         message, icon=QtWidgets.QMessageBox.Warning,
-    #         buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel
-    #     )
-    #     choice = warning.exec_()
-    #     if choice == 1024:
-    #         self.loaded_runs.pop(self.current_run.run_name)
-    #         if self.current_run.run_name in self.classified_runs:
-    #             self.classified_runs.pop(self.current_run.run_name)
-    #     else:
-    #         logging.info('Canceled remove run')
-
-    def add_loaded_run(self, run):
+    def _tab_limiter(self):
+        '''Private method that limits the interfaces that a user is allowed
+        to interact with based on the type of run they have loaded and
+        selected. Currently, `Run` functionality is limited due to the fact
+        cocktails cannot be mapped to images.
         '''
-        Add a run object to the loaded_runs attribute and add the run name to
-        the available runs listWidget so the user may select this run for
-        viewing. After this function call the run will be recoverable using
-        its run name as a key in the loaded_runs dictionary.
-
-        :param run: Run Object. New run to make available to the user.
-        '''
-        self.loaded_runs[run.run_name] = run
-        item = QtWidgets.QListWidgetItem(self.listWidget)
-        item.setText(run.run_name)
-        # self.listWidget.addItem(item)
-        logging.info('Loaded run named {}'.format(run.run_name))
-
-    def open_run_import_dialog(self):
-        '''
-        Creates an instance of the RunImporterDialog class and displays
-        that dialog. After the instance is closed by the user checks to see
-        if a new run has been created and stored in the new_run attribute of
-        the RunImporterDialog instance. If one is present makes it available
-        to the user by passing contents of new_run to add_loaded_run.
-        '''
-        importer_dialog = RunImporterDialog(
-            current_run_names=list(self.loaded_runs.keys()))
-        importer_dialog.exec_()
-        if importer_dialog.new_run != None:
-            self.add_loaded_run(importer_dialog.new_run)
-            logging.info('Added run successfully')
-        else:
-            logging.info('Attempted to open empty run at {}'.format(
-                self.open_run_import_dialog))
-
-    def handle_image_import(self, selection):
-        '''
-        Handles when the user attempts to import images into Polo. Effectively
-        a wrapper around other methods that call provide the functionality to
-        each option in the import menu.
-
-        :param selection: QAction. QAction from user menu selection.
-        '''
-        selection_text = selection.text()
-        if selection == self.actionFrom_FTP:
-            self.runOrganizer.import_run_from_ftp()
-        elif selection == self.actionFrom_Saved_Run_3:
-            self.runOrganizer.import_saved_runs()
-        elif selection == self.actionFrom_Directory:
-            self.runOrganizer.import_run_from_dialog()
-        elif selection == self.actionCocktails:
-            pass
-        else:
-            logger.info('Import request matched no QActions at {}'.format(
-                self.handle_image_import))
-        # TODO allow users to add cocktail files
-
-    def tab_limiter(self):
         if self.current_run and not isinstance(self.current_run, HWIRun):
             # need to disable stuff that requires cocktails
             self.tab_10.setEnabled(False)  # optimize tab
@@ -180,21 +126,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tab_10.setEnabled(True)
             self.tab_2.setEnabled(True)
 
-    def handle_opening_run(self, q):
-        '''
-        Handles whenever a loaded run from the loaded runs list is
-        doubleclicked. First sets the selected run to the current_run. If the
-        run has not been classified and therefore does not exist in the
-        classified_runs dictionary it is classified via the
-        open_classification_thread method. If the run has been classified previously
-        then it is displayed. Additionally checks the run type to determine what
-        plotting methods should be available and enables the navigation by date
-        push Buttons if the run has either a next or previous run
-        connected to it.
+    def _handle_opening_run(self, new_run):
+        '''Private method that handles opening a run. For the most part,
+        this means setting the `run` attribute of other widgets to the
+        new run. The setter methods of these widgets should then handle
+        updating their interfaces to reflect the new run being
+        opened. Also calls :func:`~polo.windows.main_window.MainWindow._tab_limiter`
+        and :func:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
+        allowed functions for the user based on the type of run they open.
 
-        :param q: List
+        Additionally, if this is not the first run to be opened, before
+        the `new_run` is set as the `current_run` the pixmaps of the `current_run`
+        are unloaded to free up memory.
+
+        :param q: List containing the run to be opened. Likely originating from
+                  the `RunOrganizer` widget.
+        :type q: list
         '''
-        if isinstance(q, list) and len(q) > 0:
+
+        if isinstance(new_run, list) and len(new_run) > 0:
             if self.current_run:
                 self.current_run.unload_all_pixmaps()
                 QPixmapCache.clear()
@@ -203,7 +153,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # other pixmaps from other runs will be loaded if the user
             # switches between dates or spectrums though
 
-            self.current_run = q.pop()
+            self.current_run = new_run.pop()
             if (hasattr(self.current_run, 'insert_into_alt_spec_chain')
                 and self.current_run.image_spectrum == IMAGE_SPECS[0]
                 ):
@@ -213,14 +163,37 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tableInspector.update_table_view()
             self.optimizeWidget.run = self.current_run
             self.plateInspector.run = self.current_run
-            self.tab_limiter()  # set allowed tabs by run type
-            self.plot_limiter()  # set allowed polo.plots
+            self._tab_limiter()  # set allowed tabs by run type
+            self._plot_limiter()  # set allowed polo.plots
             # enable nav by time if has linked runs
+    
+    # Menu handling methods
+    # ======================================================================
+    
+    def _handle_image_import(self, selection):
+        '''Private method that handles when the user attempts to import images into Polo. 
+        Effectively a wrapper around other methods that provide the functionality to
+        each option in the import menu.
 
-    def handle_export(self, action, export_path=None):
+        :param selection: QAction. QAction from user menu selection.
         '''
-        Handles when user wants to export the current run. Creates an instance
-        of exporterDialog class and displays that dialog to the user.
+        if selection == self.actionFrom_FTP:
+            self.runOrganizer.import_run_from_ftp()
+        elif selection == self.actionFrom_Saved_Run_3:
+            self.runOrganizer.import_saved_runs()
+        elif selection == self.actionFrom_Directory:
+            self.runOrganizer.import_run_from_dialog()
+        elif selection == self.actionCocktails:
+            pass
+
+    def _handle_export(self, action, export_path=None):
+        '''Private method to handle when a user requests to export a run
+        to a non-xtal file format.
+
+        :param action: QAction that describes the export type the user has requested
+        :type action: QAction
+        :param export_path: Path to export file to, defaults to None
+        :type export_path: str or Path, optional
         '''
         if self.current_run:        
             if action != self.actionAs_PPTX:
@@ -263,14 +236,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 message='Please load a run first'
                 ).exec_()
 
-    def handle_file_menu(self, selection):
-        '''
-        Method that handles all selection possiblities under
-        the file menu. Calls the appropriate methods based on the
-        value of selection arguement.
+    def _handle_file_menu(self, selection):
+        '''Private method to handle user interaction with the file menu;
+        this usually means saving a run as an xtal file.
 
-        :param selection: QAction. QAction returned by user selecting an item\
-            from the file menu.
+        :param selection: QAction that describes user selection
+        :type selection: QAction
         '''
         save_path = None
         if self.current_run:
@@ -280,7 +251,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if sp and os.path.exists(sp):  # save run path already exist
                     save_path = sp
             elif selection == self.actionSave_Run_As or save_path == None:
-                save_path = self.save_file_dialog()
+                save_path = self._save_file_dialog()
 
             if save_path:  # double check wonky stuff happening in save dialog
                 current_run_saver.write_xtal_file_on_thread(save_path)
@@ -290,24 +261,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     message='No suitable filepath was given.'
                     ).exec_()
 
+    def _handle_help_menu(self, action):
+        '''Handle user interaction with the help menu. All selections
+        open links to various pages of the documentation website.
 
-    # General Utilities
-    # =========================================================================    
-
-    def get_widget_dims(self, widget):
-        '''Returns the width and height as a tuple of a given widget.
-
-        :param widget: QWidget
-        :type widget: QWidget
-        :return: width and height of the widget
-        :rtype: tuple
+        :param action: QAction that describes the user's selection
+        :type action: QAction
         '''
-        return widget.width(), widget.height()
-
-    def layout_widget_lister(self, layout):
-        return (layout.itemAt(i) for i in range(layout.count()))
-    
-    def handle_help_menu(self, action):
         if action == self.actionQuickstart_Guide:
             webbrowser.open(QUICKSTART)
         elif action == self.actionDocumentation:
@@ -322,9 +282,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     # Plot Window Methods
     # =========================================================================
 
-      # clears the current plot and draws an empty figure in theory
+    def _handle_plot_selection(self):
+        '''Private method to handle user plot selections.
 
-    def handle_plot_selection(self):
+        TODO: Move all plot methods into their own widget
+        '''
         if self.current_run:
             current_item = self.listWidget_3.currentItem()
             if current_item:
@@ -343,130 +305,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.matplotlib_widget.plot_additive_map(self.current_run)
 
     # allow or disallow access to ploting methods based on run object type
-    def plot_limiter(self):
+    def _plot_limiter(self):
+        '''Private method to limit the types of plots that can be shown
+        based on the type of the `current_run`.
+        '''
         if self.current_run:
             self.listWidget_3.clear()
             self.listWidget_3.addItems(self.current_run.AllOWED_PLOTS)
 
-    def get_current_plot_selections(self):
-        return {
-            'type': self.comboBox.currentText(),
-            'x_axis': self.comboBox_2.currentText(),
-            'y_axis': self.comboBox_3.currentText()
-        }
+    def _save_file_dialog(self):
+        '''Private method to open a QFileDialog to get a location
+        to save a run to.
 
-    def get_current_plot_labels(self):
-        return {
-            'title': self.lineEdit_2.text(),
-            'x_lab': self.lineEdit_3.text(),
-            'y_lab': self.lineEdit_4.text()
-        }
-
-    def apply_plot_selection_logic(self):
-        BAR_X_VARS = ['Human Classification', 'MARCO Classicication',
-                      '']
-        BAR_Y_VARS = ['Number Images']
-        VIOLIN_X_VARS = ['Human Classification', 'MARCO Classification']
-        VIOLIN_Y_VARS = ['Cocktail pH', 'Number Images']
-
-        # method for enableing and disabling selections based on other selections
-        if self.comboBox.currentText() == 'Plate Heatmaps':
-            self.comboBox_2.clear()
-            self.comboBox_3.clear()
-        elif self.comboBox.currentText() == 'Bar':
-            self.clear_and_set_variable_boxes(BAR_X_VARS, BAR_Y_VARS)
-        elif self.comboBox.currentText() == 'Violin':
-            self.clear_and_set_variable_boxes(VIOLIN_X_VARS, VIOLIN_Y_VARS)
-
-        self.set_default_plot_labels()
-
-    def set_default_plot_labels(self):
-        # set title
-        x_var = self.comboBox_2.currentText()
-        y_var = self.comboBox_3.currentText()
-
-        self.lineEdit_2.setText('{} vs. {}'.format(
-            x_var, y_var
-        ))
-        self.lineEdit_3.setText(x_var)
-        self.lineEdit_4.setText(y_var)
-
-    def clear_and_set_variable_boxes(self, x_vars, y_vars):
+        :return: Path to save file to
+        :rtype: str
         '''
-        Helper function for apply_plot_selection_logic that clears the
-        two variable combo boxes and sets new values to the values
-        contained in the x_vars and y_vars lists.
-        '''
-        self.comboBox_2.clear()
-        self.comboBox_3.clear()
-        self.comboBox_2.addItems(x_vars)
-        self.comboBox_3.addItems(y_vars)
-
-    # Dialog Windows (Open and Handle Methods)
-    # =========================================================================
-
-    def open_run_updater_dialog(self):
-        if self.current_run:
-            run_updater = RunUpdaterDialog(self.current_run,
-            list(self.loaded_runs.keys()), self)
-        else:
-            make_message_box(
-                parent=self,
-                message='Please load a run first.'
-                ).exec_()
-
-    def open_spectra_dialog(self):
-        spec_dialog = SpectrumDialog(loaded_runs=self.loaded_runs)
-        self.load_runs = spec_dialog.loaded_runs
-        if self.current_run and self.current_run.alt_spectrum:
-            self.plateInspector.set_alt_spectrum_buttons(allow=True)
-            self.slideshowInspector.set_alt_spectrum_buttons()
-            # enable alt spectrum selections
-
-    def open_time_link_dialog(self):
-        time_dialog = TimeResDialog(available_runs=self.loaded_runs)
-        self.loaded_runs = time_dialog.available_runs
-        if self.current_run:  # run is open
-            self.current_run = self.loaded_runs[self.current_run.run_name]
-
-    def save_file_dialog(self):
         file_name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Run')
         return file_name[0]
 
-    def open_settings_dialog(self):
-        settings = settingsDialog()
-
-    def handle_advanced_tools(self, selection):
-        if selection == self.actionTime_Resolved:
-            self.open_time_link_dialog()
-        elif selection == self.actionView_Log_2:
-            self.open_log_dialog()
-        elif selection == self.actionAdd_Image_Type:
-            self.open_spectra_dialog()
-        elif selection == self.actionEdit_Current_Run_Data:
-            self.open_run_updater_dialog()
-
-    def open_file_dialog(self, dialog_type='Dir'):
-        file_dlg = QtWidgets.QFileDialog()
-        if dialog_type == 'Dir':
-            file_dlg.setFileMode(QtWidgets.QFileDialog.Directory)
-        filenames = ''
-        if file_dlg.exec():
-            filenames = file_dlg.selectedFiles()
-            return filenames[0]
-        else:
-            return False
-
-    def open_log_dialog(self):
-        log_dialog = LogDialog()
-
-
-    # Inter Tab Controls and Other
-    # =========================================================================
-
-    def on_changed_tab(self, i):
-        '''
-        Handles GUI behavior when a user switches to one tab to another.
+    def _on_changed_tab(self, i):
+        '''Private method that handles GUI behavior when a user
+        switches from one tab to another.
 
         :param i: Int. The index of the current tab, after user has changed tabs.
         '''
@@ -476,17 +335,157 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 pass
                 # self.new_slideshow_image_routine()
             elif i == 2:
-                self.handle_plot_selection()  # refresh the current plot
+                self._handle_plot_selection()  # refresh the current plot
             elif i == 5:  # run data editor
                 self.current_run.annotations = self.plainTextEdit.toPlainText()
             elif i == 4:
                 self.optimizeWidget.update()
 
-
-    def show_error_message(self, message='Error :('):
-        error_dlg = QtWidgets.QErrorMessage(self)
-        error_dlg.showMessage(message)
-        error_dlg.exec()
-
-    # Depreciated Methods
+    # Depreciated Methods that just have too much sentimental value to delete
     # =========================================================================
+
+    # def add_loaded_run(self, run):
+    #     '''
+    #     Add a run object to the loaded_runs attribute and add the run name to
+    #     the available runs listWidget so the user may select this run for
+    #     viewing. After this function call the run will be recoverable using
+    #     its run name as a key in the loaded_runs dictionary.
+
+    #     :param run: Run Object. New run to make available to the user.
+    #     '''
+    #     self.loaded_runs[run.run_name] = run
+    #     item = QtWidgets.QListWidgetItem(self.listWidget)
+    #     item.setText(run.run_name)
+    #     # self.listWidget.addItem(item)
+    #     logging.info('Loaded run named {}'.format(run.run_name))
+
+    # def open_run_import_dialog(self):
+    #     '''
+    #     Creates an instance of the RunImporterDialog class and displays
+    #     that dialog. After the instance is closed by the user checks to see
+    #     if a new run has been created and stored in the new_run attribute of
+    #     the RunImporterDialog instance. If one is present makes it available
+    #     to the user by passing contents of new_run to add_loaded_run.
+    #     '''
+    #     importer_dialog = RunImporterDialog(
+    #         current_run_names=list(self.loaded_runs.keys()))
+    #     importer_dialog.exec_()
+    #     if importer_dialog.new_run != None:
+    #         self.add_loaded_run(importer_dialog.new_run)
+    #         logging.info('Added run successfully')
+    #     else:
+    #         logging.info('Attempted to open empty run at {}'.format(
+    #             self.open_run_import_dialog))
+    # def get_current_plot_selections(self):
+    #     return {
+    #         'type': self.comboBox.currentText(),
+    #         'x_axis': self.comboBox_2.currentText(),
+    #         'y_axis': self.comboBox_3.currentText()
+    #     }
+
+    # def get_current_plot_labels(self):
+    #     return {
+    #         'title': self.lineEdit_2.text(),
+    #         'x_lab': self.lineEdit_3.text(),
+    #         'y_lab': self.lineEdit_4.text()
+    #     }
+
+    # def apply_plot_selection_logic(self):
+    #     BAR_X_VARS = ['Human Classification', 'MARCO Classicication',
+    #                   '']
+    #     BAR_Y_VARS = ['Number Images']
+    #     VIOLIN_X_VARS = ['Human Classification', 'MARCO Classification']
+    #     VIOLIN_Y_VARS = ['Cocktail pH', 'Number Images']
+
+    #     # method for enableing and disabling selections based on other selections
+    #     if self.comboBox.currentText() == 'Plate Heatmaps':
+    #         self.comboBox_2.clear()
+    #         self.comboBox_3.clear()
+    #     elif self.comboBox.currentText() == 'Bar':
+    #         self.clear_and_set_variable_boxes(BAR_X_VARS, BAR_Y_VARS)
+    #     elif self.comboBox.currentText() == 'Violin':
+    #         self.clear_and_set_variable_boxes(VIOLIN_X_VARS, VIOLIN_Y_VARS)
+
+    #     self.set_default_plot_labels()
+
+    # def set_default_plot_labels(self):
+    #     # set title
+    #     x_var = self.comboBox_2.currentText()
+    #     y_var = self.comboBox_3.currentText()
+
+    #     self.lineEdit_2.setText('{} vs. {}'.format(
+    #         x_var, y_var
+    #     ))
+    #     self.lineEdit_3.setText(x_var)
+    #     self.lineEdit_4.setText(y_var)
+
+    # def clear_and_set_variable_boxes(self, x_vars, y_vars):
+    #     '''
+    #     Helper function for apply_plot_selection_logic that clears the
+    #     two variable combo boxes and sets new values to the values
+    #     contained in the x_vars and y_vars lists.
+    #     '''
+    #     self.comboBox_2.clear()
+    #     self.comboBox_3.clear()
+    #     self.comboBox_2.addItems(x_vars)
+    #     self.comboBox_3.addItems(y_vars)
+
+    # Dialog Windows (Open and Handle Methods)
+    # =========================================================================
+
+    # def open_run_updater_dialog(self):
+    #     if self.current_run:
+    #         run_updater = RunUpdaterDialog(self.current_run,
+    #         list(self.loaded_runs.keys()), self)
+    #     else:
+    #         make_message_box(
+    #             parent=self,
+    #             message='Please load a run first.'
+    #             ).exec_()
+    
+    # NOTE: Time link and spectrum dialogs not currently used
+    # as runs are linked automatically as they are loaded in
+    # Keep this code for now as may remake a manual linking interface
+    # later
+
+    # def open_spectra_dialog(self):
+    #     spec_dialog = SpectrumDialog(loaded_runs=self.loaded_runs)
+    #     self.load_runs = spec_dialog.loaded_runs
+    #     if self.current_run and self.current_run.alt_spectrum:
+    #         self.plateInspector.set_alt_spectrum_buttons(allow=True)
+    #         self.slideshowInspector.set_alt_spectrum_buttons()
+            # enable alt spectrum selections
+
+    # def open_time_link_dialog(self):
+    #     time_dialog = TimeResDialog(available_runs=self.loaded_runs)
+    #     self.loaded_runs = time_dialog.available_runs
+    #     if self.current_run:  # run is open
+    #         self.current_run = self.loaded_runs[self.current_run.run_name]
+    
+    # NOTE: Advanced tools have been temporarily removed since all functionality
+    # they included has been applied automatically. May be adding in manual
+    # interfaces later.
+
+    # def handle_advanced_tools(self, selection):
+    #     if selection == self.actionTime_Resolved:
+    #         self.open_time_link_dialog()
+    #     elif selection == self.actionView_Log_2:
+    #         self.open_log_dialog()
+    #     elif selection == self.actionAdd_Image_Type:
+    #         self.open_spectra_dialog()
+    #     elif selection == self.actionEdit_Current_Run_Data:
+    #         self.open_run_updater_dialog()
+
+    # def open_file_dialog(self, dialog_type='Dir'):
+    #     file_dlg = QtWidgets.QFileDialog()
+    #     if dialog_type == 'Dir':
+    #         file_dlg.setFileMode(QtWidgets.QFileDialog.Directory)
+    #     filenames = ''
+    #     if file_dlg.exec():
+    #         filenames = file_dlg.selectedFiles()
+    #         return filenames[0]
+    #     else:
+    #         return False
+
+    # def open_log_dialog(self):
+    #     log_dialog = LogDialog()

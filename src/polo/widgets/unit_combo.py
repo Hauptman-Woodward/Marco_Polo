@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
-from polo.crystallography.cocktail import SignedValue
+from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_unit_combo import Ui_unitCombo
 from polo.utils.math_utils import *
@@ -142,17 +142,17 @@ class UnitComboBox(QtWidgets.QWidget):
                 return unit_text
 
     def get_value(self):
-        '''Return a SignedValue constructed from the value of the
+        '''Return a UnitValue constructed from the value of the
         spinBox value and unit from the comboBox.
 
-        :return: SignedValue constructed from current spinBox 
+        :return: UnitValue constructed from current spinBox 
                  value and comboBox unit
-        :rtype: SignedValue
+        :rtype: UnitValue
         '''
         value = self.ui.doubleSpinBox.value()
         unit_text = self.ui.comboBox.currentText()
 
-        return SignedValue(value, unit_text)
+        return UnitValue(value, unit_text)
     
     def set_zero(self):
         '''Set the spinbox value to 0
@@ -161,12 +161,12 @@ class UnitComboBox(QtWidgets.QWidget):
     
     def set_value(self, value, *args):
         '''Set the spinBox value and the comboBox unit based on the value and
-        unit of a `SignedValue` instance
+        unit of a `UnitValue` instance
 
-        :param value: SignedValue
-        :type value: SignedValue
+        :param value: UnitValue
+        :type value: UnitValue
         '''
-        if isinstance(value, SignedValue):
+        if isinstance(value, UnitValue):
             self.ui.doubleSpinBox.setValue(value.value)
             unit_index = self.ui.comboBox.findText(value.units)
             self.ui.comboBox.setCurrentIndex(unit_index)

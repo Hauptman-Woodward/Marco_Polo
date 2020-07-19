@@ -3,7 +3,7 @@ import math
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from polo import IMAGE_CLASSIFICATIONS
-from polo.crystallography.cocktail import SignedValue
+from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 from polo.utils.io_utils import RunCsvWriter, write_screen_html

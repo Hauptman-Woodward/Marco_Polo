@@ -6,7 +6,7 @@ from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import ICON_DICT, IMAGE_CLASSIFICATIONS, make_default_logger
-from polo.crystallography.cocktail import SignedValue
+from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_optimizeWidget import Ui_Form
@@ -362,7 +362,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         This method is how we show the user what the current stock concentration
         of a selected reagent is.
         '''
-        def_val = SignedValue(0.0, 'M')
+        def_val = UnitValue(0.0, 'M')
         if self.x_reagent and self.x_reagent.stock_con:
             self.ui.unitComboBox.set_value(self.x_reagent.stock_con)
         else:
@@ -386,7 +386,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         # look more into this now that chaning up now units are working
 
         if value and reagent:
-            reagent.stock_con = SignedValue(value, 'M')
+            reagent.stock_con = UnitValue(value, 'M')
 
     def gradient(self, reagent, num_wells, step, stock=False):
         '''Use this method for varying the concentration of a given
@@ -412,7 +412,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             c = reagent.concentration
         m = math.floor(num_wells / 2)
         s = float(c) * step
-        return [SignedValue((c.value + (s * (n-m))), c.units) for n in range(
+        return [UnitValue((c.value + (s * (n-m))), c.units) for n in range(
             1, num_wells+1)]  # return a list of signed values
 
     def write_optimization_screen(self):
@@ -488,13 +488,13 @@ class OptimizeWidget(QtWidgets.QWidget):
         in a textBrowser widget.
 
         :param x_con: Concentration of x reagent in this well
-        :type x_con: SignedValue
+        :type x_con: UnitValue
         :param x_stock: Volume of x reagent stock in this well
-        :type x_stock: SignedValue
+        :type x_stock: UnitValue
         :param y_con: Concentration of y reagent in this well
-        :type y_con: SignedValue
+        :type y_con: UnitValue
         :param y_stock: Volume of y reagent stock in this well
-        :type y_stock: SignedValue
+        :type y_stock: UnitValue
         :param constants: Tuples of constant reagents to be included in each well
         :type constants: list of tuples
         :param water: Volume of water to be added to this well
@@ -593,7 +593,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         max_volume, total_volume = self.well_volume, 0
         max_volume = max_volume.to_base()
         for value in volume_list:
-            if isinstance(value, SignedValue):
+            if isinstance(value, UnitValue):
                 if value.units == 'L':
                     total_volume += value.to_base().value
                 elif value.units == 'w/v':
@@ -610,6 +610,6 @@ class OptimizeWidget(QtWidgets.QWidget):
             return False
         else:
             # does fit in the well
-            return SignedValue(max_volume.value - total_volume, 'L')
+            return UnitValue(max_volume.value - total_volume, 'L')
             # return the value of water that should be included in the well in
             # liters

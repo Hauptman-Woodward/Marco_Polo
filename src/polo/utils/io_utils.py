@@ -406,7 +406,7 @@ class RunCsvWriter(RunSerializer):
 
     @property
     def fieldnames(self):  # could use more efficent way of determining feildnames
-        '''Get the current fieldnames bases on the data stored in the
+        '''Get the current fieldnames based on the data stored in the
         `run` attribute. Currently is somewhat expensive to call since it
         requires parsing all records in `run` in order to determine all the
         fieldnames that should be included in order to definitely avoid
@@ -878,7 +878,7 @@ class PptxWriter():
     :param included_attributes: [description], defaults to {}
     :type included_attributes: dict, optional
     :param image_types: Images included in the presentation
-    must have a classification in this set, defaults to None
+                        must have a classification in this set, defaults to None
     :type image_types: set or list, optional
     :param human: Use human classification as the image classification, defaults to False
     :type human: bool, optional
@@ -1065,7 +1065,7 @@ class PptxWriter():
         :param template: Slide template number, defaults to 5
         :type template: int, optional
         :return: New slide
-        :rtype: Slide
+        :rtype: slide
         '''
         return self.__presentation.slides.add_slide(
             self.__presentation.slide_layouts[template])
@@ -1129,7 +1129,7 @@ class PptxWriter():
         '''General helper method for adding a table to a slide
 
         :param slide: Slide to add the table to
-        :type slide: Slide
+        :type slide: slide
         :param data: List of lists that has the data to write to the table
         :type data: list
         :param left: Left offset in inches to place to table
@@ -1160,13 +1160,13 @@ class PptxWriter():
         images.
 
         :param slide: Slide to add the images to 
-        :type slide: Slide
+        :type slide: slide
         :param images: Images to add to the slide
         :type images: list
         :param labeler: Function to use to label the individual images
         :type labeler: func
-        :return: Slide with images added
-        :rtype: Slide
+        :return: slide with images added
+        :rtype: slide
         '''
         top = 3
         img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
@@ -1199,7 +1199,7 @@ class PptxWriter():
                             ,should be between 0 and 1. 1 is full sized image.
         :type img_scaler: float, optional
         :return: The new slide with Image added
-        :rtype: Slide
+        :rtype: slide
         '''
         new_slide = self.add_new_slide(5)
         new_slide.shapes.title.text = title
@@ -1223,7 +1223,7 @@ class PptxWriter():
         '''Helper method to add text to a slide
 
         :param slide: Slide to add text to
-        :type slide: Slide
+        :type slide: slide
         :param text: Text to add to the slide
         :type text: str
         :param left: Left cordinate location of the text in inches
@@ -1239,7 +1239,7 @@ class PptxWriter():
         :param font_size: Font size of text, defaults to 14
         :type font_size: int, optional
         :return: Slide with text added
-        :rtype: Slide
+        :rtype: slide
         '''
         text_box = slide.shapes.add_textbox(
             Inches(left), Inches(top), Inches(width), Inches(height))
@@ -1263,7 +1263,7 @@ class PptxWriter():
         :param image: Image to add to the slide
         :type image: Image
         :param slide: Slide to add the image to
-        :type slide: Slide
+        :type slide: slide
         :param left: Left cordinate location of the image in inches
         :type left: float
         :param top: Top cordinate location of the image in inches
@@ -1555,7 +1555,7 @@ class CocktailMenuReader():
                     chem_add, con = (row[reagent_positions[i]],
                                      row[reagent_positions[i+1]])
                     if chem_add:
-                        con = SignedValue.make_from_string(con)
+                        con = UnitValue.make_from_string(con)
                         new_cocktail.add_reagent(
                             Reagent(
                                 chemical_additive=chem_add,

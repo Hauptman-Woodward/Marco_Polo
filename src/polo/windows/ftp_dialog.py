@@ -18,6 +18,15 @@ logger = make_default_logger(__name__)
 
 
 class FTPDialog(QtWidgets.QDialog):
+    '''FTPDialog class acts as the interface for interacting
+    with a remote FTP server. Allows for browsing and downloading
+    files stored on the server.
+
+    :param ftp_connection: Existing FTP connection, defaults to None
+    :type ftp_connection: FTP, optional
+    :param parent: Parent widget, defaults to None
+    :type parent: QWidget, optional
+    '''
 
     DOWNLOAD_ICON = str(ICON_DICT['download'])
     CONNECTED_ICON = str(ICON_DICT['connected'])
@@ -72,8 +81,8 @@ class FTPDialog(QtWidgets.QDialog):
     def connect_ftp(self):
         '''Attempt to establish connection to ftp server. If the connection is
         successful then recursively walk through the user's home directory
-        and display available directories and files to the user via the
-        fileBrowser widget. If the user has an extremely large number of
+        and display available directories and files via the
+        `fileBrowser` widget. If the user has an extremely large number of
         files this can take a while. If the connection fails show the user
         the error code thrown by ftplib.
         '''
@@ -148,10 +157,8 @@ class FTPDialog(QtWidgets.QDialog):
         '''Change the Qlabel that displays the current connection status
         to the user
 
-        :param connected: If FTP confection is successful, defaults to False
+        :param connected: If FTP connection is successful, defaults to False
         :type connected: bool, optional
-        :return: None
-        :rtype: None
         '''
         if connected:
             self.ui.label_3.setText('Connected')
@@ -161,10 +168,10 @@ class FTPDialog(QtWidgets.QDialog):
         # want to return the error message as some kind of flash
 
     def download_selected_files(self):
-        '''Signals to the fileBrowser widget to download all files / dirs the
+        '''Signals to the `fileBrowser` widget to download all files / dirs the
         user has selected. Downloading occurs in the background and the FTP
         browser dialog is closed after a download has successfully begun.
-        Additionally, another download should not be initiated while one is
+        Another download should not be initiated while one is
         already in progress.
         '''
         file_dlg = QtWidgets.QFileDialog()

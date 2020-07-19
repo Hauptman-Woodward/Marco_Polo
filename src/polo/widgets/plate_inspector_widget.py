@@ -4,7 +4,7 @@ from PyQt5.QtGui import QBitmap, QBrush, QColor, QIcon, QPainter, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 from PyQt5.QtCore import Qt, pyqtSignal
 from polo import (ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS)
-from polo.crystallography.cocktail import SignedValue
+from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_plate_inspector_widget import Ui_PlateInspector
@@ -320,7 +320,6 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             if isinstance(widget, QtWidgets.QCheckBox):
                 widget.setChecked(False)
         self.apply_plate_settings()
-    
     
     def apply_plate_settings(self):
         '''

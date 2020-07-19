@@ -45,8 +45,8 @@ class RunOrganizer(QtWidgets.QWidget):
         self.shown_unrar_message = False
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
         self.ui.pushButton.clicked.connect(self._handle_classification_request)
-        self.ui.runTree.itemDoubleClicked.connect(self.handle_opening_run)
-        self.ui.runTree.opening_run.connect(self.handle_opening_run)
+        self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
+        self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
 
     def _clear_current_run(self, run_list):
@@ -70,8 +70,8 @@ class RunOrganizer(QtWidgets.QWidget):
             selected_run = self.ui.runTree.loaded_runs[selected_runname]
             self._open_classification_thread(selected_run)
 
-    def handle_opening_run(self, *args):
-        '''Signal to other widgets that the current run should be opened
+    def _handle_opening_run(self, *args):
+        '''Private method that signal to other widgets that the current run should be opened
         for analysis and viewing by emiting the `opening_run` signal containing
         the selected run.
         '''

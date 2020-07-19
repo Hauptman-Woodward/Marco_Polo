@@ -266,7 +266,7 @@ class HWIRun(Run):
     
     def get_linked_alt_runs(self):
         '''Return all runs that this run is linked to by spectrum. See
-        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum
+        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`
 
         :return: List of runs linked to this run by spectrum
         :rtype: list
@@ -293,7 +293,7 @@ class HWIRun(Run):
         spectrum run to all alt spectrum runs but not get back to the visible spectrum
         run. Therefore, before a run is set to be viewed by the user this method
         temporary inserts it into the alt spectrum circular linked list. Also see
-        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum.
+        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
         '''
         linked_runs = self.get_linked_alt_runs()
         if linked_runs:
