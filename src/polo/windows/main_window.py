@@ -245,6 +245,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     elif action == self.actionAs_MSO:
                         writer = MsoWriter(self.current_run, export_path)
                         export_results = writer.write_mso_file()
+                    
+                    elif action == self.actionAs_JSON:
+                        writer = JsonWriter(self.current_run, export_path)
+                        export_results = writer.write_json()
 
                     # check if need to show an error message
                     self.setEnabled(True)

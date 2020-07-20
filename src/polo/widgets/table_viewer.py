@@ -59,6 +59,7 @@ class TableViewer(QtWidgets.QTableWidget):
                 return RunCsvWriter(self.run).get_csv_data()
             except Exception as e :
                 logger.error('Caught {} at trying to get table'.format(e))
+                print(e)
                 return [], {}  # empty list and dict need to handle better
                 # down the line
 
@@ -98,10 +99,10 @@ class TableViewer(QtWidgets.QTableWidget):
         # from the class __dict__ temp fix for now is to just set the key to
         # include the __ and class name but need more robust less jank way
         # to do this for any given attribute
-        human_key = '_Image__human_class'
+        human_key = '_human_class'
         if human_key not in row: human_key = 'human_class'
         machine_key = 'machine_class'
-        if machine_key not in row: machine_key = '_Image__human_class'
+        if machine_key not in row: machine_key = '_machine_class'
         if human and row[human_key] in image_classes:
             return False
         if marco and row[machine_key] in image_classes:

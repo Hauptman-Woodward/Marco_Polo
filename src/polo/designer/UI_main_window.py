@@ -510,6 +510,8 @@ class Ui_MainWindow(object):
         self.actionAs_MSO.setObjectName("actionAs_MSO")
         self.actionAs_PPTX = QtWidgets.QAction(MainWindow)
         self.actionAs_PPTX.setObjectName("actionAs_PPTX")
+        self.actionAs_JSON = QtWidgets.QAction(MainWindow)
+        self.actionAs_JSON.setObjectName("actionAs_JSON")
         self.menuImages.addAction(self.actionFrom_FTP)
         self.menuImages.addSeparator()
         self.menuImages.addAction(self.actionFrom_Saved_Run_3)
@@ -518,6 +520,7 @@ class Ui_MainWindow(object):
         self.menuImport.addAction(self.actionCocktails)
         self.menuExport.addAction(self.actionAs_HTML)
         self.menuExport.addAction(self.actionAs_CSV)
+        self.menuExport.addAction(self.actionAs_JSON)
         self.menuExport.addAction(self.actionAs_MSO)
         self.menuExport.addAction(self.actionAs_PPTX)
         self.menuHelp.addAction(self.actionAbout)
@@ -610,7 +613,7 @@ class Ui_MainWindow(object):
         self.actionHTML.setToolTip(_translate("MainWindow", "Generate an HTML based report on the current run."))
         self.actionFrom_Saved_Run.setText(_translate("MainWindow", "From Saved Run"))
         self.actionSave_Run.setText(_translate("MainWindow", "Save Run"))
-        self.actionSave_Run.setShortcut(_translate("MainWindow", "F"))
+        self.actionSave_Run.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionDelete_Run.setText(_translate("MainWindow", "Delete Run"))
         self.actionSave_Run_As.setText(_translate("MainWindow", "Save Run As"))
         self.actionSaved_Run_xtal_File.setText(_translate("MainWindow", "Saved Run (.xtal File)"))
@@ -634,6 +637,7 @@ class Ui_MainWindow(object):
         self.actionEdit_Current_Run_Data.setText(_translate("MainWindow", "Edit Current Run Data"))
         self.actionAs_MSO.setText(_translate("MainWindow", "As MSO"))
         self.actionAs_PPTX.setText(_translate("MainWindow", "As PPTX"))
+        self.actionAs_JSON.setText(_translate("MainWindow", "As JSON"))
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.widgets.run_organizer import RunOrganizer

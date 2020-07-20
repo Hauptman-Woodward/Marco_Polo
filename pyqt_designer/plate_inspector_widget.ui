@@ -36,7 +36,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Plate views are shown here. If you are viewing an HWI Run each view is a subsection of the larger plate.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plate views are displayed here. Each view (page) is a subsection of the entire screening plate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -67,7 +67,7 @@
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton_17">
            <property name="toolTip">
-            <string>Navigate to previous page of images</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Navigate to previous page of images.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Left Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Previous</string>
@@ -83,13 +83,13 @@
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Switch to the next imaging run for this sample</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, switch to the next date this sample was imaged.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Right Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Next Date</string>
            </property>
            <property name="shortcut">
-            <string>Up</string>
+            <string>Ctrl+Right</string>
            </property>
           </widget>
          </item>
@@ -99,7 +99,7 @@
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Switch to alternative spectrum for this sample</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, show this sample in a different imaging spectrum such as UV-TPEF or SHG.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Up Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Swap Spectrum</string>
@@ -115,17 +115,20 @@
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Switch to previous imaging run for this sample</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, switch to the previous date this sample was imaged.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Left Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Previous Date</string>
+           </property>
+           <property name="shortcut">
+            <string>Ctrl+Left</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton_18">
            <property name="toolTip">
-            <string>Navigate to the next page of images</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Navigate to the next page of images.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Right Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Next</string>
@@ -136,7 +139,11 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QSpinBox" name="spinBox"/>
+          <widget class="QSpinBox" name="spinBox">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Navigate directly to a specific page number.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_3">
@@ -160,9 +167,12 @@
          <string/>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_7">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Highlight images based on either their MARCO or human classification. Images that meet your filter settings will be shown fully opaque while other images will be made translucent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <attribute name="title">
           <string>Image Filtering</string>
          </attribute>
@@ -240,6 +250,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="tab_8">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Color images in the view by either their human (your) classification or MARCO classification. Use the dropdown boxes to pick colors for each image classification.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <attribute name="title">
           <string>Image Coloring</string>
          </attribute>
@@ -399,6 +412,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="tab">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what information should be overlayed onto the images in the current view. Refresh the view for the current settings to be applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <attribute name="title">
           <string>Labels</string>
          </attribute>
@@ -474,7 +490,7 @@
           <item row="1" column="5">
            <widget class="QPushButton" name="pushButton_23">
             <property name="toolTip">
-             <string>Reload the current view. Like a refresh button.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reload the current view. Similar to a refresh button. &lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;R&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Reload Current View</string>
@@ -482,12 +498,16 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QComboBox" name="comboBox_7"/>
+           <widget class="QComboBox" name="comboBox_7">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the number of images to be shown in each view.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="checkBox_29">
             <property name="toolTip">
-             <string>Keep the aspect ratio of the images in the grid. Favors accuracy to the image over image size.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep the aspect ratio of the images in the view. Favors accuracy to the original image over image size. Enabled by default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Preserve Aspect Ratio</string>
@@ -500,7 +520,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBox_27">
             <property name="toolTip">
-             <string>Apply image filters selected in the &quot;Image Filtering&quot; tab.</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply image filters selected in the &lt;span style=&quot; font-style:italic;&quot;&gt;Image Filtering&lt;/span&gt; tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Apply Image Filters</string>
@@ -517,7 +537,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="checkBox_28">
             <property name="toolTip">
-             <string>Apply image colorings selected in the &quot;Image Coloring&quot; tab</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply image colorings selected in the&lt;span style=&quot; font-style:italic;&quot;&gt; Image Coloring&lt;/span&gt; tab&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Apply Image Colors</string>
@@ -545,6 +565,9 @@
           </item>
           <item row="2" column="5" rowspan="3">
            <widget class="QPushButton" name="pushButton">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current view to an image file. The more images in the current view the longer this will take and the larger the image file will be.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string>Save View</string>
             </property>
@@ -560,7 +583,7 @@
           <item row="0" column="5">
            <widget class="QPushButton" name="pushButton_19">
             <property name="toolTip">
-             <string>Apply the currently selected coloring and filtering options if selected</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply the currently selected coloring and filtering options without having to reload the entire view. The &lt;span style=&quot; font-style:italic;&quot;&gt;Apply Image Filters&lt;/span&gt; check box must also be checked.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;A&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Apply Plate Settings</string>

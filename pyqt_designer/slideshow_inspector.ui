@@ -963,7 +963,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Images will be displayed here</string>
+         <string>Displays the current image(s).</string>
         </property>
        </widget>
       </item>
@@ -991,6 +991,9 @@
          <number>1</number>
         </property>
         <widget class="QWidget" name="tab_1">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter the images in the current slideshow. Allows you to restrict the types of images you are shown. In general, the more filters (check boxes) that are selected the more images you will see. The exception being if no filters are selected which Polo interprets as if all filters were selected. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <attribute name="title">
           <string>Filters</string>
          </attribute>
@@ -1004,40 +1007,52 @@
              <item>
               <widget class="QCheckBox" name="checkBox">
                <property name="toolTip">
-                <string>Include images classified as Crystal in slideshow</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include images classified as &lt;span style=&quot; font-style:italic;&quot;&gt;Crystal&lt;/span&gt; in the slideshow.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;C&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
-                <string>Crystal</string>
+                <string>Crystals</string>
+               </property>
+               <property name="shortcut">
+                <string>C</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QCheckBox" name="checkBox_2">
                <property name="toolTip">
-                <string>Include images classified as Precipitate in slideshow</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include images classified as &lt;span style=&quot; font-style:italic;&quot;&gt;Clear&lt;/span&gt; in the slideshow.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;L&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
-                <string>Precipitate</string>
+                <string>Clear</string>
+               </property>
+               <property name="shortcut">
+                <string/>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QCheckBox" name="checkBox_3">
                <property name="toolTip">
-                <string>Include images classified as Clear in slideshow</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include images classified as &lt;span style=&quot; font-style:italic;&quot;&gt;Precipitate&lt;/span&gt; in the slideshow.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;P&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
-                <string>Clear</string>
+                <string>Precipitate</string>
+               </property>
+               <property name="shortcut">
+                <string>Ctrl+S</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QCheckBox" name="checkBox_4">
                <property name="toolTip">
-                <string>Include images classified as Other in slideshow</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include images classified as &lt;span style=&quot; font-style:italic;&quot;&gt;Other&lt;/span&gt; in the slideshow.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;O&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>Other</string>
+               </property>
+               <property name="shortcut">
+                <string>O</string>
                </property>
               </widget>
              </item>
@@ -1047,7 +1062,7 @@
           <item row="2" column="0">
            <widget class="QCheckBox" name="checkBox_8">
             <property name="toolTip">
-             <string>Include only images  you have marked as favorite</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Include only images  you have marked as favorite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string>Favorites</string>
@@ -1063,20 +1078,26 @@
              <item>
               <widget class="QCheckBox" name="checkBox_5">
                <property name="toolTip">
-                <string>Set image types to refer to human (your) classifications. That is assuming you are a human.</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the image classifier to human. This means all image classifications will be in reference to their human (you) classification as opposed to their MARCO classification.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;H&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>Human</string>
+               </property>
+               <property name="shortcut">
+                <string>H</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QCheckBox" name="checkBox_6">
                <property name="toolTip">
-                <string>Set image types in reference to MARCO classifications.</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the image classifier to MARCO. This means image classifications will be in reference to the image's MARCO classification &lt;span style=&quot; font-weight:600;&quot;&gt;NOT&lt;/span&gt; your classifications.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;M&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string>MARCO</string>
+               </property>
+               <property name="shortcut">
+                <string>M</string>
                </property>
               </widget>
              </item>
@@ -1105,6 +1126,9 @@
           </item>
           <item row="5" column="0">
            <widget class="QRadioButton" name="radioButton_3">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images in the slideshow by their well number. This is the standard sort. If the currently loaded run is not an HWI Run well number = order the image was read into Polo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string>Well Number</string>
             </property>
@@ -1128,6 +1152,9 @@
           </item>
           <item row="4" column="0">
            <widget class="QRadioButton" name="radioButton_2">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort the images in the slideshow by their cocktail number, if it is available for the current run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string>Cocktail Number</string>
             </property>
@@ -1135,6 +1162,9 @@
           </item>
           <item row="3" column="0">
            <widget class="QRadioButton" name="radioButton">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images by their MARCO confidence. When classified the MARCO model assigns a confidence score between 0 and 1. Selecting this option will order the images in the slideshow from highest score to lowest score. &lt;span style=&quot; font-weight:600;&quot;&gt;NOTE&lt;/span&gt;: The sort ignores image classification so it is recommended to use this setting in combination with image filters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="text">
              <string>MARCO Confidence</string>
             </property>
@@ -1154,10 +1184,13 @@
       <item row="1" column="0">
        <widget class="QPushButton" name="pushButton_11">
         <property name="toolTip">
-         <string>Apply your currently selected filters</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply the selected filters and sorts.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+F&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Submit Filters</string>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+F</string>
         </property>
        </widget>
       </item>
@@ -1179,10 +1212,13 @@
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBox_10">
         <property name="toolTip">
-         <string>Show all images of the current well that have been linked by spectrum.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show all images of the current well that have been linked by spectrum.&lt;/p&gt;&lt;p&gt;Shortcut:&lt;span style=&quot; font-weight:600;&quot;&gt; S&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Show All Spectrums</string>
+        </property>
+        <property name="shortcut">
+         <string>S</string>
         </property>
        </widget>
       </item>
@@ -1190,6 +1226,9 @@
        <widget class="QPushButton" name="pushButton_10">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, show the the current well at it's next imaging date.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Right Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Next Date</string>
@@ -1202,10 +1241,13 @@
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBox_9">
         <property name="toolTip">
-         <string>Show all images of current well that have been linked by date in the same view.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show all images of current well that have been linked by date in the same view.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;D&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Show All Dates</string>
+        </property>
+        <property name="shortcut">
+         <string>D</string>
         </property>
        </widget>
       </item>
@@ -1213,6 +1255,9 @@
        <widget class="QPushButton" name="pushButton_9">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, show the current well at the previous imaging date.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Left Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Previous Date</string>
@@ -1227,6 +1272,9 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, show the current well in a different imaging spectrum such as UV-TPEF or SHG.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Shortcut &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl+Up Arrow Key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Swap Spectrum</string>
         </property>
@@ -1237,6 +1285,9 @@
       </item>
       <item row="4" column="0" colspan="2">
        <widget class="QPushButton" name="pushButton_7">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current view to a image file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Save View</string>
         </property>
@@ -1269,7 +1320,7 @@
          <item>
           <widget class="QSpinBox" name="spinBox">
            <property name="toolTip">
-            <string>Show the image assigned to this well number</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Navigate directly to a specific well number. Note that the slideshow will not continue from this well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="minimum">
             <number>1</number>
@@ -1294,7 +1345,7 @@
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton_6">
            <property name="toolTip">
-            <string>Show the next image in the slideshow</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the next image in the slideshow. Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Right arrow key&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Next</string>
@@ -1307,7 +1358,7 @@
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton_4">
            <property name="toolTip">
-            <string>Show the previous image in the slideshow</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the previous image in the slideshow. Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;Left arrow key.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Previous</string>
@@ -1374,10 +1425,10 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as crystal.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify the current image as crystal.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Crystal</string>
+         <string>Crystals</string>
         </property>
         <property name="shortcut">
          <string>1</string>
@@ -1844,10 +1895,10 @@
          </palette>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as precipitate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as precipitate.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Precipitate</string>
+         <string>Clear</string>
         </property>
         <property name="shortcut">
          <string>2</string>
@@ -1863,10 +1914,10 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as clear.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as clear.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Clear</string>
+         <string>Precipitate</string>
         </property>
         <property name="shortcut">
          <string>3</string>
@@ -1882,7 +1933,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as other.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as other.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Other</string>
@@ -1895,10 +1946,13 @@
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBox_7">
         <property name="toolTip">
-         <string>Mark current image as favorite</string>
+         <string>Mark current image as favorite.</string>
         </property>
         <property name="text">
          <string>Favorite?</string>
+        </property>
+        <property name="shortcut">
+         <string>F</string>
         </property>
        </widget>
       </item>

@@ -41,11 +41,11 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     @property
     def human(self):
-        return self.ui.checkBox_6.isChecked()
+        return self.ui.radioButton.isChecked()
 
     @property
     def marco(self):
-        return self.ui.checkBox_7.isChecked()
+        return self.ui.radioButton_2.isChecked()
 
     @property
     def title(self):

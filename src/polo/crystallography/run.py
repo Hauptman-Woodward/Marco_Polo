@@ -73,8 +73,7 @@ class Run():
                 image.delete_pixmap_data()
 
     def get_images_by_classification(self, human=True):
-        '''
-        Create a dictionary of image classifcations. Keys are
+        '''Create a dictionary of image classifcations. Keys are
         each type of classification and values are list of
         images with classification of the key. The human
         boolean determines what classifier should be used to

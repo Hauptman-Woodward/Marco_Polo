@@ -154,41 +154,41 @@ class Image(QtGui.QPixmap):
 
     @property
     def date(self):
-        return self.__date
+        return self._date
 
     @date.setter
     def date(self, date):
         if isinstance(date, str):
             d = BarTender.datetime_converter(date)
-            self.__date = d
+            self._date = d
         else:
-            self.__date = date
+            self._date = date
 
     @property
     def path(self):
-        return self.__path
+        return self._path
 
     @path.setter
     def path(self, new_path):
         if new_path:
             if isinstance(new_path, Path):
-                self.__path = str(new_path)
-            self.__path = new_path
+                self._path = str(new_path)
+            self._path = new_path
         else:
-            self.__path = None
+            self._path = None
 
     @property
     def bites(self):
-        return self.__bites
+        return self._bites
 
     @bites.setter
     def bites(self, new_bites):
         if isinstance(new_bites, bytes):
-            self.__bites = new_bites
+            self._bites = new_bites
         elif isinstance(new_bites, str):
-            self.__bites = Image.clean_base64_string(new_bites)
+            self._bites = Image.clean_base64_string(new_bites)
         else:
-            self.__bites = None
+            self._bites = None
 
     @property
     def marco_class(self):
@@ -197,7 +197,7 @@ class Image(QtGui.QPixmap):
         :return: Current MARCO classification of this image
         :rtype: str
         '''
-        return self.__marco_class
+        return self._marco_class
 
     @marco_class.setter
     def marco_class(self, new_class):
@@ -214,7 +214,7 @@ class Image(QtGui.QPixmap):
         :type new_class: str
         '''
         if new_class in IMAGE_CLASSIFICATIONS:
-            self.__marco_class = new_class
+            self._marco_class = new_class
             if hasattr(self, 'alt_image') and self.alt_image and self.spectrum == 'Visible':
                 # alt images inherit their linked classifications
                 alt_image = self.alt_image
@@ -222,7 +222,7 @@ class Image(QtGui.QPixmap):
                     alt_image.__marco_class = new_class
                     alt_image = alt_image.alt_image
         else:
-            self.__marco_class = None
+            self._marco_class = None
 
     @property
     def human_class(self):
@@ -231,7 +231,7 @@ class Image(QtGui.QPixmap):
         :return: Current human classification of this image
         :rtype: str
         '''
-        return self.__human_class
+        return self._human_class
 
     @human_class.setter
     def human_class(self, new_class):
@@ -246,7 +246,7 @@ class Image(QtGui.QPixmap):
         :type new_class: str
         '''
         if new_class in IMAGE_CLASSIFICATIONS:
-            self.__human_class = new_class
+            self._human_class = new_class
             # if hasattr(self, 'alt_image') and self.alt_image:
             #     # alt images inherit their linked classifications
             #     alt_image = self.alt_image
@@ -256,7 +256,7 @@ class Image(QtGui.QPixmap):
             #         # endless recursive call loop
             #         alt_image = alt_image.alt_image
         else:
-            self.__human_class = None
+            self._human_class = None
     
     @property
     def formated_date(self):

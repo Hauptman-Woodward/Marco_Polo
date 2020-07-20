@@ -15,7 +15,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0" rowspan="4">
-    <widget class="QTableWidget" name="tableWidget"/>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The current optimization screen will be displayed here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
    <item row="3" column="1">
     <spacer name="verticalSpacer">
@@ -75,6 +79,9 @@
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QLabel" name="label_34">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the volume of an individual well in your optimization plate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Well Volume</string>
         </property>
@@ -92,6 +99,9 @@
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QLabel" name="label">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the units to display reagent volumes in.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Output Units</string>
         </property>
@@ -154,7 +164,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBox_12">
         <property name="toolTip">
-         <string>Well numbers of images you have classified as crystal containing. MARCO classifications are not included.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Well numbers of images you have classified as crystal containing. MARCO classifications are not included. Pick from these wells to optimize.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -210,7 +220,11 @@
            </widget>
           </item>
           <item row="5" column="0" colspan="2">
-           <widget class="UnitComboBox" name="unitComboBox" native="true"/>
+           <widget class="UnitComboBox" name="unitComboBox" native="true">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the stock concentration of your selected x reagent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0" colspan="2">
            <widget class="QComboBox" name="comboBox_6">
@@ -268,7 +282,11 @@
            </widget>
           </item>
           <item row="5" column="0" colspan="2">
-           <widget class="UnitComboBox" name="unitComboBox_3" native="true"/>
+           <widget class="UnitComboBox" name="unitComboBox_3" native="true">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the stock concentration of your selected y reagent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0" colspan="2">
            <widget class="QComboBox" name="comboBox_13">
@@ -294,7 +312,7 @@
           <item row="1" column="0" colspan="2">
            <widget class="QListWidget" name="listWidget_4">
             <property name="toolTip">
-             <string>Reagents that have not been selected as the x nor y reagent appear hear</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reagents that have not been selected as the x nor y reagent appear hear.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>

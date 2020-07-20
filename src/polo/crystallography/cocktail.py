@@ -58,7 +58,7 @@ class Cocktail():
         :return: well assignment
         :rtype: int
         '''
-        return self.__well_assignment
+        return self._well_assignment
 
     @well_assignment.setter
     def well_assignment(self, value):
@@ -69,7 +69,7 @@ class Cocktail():
         '''
         if isinstance(value, (str, float)):
             value = int(value)
-        self.__well_assignment = value
+        self._well_assignment = value
     
 
     def add_reagent(self, new_reagent):
@@ -155,7 +155,7 @@ class Reagent():
 
         self.chemical_additive = chemical_additive
         self.concentration = concentration
-        self.__chemical_formula = chemical_formula
+        self._chemical_formula = chemical_formula
         self.stock_con = stock_con  # should be in Molarity
 
     @property
@@ -166,7 +166,7 @@ class Reagent():
         :return: Chemical formula
         :rtype: molmass.Formula
         '''
-        return self.__chemical_formula
+        return self._chemical_formula
 
     @chemical_formula.setter
     def chemical_formula(self, new_formula):
@@ -189,7 +189,7 @@ class Reagent():
                 new_formula = new_formula.replace(
                     water[0], '[H2O]{}'.format(num_waters)
                 )
-            self.__chemical_formula = Formula(new_formula)
+            self._chemical_formula = Formula(new_formula)
         else:
             raise TypeError
 
@@ -201,7 +201,7 @@ class Reagent():
         :return: Chemical concentration
         :rtype: SignedValue
         '''
-        return self.__concentration
+        return self._concentration
 
     @concentration.setter
     def concentration(self, new_con):
@@ -213,7 +213,7 @@ class Reagent():
             instance of SignedValue as the new_con
         '''
         if isinstance(new_con, SignedValue):
-            self.__concentration = new_con
+            self._concentration = new_con
         else:
             raise TypeError
 
@@ -230,7 +230,7 @@ class Reagent():
         :return: molarity or False
         :rtype: SignedValue or Bool
         '''
-        base_con = self.__concentration.to_base()
+        base_con = self._concentration.to_base()
         if base_con.units == 'M':
             return base_con
         elif base_con.units == 'w/v' and self.molar_mass:
@@ -346,19 +346,19 @@ class SignedValue():
 
     @property
     def value(self):
-        return self.__value
+        return self._value
 
     @value.setter
     def value(self, value):
         if isinstance(value, (int, float)):
-            self.__value = value
+            self._value = value
         elif isinstance(value, str):
             value = num_regex.findall(value)
             if value:
                 value = float(value[0])
         else:
             value = 0.0
-        self.__value = value
+        self._value = value
 
     def scale(self, scale_key):
         '''Scale the value of the SignedValue instance using a key character

@@ -10,6 +10,7 @@ from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from polo.plots.plot_utils import *
+from polo.utils.dialog_utils import make_message_box
 
 matplotlib.use('QT5Agg')
 
@@ -75,7 +76,7 @@ class StaticCanvas(MplCanvas):
         # need to know total classified and
         # human, machine machine is the total
         class_dict = {'Crystals': [0, 0], 'Precipitate': [0, 0],
-                      'Clear': [0, 0], 'Other': [0, 0]}
+                      'Clear': [0, 0], 'Other': [0, 0], None: [0, 0]}
         # two lists tuple for each bar
         for image in current_run.images:
             if image.machine_class in class_dict:  # could be None
@@ -88,29 +89,38 @@ class StaticCanvas(MplCanvas):
         return bar_values
 
     def plot_classification_progress(self, current_run):
-        self.clear_axis()
+        try:
+            self.clear_axis()
 
-        ax = self.fig.add_subplot(111)
-        classified_values, unclass_values, labels = self.classification_progress(
-            current_run)
-        ax.bar(labels, unclass_values, color='grey')
-        ax.bar(labels, classified_values, color='lightblue')
-        ax.set_title('Classification Progress By MARCO Designation')
-        self.draw()
+            ax = self.fig.add_subplot(111)
+            classified_values, unclass_values, labels = self.classification_progress(
+                current_run)
+            ax.bar(labels, unclass_values, color='grey')
+            ax.bar(labels, classified_values, color='lightblue')
+            ax.set_title('Classification Progress By MARCO Designation')
+            self.draw()
+        except Exception as e:
+            m = make_message_box(
+                parent=self,
+                message='Could not complete plot drawing. Failed with error {}'.format(e)
+            )
+            m.exec_()
 
-    def plot_meta_stats(self, current_run):
-        self.clear_axis()
-        # add all subplots here
-        self.fig.add_subplot(111)
-        # make classification progress plot
-        # make accuracy plot
-        labels = ['Correct', 'Incorrect']
-        marco_accuracy = self.marco_accuracy(current_run)
-        self.fig.get_axes()[0].bar(
-            labels, marco_accuracy, color='lightblue')
-        self.fig.get_axes()[0].set_title(
-            'MARCO Classification Accuracy')
-        self.draw()
+        def plot_meta_stats(self, current_run):
+            self.clear_axis()
+            # add all subplots here
+            self.fig.add_subplot(111)
+            # make classification progress plot
+            # make accuracy plot
+            labels = ['Correct', 'Incorrect']
+            marco_accuracy = self.marco_accuracy(current_run)
+            self.fig.get_axes()[0].bar(
+                labels, marco_accuracy, color='lightblue')
+            self.fig.get_axes()[0].set_title(
+                'MARCO Classification Accuracy')
+            self.draw()
+        
+
 
     def plot_plate_heatmaps(self, current_run):
 
@@ -153,7 +163,11 @@ class StaticCanvas(MplCanvas):
 
             self.draw()
         except Exception:  # lazy error handling for now see code above try block
-            return 
+            m = make_message_box(
+                parent=self,
+                message='Could not complete plot drawing. Failed with error {}'.format(e)
+            )
+            m.exec_()
 
     def plot_existing_plot(self, saved_figure):
         self.clear_axis()

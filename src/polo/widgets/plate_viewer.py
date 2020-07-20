@@ -15,6 +15,13 @@ from polo.utils.io_utils import RunSerializer, SceneExporter
 from polo.utils.dialog_utils import make_message_box
 from polo.threads.thread import QuickThread
 
+class PlateGraphicsItem(QtWidgets.QGraphicsPixmapItem):
+
+    def __init__(self, pixmap, parent=None):
+        super(PlateGraphicsItem, self).__init__(pixmap, parent)
+    
+    def contextMenuEvent(self, event):
+        menu = QtWidgets.QMenu(self)
 
     
 

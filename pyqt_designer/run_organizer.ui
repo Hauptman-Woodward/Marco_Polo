@@ -6,18 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>329</width>
-    <height>580</height>
+    <width>318</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="RunTree" name="runTree">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Runs that have been loaded into Polo will be displayed here. Individual runs will appear under their respective sample. Runs of the same sample will be automatically associated, or &amp;quot;linked&amp;quot;, by date or spectrum to allow you to swap between spectrum or navigate between dates.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To open a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;doubleclick &lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;it.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To remove a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;left-click&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; and select &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;remove run&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To run the MARCO model on a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;click&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; the run and the hit the &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;Classify Selected Run&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; button below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <column>
+      <property name="text">
+       <string>Samples</string>
+      </property>
+     </column>
+    </widget>
+   </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_30">
      <property name="text">
       <string>Est Time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QPushButton" name="pushButton">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run the MARCO model on the currently selected run. &lt;/p&gt;&lt;p&gt;MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Classify Selected Run</string>
      </property>
     </widget>
    </item>
@@ -26,45 +48,6 @@
      <property name="text">
       <string>Classification Progress</string>
      </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="label_32">
-     <property name="text">
-      <string>0</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="RunTree" name="runTree">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <stylestrategy>PreferDefault</stylestrategy>
-      </font>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>false</bool>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>Samples</string>
-      </property>
-     </column>
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
@@ -77,14 +60,10 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QPushButton" name="pushButton">
-     <property name="toolTip">
-      <string>Run the MARCO model on the currently selected run. MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.
-</string>
-     </property>
+   <item row="4" column="1">
+    <widget class="QLabel" name="label_32">
      <property name="text">
-      <string>Classify Selected Run</string>
+      <string>0</string>
      </property>
     </widget>
    </item>
@@ -94,7 +73,7 @@
   <customwidget>
    <class>RunTree</class>
    <extends>QTreeWidget</extends>
-   <header>polo/widgets/run_tree</header>
+   <header>polo/widgets/run_tree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

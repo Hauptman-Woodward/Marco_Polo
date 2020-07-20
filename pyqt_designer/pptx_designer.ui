@@ -63,6 +63,9 @@
               <property name="text">
                <string>Crystals</string>
               </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -103,16 +106,19 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QCheckBox" name="checkBox_6">
+             <widget class="QRadioButton" name="radioButton">
               <property name="text">
                <string>Human</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_7">
+             <widget class="QRadioButton" name="radioButton_2">
               <property name="text">
-               <string>MARCO</string>
+               <string>Marco</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

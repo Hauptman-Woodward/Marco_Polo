@@ -82,6 +82,15 @@ MSO_DICT = {  # translate between marco encodings and mso encodings
     #IMAGE_CLASSIFICATIONS[3]: 5,   # garbage
     IMAGE_CLASSIFICATIONS[3]: 0    # unsure
 }
+REV_MSO_DICT = {
+    90: IMAGE_CLASSIFICATIONS[0],  # xtal
+    60: IMAGE_CLASSIFICATIONS[3], # skin
+    50: IMAGE_CLASSIFICATIONS[2],  # precipitate
+    25: IMAGE_CLASSIFICATIONS[2],  # phase
+    10: IMAGE_CLASSIFICATIONS[1],  # clear
+    5: IMAGE_CLASSIFICATIONS[3],   # garbage
+    0: IMAGE_CLASSIFICATIONS[3]   # unsure
+}
 
 
 

@@ -377,7 +377,7 @@ class RunCsvWriter(RunSerializer):
         :return: Output path
         :rtype: str
         '''
-        return self.__output_path
+        return self._output_path
 
     @property
     def fieldnames(self):  # could use more efficent way of determining feildnames
@@ -402,7 +402,7 @@ class RunCsvWriter(RunSerializer):
         if isinstance(new_path, Path):
             new_path = str(new_path)
 
-        self.__output_path = new_path
+        self._output_path = new_path
 
     def get_csv_data(self):
         '''Convert the `run` attribute to csv style data. Returns a tuple of
@@ -523,8 +523,71 @@ class MsoWriter(RunSerializer):
             return True
         else:
             return False
-            
 
+
+class MsoReader():
+
+    def __init__(self, mso_path):
+        self.mso_path = mso_path
+    
+    def _read_mso_file(self):
+        pass
+    
+    @staticmethod
+    def read_mso_classification(mso_class):
+        mso_class = mso_class.split('-')
+        mso_codes = [int(code.strip()) for code in mso_class if code in REV_MSO_DICT]
+        if mso_codes:
+            return REV_MSO_DICT[max(mso_codes)]
+        else:
+            return None
+
+    def classify_images_from_mso_file(self, images):
+        try:
+            len_images = len(images)
+            with open(self.mso_path) as mso:
+                reader = csv.reader(mso, delimiter='\t')
+                next(reader)
+                next(reader)  # skip first two header lines
+                for row in reader:
+                    well_index = int(row[0]) - 1
+                    classification = MsoReader.read_mso_classification(row[-1])
+                    if len_images > well_index:  
+                        images[well_index].human_class = classification
+            return True
+        except Exception as e:
+            return e
+
+class JsonWriter(RunSerializer):
+
+    def __init__(self, run, output_path):
+        self.run = run
+        self.output_path = output_path
+    
+    @staticmethod
+    def json_encoder(obj):
+        d = None
+        if hasattr(obj, '__dict__'):  # can send to dict object
+            d = obj.__dict__
+        else:  # not castable to dict
+            if isinstance(obj, bytes):  # likely the base64 encoded image
+                d = obj.decode('utf-8')
+            else:
+                d = str(obj)  # if all else fails case to string
+        return d
+    
+    def write_json(self):
+        try:
+            json_content = json.dumps(self.run, ensure_ascii=True, indent=4,
+                                  default=XtalWriter.json_encoder, check_circular=False)
+            
+            output_path = JsonWriter.path_suffix_checker(str(self.output_path), '.json')
+            with open(output_path, 'w') as json_file:
+                json_file.write(json_content)
+        
+            return True
+        except Exception as e:
+            raise e
 
 
 class XtalWriter(RunSerializer):
@@ -663,8 +726,7 @@ class XtalWriter(RunSerializer):
                 self.run.encode_images_to_base64()
                 return json.dumps(self.run, ensure_ascii=True, indent=4,
                                   default=XtalWriter.json_encoder)
-            except (TypeError, FileNotFoundError,
-                    IsADirectoryError, PermissionError) as e:
+            except Exception as e:
                 logger.warning('Failed to encode {} to dict. Gave {}'.format(
                     self.run, e))
                 return e
@@ -702,7 +764,6 @@ class RunDeserializer():  # convert saved file into a run
                 else:
                     return string
             
-
     @staticmethod
     def dict_to_obj(d):
         '''Opposite of the obj_to_dict method in XtalWriter class, this method
@@ -728,7 +789,7 @@ class RunDeserializer():  # convert saved file into a run
                     if '__' in key:  # deal with object properties
                         key = key.split('__')[-1]
                     elif '_' == key[0]:
-                        key = key.replace('_', '')
+                        key = key[1:]
                     temp_d[key] = item
                 obj = class_(**temp_d)
 
@@ -819,18 +880,18 @@ class PptxWriter():
         self.marco = marco
         self.favorite = favorite
         self.image_types = image_types
-        self.__temp_images = []
-        self.__bumper = 1
-        self.__slide_width = 10
-        self.__slide_height = 6
-        self.__presentation = Presentation()
+        self._temp_images = []
+        self._bumper = 1
+        self._slide_width = 10
+        self._slide_height = 6
+        self._presentation = Presentation()
     
     def delete_presentation(self):
-        self.__presentation = Presentation()
+        self._presentation = Presentation()
     
     def delete_temp_images(self):
         try:
-            [os.remove(img_path) for img_path in self.__temp_images]
+            [os.remove(img_path) for img_path in self._temp_images]
             return True
         except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
             return e
@@ -881,7 +942,7 @@ class PptxWriter():
                         well_number = i + 1
                         self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
                 
-                self.__presentation.save(str(self.output_path))
+                self._presentation.save(str(self.output_path))
                 self.delete_temp_images()
                 return True
                     
@@ -902,7 +963,9 @@ class PptxWriter():
             
             slide_title_formater = 'Well Number {}'
             for image in run.images:
-                if image.standard_filter(self.image_types, self.human, self.marco, self.favorite):
+                if image.standard_filter(self.image_types,
+                                         self.human, self.marco,
+                                         self.favorite):
                     metadata = str(image)
                     if cocktail_data and hasattr(image, 'cocktail'):
                         metadata += '\n\n' + str(image.cocktail)
@@ -920,7 +983,7 @@ class PptxWriter():
 
             
             self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
-            self.__presentation.save(str(self.output_path))
+            self._presentation.save(str(self.output_path))
             self.delete_temp_images()
             return True
         except Exception as e:
@@ -937,12 +1000,12 @@ class PptxWriter():
             [rep_image.human_class, rep_image.machine_class]
         ]
 
-        self.add_table_to_slide(new_slide, data, self.__bumper, 2)
+        self.add_table_to_slide(new_slide, data, self._bumper, 2)
         # do for most recent human classification image if it exits
 
     def add_new_slide(self, template=5):
-        return self.__presentation.slides.add_slide(
-            self.__presentation.slide_layouts[template])
+        return self._presentation.slides.add_slide(
+            self._presentation.slide_layouts[template])
     
     def add_timeline_slide(self, images, well_number):
         date_images = sorted(images, key=lambda i: i.date)
@@ -975,13 +1038,13 @@ class PptxWriter():
         rows, cols = len(data), max([len(r) for r in data])
         shapes = slide.shapes
         
-        width = (self.slide_width - (self.__bumper * 2))
-        height = self.__slide_height - 2
+        width = (self.slide_width - (self._bumper * 2))
+        height = self._slide_height - 2
         table = shapes.add_table(rows, cols, Inches(left), Inches(top), 
                                  Inches(width), Inches(height))
 
         for k in range(cols):
-            table.columns[k].width = (self.slide_size - (self.__bumper * 2)) / cols
+            table.columns[k].width = (self.slide_size - (self._bumper * 2)) / cols
             # set column width
         for i in range(rows):
             for j in range(cols):
@@ -990,10 +1053,10 @@ class PptxWriter():
 
     def add_multi_image_slide(self, slide, images, labeler):
         top = 2.5
-        img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
-        if img_size >= 0.4 * self.__slide_height: img_size = 0.4 * self.__slide_height
+        img_size = (self._slide_width - (self._bumper * 2)) / len(images)
+        if img_size >= 0.4 * self._slide_height: img_size = 0.4 * self._slide_height
 
-        left = ((self.__slide_width - (img_size * len(images))) / 2) - 0.2
+        left = ((self._slide_width - (img_size * len(images))) / 2) - 0.2
 
         for image in images:
             self.add_image_to_slide(
@@ -1009,15 +1072,15 @@ class PptxWriter():
     def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
         new_slide = self.add_new_slide(5)
         new_slide.shapes.title.text = title
-        img_size = self.__slide_height * img_scaler
+        img_size = self._slide_height * img_scaler
         self.add_image_to_slide(
-            image, new_slide, self.__bumper, 2, img_size)
+            image, new_slide, self._bumper, 2, img_size)
 
         if metadata:
-            metadata_offset = ((self.__bumper + img_size) - self.__slide_width) - self.__bumper
-            metadata_left = img_size + (self.__bumper * 2)
-            metadata_width = self.__slide_width - metadata_left - self.__bumper
-            metadata_height = self.__slide_height - 2 - self.__bumper
+            metadata_offset = ((self._bumper + img_size) - self._slide_width) - self._bumper
+            metadata_left = img_size + (self._bumper * 2)
+            metadata_width = self._slide_width - metadata_left - self._bumper
+            metadata_height = self._slide_height - 2 - self._bumper
             self.add_text_to_slide(
                 new_slide, metadata, metadata_left, 2, metadata_width,
                 metadata_height)
@@ -1046,7 +1109,7 @@ class PptxWriter():
             temp_path = str(TEMP_DIR.joinpath(str(hash(image.path))))
             with open(temp_path, 'wb') as tmp:
                 tmp.write(base64.decodebytes(image.bites))
-                self.__temp_images.append(temp_path)
+                self._temp_images.append(temp_path)
             img_path = temp_path
         
         return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
@@ -1237,7 +1300,7 @@ class CocktailMenuReader():
     def __init__(self, menu_file_path, delim=','):
         self.menu_file_path = menu_file_path
         self.delim = delim
-        self.__row_counter = 0
+        self._row_counter = 0
 
     @classmethod
     def set_cocktail_map(cls, map):
@@ -1478,14 +1541,14 @@ class Menu():  # holds the dictionary of cocktails
 
     @property
     def cocktails(self):
-        return self.__cocktails
+        return self._cocktails
 
     @cocktails.setter
     def cocktails(self, new_cocktails):
         if new_cocktails:
-            self.__cocktails = new_cocktails
+            self._cocktails = new_cocktails
         else:
-            self.__cocktails = CocktailMenuReader(self.path).read_menu_file()
+            self._cocktails = CocktailMenuReader(self.path).read_menu_file()
 
     def __len__(self):
         if self.cocktails:

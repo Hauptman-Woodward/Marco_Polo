@@ -1126,6 +1126,7 @@
     </property>
     <addaction name="actionAs_HTML"/>
     <addaction name="actionAs_CSV"/>
+    <addaction name="actionAs_JSON"/>
     <addaction name="actionAs_MSO"/>
     <addaction name="actionAs_PPTX"/>
    </widget>
@@ -1296,7 +1297,7 @@
     <string>Save Run</string>
    </property>
    <property name="shortcut">
-    <string>F</string>
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionDelete_Run">
@@ -1412,6 +1413,11 @@
   <action name="actionAs_PPTX">
    <property name="text">
     <string>As PPTX</string>
+   </property>
+  </action>
+  <action name="actionAs_JSON">
+   <property name="text">
+    <string>As JSON</string>
    </property>
   </action>
  </widget>

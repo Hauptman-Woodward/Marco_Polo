@@ -6,9 +6,9 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
-
+from polo.utils.dialog_utils import make_message_box
 from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
-from polo.utils.io_utils import RunDeserializer, RunLinker
+from polo.utils.io_utils import RunDeserializer, RunLinker, MsoReader
 from polo.crystallography.run import HWIRun, Run
 from polo.windows.run_updater_dialog import RunUpdaterDialog
 
@@ -152,11 +152,16 @@ class RunTree(QtWidgets.QTreeWidget):
             open_run_action = QtWidgets.QAction('Open Run', self)
             open_run_action.triggered.connect(lambda: self._open_run_slot(event))
 
-            
+            classify_from_mso = QtWidgets.QAction('Add MSO classifications', self)
+            classify_from_mso.triggered.connect(lambda: self._add_classifications_from_mso_slot(event))
+
+
             self.menu.addAction(open_run_action)
-            self.menu.addSeparator()
-            # self.menu.addAction(edit_data_action)
+            #self.menu.addAction(edit_data_action)
             self.menu.addAction(remove_run_action)
+            self.menu.addSeparator()
+            self.menu.addAction(classify_from_mso)
+            
 
             self.menu.popup(QtGui.QCursor.pos())
     
@@ -177,7 +182,25 @@ class RunTree(QtWidgets.QTreeWidget):
             #     if run_node:
             #         run_node.setText(0, updater.run.run_name)
             self.loaded_runs[run_name] = updater.run
-            
+    
+    def _add_classifications_from_mso_slot(self, event=None):
+        if self.selected_run:
+            mso_browser = QtWidgets.QFileDialog.getOpenFileName(
+                self, 'MSO Hunter', filter='mso files (*.mso)')
+            if mso_browser and len(mso_browser) > 0:
+                mso_file = mso_browser[0]
+                reader = MsoReader(mso_file)
+                result = reader.classify_images_from_mso_file(
+                    self.selected_run.images)
+                if result == True:
+                    message = 'Added MSO classifications from {}'.fromat(
+                        mso_file
+                    )
+                else:
+                    message = 'Failed to add MSO classifications from {}. Failed with error {}'.format(
+                        mso_file, result
+                    )
+                make_message_box(parent=self, message=message).exec_()
     
     def _get_run_node(self, run):
         run_name = run.run_name
@@ -189,7 +212,6 @@ class RunTree(QtWidgets.QTreeWidget):
             child_node = parent_node.child(i)
             if child_node.text(0) == run_name:
                 return child_node
-
 
     # open edit run data dialog window
 
