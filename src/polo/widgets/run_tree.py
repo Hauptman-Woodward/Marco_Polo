@@ -29,6 +29,13 @@ class RunTree(QtWidgets.QTreeWidget):
     @property
     def current_run_names(self):
         return list(self.loaded_runs.keys())
+    
+    @property
+    def selected_run(self):
+        if self.currentItem() and self.currentItem().text(0) in self.loaded_runs:
+            return self.loaded_runs[self.currentItem().text(0)]
+        else:
+            return False
 
     def remove_run_from_view(self, run_name):
         # remove the current selected run if one is selected

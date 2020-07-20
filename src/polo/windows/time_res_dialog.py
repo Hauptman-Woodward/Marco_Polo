@@ -45,7 +45,7 @@ class TimeResDialog(QtWidgets.QDialog):
         temp_runs = sorted(temp_runs, key=lambda x: x.images[0].date)
         # sorted from earliest to latest
         for i in range(0, len(temp_runs)-1):
-            temp_runs[i].link_to_decendent(temp_runs[i+1])
+            temp_runs[i].link_to_next_date(temp_runs[i+1])
         
         
         for run in temp_runs:

@@ -239,7 +239,7 @@ class RunSerializer():
     def path_validator(path, parent=False):
         '''
         Tests to ensure a path exists. Passing parent = True will check for
-        the existance of the parent directory of the path.
+        the existence of the parent directory of the path.
         '''
 
         if isinstance(path, (str, Path)):
@@ -793,7 +793,8 @@ class RunDeserializer():  # convert saved file into a run
                 xtal_path = kwargs['xtal_path']
             else:
                 xtal_path = self.xtal_path
-            if os.path.isfile(str(xtal_path)):
+            xtal_path = str(xtal_path)
+            if os.path.isfile(xtal_path):
                 with open(xtal_path) as xtal_data:
                     header_data = self.xtal_header_reader(
                         xtal_data)  # must read header first
@@ -806,13 +807,14 @@ class RunDeserializer():  # convert saved file into a run
                 return FileNotFoundError
         except Exception as e:
             return e
+
+
 class PptxWriter():
 
     # 13.33 x 7.5 
-    def __init__(self, output_path, included_attributes={},
+    def __init__(self, output_path,
                  image_types = None, human=False, marco=False, favorite=False):
         self.output_path = output_path
-        self.included_attributes = included_attributes
         self.human = human
         self.marco = marco
         self.favorite = favorite
@@ -849,63 +851,80 @@ class PptxWriter():
         if subtitle:
             title_slide.placeholders[1].text = subtitle
 
-        if visible or other:
-            show_all_dates, show_single_image, show_alt_specs = False, False, False
-            if visible:
-                if len(visible) > 1:
-                    show_all_dates = True
-                else:
-                    show_single_image = True
-            if other:
-                show_alt_specs = True
+        try:
+            if visible or other:
+                show_all_dates, show_single_image, show_alt_specs = False, False, False
+                if visible:
+                    if len(visible) > 1:
+                        show_all_dates = True
+                    else:
+                        show_single_image = True
+                if other:
+                    show_alt_specs = True
 
-            if show_all_dates or show_single_image:
-                rep_run = visible[0]
-            else:
-                rep_run = other[0]
-            
-            for i in range(10):
-                if show_all_dates:
-                    self.add_timeline_slide([r.images[i] for r in visible], i+1)
-                elif show_single_image:
-                    metadata = str(rep_run.images[i])
-                    if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
-                        metadata += '\n\n' + str(rep_run.images[i].cocktail)
-                    title = 'Well Number {}'.format(rep_run.images[i].well_number)
-                    self.add_single_image_slide(rep_run.images[i], title, metadata)
+                if show_all_dates or show_single_image:
+                    rep_run = visible[0]
+                else:
+                    rep_run = other[0]
                 
-                if show_alt_specs:
-                    well_number = i + 1
-                    self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
+                for i in range(10):
+                    if show_all_dates:
+                        self.add_timeline_slide([r.images[i] for r in visible], i+1)
+                    elif show_single_image:
+                        metadata = str(rep_run.images[i])
+                        if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
+                            metadata += '\n\n' + str(rep_run.images[i].cocktail)
+                        title = 'Well Number {}'.format(rep_run.images[i].well_number)
+                        self.add_single_image_slide(rep_run.images[i], title, metadata)
+                    
+                    if show_alt_specs:
+                        well_number = i + 1
+                        self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
+                
+                self.__presentation.save(str(self.output_path))
+                self.delete_temp_images()
+                return True
+                    
+            else:
+                return False
+        except Exception as e:
+            return e
+        
+
+    def make_single_run_presentation(self, run, title, subtitle=None,
+                                     cocktail_data=True, all_specs=False,
+                                     all_dates=False):
+        try:
+            title_slide = self.add_new_slide(0)
+            title_slide.shapes.title.text = title
+            if subtitle:
+                title_slide.placeholders[1].text = subtitle
             
+            slide_title_formater = 'Well Number {}'
+            for image in run.images:
+                if image.standard_filter(self.image_types, self.human, self.marco, self.favorite):
+                    metadata = str(image)
+                    if cocktail_data and hasattr(image, 'cocktail'):
+                        metadata += '\n\n' + str(image.cocktail)
+                    self.add_single_image_slide(
+                        image, 
+                        slide_title_formater.format(image.well_number),
+                        metadata=metadata
+                        )
+                    if all_specs and image.alt_image:
+                        self.add_multi_spectrum_slide(
+                            image.get_linked_images_by_spectrum(), image.well_number)
+                    if all_dates and (image.next_image or image.previous_image):
+                        self.add_timeline_slide(image.get_linked_images_by_date(), image.well_number)
+
+
+            
+            self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
             self.__presentation.save(str(self.output_path))
             self.delete_temp_images()
-                
-        else:
-            return False
-        
-
-    def make_single_run_presentation(self, run, title, subtitle=None, cocktail_data=True):
-        title_slide = self.add_new_slide(0)
-        title_slide.shapes.title.text = title
-        if subtitle:
-            title_slide.placeholders[1].text = subtitle
-        
-        slide_title_formater = 'Well Number {}'
-        for image in run.images:
-            if image.standard_filter(self.image_types, self.human, self.marco, self.favorite):
-                metadata = str(image)
-                if cocktail_data and hasattr(image, 'cocktail'):
-                    metadata += '\n\n' + str(image.cocktail)
-                self.add_single_image_slide(
-                    image, 
-                    slide_title_formater.format(image.well_number),
-                    metadata=metadata
-                    )
-        
-        self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
-        self.__presentation.save(str(self.output_path))
-        self.delete_temp_images()
+            return True
+        except Exception as e:
+            return e
                 
     
     def add_classification_slide(self, well_number, rep_image):
@@ -970,7 +989,7 @@ class PptxWriter():
         return slide
 
     def add_multi_image_slide(self, slide, images, labeler):
-        top = 3
+        top = 2.5
         img_size = (self.__slide_width - (self.__bumper * 2)) / len(images)
         if img_size >= 0.4 * self.__slide_height: img_size = 0.4 * self.__slide_height
 
@@ -982,7 +1001,7 @@ class PptxWriter():
             )
             label_text = labeler(image)
             self.add_text_to_slide(
-                slide, label_text, left, top + (img_size * 1.5), img_size, 1.5, 
+                slide, label_text, left, top + (img_size * 1.2), img_size, 1.5, 
                 rotation=90)
             left += img_size
         return slide
@@ -1311,7 +1330,7 @@ class RunLinker():
 
     @staticmethod
     def the_big_link(runs):
-        runs = RunLinker.unlink_runs_completly(runs)
+        runs = RunLinker.unlink_runs_completely(runs)
         runs = RunLinker.link_runs_by_date(runs)
         runs = RunLinker.link_runs_by_spectrum(runs)
 
@@ -1319,33 +1338,24 @@ class RunLinker():
 
     @staticmethod
     def link_runs_by_date(runs):
-        for run in runs:
-            if hasattr(run, 'link_to_decendent') and isinstance(run.date, datetime):
-                continue
-            else:
-                return False
-
-        sorted_runs = [r for r in sorted(
+        # need to seperate out the runs that can be linked and not
+        linkable_runs = [r for r in runs 
+        if hasattr(r, 'link_to_next_date') and isinstance(r.date, datetime)]
+        if linkable_runs:
+            linkable_runs = [r for r in sorted(  # sort by date
             runs, key=lambda r: r.date) if r.image_spectrum == IMAGE_SPECS[0]]
-        # only visible runs liked by date
-        if sorted_runs and len(sorted_runs) > 1:  # if length is only one will be linked to self
-            for i in range(0, len(sorted_runs)-1):
-                sorted_runs[i].link_to_decendent(sorted_runs[i+1])
-        return list(set(runs).union(set(sorted_runs)))
-        # sorted_runs will not contain non-visible runs so need to merge the
-        # linked visible runs with the non-visible runs in a way that does
-        # not create duplicates
+            if linkable_runs:
+                for i in range(0, len(linkable_runs)-1):
+                    linkable_runs[i].link_to_next_date(linkable_runs[i+1])
+                return list(set(runs).union(set(linkable_runs)))
+        return runs
 
     @staticmethod
     def link_runs_by_spectrum(runs):
         # for now this links all runs of the sample to the alt spectrums when
-        for run in runs:
-            if hasattr(run, 'link_to_alt_spectrum'):
-                continue
-            else:
-                return False
+        linkable_runs = [r for r in runs if hasattr(r, 'link_to_alt_spectrum')]
         visible, other = [], []
-        for run in runs:
+        for run in linkable_runs:
             if run.image_spectrum == IMAGE_SPECS[0]:  # visible images only
                 visible.append(run)
             else:
@@ -1362,18 +1372,10 @@ class RunLinker():
                     run.link_to_alt_spectrum(other[0])  # link to first run of alts
         return runs
 
-            # setting up the linked list structure
-            # all alt spectrum (non visible) runs get linked together in a
-            # circular linked list. Visible runs then point at the one
-            # alt spectrum run. When a run is loaded in if it is in the visible
-            # spectrum the visible run is temprorarly inserted into the alt
-            # spec linked list and reconnected. If a new visible run is selected
-            # the current visible run in the linked list is replaced with the
-            # new current run
     @staticmethod
-    def unlink_runs_completly(runs):
+    def unlink_runs_completely(runs):
         for i, _ in enumerate(runs):
-            runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrun = None, None, None
+            runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrum = None, None, None
             for image in runs[i].images:
                 image.next_image, image.previous_image, image.alt_image = (
                     None, None, None

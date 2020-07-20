@@ -13,7 +13,7 @@ from matplotlib.backends.backend_qt5agg import \
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
-from PyQt5.QtWidgets import QAction, QApplication, QGridLayout, QApplication
+from PyQt5.QtWidgets import QAction, QGridLayout, QApplication
 
 from polo import *
 from polo.crystallography.run import HWIRun, Run
@@ -255,7 +255,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         ).exec_()
             else:
                 presentation_maker = PptxDesignerDialog(
-                    self.runOrganizer.ui.runTree.all_runs)
+                    self.runOrganizer.ui.runTree.loaded_runs)
                 presentation_maker.exec_()
         else:
             make_message_box(

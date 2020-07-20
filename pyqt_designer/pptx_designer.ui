@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>PptxDialog</class>
+ <widget class="QDialog" name="PptxDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>743</width>
-    <height>524</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,18 +15,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="runTree" name="runTreeWidget">
+    <widget class="RunTree" name="runTreeWidget" native="true">
      <property name="minimumSize">
       <size>
        <width>200</width>
        <height>0</height>
       </size>
      </property>
-     <column>
-      <property name="text">
-       <string notr="true">1</string>
-      </property>
-     </column>
     </widget>
    </item>
    <item row="0" column="1">
@@ -40,49 +35,18 @@
      <property name="title">
       <string>Presentation Settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0" colspan="3">
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Building From:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Run or Sample</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="4">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Title</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="4">
-       <widget class="QLineEdit" name="lineEdit"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Subtitle</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="4">
-       <widget class="QLineEdit" name="lineEdit_2"/>
-      </item>
-      <item row="6" column="0" rowspan="2" colspan="4">
+      <item row="4" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
          <string>Select Included Images</string>
@@ -109,13 +73,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_5">
-              <property name="text">
-               <string>Favorite</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="checkBox_3">
               <property name="text">
                <string>Precipitate</string>
@@ -126,6 +83,13 @@
              <widget class="QCheckBox" name="checkBox_4">
               <property name="text">
                <string>Other</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_5">
+              <property name="text">
+               <string>Favorite</string>
               </property>
              </widget>
             </item>
@@ -158,20 +122,60 @@
         </layout>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Export Path</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0" colspan="2">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Subtitle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
        <widget class="QLineEdit" name="lineEdit_3"/>
       </item>
-      <item row="9" column="2" colspan="2">
+      <item row="7" column="2">
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="3">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="title">
+         <string>Slides</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox_8">
+           <property name="text">
+            <string>Include All Spectrums</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkBox_9">
+           <property name="text">
+            <string>Include all Dates</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="QLineEdit" name="lineEdit_2"/>
+      </item>
+      <item row="8" column="0" colspan="3">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Export Selected Run</string>
         </property>
        </widget>
       </item>
@@ -183,8 +187,8 @@
  <customwidgets>
   <customwidget>
    <class>RunTree</class>
-   <extends>QTreeWidget</extends>
-   <header>polo/widgets/run_tree.h</header>
+   <extends>QWidget</extends>
+   <header>polo.widgets.run_tree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

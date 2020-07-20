@@ -172,7 +172,7 @@ class HWIRun(Run):
             os.path.basename(str(self.cocktail_menu.path)), str(platename)
         )
 
-    def link_to_decendent(self, other_run):
+    def link_to_next_date(self, other_run):
         if type(other_run) == HWIRun:
             logger.info('Linking {} to {}'.format(self, other_run))
             for current_image, dec_image in zip(self.images, other_run.images):
