@@ -536,7 +536,8 @@ class MsoReader():
     @staticmethod
     def read_mso_classification(mso_class):
         mso_class = mso_class.split('-')
-        mso_codes = [int(code.strip()) for code in mso_class if code in REV_MSO_DICT]
+        print(mso_class)
+        mso_codes = [int(code.strip()) for code in mso_class if int(code.strip()) in REV_MSO_DICT]
         if mso_codes:
             return REV_MSO_DICT[max(mso_codes)]
         else:
@@ -554,7 +555,8 @@ class MsoReader():
                     classification = MsoReader.read_mso_classification(row[-1])
                     if len_images > well_index:  
                         images[well_index].human_class = classification
-            return True
+                        print('set human class to', classification)
+            return images
         except Exception as e:
             return e
 

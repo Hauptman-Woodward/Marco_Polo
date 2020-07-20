@@ -12,6 +12,7 @@ from polo.utils.io_utils import RunDeserializer, RunLinker, MsoReader
 from polo.crystallography.run import HWIRun, Run
 from polo.windows.run_updater_dialog import RunUpdaterDialog
 
+
 class RunTree(QtWidgets.QTreeWidget):
 
     opening_run = pyqtSignal()
@@ -192,8 +193,9 @@ class RunTree(QtWidgets.QTreeWidget):
                 reader = MsoReader(mso_file)
                 result = reader.classify_images_from_mso_file(
                     self.selected_run.images)
-                if result == True:
-                    message = 'Added MSO classifications from {}'.fromat(
+                if isinstance(result, list):
+                    self.selected_run.images = result
+                    message = 'Added MSO classifications from {}'.format(
                         mso_file
                     )
                 else:
