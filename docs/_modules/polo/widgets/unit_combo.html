@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.widgets.unit_combo &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.widgets.unit_combo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.widgets.unit_combo</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">COLORS</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="n">UnitValue</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">polo.designer.UI_unit_combo</span> <span class="kn">import</span> <span class="n">Ui_unitCombo</span>
+<span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># class Unit():</span>
+
+<span class="c1">#     scalers = {&#39;n&#39;: 1e-9, &#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2}</span>
+<span class="c1">#     base_units = {}  # stores all established base units update for the</span>
+<span class="c1">#     # entire class</span>
+<span class="c1">#     # SI unit scalers from the bae unit</span>
+
+<span class="c1">#     def __init__(self, unit_string):</span>
+<span class="c1">#         self.unit_string = unit_string</span>
+
+
+<span class="c1">#     @classmethod</span>
+<span class="c1">#     def add_base_unit(cls, new_unit):</span>
+<span class="c1">#         if isinstance(new_unit, Unit):</span>
+<span class="c1">#             cls.base_units[new_unit.unit_string] = new_unit</span>
+
+
+<span class="c1">#     @property</span>
+<span class="c1">#     def base_unit(self):</span>
+<span class="c1">#         return self.__base_unit</span>
+
+<span class="c1">#     @base_unit.setter</span>
+<span class="c1">#     def base_unit(self, new_unit_string):</span>
+<span class="c1">#         # first character of string should be scaler if string len &gt; 1</span>
+<span class="c1">#         if len(new_unit_string) &gt; 1:</span>
+<span class="c1">#             base_unit = new_unit_string[1:]</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             base_unit = new_unit_string</span>
+
+<span class="c1">#         if base_unit in self.base_units:</span>
+<span class="c1">#             self.__base_unit = self.base_units[base_unit]</span>
+
+
+<div class="viewcode-block" id="UnitComboBox"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox">[docs]</a><span class="k">class</span> <span class="nc">UnitComboBox</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Widget that is a combination of a spinbox and a</span>
+<span class="sd">    comboBox that allows a user to select a value using the</span>
+<span class="sd">    spinBox and a unit using the comboBox.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    Lets say we want to create a UnitComboBox that allows someone</span>
+<span class="sd">    to select a Molar concentration using micro-molar, milli-molar,</span>
+<span class="sd">    centi-molar or molar.</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # create the scaler dictionary</span>
+<span class="sd">        s = {</span>
+<span class="sd">            &#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2</span>
+<span class="sd">        }</span>
+<span class="sd">        # values are in reference to the base unit</span>
+<span class="sd">        unit_combo = UnitComboBox(</span>
+<span class="sd">            parent=None, base_unit=&#39;M&#39;, scalers=s</span>
+<span class="sd">            )</span>
+
+<span class="sd">    :param parent: Parent widget, defaults to None</span>
+<span class="sd">    :type parent: QWidget, optional</span>
+<span class="sd">    :param base_unit: Base unit string, defaults to None</span>
+<span class="sd">    :type base_unit: str, optional</span>
+<span class="sd">    :param scalers: Dictionary of prefixes to apply to the baseunit.</span>
+<span class="sd">                    Keys should be string prefixes and values should</span>
+<span class="sd">                    be value that scales the baseunit, defaults to {}</span>
+<span class="sd">    :type scalers: dict, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">saved_scalers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalers</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UnitComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_unitCombo</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_unit</span> <span class="o">=</span> <span class="n">base_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span> <span class="o">=</span> <span class="n">scalers</span>  <span class="c1"># dict</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scalers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__scalers</span>
+
+    <span class="nd">@scalers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scalers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaler_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">scaler_list</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__scalers</span> <span class="o">=</span> <span class="n">scaler_list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scalers</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">each_scaler</span> <span class="ow">in</span> <span class="n">scaler_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">each_scaler</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">each_scaler</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">scalers</span><span class="p">[</span><span class="n">each_scaler</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">each_scaler</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">each_scaler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
+                    <span class="n">scalers</span><span class="p">[</span><span class="n">each_scaler</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">each_scaler</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__scalers</span> <span class="o">=</span> <span class="n">scalers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_unit_combobox_text</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sorted_scalers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scalers</span><span class="p">:</span>
+            <span class="n">scaler_text</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_unit</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorted_scalers</span><span class="p">]</span>
+            <span class="n">scaler_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_unit</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">scaler_text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="UnitComboBox._set_unit_combobox_text"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox._set_unit_combobox_text">[docs]</a>    <span class="k">def</span> <span class="nf">_set_unit_combobox_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to add units to the unit comboBox based</span>
+<span class="sd">        on the `base_unit` and the `scalers`.</span>
+
+<span class="sd">        :return: Items added to the comboBox</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_combobox_text</span>
+        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># set t base unit</span>
+        <span class="k">return</span> <span class="n">items</span></div>
+
+<div class="viewcode-block" id="UnitComboBox.unit_text_parser"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.unit_text_parser">[docs]</a>    <span class="k">def</span> <span class="nf">unit_text_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit_text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">unit_text</span><span class="p">:</span>
+            <span class="n">unit_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">unit_text</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unit_text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">unit_text</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit_text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">unit_text</span></div>
+
+<div class="viewcode-block" id="UnitComboBox.get_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return a UnitValue constructed from the value of the</span>
+<span class="sd">        spinBox value and unit from the comboBox.</span>
+
+<span class="sd">        :return: UnitValue constructed from current spinBox </span>
+<span class="sd">                 value and comboBox unit</span>
+<span class="sd">        :rtype: UnitValue</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+        <span class="n">unit_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit_text</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="UnitComboBox.set_zero"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_zero">[docs]</a>    <span class="k">def</span> <span class="nf">set_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the spinbox value to 0</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="UnitComboBox.set_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set the spinBox value and the comboBox unit based on the value and</span>
+<span class="sd">        unit of a `UnitValue` instance</span>
+
+<span class="sd">        :param value: UnitValue</span>
+<span class="sd">        :type value: UnitValue</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">UnitValue</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">unit_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">unit_index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">set_zero</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -15,7 +15,7 @@ logger = make_default_logger(__name__)
 
 class ImagePopDialog(QtWidgets.QDialog):
     '''Pop up that displays a selected image in a larger view. Intended
-    to be used with the PlateViewer widget when a user selects an
+    to be used with the `PlateViewer` widget when a user selects an
     image from the grid.
 
     :param image: Image to show
@@ -45,15 +45,16 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(
             self.change_favorite_status
         )
+        logger.info('Created {}'.format(self))
         # must set image before any other widget population
 
     @property
     def image(self):
-        return self.__image
+        return self._image
 
     @image.setter
     def image(self, new_image):
-        self.__image = new_image
+        self._image = new_image
         self.show_image()
 
     def show(self):
@@ -75,10 +76,16 @@ class ImagePopDialog(QtWidgets.QDialog):
             self.ui.textBrowser.setText(str(self.image.cocktail))
     
     def change_favorite_status(self):
+        '''Update the favorite status of the current image to the
+        state of the favorite radioButton.
+        '''
         if self.image:
             self.image.favorite = self.ui.radioButton.isChecked()
 
     def set_image_details(self):
+        '''Displays the current image metadata in a
+        testBrowser widget.
+        '''
         if self.image:
             self.ui.textBrowser_2.setText(str(self.image))
 
@@ -122,6 +129,18 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.close()
 
     def show_alt_image(self, next_date=False, prev_date=False, alt=False):
+        '''Show a linked image based on boolean flags. 
+
+        :param next_date: If True, set `image` attribute to next
+                          available imaging date, defaults to False
+        :type next_date: bool, optional
+        :param prev_date: If True, set `image` attribute to previous 
+                          imaging date, defaults to False
+        :type prev_date: bool, optional
+        :param alt: If True, set `image` attribute to alt spectrum
+                    image, defaults to False
+        :type alt: bool, optional
+        '''
         if next_date and self.image.next_image:
             self.image = self.image.next_image
         elif prev_date and self.image.previous_image:
@@ -130,6 +149,14 @@ class ImagePopDialog(QtWidgets.QDialog):
             self.image = self.image.alt_image
 
     def set_allowed_navigation_functions(self):
+        '''Enable or disable navigation by date or spectrum buttons
+        based on the content of the current image. Tests the Image
+        stored in the `image` attribute to determine if it is linked to
+        a future date, previous date or alt spectrum image through it's
+        `next_image`, `previous_image` and `alt_image` attributes
+        respectively. If an attribute == None, then the button that
+        requires that attribute will be disabled.
+        '''
         if self.image.next_image:
             self.ui.pushButton.setEnabled(True)
         else:
@@ -142,14 +169,3 @@ class ImagePopDialog(QtWidgets.QDialog):
             self.ui.pushButton_7.setEnabled(True)
         else:
             self.ui.pushButton_7.setEnabled(False)
-
-    # def set_allowed_navigation_functions(self):
-    #     nav_buttons = [self.ui.pushButton,
-    #                    self.ui.pushButton_6, self.ui.pushButton_7]
-    #     imgs = [self.image.next_image,
-    #             self.image.previous_image, self.image.alt_image]
-    #     for button, image in zip(nav_buttons, imgs):
-    #         if isinstance(image, Image):
-    #             button.setEnabled(True)
-    #         else:
-    #             button.setEnabled(False)

@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
-from polo.crystallography.cocktail import SignedValue
+from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_unit_combo import Ui_unitCombo
 from polo.utils.math_utils import *
@@ -40,10 +40,40 @@ from polo.utils.math_utils import *
 
 
 class UnitComboBox(QtWidgets.QWidget):
+    '''Widget that is a combination of a spinbox and a
+    comboBox that allows a user to select a value using the
+    spinBox and a unit using the comboBox.
+
+    Example:
+
+    Lets say we want to create a UnitComboBox that allows someone
+    to select a Molar concentration using micro-molar, milli-molar,
+    centi-molar or molar.
+
+    .. code-block:: python
+
+        # create the scaler dictionary
+        s = {
+            'u': 1e-6, 'm': 1e-3, 'c': 1e-2
+        }
+        # values are in reference to the base unit
+        unit_combo = UnitComboBox(
+            parent=None, base_unit='M', scalers=s
+            )
+
+    :param parent: Parent widget, defaults to None
+    :type parent: QWidget, optional
+    :param base_unit: Base unit string, defaults to None
+    :type base_unit: str, optional
+    :param scalers: Dictionary of prefixes to apply to the baseunit.
+                    Keys should be string prefixes and values should
+                    be value that scales the baseunit, defaults to {}
+    :type scalers: dict, optional
+    '''
 
     saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
 
-    def __init__(self, parent=None, base_unit=None, scalers=[]):
+    def __init__(self, parent=None, base_unit=None, scalers={}):
         super(UnitComboBox, self).__init__(parent)
         self.ui = Ui_unitCombo()
         self.ui.setupUi(self)
@@ -56,9 +86,6 @@ class UnitComboBox(QtWidgets.QWidget):
 
     @scalers.setter
     def scalers(self, scaler_list):
-        # units should be list of scaler prefixes if they are not predefined
-        # in scalers then should be a tuple with first value the scaler char
-        # and the second how it modifies the base unit
         if scaler_list == self.saved_scalers:
             self.__scalers = scaler_list
         else:
@@ -73,7 +100,7 @@ class UnitComboBox(QtWidgets.QWidget):
                     scalers[each_scaler] = self.saved_scalers[each_scaler]
             self.__scalers = scalers
         if self.scalers:
-            self.set_unit_combobox_text()
+            self._set_unit_combobox_text()
 
     @property
     def sorted_scalers(self):
@@ -92,7 +119,13 @@ class UnitComboBox(QtWidgets.QWidget):
         else:
             return []
 
-    def set_unit_combobox_text(self):
+    def _set_unit_combobox_text(self):
+        '''Private method to add units to the unit comboBox based
+        on the `base_unit` and the `scalers`.
+
+        :return: Items added to the comboBox
+        :rtype: list
+        '''
         items = self.unit_combobox_text
         if items:
             self.ui.comboBox.addItems(items)
@@ -109,17 +142,31 @@ class UnitComboBox(QtWidgets.QWidget):
                 return unit_text
 
     def get_value(self):
-        # base == True means return value in reference to the base unit
+        '''Return a UnitValue constructed from the value of the
+        spinBox value and unit from the comboBox.
+
+        :return: UnitValue constructed from current spinBox 
+                 value and comboBox unit
+        :rtype: UnitValue
+        '''
         value = self.ui.doubleSpinBox.value()
         unit_text = self.ui.comboBox.currentText()
 
-        return SignedValue(value, unit_text)
+        return UnitValue(value, unit_text)
     
     def set_zero(self):
+        '''Set the spinbox value to 0
+        '''
         self.ui.doubleSpinBox.setValue(0.0)
     
     def set_value(self, value, *args):
-        if isinstance(value, SignedValue):
+        '''Set the spinBox value and the comboBox unit based on the value and
+        unit of a `UnitValue` instance
+
+        :param value: UnitValue
+        :type value: UnitValue
+        '''
+        if isinstance(value, UnitValue):
             self.ui.doubleSpinBox.setValue(value.value)
             unit_index = self.ui.comboBox.findText(value.units)
             self.ui.comboBox.setCurrentIndex(unit_index)

@@ -12,8 +12,7 @@ logger = make_default_logger(__name__)
 
 
 class Slide():
-    '''
-    Holds an Image object to be shown in the current slide show. Slides are
+    '''Holds an Image object to be shown in the current slide show. Slides are
     the nodes of the current slide show linked list. The list is navigated by
     instances of Carousel class.
 
@@ -24,21 +23,32 @@ class Slide():
     '''
 
     def __init__(self, image, next_slide=None, prev_slide=None, slide_number=None):
+        '''Acts like a slide in a slideshow carousel. Holds an Image object instance
+        as the contents of the slide. Forms a linked list with other slides through
+        the `next_slide` and `prev_slide` attributes which act as the forwards
+        and backwards pointers to other slides.
+
+        :param image: Image that this slide will display
+        :type image: Image
+        :param next_slide: Next slide in the slideshow, defaults to None
+        :type next_slide: Slide, optional
+        :param prev_slide: Previous slide in the slideshow, defaults to None
+        :type prev_slide: Slide, optional
+        :param slide_number: Index of this slide in the slideshow, defaults to None
+        :type slide_number: int, optional
+        '''
 
         self.image = image  # image object holds well data
         self.next_slide = next_slide
         self.prev_slide = prev_slide
         self.slide_number = slide_number
+    
+    def __repr__(self):
+        return '{}: {}'.format(self.image.path, self.slide_number)
 
 
 class Carousel():
-    '''
-    Carousel class instance control how individual slides are
-    displayed and handles navigation between slides. It acts as the
-    interface and constructor for liked list formed of a series of
-    connected slides.
-
-    :param current_slide: Slide. The current slide in the carousel.
+    '''The Carousel class handles navigation between `Slide` instances.
     '''
 
     # linked list class to hold the current slides in
@@ -47,10 +57,10 @@ class Carousel():
         self.current_slide = None
 
     def add_slides(self, ordered_images, sort_function=None):
-        '''
-        Sets up linked list consisting of nodes of Slide instances. The list
+        '''Sets up linked list consisting of nodes of Slide instances. The list
         is circular and bi-directional. Sets self.current_slide to the first
-        slide in the linked list.
+        slide in the linked list. The order of the slides in the linked list
+        will reflect the order of the images in the `ordered_images` argument.
 
         :param ordered_images: a list of Image objects to create the linked list\
             from. The order of the images will be reflected by the linked list.
@@ -78,7 +88,7 @@ class Carousel():
 
     @property
     def current_slide(self):
-        return self.__current_slide
+        return self._current_slide
 
     @current_slide.setter
     def current_slide(self, new_slide):
@@ -89,13 +99,12 @@ class Carousel():
         :type new_slide: Slide 
         '''
         if new_slide:
-            self.__current_slide = new_slide
+            self._current_slide = new_slide
         else:
-            self.__current_slide = None
+            self._current_slide = None
 
     def controls(self, next_slide=False, prev_slide=False):
-        '''
-        Function that controls the navigation through the slides
+        '''Controls the navigation through the slides
         in the carousel. Does not control access to alternative
         images that may be available to the user.
 
@@ -107,7 +116,7 @@ class Carousel():
         :type prev_slide: bool
         '''
         if self.current_slide:
-            self.current_slide.image.recursive_delete_pixmap_data()
+            self.current_slide.image.delete_all_pixmap_data()
             if next_slide:
                 self.current_slide = self.current_slide.next_slide
             elif prev_slide:
@@ -134,10 +143,10 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         super(PhotoViewer, self).__init__(parent)
         self.show_all_dates = False
         self.show_all_specs = False
-        self.__zoom = 0
-        self.__empty = True
+        self._zoom = 0
+        self._empty = True
         self.scene = QtWidgets.QGraphicsScene(self)
-        #  self.__photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
+        #  self._photo = QtWidgets.QGraphicsPixmapItem()  attempting to remove photo and just use via scenes
         self.setScene(self.scene)
         self.setTransformationAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.AnchorUnderMouse)
@@ -149,16 +158,16 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
     # current image will be an actual image to show to the screen
     # slideshow images are images in the que that are ready to go
-    # self.set_image(self.__photo)  need to use scene here
+    # self.set_image(self._photo)  need to use scene here
 
     def hasPhoto(self):
-        return not self.__empty
+        return not self._empty
 
     def fitInView(self, scale=True):
         rect = self.scene.itemsBoundingRect()
-        #rect = QtCore.QRectF(self.__photo.pixmap().rect())
+        #rect = QtCore.QRectF(self._photo.pixmap().rect())
         if not rect.isNull():
-            self.__empty = False
+            self._empty = False
             self.setSceneRect(rect)
             self.setScene(self.scene)  # possibly do this instead or in addition to line above
             if self.hasPhoto():
@@ -169,9 +178,9 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                 factor = min(viewrect.width() / scenerect.width(),
                              viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
-            self.__zoom = 0
+            self._zoom = 0
         else:
-            self.__empty = True
+            self._empty = True
     
     def add_pixmap(self, pixmap):
         self.scene.addPixmap(pixmap)
@@ -187,23 +196,23 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         if self.hasPhoto():
             if event.angleDelta().y() > 0:
                 factor = 1.25
-                self.__zoom += 1
+                self._zoom += 1
             else:
                 factor = 0.8
-                self.__zoom -= 1
-            if self.__zoom > 0:
+                self._zoom -= 1
+            if self._zoom > 0:
                 self.scale(factor, factor)
-            elif self.__zoom == 0:
+            elif self._zoom == 0:
                 self.fitInView()
             else:
-                self.__zoom = 0
+                self._zoom = 0
 
     def toggleDragMode(self):
         '''Turns drag mode on and off.
         '''
         if self.dragMode() == QtWidgets.QGraphicsView.ScrollHandDrag:
             self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-        elif not self.__photo.pixmap().isNull():
+        elif not self._photo.pixmap().isNull():
             self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
     def mousePressEvent(self, event):
@@ -219,9 +228,8 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
 class SlideshowViewer(PhotoViewer):
     photoClicked = QtCore.pyqtSignal(QtCore.QPoint)
-    '''
-    Wrapper class around QGraphicsView and displays image to the user
-    in the slideshow viewer tab of the mainwindow.
+    '''Wrapper class around QGraphicsView and displays image to the user
+    in the slideshow viewer tab of the main window.
 
     :param run: Current run whose images are to be shown by the viewer.
     :type run: Run
@@ -237,12 +245,12 @@ class SlideshowViewer(PhotoViewer):
         super(SlideshowViewer, self).__init__(parent)
         self.run = run
         self.current_image = current_image
-        self.__carousel = Carousel()
+        self._carousel = Carousel()
         logger.info('Made {}'.format(self))
 
     @property
     def run(self):
-        return self.__run
+        return self._run
 
     @run.setter
     def run(self, new_run):
@@ -256,17 +264,81 @@ class SlideshowViewer(PhotoViewer):
         :type new_run: Run
         '''
         if isinstance(new_run, Run) or isinstance(new_run, HWIRun):
-            self.__run = new_run
+            self._run = new_run
             logger.info(
-                'Run attribute of {} set to {}'.format(self, self.__run))
+                'Run attribute of {} set to {}'.format(self, self._run))
             self.update_slides_from_filters(
                 image_types=set([]), human=False, marco=False
             )
+            logger.info('Opened new run {} with name {}'.format(
+                new_run, new_run.run_name
+            ))
         else:  # if run is none then interpret as request to delete current run
-            self.__run = None
-            self.__carousel = Carousel()
+            self._run = None
+            self._carousel = Carousel()
             self.scene.clear()
             self.current_image = None
+
+    def _set_all_dates_scene(self, image):
+        '''Private method that creates a time resolved view from the Image passed
+        to the `image` argument by traversing the date based
+        linked list the passed image may be a node in. 
+
+        :param image: Image to create time resolved view from
+        :type image: Image
+        '''
+        if isinstance(image, Image):
+            all_dates = image.get_linked_images_by_date()
+            self.scene.clear()
+            self.arrange_multi_image_scene(all_dates, render_date=True)
+            self.fitInView()
+    
+    def _set_all_spectrums_scene(self, image):
+        '''Private method that creates a view that includes all alt spectrums the Image
+        passed via the `image` argument is linked to.
+
+        :param image: Image to create the view from
+        :type image: Image
+        '''
+        if isinstance(image, Image):
+            all_specs = image.get_linked_images_by_spectrum()
+            self.scene.clear()
+            self.arrange_multi_image_scene(all_specs)
+            self.fitInView()
+            
+    def _set_single_image_scene(self, image):
+        '''Private method that creates a standard single image view from the image
+        passed to the `image` argument.
+
+        :param image: Image to display
+        :type image: Image
+        '''
+        if isinstance(image, Image):
+            if image.isNull():
+                image.setPixmap()
+            self.scene.clear()
+            self.scene.addPixmap(image)
+            self.fitInView()
+            
+    def __add_text_to_scene(self, text, x, y, size=40):
+        '''Private method to add text on top of an image.
+
+        :param text: Text to add to image
+        :type text: str
+        :param x: X cordinate of text
+        :type x: int
+        :param y: Y cordinate of text
+        :type y: int
+        :param size: Size of text, defaults to 40
+        :type size: int, optional
+        '''
+        t = QtWidgets.QGraphicsTextItem()
+        t.setPlainText(text)
+        f = QFont()
+        f.setPointSize(size)
+        t.setFont(f)
+        self.scene.addItem(t)
+        t.setPos(x, y)
 
     def set_current_image_by_well_number(self, well_number):
         if self.run:
@@ -277,11 +349,8 @@ class SlideshowViewer(PhotoViewer):
                     'Attempted to set current image to non-existant well number')
 
     def carousel_controls(self, next_image=False, previous_image=False):
-        '''
-        Wrapper around the method `controls` in Carousel class. Sets the
-        current_image attribute to the image contained in __carousel
-        current slide after the advance or retreat operation is applied to
-        the Carousel instance.
+        '''Wrapper around the :func:`~polo.widgets.slideshow_viewer.Carousel.controls`
+        method. 
 
         :param next_image: If True, tells carousel to advance by one slide.
         :param previous_image: If True, tells carousel to retreat by one slide.
@@ -289,48 +358,45 @@ class SlideshowViewer(PhotoViewer):
         :returns The current image.
         :rtype Image
         '''
-        if isinstance(self.__carousel, Carousel) and self.__carousel.current_slide:
+        if isinstance(self._carousel, Carousel) and self._carousel.current_slide:
             if next_image:
-                self.__carousel.controls(next_slide=True)
+                self._carousel.controls(next_slide=True)
             elif previous_image:
-                self.__carousel.controls(prev_slide=True)
+                self._carousel.controls(prev_slide=True)
 
-            self.current_image = self.__carousel.current_slide.image
+            self.current_image = self._carousel.current_slide.image
             return self.current_image
 
             # self.display_current_image()
 
     def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
-        '''
-        Creates new Carousel slides based on selected image filters.
+        '''Creates new Carousel slides based on selected image filters.
         Sets the current_image attribute to the image contained at
         the current slide of __carousel attribute.
 
         :param image_types: Set of image classifications to include in results.
         :type image_types: set
-        :param human: If True, image_types refers to human classifcation of the image.
+        :param human: If True, `image_types` refers to human classification of the image.
         :type human: bool
-        :param marco: If True, image_types referes to the machine (MARCO) classificatio\
+        :param marco: If True, `image_types` refers to the machine (MARCO) classification
             of the image.
         :type marco: bool
         '''
         if self.run:
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
-            self.__carousel.add_slides(images, sort_function)
-            self.current_image = self.__carousel.current_slide.image
-    
-    def add_text_to_scene(self, text, x, y, size=40):
-        t = QtWidgets.QGraphicsTextItem()
-        t.setPlainText(text)
-        f = QFont()
-        f.setPointSize(size)
-        t.setFont(f)
-        self.scene.addItem(t)
-        t.setPos(x, y)
-
+            self._carousel.add_slides(images, sort_function)
+            self.current_image = self._carousel.current_slide.image
 
     def arrange_multi_image_scene(self, image_list, render_date=False):
+        '''Helper method to arrange multiple images into the same
+        view.
+
+        :param image_list: List of images to add to the view
+        :type image_list: list
+        :param render_date: If True adds a date label to each image, defaults to False
+        :type render_date: bool, optional
+        '''
         x, y = 0, 0  # set starting cords
         for item in image_list:
             if isinstance(item, (list, tuple)):  # 2D list
@@ -346,77 +412,53 @@ class SlideshowViewer(PhotoViewer):
                 scene_item.setToolTip(item.get_tool_tip())
                 scene_item.setPos(x, y)
                 if render_date and item.date:
-                    self.add_text_to_scene(item.formated_date, x, y)
+                    self._add_text_to_scene(item.formated_date, x, y)
 
                 x += item.width()
 
-    def set_all_dates_scene(self, image):
-        if isinstance(image, Image):
-            all_dates = image.get_linked_images_by_date()
-            self.scene.clear()
-            self.arrange_multi_image_scene(all_dates, render_date=True)
-            self.fitInView()
-    
-    def set_all_spectrums_scene(self, image):
-        if isinstance(image, Image):
-            all_specs = image.get_linked_images_by_spectrum()
-            self.scene.clear()
-            self.arrange_multi_image_scene(all_specs)
-            self.fitInView()
-            
-    
-    def set_single_image_scene(self, image):
-        if isinstance(image, Image):
-            if image.isNull():
-                image.setPixmap()
-            self.scene.clear()
-            self.scene.addPixmap(image)
-            self.fitInView()
-
     def display_current_image(self):
-        '''
-        Renders the Image instance currently stored in the current_image\
-            attribute.
-
-        :returns: None
+        '''Renders the Image instance currently stored in the `current_image`
+        attribute.
         '''
         cur_img = self.current_image
         if isinstance(cur_img, Image):
             # parse the flags on how to display the image here
             if self.show_all_dates:
-                self.set_all_dates_scene(cur_img)
+                self._set_all_dates_scene(cur_img)
             elif self.show_all_specs:
-                self.set_all_spectrums_scene(cur_img)
+                self._set_all_spectrums_scene(cur_img)
             else:
-                self.set_single_image_scene(cur_img)
-
-        else:
-            logger.warning('Failed to set current image to {} at {}'.format(
-                self.current_image, self
-            ))
+                self._set_single_image_scene(cur_img)
 
     def get_cur_img_cocktail_str(self):
-        '''
-        Checks if current image is of type Image and if True returns\
-            the current image's cocktail info as a string.
+        '''Retruns the `current_image` cocktail information
+        as a string.
 
-        :returns: Current image cocktail string
-        :rtype: String
+        :return: Cocktail information string
+        :rtype: str
         '''
         if isinstance(self.current_image, Image):
             return str(self.current_image.cocktail)
 
     def get_cur_img_meta_str(self):
+        '''Returns the `current_image` metadata as a string.
+
+        :return: Metadata string
+        :rtype: str
+        '''
         if isinstance(self.current_image, Image):
             return str(self.current_image)
 
     def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
-        '''
-        Sets the current_image attribute to an alternative image\
-            based on user selection.
-        :param next_date: If True, set current image to the current_image's\
-            next image date.
-        :type next_date: bool
+        '''Sets the `current_image` attribute to a linked image specified by
+        one of the tree boolean flags.
+
+        :param next_date: If True, sets the `current_image`
+                          to the next image by date
+        :param prev_date: If True, sets the `current_image`
+                          to the previous image by date
+        :param alt_spec: If True, sets the `current_image`
+                         to an alt spectrum image
         '''
         cur_img = self.current_image
         if next_date and cur_img.next_image:

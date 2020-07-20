@@ -1,0 +1,774 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.windows.run_importer &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.windows.run_importer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.windows.run_importer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">uic</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QDateTime</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">QItemSelectionModel</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QGridLayout</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">make_default_logger</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">polo.designer.UI_multi_run_importer</span> <span class="kn">import</span> <span class="n">Ui_multiImporter</span>
+<span class="c1"># from polo.threads.thread import LoadRunThread</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">list_dir_abs</span><span class="p">,</span> <span class="n">run_name_validator</span><span class="p">,</span> <span class="n">RunDeserializer</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">polo.utils.unrar_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">XmlReader</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span>
+
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">SPEC_KEYS</span>  <span class="c1"># the bartender</span>
+
+<span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ImportCandidate"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate">[docs]</a><span class="k">class</span> <span class="nc">ImportCandidate</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_rar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_type</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;date&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+
+    <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">new_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_path</span><span class="p">))</span>
+        <span class="c1"># set basename of the directory as the default run name</span>
+
+<div class="viewcode-block" id="ImportCandidate.unrar"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.unrar">[docs]</a>    <span class="k">def</span> <span class="nf">unrar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rar</span><span class="p">:</span>
+            <span class="n">unrar_result</span> <span class="o">=</span> <span class="n">unrar_archive</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unrar_result</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">unrar_result</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ImportCandidate.read_xmldata"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.read_xmldata">[docs]</a>    <span class="k">def</span> <span class="nf">read_xmldata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
+        <span class="c1"># read xml data from HWI uncompressed rar files</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
+        <span class="n">platedata</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_and_read_platedata</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">platedata</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">platedata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">platedata</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>  <span class="c1"># empty dict so always safe to pass to update method</span></div>
+
+<div class="viewcode-block" id="ImportCandidate.verify_path"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.verify_path">[docs]</a>    <span class="k">def</span> <span class="nf">verify_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">str_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">str_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rar</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">str_path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">str_path</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span></div>
+
+<div class="viewcode-block" id="ImportCandidate.assign_run_type"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.assign_run_type">[docs]</a>    <span class="k">def</span> <span class="nf">assign_run_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>  <span class="c1"># should be a directory now</span>
+            <span class="n">hwi_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hwi_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hwi_data</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">import_type</span> <span class="o">=</span> <span class="n">HWIRun</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_cocktail_menu</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">import_type</span> <span class="o">=</span> <span class="n">Run</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_type</span></div>
+
+<div class="viewcode-block" id="ImportCandidate.set_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.set_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">set_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;date&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RunImporterDialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog">[docs]</a><span class="k">class</span> <span class="nc">RunImporterDialog</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;RunImporterDialog instances are the user interface for importing</span>
+<span class="sd">    runs from rar archives or directories on the local machine. </span>
+
+<span class="sd">    :param current_run_names: Runnames that are already in use by the</span>
+<span class="sd">                                current Polo session (Run names should be unique)</span>
+<span class="sd">    :type current_run_names: list or set</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">HWI_INDEX</span><span class="p">,</span> <span class="n">NON_HWI_INDEX</span><span class="p">,</span> <span class="n">RAW_INDEX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+
+    <span class="c1"># data_to_widgets = {</span>
+    <span class="c1">#     &#39;cocktail_menu&#39;: self.ui.comboBox_3,</span>
+    <span class="c1">#     &#39;date&#39;: self.ui.dateEdit_2,</span>
+    <span class="c1">#     &#39;image_spectrum&#39;: self.ui.comboBox_2,</span>
+    <span class="c1">#     &#39;run_name&#39;: self.ui.lineEdit</span>
+    <span class="c1"># }</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_run_names</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RunImporterDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_run_names</span> <span class="o">=</span> <span class="n">current_run_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span> <span class="o">=</span> <span class="n">Ui_multiImporter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">setupUi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imported_runs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span> <span class="o">=</span> <span class="n">test_for_working_unrar</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pushButton_4</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">editingFinished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_verify_run_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_4</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_files</span><span class="p">(</span><span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_5</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_files</span><span class="p">(</span><span class="n">rar</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentItemChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_handle_candidate_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display_cocktail_files</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_import_runs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_2</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_cocktail_files</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">all_run_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">can_path</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">can_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+             <span class="k">if</span> <span class="s1">&#39;run_name&#39;</span> <span class="ow">in</span> <span class="n">can_path</span><span class="o">.</span><span class="n">data</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run_names</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selected_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_candidate</span>
+
+    <span class="nd">@selected_candidate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">selected_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_candidate_str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_candidate_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_candidate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="p">[</span><span class="n">new_candidate_str</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_candidate</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selection_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Returns a dictionary who&#39;s keys are `Run` attributes and values</span>
+<span class="sd">        are the values of `RunImporterDialog` widgets that correspond to</span>
+<span class="sd">        these attributes.</span>
+
+<span class="sd">        Example of the dictionary returned below.</span>
+
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;cocktail_menu&#39;: CocktailMenu,</span>
+<span class="sd">                &#39;date&#39;: datetime,</span>
+<span class="sd">                &#39;run_name&#39;: str,</span>
+<span class="sd">                &#39;image_spectrum&#39;: str</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :return: dict</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;cocktail_menu&#39;</span><span class="p">:</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()),</span>
+            <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">dateTime</span><span class="p">()</span><span class="o">.</span><span class="n">toPyDateTime</span><span class="p">(),</span>
+            <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textEdit</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+            <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">}</span>  <span class="c1"># need to hardy this up to prevent errors</span>
+    
+<div class="viewcode-block" id="RunImporterDialog._could_not_import_message"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._could_not_import_message">[docs]</a>    <span class="k">def</span> <span class="nf">_could_not_import_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that creates an message box popup for when imports fail.</span>
+
+<span class="sd">        :param prefix: First part of the error message. Something</span>
+<span class="sd">                       like &quot;Could not import the following files:&quot;</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param paths: List of filepaths that could not be imported</span>
+<span class="sd">        :type paths: list</span>
+<span class="sd">        :return: QMessageBox</span>
+<span class="sd">        :rtype: QMessageBox</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="n">message</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">make_message_box</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._import_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_files">[docs]</a>    <span class="k">def</span> <span class="nf">_import_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">file_paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_browser</span><span class="p">(</span><span class="n">rar</span><span class="o">=</span><span class="n">rar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_paths</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+            <span class="n">import_candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">ImportCandidate</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">file_paths</span><span class="p">]</span>
+            <span class="n">import_candidates</span><span class="p">,</span> <span class="n">drop_outs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_candidate_paths</span><span class="p">(</span>
+                <span class="n">import_candidates</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">drop_outs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_could_not_import_message</span><span class="p">(</span>
+                    <span class="s1">&#39;Could not import the following paths:&#39;</span><span class="p">,</span>
+                    <span class="n">drop_outs</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">rar</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_unrar_candidate_paths</span><span class="p">,</span> <span class="n">candidate_paths</span><span class="o">=</span><span class="n">import_candidates</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                    <span class="k">lambda</span><span class="p">:</span> <span class="n">import_candidates</span>  <span class="c1"># dummy thread</span>
+                <span class="p">)</span>
+            
+            <span class="k">def</span> <span class="nf">_finish_file_import</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">import_candidates</span><span class="p">,</span> <span class="n">failed_unrars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">result</span>
+                    <span class="k">if</span> <span class="n">failed_unrars</span><span class="p">:</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                                <span class="p">[</span><span class="s1">&#39;The following imports failed:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">failed_unrars</span><span class="p">),</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">import_candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">result</span>
+                
+                <span class="k">if</span> <span class="n">import_candidates</span><span class="p">:</span>
+                    <span class="p">[</span><span class="n">imp_can</span><span class="o">.</span><span class="n">assign_run_type</span><span class="p">()</span> <span class="k">for</span> <span class="n">imp_can</span> <span class="ow">in</span> <span class="n">import_candidates</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_import_candidates</span><span class="p">(</span><span class="n">import_candidates</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_display_candidate_paths</span><span class="p">()</span>
+                <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">_finish_file_import</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RunImporterDialog._open_browser"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._open_browser">[docs]</a>    <span class="k">def</span> <span class="nf">_open_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that opens a QFileBrowser that allows the user to select</span>
+<span class="sd">        files for import. They type of file import allowed is set using the `rar` flag.</span>
+
+<span class="sd">        :param rar: If True, allow user to only import Rar archive files defaults to True. IF False</span>
+<span class="sd">                    only allows the user to import directories.</span>
+<span class="sd">        :type rar: bool, optional</span>
+<span class="sd">        :return: List of files the user has selected for import </span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">rar</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ExistingFiles</span>
+            <span class="n">file_filter</span> <span class="o">=</span> <span class="s1">&#39;Rar archives (*.rar)&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">DirectoryOnly</span>
+            <span class="n">file_filter</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">file_filter</span><span class="p">)</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">browser</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">browser</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._update_selected_candidate"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._update_selected_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">_update_selected_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates currently selected `ImportCandidate` by</span>
+<span class="sd">        calling :func:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`</span>
+<span class="sd">        and then updating the display by calling</span>
+<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_candidate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">new_candidate</span><span class="p">:</span>
+            <span class="n">new_candidate</span> <span class="o">=</span> <span class="n">new_candidate</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_candidate_run_data</span><span class="p">()</span>
+                <span class="c1"># update with the current data in the display</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span> <span class="o">=</span> <span class="n">new_candidate</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populate_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._handle_candidate_change"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._handle_candidate_change">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_candidate_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that calls </span>
+<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`</span>
+<span class="sd">        and then  :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. This updates</span>
+<span class="sd">        the data of the previously selected `ImportCandidate` if it has been changed and then</span>
+<span class="sd">        updates data display widgets with the information from the currently selected</span>
+<span class="sd">        `ImportCandidate` instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># connect to when index changed of list widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_selected_candidate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._unrar_candidate_paths"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._unrar_candidate_paths">[docs]</a>    <span class="k">def</span> <span class="nf">_unrar_candidate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate_paths</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that attempts to un-compress a collection of rar</span>
+<span class="sd">        archive files.</span>
+
+<span class="sd">        :param candidate_paths: List of filepaths to unrar</span>
+<span class="sd">        :type candidate_paths: list</span>
+<span class="sd">        :return: Tuple, first being list of paths that were successfully unrared and the</span>
+<span class="sd">                 second being list of filepaths that could not be unrared</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="n">unrared_paths</span><span class="p">,</span> <span class="n">failed_unrar</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_unrar</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">candidate_paths</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_rar</span><span class="p">:</span>                     
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">unrar</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                        <span class="n">path</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">result</span>
+                        <span class="n">unrared_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">failed_unrar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">unrared_paths</span><span class="p">,</span> <span class="n">failed_unrar</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._verify_run_name"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._verify_run_name">[docs]</a>    <span class="k">def</span> <span class="nf">_verify_run_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to verify a run name. If run name fails verification</span>
+<span class="sd">        clears the runname lineEdit widget and shows an error message to the user.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">run_name</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_run_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;run_name&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span>  <span class="c1"># run name has actually changed</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">run_name</span><span class="p">):</span>
+                <span class="n">error</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> all ready in use.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">run_name</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Run name must not be empty&#39;</span>
+        <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._restore_defaults"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._restore_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">_restore_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Restore suggested import settings for an `ImportCandidate` in case</span>
+<span class="sd">        the user has changed them and then wants to undo those changes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">assign_run_type</span><span class="p">()</span>  <span class="c1"># reread the metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_fields</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._remove_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Removes a run as an import candidate and refreshes the listWidget</span>
+<span class="sd">        to reflect the removal.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_candidate_paths</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._test_candidate_paths"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._test_candidate_paths">[docs]</a>    <span class="k">def</span> <span class="nf">_test_candidate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_paths</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that validates file paths to ensure they could be</span>
+<span class="sd">        imported into Polo</span>
+
+<span class="sd">        :param file_paths: List of filepaths to be imported</span>
+<span class="sd">        :type file_paths: list</span>
+<span class="sd">        :return: Tuple with first item being verified paths and second being</span>
+<span class="sd">                 list of paths that failed verification tests.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="n">verified_paths</span><span class="p">,</span> <span class="n">bad_paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">file_paths</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">verify_path</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>
+                <span class="n">verified_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">bad_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">verified_paths</span><span class="p">,</span> <span class="n">bad_paths</span></div>
+    
+<div class="viewcode-block" id="RunImporterDialog._add_import_candidates"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._add_import_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">_add_import_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_candidates</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add `ImportCandidates` to the `import_candidates` attribute.</span>
+
+<span class="sd">        :param new_candidates: List of `ImportCandidates`</span>
+<span class="sd">        :type new_candidates: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">can</span><span class="o">.</span><span class="n">path</span><span class="p">):</span> <span class="n">can</span> <span class="k">for</span> <span class="n">can</span> <span class="ow">in</span> <span class="n">new_candidates</span><span class="p">}</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._display_candidate_paths"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_candidate_paths">[docs]</a>    <span class="k">def</span> <span class="nf">_display_candidate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates the dialog&#39;s listWidget with the</span>
+<span class="sd">        file paths of the current import candidates in the `import_candidates`</span>
+<span class="sd">        attribute.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span>
+            <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._populate_fields"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._populate_fields">[docs]</a>    <span class="k">def</span> <span class="nf">_populate_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_candidate</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to populate candidate data to the user.</span>
+
+<span class="sd">        :param import_candidate: ImportCandidate to display</span>
+<span class="sd">        :type import_candidate: ImportCandidate</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">import_type</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_enable_hwi_import_tools</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disable_hwi_import_tools</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">import_candidate</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;cocktail_menu&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_image_spectrum</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;run_name&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;date&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">setDate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._set_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the cocktail comboBox based on the</span>
+<span class="sd">        cocktail menu stored in the `selected_candidate`. Used to convey to</span>
+<span class="sd">        the user which cocktail menu has been selected for a given</span>
+<span class="sd">        `ImportCandidate`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;cocktail_menu&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">],</span> <span class="n">Menu</span><span class="p">)</span>
+                <span class="p">):</span>
+            <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_display_cocktail_files</span><span class="p">(</span><span class="n">menu_type</span><span class="o">=</span><span class="n">menu</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
+            <span class="n">menu_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">menu_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">menu_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">menu_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">menu_index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._set_cocktail_menu_type_radiobuttons"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu_type_radiobuttons">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_menu_type_radiobuttons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Pirvate method that sets the cocktail menu type radioButtons</span>
+<span class="sd">        given a cocktail menu type key.</span>
+
+<span class="sd">        :param type_: Cocktail menu type key. If `type_` == &#39;s&#39; then soluble</span>
+<span class="sd">        menu radioButton state is set to True. If &#39;type_` == &#39;m&#39; then</span>
+<span class="sd">        membrane radiobutton state is set to True</span>
+<span class="sd">        :type type_: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._enable_hwi_import_tools"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._enable_hwi_import_tools">[docs]</a>    <span class="k">def</span> <span class="nf">_enable_hwi_import_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to enable widgets that should only be used</span>
+<span class="sd">        for HWIRun imports. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s1">&#39;setEnabled&#39;</span><span class="p">):</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._disable_hwi_import_tools"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._disable_hwi_import_tools">[docs]</a>    <span class="k">def</span> <span class="nf">_disable_hwi_import_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to disable widgets that should only be used for</span>
+<span class="sd">        HWIRun imports.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._set_image_spectrum"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._set_image_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">_set_image_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the image spectrum comboBox</span>
+<span class="sd">        based on the `spectrum` argument. Should be used to display</span>
+<span class="sd">        the inferred spectrum of an import candidate to the user when</span>
+<span class="sd">        that candidate is selected. </span>
+
+<span class="sd">        :param spectrum: Spectrum key</span>
+<span class="sd">        :type spectrum: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._import_runs"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_runs">[docs]</a>    <span class="k">def</span> <span class="nf">_import_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that attempts to create run objects from all available</span>
+<span class="sd">        `ImportCandidates`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_run</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">imported_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._import_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_run">[docs]</a>    <span class="k">def</span> <span class="nf">_import_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_candidate</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private helper method that is called by</span>
+<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._import_runs` that</span>
+<span class="sd">        attempts to import a run from an `ImportCandidate`. </span>
+
+<span class="sd">        :param import_candidate: `ImportCandidate` to create run from    </span>
+<span class="sd">        :type import_candidate: ImportCandidate</span>
+<span class="sd">        :return: Run or HWIRun if successful</span>
+<span class="sd">        :rtype: Run or HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">new_run</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">import_type</span> <span class="o">=</span> <span class="n">import_candidate</span><span class="o">.</span><span class="n">import_type</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">import_type</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_hwi_run</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                                                 <span class="o">**</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">import_type</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_general_run</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
+                                                     <span class="o">**</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_run</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._display_cocktail_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_cocktail_files">[docs]</a>    <span class="k">def</span> <span class="nf">_display_cocktail_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu_type_radiobuttons</span><span class="p">(</span><span class="n">menu_type</span><span class="p">)</span>
+            <span class="c1"># self._display_cocktail_files()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>  <span class="c1"># soluble screens</span>
+            <span class="n">menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+
+        <span class="n">menus</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">menu</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">menus</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">start_date</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">menus</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RunImporterDialog._update_candidate_run_data"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data">[docs]</a>    <span class="k">def</span> <span class="nf">_update_candidate_run_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to allow the user to update `ImportCandidate`</span>
+<span class="sd">        instance&#39;s data from the Widgets in the `RunImporterDialog`. Updates the</span>
+<span class="sd">        `ImportCandidate`&#39;s `data` attribute dictionary.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="p">:</span>
+            <span class="n">selection_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+                <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">dateTime</span><span class="p">()</span><span class="o">.</span><span class="n">toPyDateTime</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">import_type</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+                <span class="n">selection_dict</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">selection_dict</span><span class="p">)</span></div></div>
+
+    <span class="c1"># def _show_import_error_message(self, unimported_paths):</span>
+    <span class="c1">#     &#39;&#39;&#39;Private helper method for creating import error messages to show</span>
+    <span class="c1">#     to the user.</span>
+
+    <span class="c1">#     :param unimported_paths: List of files that could not be imported</span>
+    <span class="c1">#     :type unimported_paths: list</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     make_message_box(</span>
+    <span class="c1">#         message=&#39;Could not import the following items:&#39;</span>
+    <span class="c1">#     ).exec_()</span>
+
+    <span class="c1"># def open_file_browser(self, rar=False, dir=False):</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def make_run(self, import_candidate):</span>
+    <span class="c1">#     if isinstance(import_candidate.import_type, HWIRun):</span>
+            <span class="c1"># pass</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

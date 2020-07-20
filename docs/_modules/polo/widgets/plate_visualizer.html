@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>polo.widgets.plate_visualizer &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../polo.html">polo</a> &raquo;</li>
+        
+      <li>polo.widgets.plate_visualizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for polo.widgets.plate_visualizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QFont</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">make_default_logger</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
+
+
+<div class="viewcode-block" id="PlateVisualizer"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer">[docs]</a><span class="k">class</span> <span class="nc">PlateVisualizer</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="p">):</span>
+
+    <span class="n">plate_view_requested</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">default_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">66</span><span class="p">,</span> <span class="mi">155</span><span class="p">,</span> <span class="mi">245</span><span class="p">))</span>
+    <span class="n">selected_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">245</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">66</span><span class="p">))</span>
+    <span class="n">default_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">)</span>
+    <span class="n">default_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plate_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The PlateVisualizer is a small widget to assist users understand</span>
+<span class="sd">        what part of the screening plate they are currently viewing. It renders</span>
+<span class="sd">        a grid of rectangles (blocks) that each represent one view (page) in the</span>
+<span class="sd">        `PlateInspector` widget. The page that is currently being viewed is highlighted</span>
+<span class="sd">        to show the user what part of the plate they are looking at. </span>
+
+<span class="sd">        :param parent: Parent widget, defaults to None</span>
+<span class="sd">        :type parent: QWidget, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PlateVisualizer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsScene</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># self.setInteractive(True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setScene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="c1"># self.scene.selectionChanged.connect(self._handle_block_selection)</span>
+
+<div class="viewcode-block" id="PlateVisualizer.block_dims"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.block_dims">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">block_dims</span><span class="p">(</span><span class="n">plate_x</span><span class="p">,</span> <span class="n">plate_y</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to calculate the size of plate section</span>
+<span class="sd">        blocks</span>
+
+<span class="sd">        :param plate_x: Number of wells plate has on its x axis</span>
+<span class="sd">        :type plate_x: int</span>
+<span class="sd">        :param plate_y: Number of wells plate has on it s y axis</span>
+<span class="sd">        :type plate_y: int</span>
+<span class="sd">        :param grid_x: Number of wells in the subgrid on its x axis</span>
+<span class="sd">        :type grid_x: int</span>
+<span class="sd">        :param grid_y: Number of wells in the subgrid on its y axis</span>
+<span class="sd">        :type grid_y: int</span>
+<span class="sd">        :return: tuple, first item being length of x axis in</span>
+<span class="sd">                 blocks and second being length of y axis in blocks</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="k">return</span> <span class="n">plate_x</span> <span class="o">/</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">plate_y</span> <span class="o">/</span> <span class="n">grid_y</span></div>
+
+<div class="viewcode-block" id="PlateVisualizer._block_size"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer._block_size">[docs]</a>    <span class="k">def</span> <span class="nf">_block_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to calculate the size of individual blocks</span>
+<span class="sd">        to render in the QGraphicsView. </span>
+
+<span class="sd">        :param x: Length of x-axis in blocks</span>
+<span class="sd">        :type x: int</span>
+<span class="sd">        :param y: Length of y-axis in blocks</span>
+<span class="sd">        :type y: int</span>
+<span class="sd">        :return: tuple, length of block x-axis in pixels,</span>
+<span class="sd">                 length of block y-axis in pixels</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="n">total_width</span><span class="p">,</span> <span class="n">total_height</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frameGeometry</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frameGeometry</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">total_width</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">total_height</span></div>
+
+<div class="viewcode-block" id="PlateVisualizer._handle_block_selection"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer._handle_block_selection">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_block_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private helper method to handle when a user selects a block.</span>
+<span class="sd">        In theory should open the view that the selected block corresponds</span>
+<span class="sd">        to but currently having some issues with this causing segmentation</span>
+<span class="sd">        faults so it is disabled for now.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">():</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_highlight_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plate_view_requested</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PlateVisualizer.set_selected_block"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.set_selected_block">[docs]</a>    <span class="k">def</span> <span class="nf">set_selected_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_id</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Sets the currently selected block based on its ID.</span>
+
+<span class="sd">        :param block_id: Block ID</span>
+<span class="sd">        :type block_id: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">block_id</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_highlight_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PlateVisualizer._highlight_block"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer._highlight_block">[docs]</a>    <span class="k">def</span> <span class="nf">_highlight_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that highlights a block in the</span>
+<span class="sd">        QGraphicsScene.</span>
+
+<span class="sd">        :param block: Block to highlight</span>
+<span class="sd">        :type block: QGraphicsRectItem</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_brush</span><span class="p">)</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">setBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_brush</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PlateVisualizer.setup_view"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.setup_view">[docs]</a>    <span class="k">def</span> <span class="nf">setup_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_cords</span><span class="p">,</span> <span class="n">plate_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;set up the intail view based on the current plate</span>
+<span class="sd">        size (normally 32 * 48 wells for 1536 well plate) and</span>
+<span class="sd">        the subgrid size in wells.</span>
+
+<span class="sd">        :param grid_cords: Subgrid size tuple (x, y) in wells</span>
+<span class="sd">        :type grid_cords: tuple</span>
+<span class="sd">        :param plate_size: Size of entire plate (x, y) in wells, defaults to None.</span>
+<span class="sd">                            If None used the default 1536 well plate size of</span>
+<span class="sd">                            32 * 48.</span>
+<span class="sd">        :type plate_size: tuple, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="n">g_x</span><span class="p">,</span> <span class="n">g_y</span> <span class="o">=</span> <span class="n">grid_cords</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">plate_size</span><span class="p">:</span>  <span class="c1"># assume full size plate</span>
+                <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_size</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_x</span> <span class="o">/</span> <span class="n">g_x</span><span class="p">),</span> <span class="p">(</span><span class="n">p_y</span> <span class="o">/</span> <span class="n">g_y</span><span class="p">)</span>  <span class="c1"># block layout</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="c1"># if cannot be based to int there is a problem</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frameGeometry</span><span class="p">()</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">frameGeometry</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="n">x</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">/</span> <span class="n">y</span>
+            <span class="n">view_id</span><span class="p">,</span> <span class="n">cur_x</span><span class="p">,</span> <span class="n">cur_y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                    <span class="n">view_id</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addRect</span><span class="p">(</span>
+                        <span class="n">cur_x</span><span class="p">,</span> <span class="n">cur_y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pen</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">default_brush</span><span class="p">)</span>
+                    <span class="n">rect</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">view_id</span><span class="p">)</span>
+                    <span class="n">cur_x</span> <span class="o">+=</span> <span class="n">w</span>
+                <span class="n">cur_y</span> <span class="o">+=</span> <span class="n">h</span>
+                <span class="n">cur_x</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">itemsBoundingRect</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span></div></div>
+            <span class="c1"># not worth throwing an error if something goes wrong but a crash</span>
+            <span class="c1"># just don&#39;t render the visualizer</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

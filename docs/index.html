@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Polo
+            <a href="#" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,6 +95,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -131,7 +134,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
       <li>Welcome to Polo’s documentation!</li>
     
@@ -154,15 +157,42 @@
             
   <div class="section" id="welcome-to-polo-s-documentation">
 <h1>Welcome to Polo’s documentation!<a class="headerlink" href="#welcome-to-polo-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Polo is a python GUI build using the Qt library for
+high throughput crysta.lization screening users.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#features">Features</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#importing-and-opening-image-data">Importing and Opening Image Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#using-the-slideshow-view">Using the Slideshow View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#using-the-plate-viewer">Using the Plate Viewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#using-the-table-view">Using the Table View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#using-plot-functions">Using Plot Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#using-the-optimize-tool">Using the Optimize Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#advanced-tools">Advanced Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#saving-a-run">Saving a Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#exporting-a-run">Exporting a Run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="beta_testers.html#thank-you">Thank You!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beta_testers.html#getting-polo-beta-version">Getting Polo Beta Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beta_testers.html#what-now">What Now?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beta_testers.html#i-found-a-bug">I Found a Bug</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -193,11 +223,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -208,7 +246,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

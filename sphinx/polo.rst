@@ -8,19 +8,18 @@ Subpackages
    :maxdepth: 4
 
    polo.crystallography
+   polo.designer
    polo.marco
-   polo.utils
    polo.threads
+   polo.utils
    polo.widgets
    polo.windows
-   polo.designer
-
-
 
 Module contents
 ---------------
 
 .. automodule:: polo
    :members:
+   :private-members:
    :undoc-members:
    :show-inheritance:

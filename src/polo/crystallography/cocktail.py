@@ -46,7 +46,7 @@ class Cocktail():
         :rtype: int
         '''
         try:     
-            return int(s.split('_C')[-1].lstrip('0'))
+            return int(self.number.split('_C')[-1].lstrip('0'))
         except IndexError:
             return None
         # normal cocktail number format 13_C0001
@@ -122,12 +122,6 @@ class Cocktail():
                 reagent.chemical_additive, reagent.concentration)
         return cocktail_string
     
-    # def chemical_distance(self, other_cocktail):
-    #     # pass
-    #     pass
-    #     for each_reagent in self.reagents:
-    #         molar_concentration = each_reagent.molarity()
-    #         pass
 
 
 class Reagent():
@@ -139,13 +133,13 @@ class Reagent():
     :type chemical_additive: str, optional
     :param concentration: Concentration of the reagent in a given well,
                             defaults to None
-    :type concentration: SignedValue, optional
+    :type concentration: UnitValue, optional
     :param chemical_formula: Chemical formula for this reagent, defaults
                                 to None
     :type chemical_formula: str, optional
     :param stock_con: Concentration of this reagent's stock solution,
                         defaults to None
-    :type stock_con: SignedValue, optional
+    :type stock_con: UnitValue, optional
     '''
     units = ['M', '(w/v)', '(v/v)']
 
@@ -199,7 +193,7 @@ class Reagent():
         utimately refers back to a condition in a specific screening well.
 
         :return: Chemical concentration
-        :rtype: SignedValue
+        :rtype: UnitValue
         '''
         return self._concentration
 
@@ -208,9 +202,9 @@ class Reagent():
         '''Setter function for the concentration attribute.
 
         :param new_con: New value for concentration
-        :type new_con: SignedValue
+        :type new_con: UnitValue
         :raises TypeError: Raised when attempt to pass object that is not an\
-            instance of SignedValue as the new_con
+            instance of UnitValue as the new_con
         '''
         if isinstance(new_con, SignedValue):
             self._concentration = new_con
@@ -228,14 +222,14 @@ class Reagent():
         concentration cannot be converted to mols / liter then returns false.
 
         :return: molarity or False
-        :rtype: SignedValue or Bool
+        :rtype: UnitValue or Bool
         '''
         base_con = self._concentration.to_base()
         if base_con.units == 'M':
             return base_con
         elif base_con.units == 'w/v' and self.molar_mass:
             M = (base_con.value / self.molar_mass) * 10
-            return SignedValue(M, 'M')
+            return UnitValue(M, 'M')
         else:
             return False
 
@@ -246,7 +240,7 @@ class Reagent():
         possible. Return False if cannot be calculated.
 
         :return: Molarity or False
-        :rtype: SignedValue or False
+        :rtype: UnitValue or False
         '''
         mm = None
         if isinstance(self.chemical_formula, Formula):
@@ -286,15 +280,15 @@ class Reagent():
         calculated this method will return False.
 
         :param target_volume: Volume in which stock will be diluted into
-        :type target_volume: SignedValue
+        :type target_volume: UnitValue
         :return: Volume of stock or False
-        :rtype: SignedValue or False
+        :rtype: UnitValue or False
         '''
         # target volume in liters
         if self.stock_con and self.molarity:
             L = (self.molarity.value * target_volume.value) / \
                 self.stock_con.to_base().value
-            return SignedValue(L, 'L')
+            return UnitValue(L, 'L')
         else:
             return False
 
@@ -302,11 +296,11 @@ class Reagent():
         return '{} {}'.format(self.chemical_additive, self.concentration)
 
 
-class SignedValue():
+class UnitValue():
     # class for handling anything that comes with a unit
-    '''SignedValues are used to help handle numbers with units. They
+    '''UnitValues are used to help handle numbers with units. They
     are not the most robust but help to keep things more organized.
-    SignedValues can be created by either passing values to the
+    UnitValues can be created by either passing values to the
     `values` and `units` args explicitly or by calling the classmethod
     `make_from_string` which will use regex to pull out supported units and
     values.
@@ -323,21 +317,21 @@ class SignedValue():
 
     @classmethod
     def make_from_string(cls, string):
-        '''Create a SignedValue from a string containing a value and a unit.
+        '''Create a UnitValue from a string containing a value and a unit.
         Used the `unit_regex` to pull out the units. 
 
         .. highlight:: python
         .. code-block:: python
 
             unit_string = '10.0 M'  # concentration of 10 molar
-            sv = SignedValue.make_from_string(unit_string)
+            sv = UnitValue.make_from_string(unit_string)
             # sv.value = 10 sv.units = 'M'
 
 
-        :param string: The string to extract the SignedValue from
+        :param string: The string to extract the UnitValue from
         :type string: str
-        :return: SignedValue instance
-        :rtype: SignedValue
+        :return: UnitValue instance
+        :rtype: UnitValue
         '''
         units = unit_regex.findall(string)
         if units:
@@ -361,7 +355,7 @@ class SignedValue():
         self._value = value
 
     def scale(self, scale_key):
-        '''Scale the value of the SignedValue instance using a key character
+        '''Scale the value of the UnitValue instance using a key character
         in the `saved_scalers` dictionary. First converts the value to its
         base unit and then divides by the `scale_key` value. The `scale_key`
         can be thought of as a SI prefix for a base unit.
@@ -370,28 +364,28 @@ class SignedValue():
         .. code-block:: python
 
             # self.saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
-            v_one = SignedValue(10, 'L')  # value of 10 liters
+            v_one = UnitValue(10, 'L')  # value of 10 liters
             v_one = v_one.scale('u')  # get v_one in microliters
 
         :param scale_key: Character in `saved_scalers` to convert value to.
         :type scale_key: str
-        :return: SignedValue converted to scale_key unit prefix
-        :rtype: SignedValue
+        :return: UnitValue converted to scale_key unit prefix
+        :rtype: UnitValue
         '''
         if scale_key in self.saved_scalers:
             temp = self.to_base()  # send to base unit
-            return SignedValue(
+            return UnitValue(
                 temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
     
     def to_base(self):
         '''Converts the value to the base unit, if it is not already in the
         base unit.
 
-        :return: SignedValue converted to base unit of called SignedValue instance
-        :rtype: SignedValue
+        :return: UnitValue converted to base unit of called UnitValue instance
+        :rtype: UnitValue
         '''
         if self.units and self.units[0] in self.saved_scalers:
-            return SignedValue(
+            return UnitValue(
                 self.value * self.saved_scalers[self.units[0]], self.units[1:])
         else:
             return self

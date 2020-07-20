@@ -31,9 +31,21 @@ from polo.utils.math_utils import *
 logger = make_default_logger(__name__)
 
 class RunImporter():
+    '''Class to hold general use functions for importing runs into Polo.
+    '''
 
     @staticmethod
     def directory_validator(dir_path):
+        '''Check if a directory should proceed further down the import
+        pipeline. Includes checks to make sure the directory exists
+        is a directory and that the directory contains images of
+        filetypes that can be imported.
+
+        :param dir_path: Path to a directory
+        :type dir_path: str or Path
+        :return: True, if directory can be imported, an Exception otherwise
+        :rtype: bool or Exception
+        '''
         dir_path = str(dir_path)
         if os.path.exists(dir_path):
             if os.path.isdir(dir_path):
@@ -82,6 +94,13 @@ class RunImporter():
     
     @staticmethod
     def crack_open_a_rar_one(rar_path):
+        '''Method to open a compressed rar archive.
+
+        :param rar_path: Path to rar archive.
+        :type rar_path: str or Path
+        :return: Path to uncompressed archive if successful
+        :rtype: Path
+        '''
         if not isinstance(rar_path, Path):
             rar_path = Path(rar_path)
         parent_path = rar_path.parent
@@ -89,12 +108,29 @@ class RunImporter():
     
     @staticmethod
     def import_from_xtal_thread(xtal_path):
+        '''Given the path to an xtal file returns a QThread
+        which can be run to load the run serialized in the
+        xtal file.
+
+        :param xtal_path: File path to xtal file.
+        :type xtal_path: str
+        :return: QThread for deserializing the given xtal file.
+        :rtype: QThread
+        '''
         reader = RunDeserializer(xtal_path)
         if os.path.isfile(xtal_path):
             return reader.make_read_xtal_thread()
     
     @staticmethod
     def make_xtal_file_dialog(parent=None):
+        '''Create a file dialog specifically for browsing for
+        xtal files.
+
+        :param parent: Parent for the file dialog, defaults to None
+        :type parent: QDialog, optional
+        :return: QFileDialog
+        :rtype: QFileDialog
+        '''
         file_dlg = QtWidgets.QFileDialog(parent=parent)
         file_dlg.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         file_dlg.setNameFilter('xtal or xtals (*.xtal *.xtals)')
@@ -102,12 +138,29 @@ class RunImporter():
     
     @staticmethod
     def unpack_rar_archive_thread(archive_path):
+        '''Create a QuickThread that is setup to de-compress
+        a rar archive file.
+
+        :param archive_path: Path to rar archive.
+        :type archive_path: str or Path
+        :return: QuickThread that can be run to de-compress the given archive path.
+        :rtype: QuickThread
+        '''
         archive_path = str(archive_path)
         if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
             return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
 
     @staticmethod
     def import_run_from_directory(data_dir, **kwargs):
+        '''Imports a run from a local directory. First attempts to import
+        the run as an HWIRun and if this fails attempts an import as
+        a general Run object.
+
+        :param data_dir: Directory to build the Run from
+        :type data_dir: str or Path
+        :return: Run, HWIRun or False depending on directory content and if import succeeds.
+        :rtype: Run, HWIRun, bool
+        '''
         hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
         if isinstance(hwi_import_attempt, HWIRun):
             return hwi_import_attempt
@@ -116,13 +169,21 @@ class RunImporter():
 
     @staticmethod
     def import_hwi_run(data_dir, **kwargs):
+        '''Attempt to create a HWIRun from a directory of images.
+
+        :param data_dir: Directory to import from.
+        :type data_dir: str or Path
+        :return: HWIRun if import is successful, False otherwise
+        :rtype: HWIRun, bool
+        '''
         if RunImporter.directory_validator(data_dir) == True:
             from polo import tim
             metadata = XmlReader().find_and_read_plate_data(data_dir)
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-
+                
             if metadata and file_name_data:
-                image_type, plate_id, date, run_name = file_name_data
+                print(file_name_data)
+                date = file_name_data['date']
                 menu = tim.get_menu_by_date(date, 's')
                 # assuming soluble need to change based on metadata parse
                 new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
@@ -136,47 +197,24 @@ class RunImporter():
 
     @staticmethod
     def import_general_run(data_dir, **kwargs):
+        '''Attempt to import a Run from a directory of images. 
+
+        :param data_dir: [description]
+        :type data_dir: [type]
+        :return: [description]
+        :rtype: [type]
+        '''
         if RunImporter.directory_validator(data_dir) == True:
-            # add some rule if does not have run name and spectru
             new_run = Run(image_dir=data_dir, **kwargs)
             new_run.add_images_from_dir()
             return new_run
-
-    # @staticmethod
-    # def validate_run_name(text=None, current_run_names=None):
-    #     '''
-    #     Validates a given run name to ensure it can be used safely. Shows
-    #     an error message to the user if the run name is not valid and clears
-    #     the run name lineEdit widget.
-
-    #     In order for a run name to be valid it must contain only UTF-8
-    #     codable characters and not already be in use by another
-    #     run object. This is because the run name is used as a key to refer
-    #     to the run object in other functions.
-
-    #     :param text: String. The run name to be validated.
-    #     '''
-    #     validator_result = run_name_validator(text, self.current_run_names)
-    #     message = None
-    #     if validator_result == UnicodeError:
-    #         message = 'Run name is not UTF-8 Compliant'
-    #     elif validator_result == TypeError:
-    #         message = 'Run name must not be empty.'
-    #     elif not validator_result:  # result is false already exists
-    #         message = 'Run name already exists, please pick a unique name.'
-    #         # TODO option to overwrite the run of that same name
-        
-    #     if message:
-    #         return make_message_box(message).exec_()
-    #     else:
-    #         return True
+        return False
 
 
 class RunSerializer():
 
     def __init__(self, run):
         self.run = run
-        logger.info('Made RunSerializer {}'.format(self))
 
     @classmethod
     def make_thread(cls, job_function, **kwargs):
@@ -208,32 +246,6 @@ class RunSerializer():
                     return str(path.with_suffix(desired_suffix))
         except Exception as e:
             return None
-
-    @staticmethod
-    def make_message_box(message, icon=QtWidgets.QMessageBox.Information,
-                         buttons=QtWidgets.QMessageBox.Ok,
-                         connected_function=None):
-        '''Return a QMessageBox instance to show to the user.
-
-        :param message: Message to be displayed to the user
-        :type message: str
-        :param icon: Icon for message box, defaults to QtWidgets.QMessageBox.Information
-        :type icon: QMessageBoxIcon, optional
-        :param buttons: [description], defaults to QtWidgets.QMessageBox.Ok
-        :type buttons: [type], optional
-        :param connected_function: [description], defaults to None
-        :type connected_function: [type], optional
-        :return: [description]
-        :rtype: [type]
-        '''
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(icon)
-        msg.setText(message)
-        msg.setStandardButtons(buttons)
-        if connected_function:
-            msg.buttonClicked.connect(connected_function)
-        logger.info('Made message box with message "{}"'.format(message))
-        return msg
 
     @staticmethod
     def path_validator(path, parent=False):
@@ -270,6 +282,9 @@ class HtmlWriter(RunSerializer):
         '''
         Given a path to an html file to serve as a jinja2 template, read the
         file and create a new template object.
+
+        :param template_path: Path to the jinja2 template file.
+        :type temlate_path: str
         '''
         if isinstance(template_path, Path):
             template_path = str(template_path)
@@ -279,8 +294,18 @@ class HtmlWriter(RunSerializer):
             return Template(contents)
 
     def write_complete_run(self, output_path, encode_images=True):
-        # write a run as html file with images and classifications
-        # and that kind of stuff
+        '''Create an HTML report from a Run or HWIRun instance.
+
+        :param output_path: Path to write html file to.
+        :type output_path: str or Path
+        :param encode_images: Write images as base64 directly to the html file,
+                              defaults to True. Greatly increases the file size
+                              but means that report will still contain images
+                              even if the originals are deleted or removed.
+        :type encode_images: bool, optional
+        :return: Path to html report if write succeeds, Exception otherwise. 
+        :rtype: str or Exception
+        '''
         if HtmlWriter.path_validator(output_path, parent=True) and self.run:
             output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
             if output_path:
@@ -304,7 +329,7 @@ class HtmlWriter(RunSerializer):
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
-        '''Write the contents of optimization grid screen to an html file
+        '''Write the contents of optimization grid screen to an html file.
 
         :param output_path: Path to html file
         :type output_path: str
@@ -312,9 +337,9 @@ class HtmlWriter(RunSerializer):
         :type plate_list: list
         :param well_number: well number of hit screen is created from
         :type well_number: int or str
-        :param x_reagent: reagent varried in x direction
+        :param x_reagent: reagent varied in x direction
         :type x_reagent: Reagent
-        :param y_reagent: reagent varried in y direction
+        :param y_reagent: reagent varied in y direction
         :type y_reagent: Reagent
         :param well_volume: Volume of well used in screen
         :type well_volume: int or str
@@ -381,7 +406,7 @@ class RunCsvWriter(RunSerializer):
 
     @property
     def fieldnames(self):  # could use more efficent way of determining feildnames
-        '''Get the current fieldnames bases on the data stored in the
+        '''Get the current fieldnames based on the data stored in the
         `run` attribute. Currently is somewhat expensive to call since it
         requires parsing all records in `run` in order to determine all the
         fieldnames that should be included in order to definitely avoid
@@ -409,7 +434,7 @@ class RunCsvWriter(RunSerializer):
         headers and a list of dictionaries with each dictionary representing
         one row of csv data.
 
-        :raises e: Catch all exception. TODO: Make more specific
+        :raises e: Catch all exception.
         :return: Tuple, list of headers and list of dicts
         :rtype: tuple
         '''
@@ -458,6 +483,15 @@ class SceneExporter():
     
     @staticmethod
     def write_image(scene, file_path):
+        '''Write the contents of a QGraphicsScene to a png file.
+
+        :param scene: QGraphicsScene to convert to image file.
+        :type scene: QGraphicsScene
+        :param file_path: Path to save image to.
+        :type file_path: str
+        :return: File path to saved image if successful, Exception otherwise.
+        :rtype: str or Exception
+        '''
         try:
             image = QImage(scene.width(), scene.height(), QImage.Format_ARGB32_Premultiplied)
             painter = QPainter(image)
@@ -482,6 +516,18 @@ class MsoWriter(RunSerializer):
 
     @staticmethod
     def row_formater(cocktail_row):
+        '''Format a cocktail row as read from a cocktail csv
+        file to an mso file row. Main change is appending empty
+        strings to the cocktail row so list ends up always having
+        a length of 17. This is important because the image
+        classification code always occurs at the 18th item in
+        an mso file row.
+
+        :param cocktail_row: Cocktail row as read from cocktail csv file.
+        :type cocktail_row: list
+        :return: Cocktail row reformated for mso writing.
+        :rtype: list
+        '''
         # well number should be first index in the list
         # total list length should be 18 last item is the mso code
         return cocktail_row + ([''] * (len(cocktail_row) - 17))
@@ -489,18 +535,41 @@ class MsoWriter(RunSerializer):
     
     @property
     def first_line(self):
+        '''Create the first line of the mso file.
+
+        :return: List to write as the first line of the mso file.
+        :rtype: list
+        '''
         return [
             MsoWriter.path_suffix_checker(self.run.run_name, '.rar'), 
             self.mso_version
         ]
     
     def get_cocktail_csv_data(self):
+        '''Reads and returns the cocktail csv data assigned
+        to the `cocktail_menu` attribute of the MsoWriter's
+        `run` attribute.
+
+        :return: List of lists containing cocktail csv data.
+        :rtype: list
+        '''
         cocktail_menu = self.run.cocktail_menu.path
         with open(cocktail_menu, 'r') as menu_file:
             next(menu_file)  # skip first row
             return [row for row in csv.reader(menu_file)]
 
     def write_mso_file(self, use_marco_classifications=False):
+        '''Writes an mso formated file for use with MarcoScopeJ based on
+        the images and classifications of the Run stored in the MsoWriter's
+        `run` attribute.
+
+        :param use_marco_classifications: Include the MARCO classification
+                                          in the mso file instead of human
+                                          classifications, defaults to False
+        :type use_marco_classifications: bool, optional
+        :return: True if file is written successfully, False otherwise.
+        :rtype: bool
+        '''
         if isinstance(self.run, HWIRun):  # must be hwi run to write to mso
             cocktail_data = self.get_cocktail_csv_data()
             self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
@@ -816,11 +885,6 @@ class RunDeserializer():  # convert saved file into a run
         '''
         return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
-        # def finished():
-        #     self.main_window.add_loaded_run(thread.result)
-
-        # thread.finished.connect(finished)
-        thread.start()
 
     def make_read_xtal_thread(self):
         return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
@@ -873,6 +937,22 @@ class RunDeserializer():  # convert saved file into a run
 
 
 class PptxWriter():
+    '''Use for creating pptx presentation slides from Run instances.
+
+    :param output_path: Path to write pptx file to.
+    :type output_path: str or Path
+    :param included_attributes: [description], defaults to {}
+    :type included_attributes: dict, optional
+    :param image_types: Images included in the presentation
+                        must have a classification in this set, defaults to None
+    :type image_types: set or list, optional
+    :param human: Use human classification as the image classification, defaults to False
+    :type human: bool, optional
+    :param marco: Use the MARCO classification as the image classification, defaults to False
+    :type marco: bool, optional
+    :param favorite: Only include images marked as favorite, defaults to False
+    :type favorite: bool, optional
+    '''
 
     # 13.33 x 7.5 
     def __init__(self, output_path,
@@ -892,6 +972,11 @@ class PptxWriter():
         self._presentation = Presentation()
     
     def delete_temp_images(self):
+        '''Delete an temporary images used to create the pptx presentation.
+
+        :return: True, if images are removed successfully, Exception otherwise.
+        :rtype: bool or Exception
+        '''
         try:
             [os.remove(img_path) for img_path in self._temp_images]
             return True
@@ -899,6 +984,14 @@ class PptxWriter():
             return e
     
     def sort_runs_by_spectrum(self, runs):
+        '''Divids runs into two lists, one containing visible spectrum
+        runs and another containing all non-visible runs.
+
+        :param runs: List or runs
+        :type runs: list
+        :return: tuple, first item is visible runs second is non-visible runs
+        :rtype: tuple
+        '''
         visible, other = [], []
         for run in runs:
             if run.image_spectrum == IMAGE_SPECS[0]:
@@ -907,7 +1000,28 @@ class PptxWriter():
                 other.append(run)
         return visible, other
            
-    def make_sample_presentation(self, sample_name, runs, title, subtitle, cocktail_data=True):
+    def make_sample_presentation(self, sample_name, runs, title,
+                                 subtitle, cocktail_data=True):
+        '''Create a pptx presentation from a collection of runs intended to
+        be all of the same sample. This allows for time resolved comparisons
+        and comparisons between spectrums. Should generally not include all
+        images in the presentation or with runs who's images do not exist
+        on the local machine. Doing so creates huge presentation files and
+        long write times.
+
+        :param sample_name: Name of the sample
+        :type sample_name: str
+        :param runs: List of runs to include in the presentation
+        :type runs: list
+        :param title: Title of the presentation
+        :type title: str
+        :param subtitle: Subtitle of the presentation
+        :type subtitle: str
+        :param cocktail_data: Include cocktail data if True, defaults to True
+        :type cocktail_data: bool, optional
+        :return: Path to presentation file if write is successful, False otherwise
+        :rtype: str or bool
+        '''
         visible, other = self.sort_runs_by_spectrum(runs)
         title_slide = self.add_new_slide(0)
         title_slide.shapes.title.text = title
@@ -993,6 +1107,15 @@ class PptxWriter():
                 
     
     def add_classification_slide(self, well_number, rep_image):
+        '''Add a slide containing details about an images MARCO
+        and human classification in a table.
+
+        :param well_number: Well number (index) of image to use in
+                            the title of the slide 
+        :type well_number: int
+        :param rep_image: Image object to make slide from
+        :type rep_image: Image
+        '''
         new_slide = self.add_new_slide()
         title = 'Well {} Classifications'.format(well_number)
         new_slide.shapes.title.text = title
@@ -1010,6 +1133,17 @@ class PptxWriter():
             self._presentation.slide_layouts[template])
     
     def add_timeline_slide(self, images, well_number):
+        '''Create a timeline (time resolved) slide that
+        show the progression of a sample in a particular
+        well.
+
+        :param images: List of images to include in the slide
+        :type images: list
+        :param well_number: Well number to use in the title of the slide
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
         date_images = sorted(images, key=lambda i: i.date)
         new_slide = self.add_new_slide()
         labeler = lambda i: i.formated_date
@@ -1022,6 +1156,16 @@ class PptxWriter():
     
 
     def add_multi_spectrum_slide(self, images, well_number):
+        '''Create a slide to show a all spectrums a well has been
+        imaged in.
+
+        :param images: Images to include on the slide
+        :type images: list
+        :param well_number: Well number to use in the slide title
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
         spec_images = sorted(images, key=lambda i: len(i.spectrum))
         new_slide = self.add_new_slide()
         labeler = lambda i: i.spectrum
@@ -1032,11 +1176,31 @@ class PptxWriter():
         return new_slide
     
     def add_cocktail_slide(self, well, cocktail):
+        '''Add slide with details on cocktail information
+
+        :param well: Well number to use in slide title
+        :type well: int
+        :param cocktail: Cocktail to write as a slide
+        :type cocktail: Cocktail
+        '''
         new_slide = self.add_new_slide(5)
         title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
         new_slide.shapes.title.text = title
 
     def add_table_to_slide(self, slide, data, left, top):
+        '''General helper method for adding a table to a slide
+
+        :param slide: Slide to add the table to
+        :type slide: slide
+        :param data: List of lists that has the data to write to the table
+        :type data: list
+        :param left: Left offset in inches to place to table
+        :type left: float
+        :param top: Top cordinate for placing the table
+        :type top: float
+        :return: Slide with table added
+        :rtype: slide
+        '''
         rows, cols = len(data), max([len(r) for r in data])
         shapes = slide.shapes
         
@@ -1054,6 +1218,18 @@ class PptxWriter():
         return slide
 
     def add_multi_image_slide(self, slide, images, labeler):
+        '''General helper method for adding a slide that will have multiple
+        images.
+
+        :param slide: Slide to add the images to 
+        :type slide: slide
+        :param images: Images to add to the slide
+        :type images: list
+        :param labeler: Function to use to label the individual images
+        :type labeler: func
+        :return: slide with images added
+        :rtype: slide
+        '''
         top = 2.5
         img_size = (self._slide_width - (self._bumper * 2)) / len(images)
         if img_size >= 0.4 * self._slide_height: img_size = 0.4 * self._slide_height
@@ -1072,6 +1248,21 @@ class PptxWriter():
         return slide
     
     def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+        '''General helper method for adding a slide with a single image to a
+        presentation
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param title: Title to use for the slide
+        :type title: str
+        :param metadata: Additional information to write to the slide, defaults to None
+        :type metadata: str, optional
+        :param img_scaler: Scaler to apply to size of the image, defaults to 0.65
+                            ,should be between 0 and 1. 1 is full sized image.
+        :type img_scaler: float, optional
+        :return: The new slide with Image added
+        :rtype: slide
+        '''
         new_slide = self.add_new_slide(5)
         new_slide.shapes.title.text = title
         img_size = self._slide_height * img_scaler
@@ -1091,6 +1282,27 @@ class PptxWriter():
     
     def add_text_to_slide(self, slide, text, left, top, width, height,
                           rotation=0, font_size=14):
+        '''Helper method to add text to a slide
+
+        :param slide: Slide to add text to
+        :type slide: slide
+        :param text: Text to add to the slide
+        :type text: str
+        :param left: Left cordinate location of the text in inches
+        :type left: float
+        :param top: Top cordinate location of the text in inches
+        :type top: float
+        :param width: Width of the text in inches
+        :type width: float
+        :param height: Height of the text in inches
+        :type height: float
+        :param rotation: Rotation to apply to the text in degrees, defaults to 0
+        :type rotation: int, optional
+        :param font_size: Font size of text, defaults to 14
+        :type font_size: int, optional
+        :return: Slide with text added
+        :rtype: slide
+        '''
         text_box = slide.shapes.add_textbox(
             Inches(left), Inches(top), Inches(width), Inches(height))
         text_box.rotation = rotation
@@ -1103,8 +1315,27 @@ class PptxWriter():
         return text_box
     
     def add_image_to_slide(self, image, slide, left, top, height):
-        # if the image path does not exist then will have to encode
-        # is somehow or think about how that will work
+        '''Helper method for adding images to a slide. If the image
+        does not have a file written on the local machine as can be
+        the case with saved runs who's image data only exists in
+        their xtal files this method will write a temporary image
+        file to the Polo TEMP_DIR which then should be deleted after
+        the presentaton file is written.
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param slide: Slide to add the image to
+        :type slide: slide
+        :param left: Left cordinate location of the image in inches
+        :type left: float
+        :param top: Top cordinate location of the image in inches
+        :type top: float
+        :param height: Height of the image in inches
+        :type height: float
+        :return: []
+        :rtype: [type]
+        '''
+        
         if os.path.isfile(image.path):
             img_path = image.path
         else:
@@ -1122,18 +1353,24 @@ class BarTender():
     '''Class for organizing and accessing cocktail menus'''
 
     def __init__(self, cocktail_dir, cocktail_meta):
-        '''Create instance of BarTender object. Probably only going to need
-        to make one instance since the bartender should organize all
-        available cocktail menus for the current Polo session. Currently,
-        the BarTender instance that is used everywhere is declared in polo
-        __init__ file.
+        '''Class for organizing and accessing cocktail menu data
 
-        :param cocktail_dir: Path to directory holding cocktail menu files
-        :type cocktail_dir: str
-        :param cocktail_meta: Path to csv file containing cocktail menu metadata.units
-        which includes things like when each menu was used, what kind.units
-        of screens it was used for, etc.
-        :type cocktail_meta: str
+        :param cocktail_dir: Directory containing cocktail menu csv files
+        :type cocktail_dir: str or Path
+        :param cocktail_meta: Path to cocktail metadata file which describes the contents of
+        each cocktail menu csv file
+        :type cocktail_meta: Path or str
+
+        Cocktail metadata file should be a csv file with the following
+        headers ordered from top to bottom. Each header name is followed by a
+        description.
+
+        .. code-block:: text
+
+            File Name: Name of cocktail menu file
+            Dates Used: Range of dates the cocktail menu was used (m/d/y-m/d/y)
+            Plate Number
+            Screen Type: 'm' for membrane screens, 's' for soluble screens
         '''
         self.cocktail_dir = cocktail_dir
         self.cocktail_meta = cocktail_meta
@@ -1380,7 +1617,7 @@ class CocktailMenuReader():
                     chem_add, con = (row[reagent_positions[i]],
                                      row[reagent_positions[i+1]])
                     if chem_add:
-                        con = SignedValue.make_from_string(con)
+                        con = UnitValue.make_from_string(con)
                         new_cocktail.add_reagent(
                             Reagent(
                                 chemical_additive=chem_add,
@@ -1392,6 +1629,9 @@ class CocktailMenuReader():
 
 
 class RunLinker():
+    '''Class to hold methods relating to linking runs either by
+    date or by spectrum.
+    '''
 
     @staticmethod
     def the_big_link(runs):
@@ -1417,6 +1657,17 @@ class RunLinker():
 
     @staticmethod
     def link_runs_by_spectrum(runs):
+        '''Link a collection of runs together by spectrum. All non-visible
+        runs are linked together in a monodirectional circular linked list.
+        Each visible run will then point to the same non-visible run through
+        their `alt_spectrum` attribute as a way to access the non-visible
+        linked list.
+
+        :param runs: List of runs to link together
+        :type runs: list
+        :return: List of runs linked by spectrum
+        :rtype: list
+        '''
         # for now this links all runs of the sample to the alt spectrums when
         linkable_runs = [r for r in runs if hasattr(r, 'link_to_alt_spectrum')]
         visible, other = [], []
@@ -1438,7 +1689,14 @@ class RunLinker():
         return runs
 
     @staticmethod
-    def unlink_runs_completely(runs):
+    def unlink_runs_completly(runs):
+        '''Cuts all links between runs and the images in those runs.
+
+        :param runs: List of runs
+        :type runs: list
+        :return: List of runs without any links
+        :rtype: list
+        '''
         for i, _ in enumerate(runs):
             runs[i].previous_run, runs[i].next_run, runs[i].alt_spectrum = None, None, None
             for image in runs[i].images:
@@ -1468,10 +1726,29 @@ class XmlReader():
 
     @staticmethod
     def get_data_from_xml_element(xml_element):
+        '''Return the data stored in an xml_element. Helper method
+        for reading xml files.
+
+        :param xml_element: xml element to read data from
+        :type xml_element: [type]
+        :return: Dictionary of data stored in xml element
+        :rtype: dict
+        '''
         return {elem.tag: elem.text for elem in xml_element
                 if elem.tag and elem.text}
 
     def read_plate_data_xml(self, xml_path=None):
+        '''Read the data stored in an xml document. HWI includes metadata
+        about samples, imaging dates and other plate information in each
+        rar archive that is distrubted. This method is used to read that
+        data so it can be incorporated into HWIRun objects.
+
+        :param xml_path: Path to xml file to read, defaults to None.
+                         If None uses the xml path stored in `xml_path` attribute.
+        :type xml_path: str or Path, optional
+        :return: Dictionary of xml data if read was successful, Exception otherwise
+        :rtype: dict or Exception
+        '''
         if not xml_path:
             xml_path = self.xml_file
         xml_path = str(xml_path)
@@ -1489,6 +1766,13 @@ class XmlReader():
             return e
 
     def discover_xml_files(self, parent_dir):
+        '''Look for xml files in a given directory.
+
+        :param parent_dir: Directory to look for xml files in
+        :type parent_dir: str or Path
+        :return: List of xml file paths, if any exist
+        :rtype: list
+        '''
         parent_dir = Path(str(parent_dir))
         try:
             file_paths = [parent_dir.joinpath(f)
@@ -1499,6 +1783,15 @@ class XmlReader():
             return e
 
     def find_and_read_plate_data(self, parent_dir):
+        '''Find xml metadata files in a given directory. Read the
+        data from xml files that contain the `plate_def` key
+        string.
+
+        :param parent_dir: Directory to look for xml files
+        :type parent_dir: Path or str
+        :return: Dict if xml file found and read successfully, False otherwise
+        :rtype: dict or bool
+        '''
         xml_files = self.discover_xml_files(parent_dir)
         if isinstance(xml_files, list):
             for xml_file in xml_files:
@@ -1564,10 +1857,6 @@ class Menu():  # holds the dictionary of cocktails
 
 
 
-class BulkImporter():
-
-    def __init__(self, image_dir):
-        self.image_dir = image_dir
 
     # or potentially use a file browser to do this one and put it in a wdiget
 

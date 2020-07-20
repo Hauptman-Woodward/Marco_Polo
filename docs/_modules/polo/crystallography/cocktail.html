@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -153,6 +156,8 @@
             
   <h1>Source code for polo.crystallography.cocktail</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">NotASolutionError</span>
+<span class="c1">#from cockatoo.screen import _parse_cocktail_csv</span>
+<span class="c1">#from cockatoo.metric import distance</span>
 <span class="kn">from</span> <span class="nn">molmass</span> <span class="kn">import</span> <span class="n">Formula</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
@@ -161,7 +166,7 @@
 <div class="viewcode-block" id="Cocktail"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail">[docs]</a><span class="k">class</span> <span class="nc">Cocktail</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;Cocktail instances are used to hold a collection of reagents</span>
 <span class="sd">    that form one chemical cocktail screen. Also hold metadata including</span>
-<span class="sd">    their commerical code if one exists, the cocktail pH and the</span>
+<span class="sd">    their commercial code if one exists, the cocktail pH and the</span>
 <span class="sd">    well they are assigned to. Currently, cocktails are only supported</span>
 <span class="sd">    for HWIRuns.</span>
 
@@ -198,7 +203,7 @@
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>     
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_C&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="c1"># normal cocktail number format 13_C0001</span>
@@ -222,6 +227,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__well_assignment</span> <span class="o">=</span> <span class="n">value</span>
+    
 
 <div class="viewcode-block" id="Cocktail.add_reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.add_reagent">[docs]</a>    <span class="k">def</span> <span class="nf">add_reagent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_reagent</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Adds a reagent to the existing list of reagents stored in the</span>
@@ -233,6 +239,34 @@
         <span class="k">if</span> <span class="n">new_reagent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_reagent</span><span class="p">)</span></div>
 
+    <span class="c1"># def compute_distance(self, other_cocktail):</span>
+    <span class="c1">#     if isinstance(other_cocktail, Cocktail):</span>
+    <span class="c1">#         this_cockatoo_cocktail = self.to_cockatoo_cocktail()</span>
+    <span class="c1">#         other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()</span>
+    <span class="c1">#         if this_cockatoo_cocktail and other_cockatoo_cocktail:</span>
+    <span class="c1">#             return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)</span>
+    <span class="c1">#     return False </span>
+
+    <span class="c1"># def to_cockatoo_cocktail(self):</span>
+    <span class="c1">#     # convert cocktail object to a &quot;row&quot; as read from a csv file for use with</span>
+    <span class="c1">#     # cockatoo package</span>
+    <span class="c1">#     # name,overall_ph,[conc,unit,name,ph]*</span>
+    <span class="c1">#     row = [self.number, str(self.pH)]</span>
+    <span class="c1">#     for reagent in self.reagents:</span>
+    <span class="c1">#         if reagent.molarity != False:</span>
+    <span class="c1">#             reagent_row = [</span>
+    <span class="c1">#                 str(reagent.concentration.value),</span>
+    <span class="c1">#                 str(reagent.concentration.units),</span>
+    <span class="c1">#                 reagent.chemical_additive,</span>
+    <span class="c1">#                 self.pH]  # doesnt seem like reagent pH is used in distance calc</span>
+    <span class="c1">#             row += reagent_row</span>
+    <span class="c1">#             return _parse_cocktail_csv(row)  # should return cocktail object if it worked</span>
+    <span class="c1">#         # then can compare two cocktail objects</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             break</span>
+    <span class="c1">#     return False</span>
+
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 
@@ -243,14 +277,8 @@
         <span class="k">for</span> <span class="n">reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
             <span class="n">cocktail_string</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">reagent</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">,</span> <span class="n">reagent</span><span class="o">.</span><span class="n">concentration</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cocktail_string</span>
+        <span class="k">return</span> <span class="n">cocktail_string</span></div>
     
-<div class="viewcode-block" id="Cocktail.chemical_distance"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.chemical_distance">[docs]</a>    <span class="k">def</span> <span class="nf">chemical_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cocktail</span><span class="p">):</span>
-        <span class="c1"># pass</span>
-        <span class="k">pass</span>
-        <span class="k">for</span> <span class="n">each_reagent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reagents</span><span class="p">:</span>
-            <span class="n">molar_concentration</span> <span class="o">=</span> <span class="n">each_reagent</span><span class="o">.</span><span class="n">molarity</span><span class="p">()</span>
-            <span class="k">pass</span></div></div>
 
 
 <div class="viewcode-block" id="Reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent">[docs]</a><span class="k">class</span> <span class="nc">Reagent</span><span class="p">():</span>
@@ -262,13 +290,13 @@
 <span class="sd">    :type chemical_additive: str, optional</span>
 <span class="sd">    :param concentration: Concentration of the reagent in a given well,</span>
 <span class="sd">                            defaults to None</span>
-<span class="sd">    :type concentration: SignedValue, optional</span>
+<span class="sd">    :type concentration: UnitValue, optional</span>
 <span class="sd">    :param chemical_formula: Chemical formula for this reagent, defaults</span>
 <span class="sd">                                to None</span>
 <span class="sd">    :type chemical_formula: str, optional</span>
 <span class="sd">    :param stock_con: Concentration of this reagent&#39;s stock solution,</span>
 <span class="sd">                        defaults to None</span>
-<span class="sd">    :type stock_con: SignedValue, optional</span>
+<span class="sd">    :type stock_con: UnitValue, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;(w/v)&#39;</span><span class="p">,</span> <span class="s1">&#39;(v/v)&#39;</span><span class="p">]</span>
 
@@ -322,7 +350,7 @@
 <span class="sd">        utimately refers back to a condition in a specific screening well.</span>
 
 <span class="sd">        :return: Chemical concentration</span>
-<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__concentration</span>
 
@@ -331,11 +359,11 @@
         <span class="sd">&#39;&#39;&#39;Setter function for the concentration attribute.</span>
 
 <span class="sd">        :param new_con: New value for concentration</span>
-<span class="sd">        :type new_con: SignedValue</span>
+<span class="sd">        :type new_con: UnitValue</span>
 <span class="sd">        :raises TypeError: Raised when attempt to pass object that is not an\</span>
-<span class="sd">            instance of SignedValue as the new_con</span>
+<span class="sd">            instance of UnitValue as the new_con</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_con</span><span class="p">,</span> <span class="n">SignedValue</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_con</span><span class="p">,</span> <span class="n">UnitValue</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__concentration</span> <span class="o">=</span> <span class="n">new_con</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span>
@@ -351,14 +379,14 @@
 <span class="sd">        concentration cannot be converted to mols / liter then returns false.</span>
 
 <span class="sd">        :return: molarity or False</span>
-<span class="sd">        :rtype: SignedValue or Bool</span>
+<span class="sd">        :rtype: UnitValue or Bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">base_con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__concentration</span><span class="o">.</span><span class="n">to_base</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">base_con</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">base_con</span>
         <span class="k">elif</span> <span class="n">base_con</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;w/v&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">:</span>
             <span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_con</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">molar_mass</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
-            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -369,7 +397,7 @@
 <span class="sd">        possible. Return False if cannot be calculated.</span>
 
 <span class="sd">        :return: Molarity or False</span>
-<span class="sd">        :rtype: SignedValue or False</span>
+<span class="sd">        :rtype: UnitValue or False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">mm</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chemical_formula</span><span class="p">,</span> <span class="n">Formula</span><span class="p">):</span>
@@ -409,15 +437,15 @@
 <span class="sd">        calculated this method will return False.</span>
 
 <span class="sd">        :param target_volume: Volume in which stock will be diluted into</span>
-<span class="sd">        :type target_volume: SignedValue</span>
+<span class="sd">        :type target_volume: UnitValue</span>
 <span class="sd">        :return: Volume of stock or False</span>
-<span class="sd">        :rtype: SignedValue or False</span>
+<span class="sd">        :rtype: UnitValue or False</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># target volume in liters</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stock_con</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">molarity</span><span class="p">:</span>
             <span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molarity</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">target_volume</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> \
                 <span class="bp">self</span><span class="o">.</span><span class="n">stock_con</span><span class="o">.</span><span class="n">to_base</span><span class="p">()</span><span class="o">.</span><span class="n">value</span>
-            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -425,11 +453,11 @@
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chemical_additive</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">concentration</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SignedValue"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue">[docs]</a><span class="k">class</span> <span class="nc">SignedValue</span><span class="p">():</span>
+<div class="viewcode-block" id="UnitValue"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue">[docs]</a><span class="k">class</span> <span class="nc">UnitValue</span><span class="p">():</span>
     <span class="c1"># class for handling anything that comes with a unit</span>
-    <span class="sd">&#39;&#39;&#39;SignedValues are used to help handle numbers with units. They</span>
+    <span class="sd">&#39;&#39;&#39;UnitValues are used to help handle numbers with units. They</span>
 <span class="sd">    are not the most robust but help to keep things more organized.</span>
-<span class="sd">    SignedValues can be created by either passing values to the</span>
+<span class="sd">    UnitValues can be created by either passing values to the</span>
 <span class="sd">    `values` and `units` args explicitly or by calling the classmethod</span>
 <span class="sd">    `make_from_string` which will use regex to pull out supported units and</span>
 <span class="sd">    values.</span>
@@ -440,27 +468,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
 
-<div class="viewcode-block" id="SignedValue.set_from_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.set_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">set_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitValue.set_from_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.set_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">set_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">string</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">string</span></div>
 
-<div class="viewcode-block" id="SignedValue.make_from_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.make_from_string">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="UnitValue.make_from_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.make_from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">make_from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a SignedValue from a string containing a value and a unit.</span>
+        <span class="sd">&#39;&#39;&#39;Create a UnitValue from a string containing a value and a unit.</span>
 <span class="sd">        Used the `unit_regex` to pull out the units. </span>
 
 <span class="sd">        .. highlight:: python</span>
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            unit_string = &#39;10.0 M&#39;  # concentration of 10 molar</span>
-<span class="sd">            sv = SignedValue.make_from_string(unit_string)</span>
+<span class="sd">            sv = UnitValue.make_from_string(unit_string)</span>
 <span class="sd">            # sv.value = 10 sv.units = &#39;M&#39;</span>
 
 
-<span class="sd">        :param string: The string to extract the SignedValue from</span>
+<span class="sd">        :param string: The string to extract the UnitValue from</span>
 <span class="sd">        :type string: str</span>
-<span class="sd">        :return: SignedValue instance</span>
-<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        :return: UnitValue instance</span>
+<span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">unit_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
@@ -483,8 +511,8 @@
             <span class="n">value</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__value</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="SignedValue.scale"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale_key</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Scale the value of the SignedValue instance using a key character</span>
+<div class="viewcode-block" id="UnitValue.scale"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale_key</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Scale the value of the UnitValue instance using a key character</span>
 <span class="sd">        in the `saved_scalers` dictionary. First converts the value to its</span>
 <span class="sd">        base unit and then divides by the `scale_key` value. The `scale_key`</span>
 <span class="sd">        can be thought of as a SI prefix for a base unit.</span>
@@ -493,33 +521,33 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            # self.saved_scalers = {&#39;u&#39;: 1e-6, &#39;m&#39;: 1e-3, &#39;c&#39;: 1e-2}</span>
-<span class="sd">            v_one = SignedValue(10, &#39;L&#39;)  # value of 10 liters</span>
+<span class="sd">            v_one = UnitValue(10, &#39;L&#39;)  # value of 10 liters</span>
 <span class="sd">            v_one = v_one.scale(&#39;u&#39;)  # get v_one in microliters</span>
 
 <span class="sd">        :param scale_key: Character in `saved_scalers` to convert value to.</span>
 <span class="sd">        :type scale_key: str</span>
-<span class="sd">        :return: SignedValue converted to scale_key unit prefix</span>
-<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        :return: UnitValue converted to scale_key unit prefix</span>
+<span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">scale_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_base</span><span class="p">()</span>  <span class="c1"># send to base unit</span>
-            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span>
                 <span class="n">temp</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">scale_key</span><span class="p">],</span> <span class="n">scale_key</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="SignedValue.to_base"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.to_base">[docs]</a>    <span class="k">def</span> <span class="nf">to_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitValue.to_base"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.to_base">[docs]</a>    <span class="k">def</span> <span class="nf">to_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Converts the value to the base unit, if it is not already in the</span>
 <span class="sd">        base unit.</span>
 
-<span class="sd">        :return: SignedValue converted to base unit of called SignedValue instance</span>
-<span class="sd">        :rtype: SignedValue</span>
+<span class="sd">        :return: UnitValue converted to base unit of called UnitValue instance</span>
+<span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SignedValue</span><span class="p">(</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">UnitValue</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span></div>
     
-<div class="viewcode-block" id="SignedValue.round"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.SignedValue.round">[docs]</a>    <span class="k">def</span> <span class="nf">round</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">digits</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitValue.round"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.round">[docs]</a>    <span class="k">def</span> <span class="nf">round</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">digits</span><span class="p">):</span>
         <span class="k">pass</span></div>
         <span class="c1"># reduct the total number of digits so it looks nice to print</span>
 
@@ -549,11 +577,19 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Ethan T. Holleman
+        
+        &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -564,7 +600,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

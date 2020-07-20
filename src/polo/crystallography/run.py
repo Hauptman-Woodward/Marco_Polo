@@ -60,20 +60,31 @@ class Run():
                       date=self.date)
             )
 
-    def unload_all_pixmaps(self, s=None, e=None, r=False):  # reduce memory usage
+    def unload_all_pixmaps(self, start=None, end=None, a=False):  # reduce memory usage
+        '''Delete the pixmap data of all Image instances stored in the
+        `images` attribute. Should be used to free up memory after the run
+        is no longer being viewed by the user.
 
-        if isinstance(s, int) and isinstance(e, int):
-            images = self.images[s:e]
+        :param start: Start index for range of images to unload, defaults to None
+        :type start: int, optional
+        :param end: End index for range of images to unload, defaults to None
+        :type end: int, optional
+        :param a: Flag to unload pixmap data for all images and images they are linked to, defaults to False
+        :type all: bool, optional
+        '''
+
+        if isinstance(start, int) and isinstance(end, int):
+            images = self.images[start:end]
         else:
             images = self.images
         for image in images:
-            if r:
-                image.recursive_delete_pixmap_data()
+            if a:
+                image.delete_all_pixmap_data()
             else:
                 image.delete_pixmap_data()
 
     def get_images_by_classification(self, human=True):
-        '''Create a dictionary of image classifcations. Keys are
+        '''Create a dictionary of image classificationss. Keys are
         each type of classification and values are list of
         images with classification of the key. The human
         boolean determines what classifier should be used to
@@ -96,16 +107,32 @@ class Run():
                     image_class_dict[c] = [image]
         return image_class_dict
 
-    def get_image_table_data(self, image, attributes):
-        im_dict, row_dict = image.__dict__, {}
-        for arg in attributes:
-            if arg in im_dict:
-                row_dict[arg] = im_dict[arg]
-            else:
-                row_dict[arg] = None
-        return row_dict
+    # def get_image_table_data(self, image, attributes):
+
+    #     im_dict, row_dict = image.__dict__, {}
+    #     for arg in attributes:
+    #         if arg in im_dict:
+    #             row_dict[arg] = im_dict[arg]
+    #         else:
+    #             row_dict[arg] = None
+    #     return row_dict
 
     def image_filter_query(self, image_types, human, marco, favorite):
+        '''General use method for returning Images based on a set of
+        filters. Used whereever a user is allowed to narrow the set
+        of images available for view.
+
+        :param image_types: Returned images must have a classification that is included in this variable
+        :type image_types: list or set
+        :param human: Qualify the classification type with a human classifier. 
+        :type human: bool
+        :param marco: Qualify the classification type with a MARCO classifier.
+        :type marco: bool
+        :param favorite: Returned images must be marked as `favorite` if set to True
+        :type favorite: bool
+        :return: Images that meet the specified requirements specified in the above arguments.
+        :rtype: list
+        '''
         images = [i for i in self.images if i and i.standard_filter(
             image_types, human, marco, favorite
         )]
@@ -127,7 +154,7 @@ class Run():
 
     def export_to_csv(self, output_dir):
         '''
-        Exports run classifcation data to a csv table.
+        Exports run classification data to a csv table.
         '''
         return NotImplementedError
 
@@ -162,6 +189,8 @@ class HWIRun(Run):
         super(HWIRun, self).__init__(**kwargs)
 
     def get_tooltip(self):
+        '''The same as :func:`~polo.crystallography.Run.get_tooltip`.
+        '''
         if 'plateName' in self.__dict__:
             platename = self.__dict__['plateName']
         else:
@@ -172,8 +201,39 @@ class HWIRun(Run):
         )
 
     def link_to_next_date(self, other_run):
+        '''Link this Run to another Run instance that is of the same
+        sample but photographed at a later date. This creates a
+        bi-directional linked list structure between the two runs.
+        This Run instance will point to `other_run` through the `next_run`
+        attribute and `other_run` will point back to this Run through
+        the `previous_run` attribute. This method does not attempt to recognize
+        which run was imaged first so this should be determined before calling, likely
+        by sorting a list of Runs by their `date` attribute.
+
+        Example:
+
+        .. code-block:: python
+
+            # Starting with a collection of Run objects in a list
+            runs = [run_b, run_a, run_d, run_c]
+            # sort them by date
+            runs = sorted(runs, lambda r: r.date)
+            # link them together by date
+            [r[i].link_to_next_date(r[i+1]) for i in range(len(runs)-2)]
+        
+        This would create a linked list with a structure link the representation
+        below.
+
+        .. code-block:: text
+
+            run_a <-> run_b <-> run_c <-> run_d
+
+
+        :param other_run: HWIRun instance representing the next imaging run
+        :type other_run: HWIRun
+        '''
+
         if type(other_run) == HWIRun:
-            logger.info('Linking {} to {}'.format(self, other_run))
             for current_image, dec_image in zip(self.images, other_run.images):
                 if current_image:
                     current_image.next_image = dec_image
@@ -187,28 +247,29 @@ class HWIRun(Run):
             other_run.previous_run = self
 
     def link_to_alt_spectrum(self, other_run):
-        # only a one way link from this run to the other run
-        # outside funcion is required to cirle the list
+        '''Similar to :func:`~polo.crystallography.HWIRun.link_to_next_date`
+        except instead of creating a linked list through the `next_run` and
+        `previous_run` attributes it does so through the `alt_spectrum`
+        attribute. Linked list created is mono-directional so if a
+        series of runs are being linked the last run should be linked to the
+        first run to circularize the linked list.
+
+        :param other_run: Run to link to this Run by spectrum 
+        :type other_run: HWIRun
+        '''
+        
         if isinstance(other_run, (HWIRun, Run)):
             for current_image, alt_image in zip(self.images, other_run.images):
                 current_image.alt_image = alt_image
             self.alt_spectrum = other_run
-
-        # only do a one way link here currently
-
-    def sort_current_images_by_cocktail(self):
-        '''
-        Sorts the current slideshow images by cocktail number. Allows the user
-        to navigate by cocktail number and therefore similar chemical conditions
-        opposed to as by well number which is proxy for physical location in
-        the well. Oftentimes due to plate shape similar well numbers will be
-        in different family of chemcial conditions.
-        '''
-        self.current_slide_show_images.sort(
-            key=lambda x: self.images[x].get_cocktail_number())
-        self.current_image = 0
     
     def get_linked_alt_runs(self):
+        '''Return all runs that this run is linked to by spectrum. See
+        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`
+
+        :return: List of runs linked to this run by spectrum
+        :rtype: list
+        '''
         if isinstance(self.alt_spectrum, (Run, HWIRun)):    
             linked_runs = [self.alt_spectrum]
             start_run = self.alt_spectrum.alt_spectrum
@@ -216,13 +277,23 @@ class HWIRun(Run):
                 if start_run.image_spectrum != IMAGE_SPECS[0]:  # not visible
                     linked_runs.append(start_run)
                 else:
-                    linked_runs.append(False)  # marker for found visble run in chaing that need to be replaced
+                    linked_runs.append(False)
                 start_run = start_run.alt_spectrum
             return linked_runs
         else:
             return []
     
     def insert_into_alt_spec_chain(self):
+        '''When runs are first loaded into Polo they are automatically linked together.
+        Normally, runs that are linked by date should all be visible spectrum images and
+        runs linked by spectrum should all be non-visible spectrum images. The visible
+        spectrum images will then point to one non-visible spectrum run via their
+        `alt_spectrum` attribute. This means that one could navigate from a visible
+        spectrum run to all alt spectrum runs but not get back to the visible spectrum
+        run. Therefore, before a run is set to be viewed by the user this method
+        temporary inserts it into the alt spectrum circular linked list. Also see
+        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
+        '''
         linked_runs = self.get_linked_alt_runs()
         if linked_runs:
             if len(linked_runs) == 1:
@@ -241,7 +312,7 @@ class HWIRun(Run):
         '''
         Populates the images attribute with a list of images read from the
         image_dir location. Currently is dependent on having a cocktail
-        dictionary available. This is passed into the function and would
+        menu available. This is passed into the function and would
         normally come from the most recently used HWI file that is
         stored as a dictionary in the mainWindow object.
         '''
@@ -258,6 +329,3 @@ class HWIRun(Run):
                                             date=date, plate_id=plate_id,
                                             cocktail=self.cocktail_menu.cocktails[well_num],
                                             spectrum=self.image_spectrum)
-        logger.info('Added {} images from {} to {}'.format(
-            len(self.images), self.image_dir, self
-        ))
