@@ -23,6 +23,12 @@ UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('polo/.tmp')
 BACKUP_DIR = dirname.joinpath('polo/.backups')
 
+if not os.path.isdir(str(TEMP_DIR)):
+    os.makedirs(str(TEMP_DIR))
+
+if not os.path.isdir(str(BACKUP_DIR)):
+    os.makedirs(str(BACKUP_DIR))
+
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')
 # cocktail meta data csv stores info about each of the cocktail menus. Stuff
