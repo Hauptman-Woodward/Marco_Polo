@@ -91,9 +91,7 @@ class RunTree(QtWidgets.QTreeWidget):
             self.handle_dup_run_import()
         else:
             self.loaded_runs[run.run_name] = run
-            logger.info('Added new run: {} with name {}'.format(
-                run, run.run_name
-            ))
+            logger.info('Added new run: {}'.format(run))
         return new_node
 
     def _get_run_node(self, run):

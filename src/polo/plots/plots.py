@@ -106,7 +106,8 @@ class StaticCanvas(MplCanvas):
             )
             m.exec_()
 
-        def plot_meta_stats(self, current_run):
+    def plot_meta_stats(self, current_run):
+        try:
             self.clear_axis()
             # add all subplots here
             self.fig.add_subplot(111)
@@ -119,6 +120,13 @@ class StaticCanvas(MplCanvas):
             self.fig.get_axes()[0].set_title(
                 'MARCO Classification Accuracy')
             self.draw()
+        except Exception as e:
+            m = make_message_box(
+                parent=self,
+                message='Could not complete plot drawing. Failed with error {}'.format(e)
+            )
+            m.exec_()
+
         
 
 

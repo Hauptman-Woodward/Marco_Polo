@@ -166,9 +166,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self._tab_limiter()  # set allowed tabs by run type
             self._plot_limiter()  # set allowed polo.plots
             
-            logger.info('Opened run: {} with name: {}'.format(
-                self.current_run, self.current_run.run_name
-            ))
+            logger.info('Opened run: {}'.format(self.current_run))
             # enable nav by time if has linked runs
     
     # Menu handling methods

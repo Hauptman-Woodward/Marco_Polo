@@ -21,7 +21,7 @@ class slideshowInspector(QtWidgets.QWidget):
         super(slideshowInspector, self).__init__(parent)
         self.ui = Ui_slideshowInspector()
         self.ui.setupUi(self)
-        self.__run = run
+        self._run = run
 
         self.class_buttons = [self.ui.pushButton, self.ui.pushButton_2,
                               self.ui.pushButton_5, self.ui.pushButton_3]
@@ -55,12 +55,12 @@ class slideshowInspector(QtWidgets.QWidget):
         self.ui.pushButton_11.clicked.connect(self._submit_filters)
 
         self.ui.pushButton_10.clicked.connect(
-            lambda: self.set_alt_image(next_date=True))
+            lambda: self._set_alt_image(next_date=True))
         self.ui.pushButton_9.clicked.connect(
-            lambda: self.set_alt_image(prev_date=True)
+            lambda: self._set_alt_image(prev_date=True)
         )
         self.ui.pushButton_12.clicked.connect(
-            lambda: self.set_alt_image(alt_spec=True)
+            lambda: self._set_alt_image(alt_spec=True)
         )
         self.ui.checkBox_7.stateChanged.connect(
             self._mark_current_image_as_favorite
@@ -132,7 +132,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @property
     def run(self):
-        return self.__run
+        return self._run
 
     @run.setter
     def run(self, new_run):
@@ -140,14 +140,12 @@ class slideshowInspector(QtWidgets.QWidget):
         Setter method for __run attribute. Sets __run to `new run` and sets
         up for displaying the first image.
         '''
-        self.__run = new_run
+        self._run = new_run
         self.ui.slideshowViewer.run = new_run
         self._display_current_image()
         self._set_time_resolved_functions()
         self._set_alt_spectrum_buttons()
-        logger.info('Opened new run: {} with name {}'.format(
-            self.__run, self.__run.run_name
-        ))
+        logger.info('Opened new run: {}'.format(self._run))
 
     @property
     def selected_classifications(self):

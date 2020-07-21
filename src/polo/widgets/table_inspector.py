@@ -49,9 +49,7 @@ class TableInspector(QtWidgets.QWidget):
         if self.run:
             self.ui.tableViewer.run = new_run
             self._set_column_options()
-            logger.info('Opened new run {} with name {}'.format(
-                self._run, self._run.run_name
-            ))
+            logger.info('Opened new run {}'.format(self._run))
 
     @property
     def selected_headers(self):

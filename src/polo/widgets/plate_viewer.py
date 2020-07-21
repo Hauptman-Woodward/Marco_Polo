@@ -13,10 +13,8 @@ from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import RunSerializer, SceneExporter
 from polo.utils.math_utils import *
 from polo.widgets.slideshow_viewer import PhotoViewer
-<<<<<<< HEAD
-from polo.utils.io_utils import RunSerializer, SceneExporter
-from polo.utils.dialog_utils import make_message_box
-from polo.threads.thread import QuickThread
+from polo.windows.image_pop_dialog import ImagePopDialog
+
 
 class PlateGraphicsItem(QtWidgets.QGraphicsPixmapItem):
 
@@ -25,9 +23,6 @@ class PlateGraphicsItem(QtWidgets.QGraphicsPixmapItem):
     
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
-=======
-from polo.windows.image_pop_dialog import ImagePopDialog
->>>>>>> 4bc979a66e3d54f4e9e52647ec7595fc7a37ed33
 
 
 class plateViewer(QtWidgets.QGraphicsView):

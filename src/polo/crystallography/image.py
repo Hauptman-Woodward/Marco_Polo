@@ -339,9 +339,8 @@ class Image(QtGui.QPixmap):
         else:
             cocktail = None
         return 'Well: {}\nCocktail: {}\nDate: {} \nMARCO Class: {}\nHuman Class: {}'.format(
-            str(self.well_number), cocktail, str(
-                self.date), str(self.machine_class),
-            str(self.human_class)
+            str(self.well_number), cocktail, self.formated_date,
+            str(self.machine_class), str(self.human_class)
         )
 
     def get_linked_images_by_date(self):

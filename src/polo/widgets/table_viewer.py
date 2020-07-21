@@ -59,7 +59,6 @@ class TableViewer(QtWidgets.QTableWidget):
                 return RunCsvWriter(self.run).get_csv_data()
             except Exception as e :
                 logger.error('Caught {} at trying to get table'.format(e))
-                print(e)
                 return [], {}  # empty list and dict need to handle better
                 # down the line
 

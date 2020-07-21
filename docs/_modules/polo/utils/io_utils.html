@@ -1740,7 +1740,7 @@
 <span class="sd">        :return: List or runs after linking</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">unlink_runs_completly</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+        <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">unlink_runs_completely</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
         <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">link_runs_by_date</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
         <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">link_runs_by_spectrum</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
 
@@ -1822,8 +1822,8 @@
             <span class="c1"># spec linked list and reconnected. If a new visible run is selected</span>
             <span class="c1"># the current visible run in the linked list is replaced with the</span>
             <span class="c1"># new current run</span>
-<div class="viewcode-block" id="RunLinker.unlink_runs_completly"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.unlink_runs_completly">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">unlink_runs_completly</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+<div class="viewcode-block" id="RunLinker.unlink_runs_completely"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.unlink_runs_completely">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unlink_runs_completely</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Cuts all links between runs and the images in those runs.</span>
 
 <span class="sd">        :param runs: List of runs</span>

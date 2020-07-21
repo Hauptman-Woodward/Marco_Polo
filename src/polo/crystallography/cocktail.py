@@ -206,7 +206,7 @@ class Reagent():
         :raises TypeError: Raised when attempt to pass object that is not an\
             instance of UnitValue as the new_con
         '''
-        if isinstance(new_con, SignedValue):
+        if isinstance(new_con, UnitValue):
             self._concentration = new_con
         else:
             raise TypeError

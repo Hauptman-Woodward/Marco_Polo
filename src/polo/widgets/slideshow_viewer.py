@@ -135,8 +135,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     :type parent: QWidget
     :param current_image: Image that is currently displayed by the viewer.
     :type current_image: Image
-    :param __carousel: Carousel instance to control image navigation.
-    :type __carousel: Carousel 
     '''
 
     def __init__(self, parent):
@@ -237,8 +235,6 @@ class SlideshowViewer(PhotoViewer):
     :type parent: QWidget
     :param current_image: Image that is currently displayed by the viewer.
     :type current_image: Image
-    :param __carousel: Carousel instance to control image navigation.
-    :type __carousel: Carousel 
     '''
 
     def __init__(self, parent, run=None, current_image=None):
@@ -270,9 +266,7 @@ class SlideshowViewer(PhotoViewer):
             self.update_slides_from_filters(
                 image_types=set([]), human=False, marco=False
             )
-            logger.info('Opened new run {} with name {}'.format(
-                new_run, new_run.run_name
-            ))
+            logger.info('Opened new run {}'.format(new_run))
         else:  # if run is none then interpret as request to delete current run
             self._run = None
             self._carousel = Carousel()
@@ -320,7 +314,7 @@ class SlideshowViewer(PhotoViewer):
             self.scene.addPixmap(image)
             self.fitInView()
             
-    def __add_text_to_scene(self, text, x, y, size=40):
+    def _add_text_to_scene(self, text, x, y, size=40):
         '''Private method to add text on top of an image.
 
         :param text: Text to add to image
@@ -372,7 +366,7 @@ class SlideshowViewer(PhotoViewer):
     def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
         '''Creates new Carousel slides based on selected image filters.
         Sets the current_image attribute to the image contained at
-        the current slide of __carousel attribute.
+        the current slide of _carousel attribute.
 
         :param image_types: Set of image classifications to include in results.
         :type image_types: set

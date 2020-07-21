@@ -182,7 +182,6 @@ class RunImporter():
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
                 
             if metadata and file_name_data:
-                print(file_name_data)
                 date = file_name_data['date']
                 menu = tim.get_menu_by_date(date, 's')
                 # assuming soluble need to change based on metadata parse
@@ -605,7 +604,7 @@ class MsoReader():
     @staticmethod
     def read_mso_classification(mso_class):
         mso_class = mso_class.split('-')
-        print(mso_class)
+
         mso_codes = [int(code.strip()) for code in mso_class if int(code.strip()) in REV_MSO_DICT]
         if mso_codes:
             return REV_MSO_DICT[max(mso_codes)]
@@ -933,7 +932,7 @@ class RunDeserializer():  # convert saved file into a run
             else:
                 return FileNotFoundError
         except Exception as e:
-            return e
+            raise e
 
 
 class PptxWriter():
@@ -1689,7 +1688,7 @@ class RunLinker():
         return runs
 
     @staticmethod
-    def unlink_runs_completly(runs):
+    def unlink_runs_completely(runs):
         '''Cuts all links between runs and the images in those runs.
 
         :param runs: List of runs

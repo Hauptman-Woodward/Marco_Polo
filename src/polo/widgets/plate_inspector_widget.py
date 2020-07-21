@@ -65,7 +65,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             lambda: self.show_current_plate(prev_date=True)
         )
         self.ui.pushButton_22.clicked.connect(
-            lambda: self.navigate_plateview(alt_spec=True)
+            lambda: self.show_current_plate(alt_spec=True)
         )
         self.ui.plateViewer.images_per_page = self.images_per_page[0]
 
@@ -284,37 +284,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         but utilizes available display space less efficiently.
         '''
         self.ui.plateViewer.preserve_aspect = self.ui.checkBox_29.isChecked()
-
-
-    def navigate_plateview(self, next_page=False, prev_page=False,
-                           alt_image=False, next_date=False, prev_date=False):
-        '''Helper function that moves the view forward, backward or to an alt
-        view using boolean flags. Buttons that actually preform these
-        functions should be connected using a lambda function that passes
-        True to whichever flag represents the button's functionality.
-
-        :param next_page: Navigate to next page if True, defaults to False
-        :type next_page: bool, optional
-        :param prev_page: Navigate to previous page if True, defaults to False
-        :type prev_page: bool, optional
-        :param alt_image: Show alt spectrum images if True, defaults to False
-        :type alt_image: bool, optional
-        :param next_date: Show next date images if True, defaults to False
-        :type next_date: bool, optional
-        :param prev_date: Show previous date images if True, defaults to False
-        :type prev_date: bool, optional
-        '''
-
-        if next_page:
-            self.ui.plateViewer.current_page += 1
-        elif prev_page:
-            self.ui.plateViewer.current_page -= 1
-        self._set_plate_label()
-        self.ui.plateViewer.tile_images_onto_scene()
     
     def reset_all(self):
-        '''
-        Method to uncheck all user selected settings
+        '''Method to uncheck all user selected settings.
         '''
         for widget in self.ui.groupBox_26.children():
             if isinstance(widget, QtWidgets.QCheckBox):
@@ -322,8 +294,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.apply_plate_settings()
     
     def apply_plate_settings(self):
-        '''
-        Parses checkboxes in the Plate View tab to determine what behavior
+        '''Parses checkboxes in the Plate View tab to determine what behavior
         for the plateViewer widget is requested by the user.
         '''
         if self._run:

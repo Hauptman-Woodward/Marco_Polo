@@ -166,9 +166,7 @@ class RunOrganizer(QtWidgets.QWidget):
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
             self._add_runs_to_tree([new_run])
-            logger.info('Added run {} with name {} from directory'.format(
-                new_run, new_run.run_name
-            ))
+            logger.info('Added run {} from directory'.format(new_run))
         return new_run
         # message box failed to import?
    

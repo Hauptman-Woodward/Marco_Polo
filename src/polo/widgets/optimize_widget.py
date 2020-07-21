@@ -197,9 +197,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         if isinstance(new_run, (Run, HWIRun)):
             self._set_hit_well_choices()  # give use options of crystal hits
             self._update_current_reagents()
-            logger.info('Opened new run {} with name {}'.format(
-                self._run, self._run.run_name
-            ))
+            logger.info('Opened new run {}'.format(self._run))
     
     def _set_up_unit_comboboxes(self):
         '''Private method that sets the base unit and the scalers
