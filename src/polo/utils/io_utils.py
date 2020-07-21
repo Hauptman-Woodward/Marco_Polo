@@ -648,16 +648,16 @@ class JsonWriter(RunSerializer):
     
     def write_json(self):
         try:
-            json_content = json.dumps(self.run, ensure_ascii=True, indent=4,
-                                  default=XtalWriter.json_encoder, check_circular=False)
+            clean_run = XtalWriter.clean_run_for_save(self.run)
+            json_content = json.dumps(clean_run, ensure_ascii=True, indent=4,
+                                  default=XtalWriter.json_encoder, check_circular=True)
             
             output_path = JsonWriter.path_suffix_checker(str(self.output_path), '.json')
             with open(output_path, 'w') as json_file:
                 json_file.write(json_content)
-        
             return True
         except Exception as e:
-            raise e
+            return e
 
 
 class XtalWriter(RunSerializer):
@@ -715,6 +715,24 @@ class XtalWriter(RunSerializer):
                 d = str(obj)  # if all else fails case to string
         return d
 
+    @staticmethod
+    def clean_run_for_save(run):
+        '''Remove circular references from a Run instance to avoid errors
+        when serializing using json. Uses the run stored in the run attribute
+
+        :return: The cleaned run
+        :rtype: Run
+        '''
+        if run:
+            run.previous_run, run.next_run, run.alt_spectrum = (
+                None, None, None)
+            for image in run.images:
+                if image:
+                    image.previous_image, image.next_image, image.alt_image = (
+                        None, None, None
+                    )
+        return run
+
     def write_xtal_file_on_thread(self, output_path):
         """Wrapper method around `write_xtal_file` that executes on a Qthread
         instance to prevent freezing the GUI when saving large xtal files
@@ -767,23 +785,6 @@ class XtalWriter(RunSerializer):
                         e, self.write_xtal_file))
                     return e
 
-    def clean_run_for_save(self):
-        '''Remove circular references from a Run instance to avoid errors
-        when serializing using json. Uses the run stored in the run attribute
-
-        :return: The cleaned run
-        :rtype: Run
-        '''
-        if self.run:
-            self.run.previous_run, self.run.next_run, self.run.alt_spectrum = (
-                None, None, None)
-            for image in self.run.images:
-                if image:
-                    image.previous_image, image.next_image, image.alt_image = (
-                        None, None, None
-                    )
-        return self.run
-
     def run_to_dict(self):
         '''Create a json string from the run stored in the run attribute.
 
@@ -792,9 +793,9 @@ class XtalWriter(RunSerializer):
         '''
         if self.run:
             try:
-                self.clean_run_for_save()
-                self.run.encode_images_to_base64()
-                return json.dumps(self.run, ensure_ascii=True, indent=4,
+                clean_run = XtalWriter.clean_run_for_save(self.run)
+                clean_run.encode_images_to_base64()
+                return json.dumps(clean_run, ensure_ascii=True, indent=4,
                                   default=XtalWriter.json_encoder)
             except Exception as e:
                 logger.warning('Failed to encode {} to dict. Gave {}'.format(
