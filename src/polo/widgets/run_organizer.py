@@ -44,12 +44,17 @@ class RunOrganizer(QtWidgets.QWidget):
         self.current_run = None
         self.shown_unrar_message = False
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
+        self._has_been_opened = set([])
         self.ui.pushButton.clicked.connect(self._handle_classification_request)
         self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
 
         logger.info('Created {}'.format(self))
+
+    def __iter__(self):
+        return (run for run_name, run in self.ui.runTree.loaded_runs.items())
+
 
     def _clear_current_run(self, run_list):
         '''Clear out the current run from other widgets by emiting a
@@ -81,7 +86,31 @@ class RunOrganizer(QtWidgets.QWidget):
         selected_run_name = self.ui.runTree.currentItem().text(0)
         if selected_run_name in self.ui.runTree.loaded_runs:
             selected_run = self.ui.runTree.loaded_runs[selected_run_name]
+            if (selected_run.run_name not in self._has_been_opened
+                and not hasattr(selected_run, 'save_file_path')):
+                backup = self._check_for_existing_backup(selected_run)
+                if backup and os.path.isfile(str(backup)):
+                    choice = make_message_box(
+                        parent=self,
+                        message='Found backed up classifications for this run.\
+                            Would you like to use them?',
+                        buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                        ).exec_()
+                    if choice == QtWidgets.QMessageBox.Yes:
+                        reader = MsoReader(backup)
+                        classified_images = reader.classify_images_from_mso_file(
+                            images=selected_run.images
+                        )
+                        if classified_images:
+                            selected_run.images = classified_images
+                            message = 'Loaded classifications from backup.'
+                        else:
+                            message='Failed to load classifications.'
+                        make_message_box(
+                            parent=self, message=message
+                        )
             self.opening_run.emit([selected_run])
+            self._has_been_opened.add(selected_run.run_name)
 
     def _open_classification_thread(self, run):
         '''Private method to create and run a classification thread which will run
@@ -169,7 +198,16 @@ class RunOrganizer(QtWidgets.QWidget):
             logger.info('Added run {} from directory'.format(new_run))
         return new_run
         # message box failed to import?
-   
+    
+    
+    def _check_for_existing_backup(self, run):
+        backups = list_dir_abs(str(BACKUP_DIR))
+        if backups:
+            for each_backup in backups:
+                if run.run_name in Path(each_backup).name:
+                    return each_backup
+        return None
+
     def _remove_run(self, run=None):
         '''Private method to completely remove a run from Polo.
 
@@ -214,6 +252,31 @@ class RunOrganizer(QtWidgets.QWidget):
                     if len(linked_spectrums) > 1:
                         linked_spectrums[0].link_to_alt_spectrum(linked_spectrums[-1])
 
+    def backup_classifications_on_thread(self, run):
+        '''Write an MSO backup of all human classifications. Don't
+        really care as much about MARCO classifications becuase its
+        easy to rerun those.
+        '''
+        write_path = BACKUP_DIR.joinpath(run.run_name)
+
+        def finished_backup():
+            if self.backup_thread.result == False:
+                make_message_box(
+                    parent=self,
+                    message='Failed to backup {} human classifications to mso file.'.format(run.run_name)
+                    ).exec_()
+
+        writer = MsoWriter(run, write_path)
+        self.backup_thread = QuickThread(self.backup_classifications)
+        self.backup_thread.finished.connect(finished_backup)
+    
+    def backup_classifications(self, run):
+        write_path = BACKUP_DIR.joinpath(run.run_name)
+        writer = MsoWriter(run, write_path)
+        writer.write_mso_file(use_marco_classifications=False)
+
+
+        
     def import_saved_runs(self, xtal_files=[]):
         '''Import runs saved to xtal files.
 
@@ -226,16 +289,23 @@ class RunOrganizer(QtWidgets.QWidget):
             xtal_files = xtal_dialog.selectedFiles()
         if xtal_files:  # returned as a list
             runs_to_add = []
-            QApplication.setOverrideCursor(Qt.WaitCursor)
             for xtal in xtal_files:
+                QApplication.setOverrideCursor(Qt.WaitCursor)
                 if os.path.isfile(xtal):
                     deserializer = RunDeserializer(xtal)
                     new_run = deserializer.xtal_to_run()
                     if isinstance(new_run, (HWIRun, Run)):
                         runs_to_add.append(new_run)
+                    else:
+                        QApplication.restoreOverrideCursor()
+                        make_message_box(
+                            parent=self,
+                            message='Could not load run from {}. {}'.format(
+                                xtal, new_run)
+                        ).exec_()
             self._add_runs_to_tree(runs_to_add)
             logger.info('Added {} runs from saved files'.format(runs_to_add))
-            QApplication.restoreOverrideCursor()
+        QApplication.restoreOverrideCursor()
 
     def import_run_from_dialog(self):
         '''Import a run from a file dialog.

@@ -52,25 +52,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.current_run = None
         self.runOrganizer.opening_run.connect(self._handle_opening_run)
-        self.menuImport.triggered[QAction].connect(self._handle_image_import)
 
+        # menu connections 
+        self.menuImport.triggered[QAction].connect(self._handle_image_import)
         self.menuExport.triggered[QAction].connect(self._handle_export)
         self.menuHelp.triggered[QAction].connect(self._handle_help_menu)
         self.menuFile.triggered[QAction].connect(self._handle_file_menu)
-        self.run_interface.currentChanged.connect(self._on_changed_tab)
         self.menuBeta_Testers.triggered[QAction].connect(
             lambda: webbrowser.open(BETA))
+        self.menuTools.triggered[QAction].connect(self._handle_tool_menu)
 
+        # change tab updates control
+        self.run_interface.currentChanged.connect(self._on_changed_tab)
+
+        # plot viewer connections 
         self.plot_viewer_layout = QtWidgets.QVBoxLayout(self.groupBox_4)
         self.matplotlib_widget = StaticCanvas(parent=self.groupBox_4)
         self.plot_viewer_layout.addWidget(self.matplotlib_widget)
         self.toolbar = NavigationToolbar(
             canvas=self.matplotlib_widget, parent=self.groupBox_4)
         self.plot_viewer_layout.addWidget(self.toolbar)
-
         self.listWidget_3.currentTextChanged.connect(
             self._handle_plot_selection)
         
+
         self._set_tab_icons()
 
         logger.info('Created {}'.format(self))
@@ -96,6 +101,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :rtype: tuple
         '''
         return (layout.itemAt(i) for i in range(layout.count()))
+    
+    @staticmethod
+    def delete_all_backups():
+        try:
+            backup_files = list_dir_abs(str(BACKUP_DIR))
+            if backup_files:
+                for each_file in backup_files:
+                    os.remove(str(each_file))
+            return True
+        except Exception as e:
+            raise e
+    
+    def closeEvent(self, event):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.setEnabled(False)
+        try:
+            for run in self.runOrganizer:
+                if run:
+                    self.runOrganizer.backup_classifications(run)
+        except Exception as e:
+            QApplication.restoreOverrideCursor()
+            make_message_box(
+                parent=self,
+                message='Failed to backup all runs with error {}'.format(e)).exec_()
+        self.setEnabled(True)
+        QApplication.restoreOverrideCursor()
+        event.accept()
 
     def _set_tab_icons(self):
         '''Private method that assigns icons to each of the main run 
@@ -148,10 +180,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.current_run:
                 self.current_run.unload_all_pixmaps()
                 QPixmapCache.clear()
-
-            # only keep the pixmaps for the current run loaded
-            # other pixmaps from other runs will be loaded if the user
-            # switches between dates or spectrums though
+            
+                for image in self.current_run.images:
+                    if image.human_class:
+                        self.runOrganizer.backup_classifications_on_thread(
+                            self.current_run)
+                        break
 
             self.current_run = new_run.pop()
             if (hasattr(self.current_run, 'insert_into_alt_spec_chain')
@@ -171,7 +205,55 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Menu handling methods
     # ======================================================================
-    
+
+
+    def _handle_tool_menu(self, selection):
+        if selection == self.actionView_Log_2:
+            log_dialog = LogDialog(parent=self)
+            log_dialog.exec_()
+        elif selection == self.actionEdit_Current_Run_Data:
+            if self.current_run:
+                updater_dialog = RunUpdaterDialog(
+                    self.current_run,
+                    self.runOrganizer.ui.runTree.current_run_names)
+                updater_dialog.exec_()
+            else:
+                make_message_box(
+                    parent=self,
+                    message='Please load a run first.').exec_()
+        elif selection == self.actionDelete_Classification_Backups:
+            self._handle_delete_backups()
+
+    def _handle_delete_backups(self):
+        try:
+            total_size = 0
+            backups = list_dir_abs(str(BACKUP_DIR))
+            if backups:
+                total_size = sum([os.path.getsize(str(f)) for f in backups])
+            
+            choice = make_message_box(
+                parent=self,
+                message='You have {} Mb of backups. Would you like to delete these files?'.format(
+                    total_size * 1e-6),
+                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                ).exec_()
+            if choice == QtWidgets.QMessageBox.Yes:
+                are_you_sure = make_message_box(
+                    parent=self,
+                    message='Are you sure? You will lose these files FOREVER!',
+                    buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                ).exec_()
+                if are_you_sure == QtWidgets.QMessageBox.Yes:
+                    MainWindow.delete_all_backups()
+                    make_message_box(parent=self,
+                    message='Backups have been deleted.').exec_()
+        except Exception as e:
+            make_message_box(
+                parent=self,
+                message='Could not delete backups. Failed with error {}.\
+                    They can be deleted manually at {}'.format(e, BACKUP_DIR)
+            ).exec_()
+
     def _handle_image_import(self, selection):
         '''Private method that handles when the user attempts to import images into Polo. 
         Effectively a wrapper around other methods that provide the functionality to
@@ -346,6 +428,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.current_run.annotations = self.plainTextEdit.toPlainText()
             elif i == 4:
                 self.optimizeWidget.update()
+    
+    # other stuff
+
+
 
     # Depreciated Methods that just have too much sentimental value to delete
     # =========================================================================

@@ -6,7 +6,7 @@ from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo.designer.UI_log_dialog import Ui_LogDialog
-
+from polo.utils.dialog_utils import make_message_box
 from polo import LOG_PATH
 
 
@@ -14,17 +14,14 @@ class LogDialog(QtWidgets.QDialog):
     '''Small dialog for displaying the contents of the Polo log file
     '''
 
-    def __init__(self):
-
-        QtWidgets.QDialog.__init__(self)
+    def __init__(self, parent=None):
+        super(LogDialog, self).__init__(parent)
         self.ui = Ui_LogDialog()
         self.ui.setupUi(self)
         #self.ui.pushButton_2.clicked.connect(self.save_log_file)
         self.ui.pushButton.clicked.connect(self.clear_log)
         self.ui.pushButton_3.clicked.connect(self.close)
-        
         self.display_log_text()
-        self.exec_()
     
     def display_log_text(self):
         '''Opens the log file and writes the contents to textBrowser widget
@@ -54,11 +51,20 @@ class LogDialog(QtWidgets.QDialog):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
         choice = msg.exec_()
         if choice == 1024:  # int code for ok button
-            new_log = open(str(LOG_PATH), 'w')
-            new_log.write('')
-            new_log.close()
-            self.display_log_text()  # update the log view to show cleared
-            # overwrite the current log contents
+            try:
+                if os.path.exists(str(LOG_PATH)):
+                    os.remove(str(LOG_PATH))
+                    new_log = open(str(LOG_PATH), 'w')
+                    new_log.write('')
+                    new_log.close()
+                    self.display_log_text()  # update the log view to show cleared
+                    # overwrite the current log contents
+            except Exception as e:
+                make_message_box(
+                    parent=self,
+                    message='Could not delete log. Failed with error {}'.format(e)
+                )
+
 
             
 

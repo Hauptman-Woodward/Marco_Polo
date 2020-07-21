@@ -21,6 +21,7 @@ APP_ICON = Path('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('polo/.tmp')
+BACKUP_DIR = dirname.joinpath('polo/.backups')
 
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')

@@ -433,7 +433,6 @@ class RunCsvWriter(RunSerializer):
         headers and a list of dictionaries with each dictionary representing
         one row of csv data.
 
-        :raises e: Catch all exception.
         :return: Tuple, list of headers and list of dicts
         :rtype: tuple
         '''
@@ -583,11 +582,10 @@ class MsoWriter(RunSerializer):
                     image = self.run.images[well_num-1]
                     if image and image.human_class:
                         row.append(MSO_DICT[image.human_class])
+                        writer.writerow(row)
                     elif use_marco_classifications and image.machine_class:
                         row.append(MSO_DICT[image.machine_class])
-                    else:
-                        row.append(MSO_DICT[IMAGE_CLASSIFICATIONS[3]])
-                    writer.writerow(row)
+                        writer.writerow(row)
             return True
         else:
             return False
@@ -603,18 +601,21 @@ class MsoReader():
     
     @staticmethod
     def read_mso_classification(mso_class):
-        mso_class = mso_class.split('-')
+        try:
+            mso_class = mso_class.split('-')
 
-        mso_codes = [int(code.strip()) for code in mso_class if int(code.strip()) in REV_MSO_DICT]
-        if mso_codes:
-            return REV_MSO_DICT[max(mso_codes)]
-        else:
-            return None
+            mso_codes = [int(code.strip()) for code in mso_class if int(code.strip()) in REV_MSO_DICT]
+            if mso_codes:
+                return REV_MSO_DICT[max(mso_codes)]
+            else:
+                return None
+        except Exception:
+            return None  # assume no mso classification if throws an error
 
     def classify_images_from_mso_file(self, images):
         try:
             len_images = len(images)
-            with open(self.mso_path) as mso:
+            with open(str(self.mso_path)) as mso:
                 reader = csv.reader(mso, delimiter='\t')
                 next(reader)
                 next(reader)  # skip first two header lines
@@ -623,7 +624,6 @@ class MsoReader():
                     classification = MsoReader.read_mso_classification(row[-1])
                     if len_images > well_index:  
                         images[well_index].human_class = classification
-                        print('set human class to', classification)
             return images
         except Exception as e:
             return e
@@ -740,7 +740,7 @@ class XtalWriter(RunSerializer):
         else:
             message = 'Save to failed. Returned {}'.format(self.thread.result)
 
-        XtalWriter.make_message_box(message).exec_()
+        make_message_box(message=message).exec_()
 
     def write_xtal_file(self, output_path=None):
         '''Method to serialize run object to xtal file format.
@@ -932,7 +932,7 @@ class RunDeserializer():  # convert saved file into a run
             else:
                 return FileNotFoundError
         except Exception as e:
-            raise e
+            return e
 
 
 class PptxWriter():
@@ -1852,8 +1852,7 @@ class Menu():  # holds the dictionary of cocktails
     
     def __getitem__(self, key):
         return self.cocktails[key]
-
-
+    
 
 
 

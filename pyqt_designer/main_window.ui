@@ -1141,7 +1141,7 @@
     <addaction name="actionFAQ"/>
     <addaction name="actionDocumentation"/>
    </widget>
-   <widget class="QMenu" name="menuAdvanced_Tools">
+   <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
@@ -1149,6 +1149,7 @@
     <addaction name="actionView_Log_2"/>
     <addaction name="separator"/>
     <addaction name="actionEdit_Current_Run_Data"/>
+    <addaction name="actionDelete_Classification_Backups"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -1174,7 +1175,7 @@
    <addaction name="menuFile"/>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
-   <addaction name="menuAdvanced_Tools"/>
+   <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
    <addaction name="menuBeta_Testers"/>
    <addaction name="menuHelp"/>
@@ -1418,6 +1419,11 @@
   <action name="actionAs_JSON">
    <property name="text">
     <string>As JSON</string>
+   </property>
+  </action>
+  <action name="actionDelete_Classification_Backups">
+   <property name="text">
+    <string>Delete Classification Backups</string>
    </property>
   </action>
  </widget>
