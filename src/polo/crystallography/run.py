@@ -32,7 +32,10 @@ class Run():
 
     def __len__(self):
         '''Returns the number of non null Images'''
-        return sum([1 for i in self.images if i != None])
+        if isinstance(self.images, list):
+            return len(self.images)
+        else:
+            return 0
     
     def __hash__(self):
         return hash(str(self.run_name) + str(self.image_dir))
@@ -52,13 +55,13 @@ class Run():
     def add_images_from_dir(self):
         '''Adds the contents of a directory to `images` attribute.
         '''
-        logger.info('Adding images to {} from {}'.format(self, self.image_dir))
         self.images = []
         for image_path in list_dir_abs(self.image_dir, allowed=True):
-            self.images.append(
-                Image(path=str(image_path), spectrum=self.image_spectrum,
-                      date=self.date)
-            )
+            new_image = Image(path=str(image_path), spectrum=self.image_spectrum,
+                              date=self.date)
+            if isinstance(new_image, Image):
+                self.images.append(new_image)
+            
 
     def unload_all_pixmaps(self, start=None, end=None, a=False):  # reduce memory usage
         '''Delete the pixmap data of all Image instances stored in the

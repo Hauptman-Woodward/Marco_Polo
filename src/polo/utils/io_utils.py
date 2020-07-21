@@ -180,7 +180,7 @@ class RunImporter():
             from polo import tim
             metadata = XmlReader().find_and_read_plate_data(data_dir)
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-                
+            print(metadata, file_name_data, 'meta and filename data')
             if metadata and file_name_data:
                 date = file_name_data['date']
                 menu = tim.get_menu_by_date(date, 's')
@@ -191,8 +191,11 @@ class RunImporter():
                 # that could overwrite what is in metadata
                 new_run.add_images_from_dir()
                 return new_run
-        else:
-            return False
+            else:
+                pass
+            # TODO try importing as non hwi run and show error message
+            
+        return False
 
     @staticmethod
     def import_general_run(data_dir, **kwargs):
@@ -206,6 +209,7 @@ class RunImporter():
         if RunImporter.directory_validator(data_dir) == True:
             new_run = Run(image_dir=data_dir, **kwargs)
             new_run.add_images_from_dir()
+            print(new_run, type(new_run))
             return new_run
         return False
 
@@ -458,7 +462,7 @@ class RunCsvWriter(RunSerializer):
             fieldnames = set([])
             for row in rows:
                 fieldnames = fieldnames.union(set(row.keys()))
-            with open(self.output_path, 'w') as csv_path:
+            with open(self.output_path, 'w', newline='') as csv_path:
                 writer = csv.DictWriter(csv_path, fieldnames)
                 writer.writeheader()
                 for row in rows:
@@ -571,10 +575,15 @@ class MsoWriter(RunSerializer):
         if isinstance(self.run, HWIRun):  # must be hwi run to write to mso
             cocktail_data = self.get_cocktail_csv_data()
             self.output_path = str(MsoWriter.path_suffix_checker(self.output_path, '.mso'))
-            with open(self.output_path, 'w') as mso_file:
+            with open(self.output_path, 'w',  newline='') as mso_file:
+                # newline='' added for windows compatibility
+                # see https://stackoverflow.com/questions/3348460/csv-file-written-with-
+                # python-has-blank-lines-between-each-row
                 writer = csv.writer(mso_file, delimiter='\t')
-                writer.writerow(self.first_line)
-                writer.writerow(cocktail_data.pop(0))  # header row
+                first_line = [str(i).strip() for i in self.first_line]
+                header = [str(i).strip() for i in cocktail_data.pop(0)]
+                writer.writerow(first_line)
+                writer.writerow(header)
                 for row in cocktail_data:
                     row = MsoWriter.row_formater(row)
                     well_num = int(float(row[0]))
@@ -614,18 +623,21 @@ class MsoReader():
 
     def classify_images_from_mso_file(self, images):
         try:
-            len_images = len(images)
             with open(str(self.mso_path)) as mso:
                 reader = csv.reader(mso, delimiter='\t')
                 next(reader)
                 next(reader)  # skip first two header lines
-                for row in reader:
-                    well_index = int(row[0]) - 1
-                    classification = MsoReader.read_mso_classification(row[-1])
-                    if len_images > well_index:  
-                        images[well_index].human_class = classification
-            return images
+                if reader:
+                    for row in reader:
+                        well_index = int(row[0]) - 1
+                        classification = MsoReader.read_mso_classification(row[-1])
+                        try:
+                            images[well_index].human_class = classification
+                        except IndexError:
+                            continue
+                return images
         except Exception as e:
+            print(e)
             return e
 
 class JsonWriter(RunSerializer):

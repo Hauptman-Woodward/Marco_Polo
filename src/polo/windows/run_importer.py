@@ -508,13 +508,14 @@ class RunImporterDialog(QtWidgets.QDialog):
         '''
         new_run = None
         import_type = import_candidate.import_type
+        print(import_type, 'import type')
         if issubclass(import_type, HWIRun):
             new_run = RunImporter.import_hwi_run(str(import_candidate.path),
                                                  **import_candidate.data)
+            print(new_run, 'after import')
         elif issubclass(import_type, Run):
             new_run = RunImporter.import_general_run(str(import_candidate.path),
                                                      **import_candidate.data)
-
         return new_run
 
     def _display_cocktail_files(self, menu_type=None):

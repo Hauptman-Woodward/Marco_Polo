@@ -101,14 +101,14 @@ class RunOrganizer(QtWidgets.QWidget):
                         classified_images = reader.classify_images_from_mso_file(
                             images=selected_run.images
                         )
-                        if classified_images:
+                        if isinstance(classified_images, list):
                             selected_run.images = classified_images
                             message = 'Loaded classifications from backup.'
                         else:
                             message='Failed to load classifications.'
                         make_message_box(
                             parent=self, message=message
-                        )
+                        ).exec_()
             self.opening_run.emit([selected_run])
             self._has_been_opened.add(selected_run.run_name)
 

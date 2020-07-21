@@ -166,7 +166,6 @@ class OptimizeWidget(QtWidgets.QWidget):
             for image in self.run.images:
                 if image.human_class == IMAGE_CLASSIFICATIONS[0]:
                     hits.append(image)
-        logger.info('Identified {} hit images'.format(len(hits)))
         return hits
 
     @property
