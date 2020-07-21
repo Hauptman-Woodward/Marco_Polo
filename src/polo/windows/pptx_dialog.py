@@ -107,6 +107,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                 run = self.ui.runTreeWidget.selected_run
             else:
                 make_message_box('Please select a run').exec_()
+                QApplication.restoreOverrideCursor()
                 return
 
         write_result = writer.make_single_run_presentation(
