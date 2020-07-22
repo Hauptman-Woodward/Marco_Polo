@@ -13,17 +13,17 @@ from polo import make_default_logger
 logger = make_default_logger(__name__)
 
 class TableViewer(QtWidgets.QTableWidget):
+    '''TableViewer instances override QTableWidget and provide a
+    more convenient interface for translating the data in `Run` and `HWIRun` 
+    objects into a table format.
+
+    :param parent: Parent widget
+    :type parent: QtWidget
+    :param run: Run to show in this table view, defaults to None
+    :type run: Run, optional
+    '''
 
     def __init__(self, parent, run=None):
-        '''TableViewer instances override QTableWidget and provide a
-        more convenient interface for translating the data in Run objects
-        into a table format.
-
-        :param parent: Parent widget
-        :type parent: QtWidget
-        :param run: Run to show in this table view, defaults to None
-        :type run: Run, optional
-        '''
         super(TableViewer, self).__init__(parent)
         self.run = run
         self.selected_headers = None
@@ -39,7 +39,7 @@ class TableViewer(QtWidgets.QTableWidget):
 
     @run.setter
     def run(self, new_run):
-        '''Setter function for run attribute    
+        '''Setter function for run attribute   . 
 
         :param new_run: New run to set as run attribute
         :type new_run: Run
@@ -49,7 +49,7 @@ class TableViewer(QtWidgets.QTableWidget):
     @property
     def table_data(self):
         '''Property to retrieve the current table fieldnames and table data
-        using `get_csv_data` function of the RunCsvWriter class
+        using `get_csv_data` function of the `RunCsvWriter` class.
 
         :return: fieldnames, table data
         :rtype: tuple
@@ -64,9 +64,9 @@ class TableViewer(QtWidgets.QTableWidget):
 
     @property
     def fieldnames(self):
-        '''Return just the fieldnames for the current run. Should only be
-        used when setting the values for the listWidget in a tableInspector
-        instance
+        '''Return the fieldnames for the current run. Should only be
+        used when setting the values for the listWidget in a `tableInspector`
+        instance as is expensive to call.
 
         :return: list of fieldnames
         :rtype: list
@@ -110,12 +110,13 @@ class TableViewer(QtWidgets.QTableWidget):
         return True
 
     def make_header_map(self, headers):
-        '''Helper method to map header keywords to their index (order). Need
-        because headers come as a set and need to keep the order consistent.
+        '''Helper method to map header keywords to their index (order). 
+        This method is required as headers are delivered as a set and 
+        we want them to be presented in a consistent order to the user.
 
-        :param headers: set of headers strings
+        :param headers: Set of headers strings
         :type headers: set
-        :return: dictionary of header strings mapped to indices
+        :return: Dictionary of header strings mapped to indices
         :rtype: dict
         '''
         return {h: i for i, h in enumerate(sorted(self.selected_headers))}

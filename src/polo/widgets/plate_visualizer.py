@@ -11,6 +11,15 @@ from polo.crystallography.run import HWIRun, Run
 
 
 class PlateVisualizer(QtWidgets.QGraphicsView):
+    '''The PlateVisualizer is a small widget to assist users understand
+    what part of the screening plate they are currently viewing. It renders
+    a grid of rectangles (blocks) that each represent one view (page) in the
+    `PlateInspector` widget. The page that is currently being viewed is 
+    highlighted to show the user what part of the plate they are looking at. 
+
+    :param parent: Parent widget, defaults to None
+    :type parent: QWidget, optional
+    '''
 
     plate_view_requested = pyqtSignal(int)
     default_brush = QBrush(QColor(66, 155, 245))
@@ -20,15 +29,6 @@ class PlateVisualizer(QtWidgets.QGraphicsView):
     plate_size = (32, 48)
 
     def __init__(self, parent=None):
-        '''The PlateVisualizer is a small widget to assist users understand
-        what part of the screening plate they are currently viewing. It renders
-        a grid of rectangles (blocks) that each represent one view (page) in the
-        `PlateInspector` widget. The page that is currently being viewed is highlighted
-        to show the user what part of the plate they are looking at. 
-
-        :param parent: Parent widget, defaults to None
-        :type parent: QWidget, optional
-        '''
         super(PlateVisualizer, self).__init__(parent)
         self.scene = QtWidgets.QGraphicsScene(self)
         # self.setInteractive(True)

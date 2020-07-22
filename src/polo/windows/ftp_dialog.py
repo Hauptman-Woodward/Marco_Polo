@@ -11,7 +11,7 @@ from polo import ICON_DICT, make_default_logger
 from polo.designer.UI_FTP_Dialog import Ui_FTPDialog
 from polo.threads.thread import FTPDownloadThread, QuickThread
 from polo.utils.dialog_utils import make_message_box
-from polo.utils.ftp_utils import list_dir, logon
+from polo.utils.ftp_utils import logon
 
 
 logger = make_default_logger(__name__)
@@ -52,16 +52,16 @@ class FTPDialog(QtWidgets.QDialog):
         
     @property
     def host(self):
-        '''Get user entered FTP host
+        '''Get user entered FTP host.
 
         :return: host address
-        :rtype: string
+        :rtype: str
         '''
         return self.ui.lineEdit_3.text()
 
     @property
     def password(self):
-        '''Return user entered password
+        '''Return user entered password.
 
         :return: password
         :rtype: str
@@ -70,7 +70,7 @@ class FTPDialog(QtWidgets.QDialog):
 
     @property
     def username(self):
-        '''Return username
+        '''Return username.
 
         :return: username
         :rtype: str
@@ -78,7 +78,7 @@ class FTPDialog(QtWidgets.QDialog):
         return self.ui.lineEdit.text()
 
     def connect_ftp(self):
-        '''Attempt to establish connection to ftp server. If the connection is
+        '''Attempt to establish a connection to an ftp server. If the connection is
         successful then recursively walk through the user's home directory
         and display available directories and files via the
         `fileBrowser` widget. If the user has an extremely large number of
@@ -154,7 +154,7 @@ class FTPDialog(QtWidgets.QDialog):
 
     def set_connection_status(self, connected=False):
         '''Change the Qlabel that displays the current connection status
-        to the user
+        to the user.
 
         :param connected: If FTP connection is successful, defaults to False
         :type connected: bool, optional

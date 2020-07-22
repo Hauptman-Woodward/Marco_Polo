@@ -59,6 +59,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         2D list. We divide the new grid into 4 quadrants each 2 X 2 and label them
         with an index (0, 1, 2, 3). Given an index of the original list we want to
         find the subgrid it belongs to. 
+
         :param i: Index of point to locate in the 1D list
         :type i: int
         :param c_r: Number of rows in each subgrid
@@ -85,6 +86,11 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     @property
     def images_per_page(self):
+        '''Number of images in the current page.
+
+        :return: Number of images
+        :rtype: int
+        '''
         return self._images_per_page
 
     @images_per_page.setter
@@ -95,6 +101,12 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     @property
     def total_pages(self):
+        '''Total number of pages based on the number of images per page
+        and the number of images in the current run.
+
+        :return: Number of pages
+        :rtype: int
+        '''
         if self.run and self.images_per_page:
             return math.ceil(len(self.run) / self.images_per_page)
         else:
@@ -102,10 +114,21 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     @property
     def view_dims(self):
+        '''Current view dimensions in pixels.
+
+        :return: Width and height of the view
+        :rtype: tuple
+        '''
         return self.width(), self.height()
 
     @property
     def aspect_ratio(self):
+        '''Current "best" aspect ratio for the view given the size of the
+        view and the number of images that need to be fit into the view.
+
+        :return: Dimensions of the image grid, in images
+        :rtype: tuple
+        '''
         if self.run and self.images_per_page:
             view_w, view_h = self.view_dims
             return best_aspect_ratio(view_w, view_h, self.images_per_page)
@@ -114,17 +137,12 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     @property
     def current_page(self):
+        '''Current page
+
+        :return: Current page
+        :rtype: int
+        '''
         return self._current_page
-
-    @property
-    def run(self):
-        return self._run
-
-    @run.setter
-    def run(self, new_run):
-        self._run = new_run
-        self._scene.clear()
-        QPixmapCache.clear()
 
     @current_page.setter
     def current_page(self, new_page_number):
@@ -133,6 +151,21 @@ class plateViewer(QtWidgets.QGraphicsView):
         elif new_page_number < 1:
             new_page_number = self.total_pages
         self._current_page = new_page_number
+
+    @property
+    def run(self):
+        '''The current run being displayed.
+
+        :return: The current run
+        :rtype: HWIRun
+        '''
+        return self._run
+
+    @run.setter
+    def run(self, new_run):
+        self._run = new_run
+        self._scene.clear()
+        QPixmapCache.clear()
 
     def _get_visible_wells(self, page=None):
         '''Return indices of images that should be shown in the
@@ -158,7 +191,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 yield i
 
     def _make_image_label(self, image, label_dict, font_size=35):
-        '''Helper method for creating label strings to overlay onto
+        '''Private helper method for creating label strings to overlay onto
         each image in the view.
 
         :param image: Image to create label from
@@ -268,7 +301,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         '''Sets the opacity of all items in the current scene (`_scene` attribute)
         based on image filtering criteria. Allows for highlighting images that
         meet specific qualifications such has having a MARCO classification of
-        crystals. Image's that do not meet the set filter requirements will have
+        crystals. Images that do not meet the set filter requirements will have
         their opacity set to the value specificed by the `filtered_opacity`
         argument.
 
@@ -305,7 +338,8 @@ class plateViewer(QtWidgets.QGraphicsView):
         :type color_mapping: dict
         :param strength: Image color strength, defaults to 0.5
         :type strength: float, optional
-        :param human: If True, use the human classification to color images, defaults to False
+        :param human: If True, use the human classification to color images,
+                      defaults to False
         :type human: bool, optional
         '''
         for item in self._scene.items():
@@ -341,6 +375,12 @@ class plateViewer(QtWidgets.QGraphicsView):
             super(plateViewer, self).fitInView(scene.itemsBoundingRect())
 
     def wheelEvent(self, event):
+        '''Handle Qt wheelEvents by setting the `_zoom` attribute. Allows users
+        to zoom in and out of the current view.
+
+        :param event: event
+        :type event: QEvent
+        '''
         if event:
             if event.angleDelta().y() > 0:
                 factor = 1.25
@@ -386,8 +426,8 @@ class plateViewer(QtWidgets.QGraphicsView):
         '''Exports the current content of the QGraphicsScene `_scene` attribute
         to a png file.
 
-        :param save_path: Path to save the image to, defaults to None. If kept as
-                          None opens a QFileDialog to get a save file path.
+        :param save_path: Path to save the image to, defaults to None. If kept 
+                          as None opens a QFileDialog to get a save file path.
         :type save_path: str or Path, optional
         '''
         if self._scene:

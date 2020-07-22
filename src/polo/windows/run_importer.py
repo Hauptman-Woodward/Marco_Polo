@@ -37,6 +37,12 @@ class ImportCandidate():
 
     @property
     def is_rar(self):
+        '''Import candidate is a rar file. True if the file is rar file, False
+        otherwise.
+
+        :return: Rar status
+        :rtype: bool
+        '''
         if self.path.suffix == '.rar':
             return True
         else:
@@ -44,6 +50,14 @@ class ImportCandidate():
 
     @property
     def cocktail_menu(self):
+        '''If the `ImportCandidate`'s `import_type` attribute is the HWIRun
+        class and the candidate has a valid date then returns a `CocktailMenu`
+        instance that was in use at the `ImportCandidate`'s date. If any
+        of these conditions are not meet then returns None.
+
+        :return: CocktailMenu or None
+        :rtype: CocktailMenu or None
+        '''
         if isinstance(self.import_type, HWIRun) and 'date' in self.data:
             return tim.get_menu_by_date(self.data['date'])
         else:
@@ -51,6 +65,11 @@ class ImportCandidate():
 
     @property
     def path(self):
+        '''Return the `ImportCandidate`'s path. 
+
+        :return: Path to the file which will actually be imported
+        :rtype: str
+        '''
         return self._path
 
     @path.setter
@@ -60,6 +79,14 @@ class ImportCandidate():
         # set basename of the directory as the default run name
 
     def unrar(self):
+        '''If the `ImportCandidate`'s `is_rar` property is True then this
+        method will attempt to de-compress the rar archive specified by the
+        `path` attribute.
+
+        :return: Path to un-compressed rar archive if unrar was successful, 
+                 otherwise returns False
+        :rtype: Path or str
+        '''
         if self.is_rar:
             unrar_result = unrar_archive(
                 self.path, target_dir=self.path.parent)
@@ -69,6 +96,15 @@ class ImportCandidate():
         return False
 
     def read_xmldata(self, dir_path):
+        '''Attempts to read any xml metadata files in the path referenced by
+        the `dir_path` argument.
+
+        :param dir_path: Path to check for xml files in
+        :type dir_path: str or Path
+        :return: Dictionary of data pulled from xml files. If no data is found
+                 then returns an empty dictionary.
+        :rtype: dict
+        '''
         # read xml data from HWI uncompressed rar files
         reader = XmlReader(dir_path)
         platedata = reader.find_and_read_platedata(dir_path)
@@ -78,6 +114,12 @@ class ImportCandidate():
             return {}  # empty dict so always safe to pass to update method
 
     def verify_path(self):
+        '''Verifies that the path referenced by the `path` attribute could
+        potentially be imported into Polo.
+
+        :return: True if `path` is verified, False otherwise
+        :rtype: bool
+        '''
         str_path = str(self.path)
         if os.path.exists(str_path):
             if self.is_rar and os.path.isfile(str_path):
@@ -88,6 +130,18 @@ class ImportCandidate():
         return self.is_verified
 
     def assign_run_type(self):
+        '''If the `path` attribute is verified as importable assigns a run class
+        (Run or HWIRun) to the `import_type` attribute. Later on in the import
+        pipeline this attribute tells other methods how the `ImportCandidate`
+        should be imported as different operations are required to create `Run`
+        instances then `HWIRun` instances.
+
+        The `ImportCandidate` is assigned to a HWIRun is its metadata is
+        successfully parsed.
+
+        :return: The import type
+        :rtype: Run or HWIRun
+        '''
         if self.is_verified:  # should be a directory now
             hwi_data = RunImporter.parse_hwi_dir_metadata(self.path)
             if isinstance(hwi_data, dict):
@@ -112,7 +166,7 @@ class ImportCandidate():
 
 class RunImporterDialog(QtWidgets.QDialog):
     '''RunImporterDialog instances are the user interface for importing
-    runs from rar archives or directories on the local machine. 
+    runs from rar archives or directories stored on the local machine. 
 
     :param current_run_names: Runnames that are already in use by the
                                 current Polo session (Run names should be unique)
@@ -150,6 +204,11 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     @property
     def all_run_names(self):
+        '''All run names of all current import candidates.
+
+        :return: Set of all run names
+        :rtype: set
+        '''
         return set(
             [can_path.data['run_name'] for can_path in self.import_candidates.values()
              if 'run_name' in can_path.data] + self.current_run_names
@@ -157,6 +216,12 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     @property
     def selected_candidate(self):
+        '''The currently selected import candidate if one exists, otherwise
+        returns None.
+
+        :return: Currently selected candidate
+        :rtype: ImportCandidate
+        '''
         return self._selected_candidate
 
     @selected_candidate.setter
@@ -194,7 +259,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         }  # need to hardy this up to prevent errors
     
     def _could_not_import_message(self, prefix, paths):
-        '''Private method that creates an message box popup for when imports fail.
+        '''Private method that creates a message box popup for when imports fail.
 
         :param prefix: First part of the error message. Something
                        like "Could not import the following files:"
@@ -211,6 +276,18 @@ class RunImporterDialog(QtWidgets.QDialog):
         )
 
     def _import_files(self, rar=True):
+        '''Private method that attempts to import a collection of file paths
+        specified by the user. If importing a rar archive the method 
+        creates a `QuickThread` instance and runs all rar operations on that 
+        thread to avoid freezing the GUI on slower machines. 
+        Imported runs are added to the `import_candidates` attribute
+        dictionary and then displayed to the user by calling
+        :func:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
+
+        :param rar: If True opens the filebrowser for rar archives and filters
+                    out all other import types, defaults to True
+        :type rar: bool, optional
+        '''
         file_paths = self._open_browser(rar=rar)
         if file_paths:
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -256,11 +333,12 @@ class RunImporterDialog(QtWidgets.QDialog):
 
 
     def _open_browser(self, rar=True):
-        '''Private method that opens a QFileBrowser that allows the user to select
-        files for import. They type of file import allowed is set using the `rar` flag.
+        '''Private method that opens a `QFileBrowser` instance that allows the 
+        user to select files for import. The allowed filetype is set using the `rar` flag.
 
-        :param rar: If True, allow user to only import Rar archive files defaults to True. IF False
-                    only allows the user to import directories.
+        :param rar: If True, allow user to only import Rar archive files 
+                            defaults to True. If False
+                            only allows the user to import directories.
         :type rar: bool, optional
         :return: List of files the user has selected for import 
         :rtype: list
@@ -438,12 +516,12 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self.ui.comboBox_3.setCurrentIndex(menu_index)
 
     def _set_cocktail_menu_type_radiobuttons(self, type_):
-        '''Pirvate method that sets the cocktail menu type radioButtons
+        '''Private method that sets the cocktail menu type radioButtons
         given a cocktail menu type key.
 
         :param type_: Cocktail menu type key. If `type_` == 's' then soluble
-        menu radioButton state is set to True. If 'type_` == 'm' then
-        membrane radiobutton state is set to True
+                      menu radioButton state is set to True. If 'type_` == 'm' then
+                      membrane radiobutton state is set to True
         :type type_: str
         '''
         if type_ == 'm':
@@ -519,10 +597,16 @@ class RunImporterDialog(QtWidgets.QDialog):
         return new_run
 
     def _display_cocktail_files(self, menu_type=None):
+        '''Private method that displays the available cocktail files to the
+        user via the cocktail menu comboBox widget.
+
+        :param menu_type: Key for which kind of cocktail screens to display, defaults to None. 
+                          "m" for membrane screens and "s" for soluble screens.
+        :type menu_type: str, optional
+        '''
         self.ui.comboBox_3.clear()
         if menu_type == 's' or menu_type == 'm':
             self._set_cocktail_menu_type_radiobuttons(menu_type)
-            # self._display_cocktail_files()
         if self.ui.radioButton_2.isChecked():  # soluble screens
             menus = tim.get_menus_by_type('s')
         elif self.ui.radioButton.isChecked():
@@ -534,9 +618,10 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.comboBox_3.addItems(menus)
 
     def _update_candidate_run_data(self):
-        '''Private method to allow the user to update `ImportCandidate`
-        instance's data from the Widgets in the `RunImporterDialog`. Updates the
-        `ImportCandidate`'s `data` attribute dictionary.
+        '''Private method that allows the user to update an `ImportCandidate`
+        instance's data from the widgets in the `RunImporterDialog` by updating
+        the dictionary referenced by an `ImportCandidate`'s `data` attribute
+        with user entered values.
         '''
         if self.selected_candidate:
             selection_dict = {
@@ -549,21 +634,3 @@ class RunImporterDialog(QtWidgets.QDialog):
                     self.ui.comboBox_3.currentText()
                 )
             self.selected_candidate.data.update(selection_dict)
-
-    # def _show_import_error_message(self, unimported_paths):
-    #     '''Private helper method for creating import error messages to show
-    #     to the user.
-
-    #     :param unimported_paths: List of files that could not be imported
-    #     :type unimported_paths: list
-    #     '''
-    #     make_message_box(
-    #         message='Could not import the following items:'
-    #     ).exec_()
-
-    # def open_file_browser(self, rar=False, dir=False):
-    #     pass
-
-    # def make_run(self, import_candidate):
-    #     if isinstance(import_candidate.import_type, HWIRun):
-            # pass

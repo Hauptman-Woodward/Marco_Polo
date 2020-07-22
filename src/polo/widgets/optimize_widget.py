@@ -23,11 +23,11 @@ class OptimizeWidget(QtWidgets.QWidget):
     GRID_ICON = str(ICON_DICT['grid'])
     '''The OptimizeWidget is a primary run interface widget that allows
     users to create optimization screens around the crystallization conditions
-    that yielded hits. The concept is very similar to the program MakeTray
+    that yielded xtal hits. The concept is very similar to the program MakeTray
     available from Hampton Research. Currently, users cannot specify their
     own conditions and are limited to the predetermined conditions of the
     HWI cocktail menu that was selected when the run was originally imported
-    into Polo. Additionally, OptimizeWidget is only available to HWIRuns
+    into Polo. Additionally, `OptimizeWidget` is only available to HWIRuns
     as the cocktail to well mapping cannot be inferred for other more
     general Run types.
 
@@ -104,8 +104,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def x_reagent(self):
-        '''
-        Used to retrieve the `Reagent` object that is to be varied along
+        '''Used to retrieve the `Reagent` object that is to be varied along
         the x axis of the optimization plate.
         '''
         reagent_text = self.ui.comboBox_6.currentText()
@@ -126,7 +125,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     @property
     def constant_reagents(self):
         '''Retrieve a set of reagents that are not included as either the
-        x reagent of the y reagent but are still part of the crystallization
+        x reagent or the y reagent but are still part of the crystallization
         cocktail and therefore need to be included in the screen. Unlike
         either the x or y reagents, constant reagents do not change their
         concentration across the screening plate.
@@ -139,6 +138,12 @@ class OptimizeWidget(QtWidgets.QWidget):
     
     @property
     def selected_constant(self):
+        '''Return the constant reagent that is currently selected by the user.
+
+        :return: Currently selected constant reagent if exists and selected, 
+                None otherwise
+        :rtype: Reagent or None
+        ''' 
         if self.ui.listWidget_4.currentItem():
             sel_cont = self.ui.listWidget_4.currentItem().text()
             if sel_cont and sel_cont in self._current_reagents:
@@ -252,9 +257,9 @@ class OptimizeWidget(QtWidgets.QWidget):
             
         
     def _set_hit_well_choices(self):
-        '''Private method that sets the hit well comboBox widget choices based on the images
-        in the `_run` attribute that are human classified as crystal. Wells are identified in
-        the comboBox by their well number.
+        '''Private method that sets the hit well comboBox widget choices 
+        based on the images in the `_run` attribute that are human classified 
+        as crystal. Wells are identified in the comboBox by their well number.
         '''
         if isinstance(self.run, (Run, HWIRun)):
             hits = self.hit_images
@@ -284,8 +289,8 @@ class OptimizeWidget(QtWidgets.QWidget):
             self._set_reagent_choices()  # change whats listed in combo boxes
 
     def _set_constant_reagents(self):
-        '''Private method that populates the listWidget with constant reagents to display
-        to the user.
+        '''Private method that populates the listWidget with constant 
+        reagents to display to the user.
         '''
         constants = self.constant_reagents
         self.ui.listWidget_4.clear()
@@ -317,9 +322,10 @@ class OptimizeWidget(QtWidgets.QWidget):
             self._set_constant_reagents()
 
     def _set_reagent_stock_con(self):
-        '''Private method. If a reagent has already been assigned a stock concentration
-        displays that concentration to the user through the appropriate UnitCombobBox.
-        Should be called when a reagent is changed. Only displays reagent concentrations
+        '''Private method. If a reagent has already been assigned a 
+        stock concentration displays that concentration to the user 
+        through the appropriate UnitCombobBox. Should be called when a 
+        reagent is changed. Only displays reagent concentrations
         for the x and y reagents.
         '''
         if self.x_reagent and self.x_reagent.stock_con:
@@ -370,7 +376,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         :type num_wells: int
         :param step: Proportion of hit concentration to vary each well by
         :type step: float < 1
-        :param stock: If True, vary the stock volume not the hit \
+        :param stock: If True, vary the stock volume not the hit
             concentration unit, defaults to False
         :type stock: bool, optional
         :return: List of UnitValues that make up the _gradient
@@ -453,9 +459,9 @@ class OptimizeWidget(QtWidgets.QWidget):
             return signed_value
 
     def _make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
-        '''Private method to format the information that describes the contents of an
-        individual well into nice html that can be displayed to the user
-        in a textBrowser widget.
+        '''Private method to format the information that describes the
+        contents of an individual well into nice html that can be displayed
+        to the user in a textBrowser widget.
 
         :param x_con: Concentration of x reagent in this well
         :type x_con: UnitValue
@@ -474,8 +480,15 @@ class OptimizeWidget(QtWidgets.QWidget):
         '''
         write_unit = self.ui.comboBox_16.currentText()
         template, s = '<h4>{} {}</h4>\n{} of stock\n', ''
-        s += template.format(self.x_reagent.chemical_additive, x_con, self.adjust_unit(x_stock, write_unit))
-        s += template.format(self.y_reagent.chemical_additive, y_con, self.adjust_unit(y_stock, write_unit))
+        s += template.format(
+            self.x_reagent.chemical_additive, x_con,
+            self.adjust_unit(x_stock, write_unit)
+            )
+
+        s += template.format(
+            self.y_reagent.chemical_additive, y_con,
+            self.adjust_unit(y_stock, write_unit)
+            )
         for c in constants:
             a, b, d = c
             s += template.format(a, b, self.adjust_unit(d, write_unit))  # rename this so it makes sense
@@ -484,9 +497,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         return s
 
     def _error_checker(self):
-        '''Private method to check if all widgets and attributes have allowed values before
-        calculating the actual grid screen. Show error message if there is
-        a conflict.
+        '''Private method to check if all widgets and attributes have allowed 
+        values before calculating the actual grid screen. 
+        Show error message if there is a conflict.
         '''
         error, message = False, ''
         if self.well_volume.value <= 0:
@@ -531,7 +544,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         return plate_list
 
     def _export_screen(self):
-        '''Private method to write the current optimization screen to an html file.
+        '''Private method to write the current optimization screen to an 
+        html file.
         '''
         if self._run and self._error_checker():
             export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Screen')[
@@ -545,18 +559,19 @@ class OptimizeWidget(QtWidgets.QWidget):
                                   self.well_volume, export_path, )
 
     def _check_for_overflow(self, volume_list):
-        '''Private method to check if the volume of reagents in a given well exceeds
-        the total well volume. If overflow is detected, return False otherwise return
-        the volume of H20 that should be added to the well as a `UnitValue`.
+        '''Private method to check if the volume of reagents in a given 
+        well exceeds the total well volume. If an overflow is detected, 
+        return False otherwise return the volume of H20 that should be added 
+        to the well as a `UnitValue`.
 
         :param volume_list: List of `UnitValues` that consitute the contents of a
                             well in the optimization plate
         :type volume_list: list
         :return: `UnitValue` describing the volume of water that should be
-                 added to the well if it does not overflow in liters, False otherwise
+                 added to the well if it does not overflow in liters, 
+                 False otherwise
         :rtype: UnitValue or False
         ''' 
-
         # args should be volumes as signed value of all stuff
         max_volume, total_volume = self.well_volume, 0
         max_volume = max_volume.to_base()

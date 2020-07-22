@@ -15,21 +15,21 @@ from polo.windows.run_updater_dialog import RunUpdaterDialog
 logger = make_default_logger(__name__)
 
 class RunTree(QtWidgets.QTreeWidget):
+    '''Inherits the QTreeWidget class and acts as the sample and
+    run display. The User uses the RunTree to open and classify runs
+    they load into Polo.
+
+    :param parent: Parent widget, defaults to None
+    :type parent: QWidget, optional
+    :param auto_link: If True automatically link runs together, defaults to True
+    :type auto_link: bool, optional
+    '''
 
     opening_run = pyqtSignal()
     save_run_signal = pyqtSignal()
     remove_run_signal = pyqtSignal(list)
 
     def __init__(self, parent=None, auto_link=True):
-        '''Inherits the QTreeWidget class and acts as the sample and
-        run display. User uses the RunTree to open and classify runs
-        they load into Polo.
-
-        :param parent: Parent widget, defaults to None
-        :type parent: QWidget, optional
-        :param auto_link: If True automatically link runs together, defaults to True
-        :type auto_link: bool, optional
-        '''
         self.classified_status = {}
         self.loaded_runs = {}
         self.samples = []
@@ -40,22 +40,43 @@ class RunTree(QtWidgets.QTreeWidget):
 
     @property
     def current_run_names(self):
-        '''List of current run names.
+        '''List of all currently loaded run names.
+
+        :return: List of run names
         :rtype: list
         '''
         return list(self.loaded_runs.keys())
     
     @property
     def selected_run(self):
+        '''The `Run` that is currently selected in the `RunTree`. If no run is
+        selected returns False.
+
+        :return: The currently selected run, if one exists, otherwise returns False
+        :rtype: Run, HWIRun or False
+        '''
         if self.currentItem() and self.currentItem().text(0) in self.loaded_runs:
             return self.loaded_runs[self.currentItem().text(0)]
         else:
             return False
 
     def _open_run_slot(self, event=None):
+        '''Private method that emits the `opening_run` signal when called. This
+        signal can be connected to other widgets to communicate that the user
+        has selected a run and wants to open it for analysis.   
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
         self.opening_run.emit()
 
     def _edit_data_slot(self, event=None):
+        '''Private method used to update the data in a run after it has
+        been modified by the user through the `RunUpdater` dialog.
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
         current_selection = self.currentItem()
         if current_selection:
             run_name = current_selection.text(0)
@@ -72,11 +93,11 @@ class RunTree(QtWidgets.QTreeWidget):
             self.loaded_runs[run_name] = updater.run
 
     def _add_run_node(self, run, tree=None):
-        '''Helper method to add a new run node to the RunTree.
+        '''Private method that adds a new run node to the `RunTree`.
 
         :param run: Run to add to the tree
         :type run: Run or HWIRun
-        :param tree: QTreeWidgetItem to act as parent node, defaults to None.
+        :param tree: `QTreeWidgetItem` to act as parent node, defaults to None.
                      If None uses the root as the parent node.
         :type tree: QTreeWidgetItem, optional
         :return: Node added to the tree
@@ -96,12 +117,12 @@ class RunTree(QtWidgets.QTreeWidget):
         return new_node
 
     def _get_run_node(self, run):
-        '''Private helper method that returns the QTreeWidget item
-        corresponding to a given run.
+        '''Private helper method that returns the `QTreeWidgetItem`
+        corresponding to a given run. Returns None if a node cannot be found.
 
         :param run: Run to search for
         :type run: Run or HWIRun
-        :return: Given run's corresponding QTreeWidgetItem if it exists
+        :return: Given run's corresponding `QTreeWidgetItem` if it exists
         :rtype: QTreeWidgetItem
         '''
         run_name = run.run_name
@@ -114,8 +135,37 @@ class RunTree(QtWidgets.QTreeWidget):
             if child_node.text(0) == run_name:
                 return child_node
 
+    def _add_classifications_from_mso_slot(self, event=None):
+        '''Add classifications to an existing run from the contents of an
+        MSO file. Intended to be connected to the `classify_from_mso`
+        QAction that is defined in the :
+        func:`~polo.widgets.run_tree.RunTree.contextMenuEvent
+        method.
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
+        if self.selected_run:
+            mso_browser = QtWidgets.QFileDialog.getOpenFileName(
+                self, 'MSO Hunter', filter='mso files (*.mso)')
+            if mso_browser and len(mso_browser) > 0:
+                mso_file = mso_browser[0]
+                reader = MsoReader(mso_file)
+                result = reader.classify_images_from_mso_file(
+                    self.selected_run.images)
+                if isinstance(result, list):
+                    self.selected_run.images = result
+                    message = 'Added MSO classifications from {}'.format(
+                        mso_file
+                    )
+                else:
+                    message = 'Failed to add MSO classifications from {}. Failed with error {}'.format(
+                        mso_file, result
+                    )
+                make_message_box(parent=self, message=message).exec_()
+
     def _remove_run_slot(self, event=None):
-        '''Slot to connect to contextmenu popup to remove the selected run
+        '''Slot to connect to contextMenu popup to remove the selected run.
         '''
         current_selection = self.currentItem()
         if current_selection:
@@ -123,7 +173,7 @@ class RunTree(QtWidgets.QTreeWidget):
             self._remove_run(run_name)
 
     def _remove_run(self, run_name):
-        '''Private method to remove a run completely from Polo interface.
+        '''Private method to remove a run completely from the Polo interface.
 
         :param run_name: Run name of run to remove
         :type run_name: str
@@ -151,7 +201,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def remove_run_from_view(self, run_name):
         '''Remove a run using its `run_name` attribute. Does not effect
         any other widgets. Calling this method only removes the run from
-        the RunTree display. If a run is removed from RunTree it is returned.
+        the `RunTree display`. If a run is removed from RunTree it is returned.
 
         :param run_name: Name of run to remove
         :type run_name: str
@@ -178,8 +228,7 @@ class RunTree(QtWidgets.QTreeWidget):
             return condemned_run
 
     def add_classified_run(self, run):
-        '''
-        Marks a run as classified by adding it to the
+        '''Marks a run as classified by adding it to the
         `classified_status` dictionary.
 
         :param run: Run to mark as classified
@@ -189,10 +238,11 @@ class RunTree(QtWidgets.QTreeWidget):
             self.classified_status[run] = True
 
     def add_sample(self, sample_name, *args):
-        '''Adds a new sample to the RunTree. Samples are the
-        highest level node in the RunTree.
+        '''Adds a new sample to the `RunTree`. Samples are the
+        highest level node in the `RunTree`.
 
-        :param sample_name: Name of sample to add, acts as key so should be unique.
+        :param sample_name: Name of sample to add, acts as key so should 
+                            be unique.
         :type sample_name: str
         '''
         parent_item = QtWidgets.QTreeWidgetItem(self)
@@ -263,7 +313,7 @@ class RunTree(QtWidgets.QTreeWidget):
                 self._add_run_node(new_run, non_hwi_runs)
 
     def contextMenuEvent(self, event):
-        '''Handle left click events by creating a popup context menu
+        '''Handle left click events by creating a popup context menu.
 
         :param event: QEvent
         :type event: QEvent
@@ -282,9 +332,10 @@ class RunTree(QtWidgets.QTreeWidget):
             open_run_action.triggered.connect(
                 lambda: self._open_run_slot(event))
 
-            classify_from_mso = QtWidgets.QAction('Add MSO classifications', self)
-            classify_from_mso.triggered.connect(lambda: self._add_classifications_from_mso_slot(event))
-
+            classify_from_mso = QtWidgets.QAction(
+                'Add MSO classifications', self)
+            classify_from_mso.triggered.connect(
+                lambda: self._add_classifications_from_mso_slot(event))
 
             self.menu.addAction(open_run_action)
             #self.menu.addAction(edit_data_action)
@@ -292,65 +343,8 @@ class RunTree(QtWidgets.QTreeWidget):
             self.menu.addSeparator()
             self.menu.addAction(classify_from_mso)
             
-
             self.menu.popup(QtGui.QCursor.pos())
     
-    def _open_run_slot(self, event=None):
-        self.opening_run.emit()
-    
-    def _edit_data_slot(self, event=None):
-        current_selection = self.currentItem()
-        if current_selection:
-            run_name = current_selection.text(0)
-            run = self.loaded_runs[run_name]
-            updater = RunUpdaterDialog(run=run, run_names=self.current_run_names)
-            updater.exec_()
-            # if updater.run.run_name != run_name:
-            #     # need to change the run name in the viewer
-            #     print(type(run))
-            #     run_node = self._get_run_node(run)
-            #     if run_node:
-            #         run_node.setText(0, updater.run.run_name)
-            self.loaded_runs[run_name] = updater.run
-    
-    def _add_classifications_from_mso_slot(self, event=None):
-        if self.selected_run:
-            mso_browser = QtWidgets.QFileDialog.getOpenFileName(
-                self, 'MSO Hunter', filter='mso files (*.mso)')
-            if mso_browser and len(mso_browser) > 0:
-                mso_file = mso_browser[0]
-                reader = MsoReader(mso_file)
-                result = reader.classify_images_from_mso_file(
-                    self.selected_run.images)
-                if isinstance(result, list):
-                    self.selected_run.images = result
-                    message = 'Added MSO classifications from {}'.format(
-                        mso_file
-                    )
-                else:
-                    message = 'Failed to add MSO classifications from {}. Failed with error {}'.format(
-                        mso_file, result
-                    )
-                make_message_box(parent=self, message=message).exec_()
-    
-    def _get_run_node(self, run):
-        run_name = run.run_name
-        sample_name = run.sampleName
-        parent_node = self.findItems(
-                            run.sampleName, Qt.MatchExactly, column=0).pop(0)
-        
-        for i in range(parent_node.childCount()):
-            child_node = parent_node.child(i)
-            if child_node.text(0) == run_name:
-                return child_node
-
-    # open edit run data dialog window
-
-    def _remove_run_slot(self, event=None):
-        current_selection = self.currentItem()
-        if current_selection:
-            run_name = current_selection.text(0)
-            self._remove_run(run_name)
 
     
         

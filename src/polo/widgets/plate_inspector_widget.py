@@ -23,7 +23,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         '''The PlateInspectorWidget is a primary run interface widget and is
         designed to emulate the MarcoScopeJ image viewer with extended
         functionality. It allows users to view their screening images in grids
-        of pre-set numbers of images from 24 to an entire 1536 well plate. 
+        of pre-set numbers of images from 24 to 96 images at a time.
 
         :param parent: Parent widget
         :type parent: QWidget
@@ -86,31 +86,50 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
     @property
     def selected_classifications(self):
-        '''
-        Returns a list that includes only image classifications that are
+        '''Returns a list that includes only image classifications that are
         selected via the image filtering checkboxes. Also see
         `image_type_checkboxes` property.
+
+        :return: List of currently selected image classifications. Images of
+                whos classification is in this list should be shown / 
+                emphasized to the user.
+        :rtype: list
+
         '''
-        return [k for k in self.image_type_checkboxes if self.image_type_checkboxes[k].isChecked()]
+        return [k for k in self.image_type_checkboxes 
+                if self.image_type_checkboxes[k].isChecked()]
     
     @property
     def human(self):
-        '''Status of human image classification checkbox'''
+        '''Status of human image classification checkbox
+        
+        :return: State of the human filter checkbox
+        :rtype: bool
+        '''
         return self.ui.checkBox_21.isChecked()
     
     @property
     def marco(self):
-        '''Status of marco image classification checkbox'''
+        '''Status of marco image classification checkbox
+
+        :return: State of the marco filter checkbox
+        :rtype: bool
+        '''
+
         return self.ui.checkBox_22.isChecked()
     
     @property
     def favorite(self):
+        '''Status of the `favorite` checkbox filter.
+
+        :return: State of the favorite checkbox
+        :rtype: bool
+        '''
         return self.ui.checkBox_6.isChecked()
     
     @property
     def color_mapping(self):
-        '''
-        Creates a color mapping dictionary from the current selections of the
+        '''Creates a color mapping dictionary from the current selections of the
         color selector comboboxes. Each image classification maps to a color
         or the string "none" to tell the plateViewer to not color that
         image type.
@@ -127,10 +146,11 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
     @run.setter
     def run(self, new_run):
-        '''
-        Sets run attribute to the given run. Setting the run also sets the
-        run for the plateViewer widget and checks if time resolved and
+        '''Sets run attribute to the given run. Setting the run also sets the
+        run for the `plateViewer` widget and checks if time resolved and
         spectrum navigation should be enabled by calling 
+        :func:`~polo.widgets.plate_inspector_widget.PlateInspector._set_time_resolved_buttons`
+        and :func:`~polo.widgets.plate_inspector_widget.PlateInspector._set_alt_spectrum_buttons`.
         '''
         if new_run:
             self._run = new_run
@@ -143,17 +163,26 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_alt_spectrum_buttons()
     
     def _set_images_per_page(self):
+        '''Private method that tells the `plateViewer` widget to set 
+        its `images_per_page` atttribute to the value specified in the 
+        images per page comboBox.
+        '''
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
     
     def _set_color_comboboxs(self):
+        '''Private method that sets the label text associated with each color
+        selector combobox. Should be called in the `__init__` method before
+        the widget is shown to the user.
         '''
-        Private method that sets the label text associated with each color
-        selector combobox.
-        '''
-        self.color_combos = [self.ui.comboBox_3, self.ui.comboBox, self.ui.comboBox_5, self.ui.comboBox_4]
-        labels = [self.ui.label_19, self.ui.label_4, self.ui.label_21, self.ui.label_20]
-        #self.color_combos_assignments = dict(zip(combos, IMAGE_CLASSIFICATIONS))
+        self.color_combos = [
+            self.ui.comboBox_3, self.ui.comboBox,
+            self.ui.comboBox_5, self.ui.comboBox_4
+            ]
+        labels = [
+            self.ui.label_19, self.ui.label_4,
+            self.ui.label_21, self.ui.label_20
+            ]
         for each_label, each_class in zip(labels, IMAGE_CLASSIFICATIONS):
             each_label.setText(each_class)
     
@@ -167,8 +196,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
     def _set_color_options(self):
         '''
-        Private methods that uses the `COLORS` constant to set the color options for each 
-        colorselector combobox in the image coloring tab.
+        Private methods that uses the `COLORS` constant to set the color options 
+        for each color selector combobox in the image coloring tab.
         '''
         colors, i  = list(COLORS.keys()), 0
         for each_combobox in self.color_combos:
@@ -206,8 +235,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
     def _set_plate_label(self):
         '''
-        Private method to change the plate label to tell the user what view or "page"
-        they are currently looking at.
+        Private method to change the plate label to tell the user what view or 
+        "page" they are currently looking at.
         '''
         self.ui.label_18.setText(
             'Page {} of {}'.format(
@@ -226,18 +255,19 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
 
     def _apply_image_filters(self):
-        '''Wrapper function around plateViewer
+        '''Wrapper function around `plateViewer`
         :func:`~polo.widgets.plate_viewer.plateViewer.deemphasize_filtered_images`
         which changes the opacity of currently displayed images based on
-        their classification.
+        their classifications.
         '''
         self.ui.plateViewer.set_scene_opacity_from_filters(
             self.selected_classifications, self.human, self.marco, 
             self.favorite
         )
     def _set_time_resolved_buttons(self):
-        '''Private helper function that determines if navigation buttons that display
-        alt spectrum images, previous and next date images can be used.
+        '''Private helper function that determines if navigation buttons 
+        that display alt spectrum images, previous and next date images 
+        can be used.
         '''
         if self._run:
             if self._run.next_run:
@@ -255,8 +285,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     def _set_alt_spectrum_buttons(self):
         '''Private helper function similar to 
         :func:`~polo.widgets.plate_viewer.plateViewer._set_time_resolved_buttons`
-        that determines if the navigation button that allows users to view alt spectrum
-        images should be enabled. If conditions are not met then the button is disabled.
+        that determines if the navigation button that allows users to view 
+        alt spectrum images should be enabled. If conditions are not met then 
+        the button is disabled.
         '''
         if self._run and self._run.alt_spectrum:
             self.ui.pushButton_22.setEnabled(True)
@@ -269,7 +300,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.ui.spinBox.setRange(1, self.ui.plateViewer.total_pages)
     
     def _set_current_page(self, page_number):
-        '''Set the current page number
+        '''Set the current page number and show the view for that page by
+        calling :func:`~polo.widgets.plate_inspector_widget.PlateInspector.show_current_page`
 
         :param page_number: The new page number
         :type page_number: int
@@ -286,7 +318,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.ui.plateViewer.preserve_aspect = self.ui.checkBox_29.isChecked()
     
     def reset_all(self):
-        '''Method to uncheck all user selected settings.
+        '''Method to un-check all user selected settings.
         '''
         for widget in self.ui.groupBox_26.children():
             if isinstance(widget, QtWidgets.QCheckBox):

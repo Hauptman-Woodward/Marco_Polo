@@ -82,6 +82,11 @@ class UnitComboBox(QtWidgets.QWidget):
 
     @property
     def scalers(self):
+        '''The current scalers.
+
+        :return: List of scaler values
+        :rtype: list
+        '''
         return self.__scalers
 
     @scalers.setter
@@ -104,6 +109,11 @@ class UnitComboBox(QtWidgets.QWidget):
 
     @property
     def sorted_scalers(self):
+        '''Scalers sorted by their magnitude.
+
+        :return: List of scalers
+        :rtype: list
+        '''
         if self.scalers:
             return sorted(
                 [s for s in self.scalers], key=lambda s: self.scalers[s])
@@ -112,6 +122,11 @@ class UnitComboBox(QtWidgets.QWidget):
 
     @property
     def unit_combobox_text(self):
+        '''The text in unit comboBox which corresponds to a specific scaler.
+
+        :return: List of all scalers in the unit comboBox
+        :rtype: list
+        '''
         if self.scalers:
             scaler_text = ['{}{}'.format(s, str(self.base_unit)) for s in self.sorted_scalers]
             scaler_text.append(str(self.base_unit))
@@ -121,7 +136,7 @@ class UnitComboBox(QtWidgets.QWidget):
 
     def _set_unit_combobox_text(self):
         '''Private method to add units to the unit comboBox based
-        on the `base_unit` and the `scalers`.
+        on the `base_unit` and the `scalers` attributes.
 
         :return: Items added to the comboBox
         :rtype: list

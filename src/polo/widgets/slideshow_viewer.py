@@ -12,32 +12,23 @@ logger = make_default_logger(__name__)
 
 
 class Slide():
-    '''Holds an Image object to be shown in the current slide show. Slides are
-    the nodes of the current slide show linked list. The list is navigated by
-    instances of Carousel class.
+    '''Acts like a slide in a slideshow carousel. Holds an Image object instance
+    as the contents of the slide. Forms a linked list with other slides through
+    the `next_slide` and `prev_slide` attributes which act as the forwards
+    and backwards pointers to other slides.
 
-    :param image: Image. Image object to be displayed for this slide.
-    :param next_slide: Slide. Next image in the slideshow to be displayed.
-    :param prev_slide: Slide. Previous slide in the slideshow to be displayed.
-    :param slide_number: Int. Index of the slide, should be base 0.
+    :param image: Image that this slide will display
+    :type image: Image
+    :param next_slide: Next slide in the slideshow, defaults to None
+    :type next_slide: Slide, optional
+    :param prev_slide: Previous slide in the slideshow, defaults to None
+    :type prev_slide: Slide, optional
+    :param slide_number: Index of this slide in the slideshow, defaults to None
+    :type slide_number: int, optional
     '''
 
+
     def __init__(self, image, next_slide=None, prev_slide=None, slide_number=None):
-        '''Acts like a slide in a slideshow carousel. Holds an Image object instance
-        as the contents of the slide. Forms a linked list with other slides through
-        the `next_slide` and `prev_slide` attributes which act as the forwards
-        and backwards pointers to other slides.
-
-        :param image: Image that this slide will display
-        :type image: Image
-        :param next_slide: Next slide in the slideshow, defaults to None
-        :type next_slide: Slide, optional
-        :param prev_slide: Previous slide in the slideshow, defaults to None
-        :type prev_slide: Slide, optional
-        :param slide_number: Index of this slide in the slideshow, defaults to None
-        :type slide_number: int, optional
-        '''
-
         self.image = image  # image object holds well data
         self.next_slide = next_slide
         self.prev_slide = prev_slide
@@ -50,9 +41,6 @@ class Slide():
 class Carousel():
     '''The Carousel class handles navigation between `Slide` instances.
     '''
-
-    # linked list class to hold the current slides in
-    # the slideshow view
     def __init__(self):
         self.current_slide = None
 
@@ -88,12 +76,16 @@ class Carousel():
 
     @property
     def current_slide(self):
+        '''Current slide, the slide that should be displayed to the user.
+
+        :return: The current slide
+        :rtype: Slide
+        '''
         return self._current_slide
 
     @current_slide.setter
     def current_slide(self, new_slide):
-        '''
-        Setter function for the current_slide property. 
+        '''Setter function for the current_slide property. 
 
         :param new_slide: New current slide.
         :type new_slide: Slide 
@@ -108,10 +100,10 @@ class Carousel():
         in the carousel. Does not control access to alternative
         images that may be available to the user.
 
-        :param next_slide: If set to True, tells the carousel to\
+        :param next_slide: If set to True, tells the carousel to
              advance one Slide
         :type next_slide: bool
-        :param prev_slide: If set to True, tells the carousel to\
+        :param prev_slide: If set to True, tells the carousel to
              retreat by one Slide
         :type prev_slide: bool
         '''
@@ -125,17 +117,6 @@ class Carousel():
 
 class PhotoViewer(QtWidgets.QGraphicsView):
     photoClicked = QtCore.pyqtSignal(QtCore.QPoint)
-    '''
-    Wrapper class around QGraphicsView and displays image to the user
-    in the slideshow viewer tab of the mainwindow.
-
-    :param run: Current run whose images are to be shown by the viewer.
-    :type run: Run
-    :param parent: Parent Widget of this instance.
-    :type parent: QWidget
-    :param current_image: Image that is currently displayed by the viewer.
-    :type current_image: Image
-    '''
 
     def __init__(self, parent):
         super(PhotoViewer, self).__init__(parent)
@@ -181,8 +162,12 @@ class PhotoViewer(QtWidgets.QGraphicsView):
             self._empty = True
     
     def add_pixmap(self, pixmap):
-        self.scene.addPixmap(pixmap)
+        '''Adds a `Pixmap` instances to the current sene.
 
+        :param pixmap: Pixmap to add to the sene
+        :type pixmap: Pixmap
+        '''
+        self.scene.addPixmap(pixmap)
 
     def wheelEvent(self, event):
         '''Handles mouse wheel events to allow for scaling for zooming in and
@@ -250,11 +235,10 @@ class SlideshowViewer(PhotoViewer):
 
     @run.setter
     def run(self, new_run):
-        '''
-        Setter function for the run attribute. Updates the current slides
-        by calling update_slides_from_filters with arguements that ensure
-        all images in the run are included. Effectively resets the images in
-        the slideshow to reflect the new run.
+        '''Setter function for the run attribute. Updates the current slides
+        by calling :func:`~polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters
+        with arguments that ensure all images in the run are included. 
+        Effectively resets the images in the slideshow to reflect the new run.
 
         :param new_run: The run to replace the current run.
         :type new_run: Run
@@ -274,10 +258,9 @@ class SlideshowViewer(PhotoViewer):
             self.current_image = None
 
     def _set_all_dates_scene(self, image):
-        '''Private method that creates a time resolved view from the Image passed
-        to the `image` argument by traversing the date based
-        linked list the passed image may be a node in. 
-
+        '''Private method that creates a time resolved view from the `Image`
+        instance passed through the `image` argument.
+    
         :param image: Image to create time resolved view from
         :type image: Image
         '''
@@ -288,8 +271,8 @@ class SlideshowViewer(PhotoViewer):
             self.fitInView()
     
     def _set_all_spectrums_scene(self, image):
-        '''Private method that creates a view that includes all alt spectrums the Image
-        passed via the `image` argument is linked to.
+        '''Private method that creates a view that includes all alt spectrum
+        images the `Image` instance is linked to.
 
         :param image: Image to create the view from
         :type image: Image
@@ -301,8 +284,8 @@ class SlideshowViewer(PhotoViewer):
             self.fitInView()
             
     def _set_single_image_scene(self, image):
-        '''Private method that creates a standard single image view from the image
-        passed to the `image` argument.
+        '''Private method that creates a standard single image view from the 
+        `Image` instance passed to the `image` argument.
 
         :param image: Image to display
         :type image: Image
@@ -315,7 +298,9 @@ class SlideshowViewer(PhotoViewer):
             self.fitInView()
             
     def _add_text_to_scene(self, text, x, y, size=40):
-        '''Private method to add text on top of an image.
+        '''Private method to add text on top of an image. Adds the text to
+        the current scene at the position specified by the `x` and `y`
+        arguments.
 
         :param text: Text to add to image
         :type text: str
@@ -335,19 +320,28 @@ class SlideshowViewer(PhotoViewer):
         t.setPos(x, y)
 
     def set_current_image_by_well_number(self, well_number):
+        '''Set the current image to the `Image` instance associated with a
+        specific well number.
+
+        :param well_number: Well number to display
+        :type well_number: int
+        '''
         if self.run:
             try:
                 self.current_image = self.run.images[well_number-1]
             except IndexError:
-                logger.warning(
-                    'Attempted to set current image to non-existant well number')
+                return
+
 
     def carousel_controls(self, next_image=False, previous_image=False):
         '''Wrapper around the :func:`~polo.widgets.slideshow_viewer.Carousel.controls`
-        method. 
+        method that allows image navigation. Does not actually display the
+        image.
 
         :param next_image: If True, tells carousel to advance by one slide.
+        :type next_image: bool
         :param previous_image: If True, tells carousel to retreat by one slide.
+        :type previous_image: bool
 
         :returns The current image.
         :rtype Image
@@ -361,19 +355,18 @@ class SlideshowViewer(PhotoViewer):
             self.current_image = self._carousel.current_slide.image
             return self.current_image
 
-            # self.display_current_image()
-
     def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
-        '''Creates new Carousel slides based on selected image filters.
-        Sets the current_image attribute to the image contained at
-        the current slide of _carousel attribute.
+        '''Creates new `Carousel` slides based on selected image filters.
+        Sets the `current_image` attribute to the `Image` instance at the 
+        the `current slide` attribute of `_carousel` attribute.
 
         :param image_types: Set of image classifications to include in results.
-        :type image_types: set
-        :param human: If True, `image_types` refers to human classification of the image.
+        :type image_types: set or list
+        :param human: If True, `image_types` refers to human classification 
+                      of the image.
         :type human: bool
-        :param marco: If True, `image_types` refers to the machine (MARCO) classification
-            of the image.
+        :param marco: If True, `image_types` refers to the machine 
+                      (MARCO) classification of the image.
         :type marco: bool
         '''
         if self.run:
@@ -445,7 +438,7 @@ class SlideshowViewer(PhotoViewer):
 
     def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
         '''Sets the `current_image` attribute to a linked image specified by
-        one of the tree boolean flags.
+        one of the three boolean flags.
 
         :param next_date: If True, sets the `current_image`
                           to the next image by date
@@ -463,8 +456,7 @@ class SlideshowViewer(PhotoViewer):
             self.current_image = cur_img.alt_image
 
     def classify_current_image(self, classification):
-        '''
-        Changes the human classification of the current image.
+        '''Changes the human classification of the current image.
         '''
         if isinstance(self.current_image, Image):
             self.current_image.human_class = classification

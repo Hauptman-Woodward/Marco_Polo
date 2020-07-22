@@ -17,9 +17,9 @@ from polo.marco.run_marco import classify_image
 
 class Image(QtGui.QPixmap):
 
-    '''Image objects hold the data relating to one image of a particular
-    screening well in a larger run. Images encode the actual image file as
-    a file path to the image if it is on the machine Polo is being run from,
+    '''Image objects hold the data relating to one image in a particular
+    screening well of a paricular run. Images encode the actual image file as
+    a file path to the image if it available on the local machine, as 
     as a base64 encoded image or both.
 
     :param path: Path to the actual image file, defaults to None
@@ -87,7 +87,7 @@ class Image(QtGui.QPixmap):
         This method removes those artifacts if they are present and returns a
         clean byte string with only the actual base64 data.
 
-        :param string: a string to interogate
+        :param string: a string to interrogate for base64 compliance
         :type string: str
         :return: byte string with non-data artifacts removed
         :rtype: bytes
@@ -104,8 +104,8 @@ class Image(QtGui.QPixmap):
 
     @classmethod
     def to_graphics_scene(cls, image):
-        '''Convert an Image object to a pyqt QGraphicsScene with
-        the Image added as a pixmap to the graphics scene.
+        '''Convert an Image object to a `QGraphicsScene` with
+        the Image added as a pixmap to the `QGraphicsScene`.
 
         :param image: Image instance
         :type image: Image
@@ -132,6 +132,12 @@ class Image(QtGui.QPixmap):
 
     @property
     def date(self):
+        '''Retrun the date associated with this image. Presumably should be
+        the date the image was taken.
+
+        :return: datetime object representation of the image's imageing date
+        :rtype: datetime
+        '''
         return self._date
 
     @date.setter
@@ -179,11 +185,11 @@ class Image(QtGui.QPixmap):
 
     @marco_class.setter
     def marco_class(self, new_class):
-        '''Setter method for `__marco_class`. If this image has alt images
-        linked to it and has its `spectrum` set as 'Visible' linked alt images
-        will share this image's marco classification. This is because MARCO
-        model has only been trained on visible light images so should not be
-        used to classify images taken with alternative photographic technologies.
+        '''Setter method for `_marco_class` attribute. If this image has alt images
+        linked to it and has its `spectrum` attribute set as 'Visible' linked alt images
+        will share this image's marco classification. This is because the MARCO
+        model has only been trained on visible light images and therefore is
+        not cabable of reliably classifying images taken in differenet spectrums.
         Since linked alt images should in theory be images of the exact same
         well in the exact same plate the visible spectrum image can share
         its MARCO classification with it's linked alt images.
@@ -204,7 +210,7 @@ class Image(QtGui.QPixmap):
 
     @property
     def human_class(self):
-        '''Return the `__human_class` hidden attribute
+        '''Return the `_human_class` hidden attribute
 
         :return: Current human classification of this image
         :rtype: str
@@ -215,14 +221,6 @@ class Image(QtGui.QPixmap):
     def human_class(self, new_class):
         if new_class in IMAGE_CLASSIFICATIONS:
             self._human_class = new_class
-            # if hasattr(self, 'alt_image') and self.alt_image:
-            #     # alt images inherit their linked classifications
-            #     alt_image = self.alt_image
-            #     while alt_image.path and alt_image.path != self.path:
-            #         alt_image.__human_class = new_class
-            #         # assign directly to hidden attr to avoid creating an
-            #         # endless recursive call loop
-            #         alt_image = alt_image.alt_image
         else:
             self._human_class = None
     
@@ -308,8 +306,6 @@ class Image(QtGui.QPixmap):
 
         return image_string
 
-
-
     def encode_base64(self):
         if not self.bites and os.path.exists(self.path):
             with open(self.path, 'rb') as image_file:
@@ -317,7 +313,7 @@ class Image(QtGui.QPixmap):
 
     def encode_bytes(self):
         '''If the `path` attribute exists and is an image file then encodes
-        that file as base64 and returns the encoded image.
+        that file as a base64 string and returns the encoded image data.
 
         :return: base64 encoded image
         :rtype: str
@@ -404,16 +400,21 @@ class Image(QtGui.QPixmap):
     def standard_filter(self, image_types, human, marco, favorite):
         '''Method that determines if this image should be included in a set
         of filtered images based on given image types and a classifier: human,
-        marco or both. 
+        marco or both. Returns True if the Image meets the filtering requirements
+        specified by the method's arguments, otherwise returns False.
 
-        :param image_types: [description]
-        :type image_types: [type]
-        :param human: [description]
-        :type human: [type]
-        :param marco: [description]
-        :type marco: [type]
-        :return: [description]
-        :rtype: [type]
+        :param image_types: Collection of image classifications. The Image's
+                            classification must in included in this collection 
+                            for the method to return True.
+        :type image_types: list or set
+        :param human: If True, use the Image's human classification as the
+                      overall image classification.
+        :type human: bool
+        :param marco: If True, use the Image's MARCO classification as the
+                      overall image classification.
+        :type marco: bool
+        :return: True if the Image meets the filter requirements, False otherwise 
+        :rtype: bool
         '''
         if favorite == self.favorite:
             if image_types:  # have specificed some image types

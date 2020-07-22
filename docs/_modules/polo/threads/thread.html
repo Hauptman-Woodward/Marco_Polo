@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -171,7 +168,7 @@
 
 <div class="viewcode-block" id="thread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.thread">[docs]</a><span class="k">class</span> <span class="nc">thread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
 
-    <span class="sd">&#39;&#39;&#39;Very basic wrapper class around Qthread class. Should be</span>
+    <span class="sd">&#39;&#39;&#39;Very basic wrapper class around `QThread` class. Should be</span>
 <span class="sd">    inherited by a more specific class and then the `run` method</span>
 <span class="sd">    can be overwritten do run the code that should be executed on the</span>
 <span class="sd">    thread instance.</span>
@@ -197,7 +194,7 @@
 <span class="sd">    to thread objects except instead of writing code that would be</span>
 <span class="sd">    executed by the `run` function directly, the function to be run</span>
 <span class="sd">    on the thread is passed as an argument to `job_func` and any arguments</span>
-<span class="sd">    that the passed function requires are passed as key word arguements.</span>
+<span class="sd">    that the passed function requires are passed as key word arguments.</span>
 <span class="sd">    When the thread is started the key word arguments are passed to the</span>
 <span class="sd">    job_func and the results of the call are stored in the `results` attribute.</span>
 
@@ -277,83 +274,23 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">download_path</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="GraphThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.GraphThread">[docs]</a><span class="k">class</span> <span class="nc">GraphThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
+<span class="c1"># class GraphThread(thread):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_object</span><span class="p">):</span>
-        <span class="n">thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">classification_run</span> <span class="o">=</span> <span class="n">run_object</span></div>
-    <span class="c1"># probably want this for making plots</span>
-
-
-<div class="viewcode-block" id="SaveThread"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.SaveThread">[docs]</a><span class="k">class</span> <span class="nc">SaveThread</span><span class="p">(</span><span class="n">thread</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_window</span><span class="p">,</span> <span class="n">run_to_save</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-        <span class="n">thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_to_save</span> <span class="o">=</span> <span class="n">run_to_save</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
-
-<div class="viewcode-block" id="SaveThread.run"><a class="viewcode-back" href="../../../polo.threads.html#polo.threads.thread.SaveThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">save_run_as_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_to_save</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span></div></div>
-
-
-<span class="c1"># class PlateThread(thread):</span>
-
-<span class="c1">#     def __init__(self, run, image_types, marco, human, start_index, end_index, graphics_view_dims):</span>
+<span class="c1">#     def __init__(self, run_object):</span>
 <span class="c1">#         thread.__init__(self)</span>
-<span class="c1">#         self.run = run</span>
-<span class="c1">#         self.image_types = image_types</span>
-<span class="c1">#         self.marco = marco</span>
-<span class="c1">#         self.human = human</span>
-<span class="c1">#         self.start = start_index</span>
-<span class="c1">#         self.end = end_index</span>
-<span class="c1">#         self.empty_map = QPixmap(&#39;/home/ethan/Pictures/polo.png&#39;)</span>
-<span class="c1">#         self.graphics_view_dims = graphics_view_dims</span>
-<span class="c1">#         self.scene = None</span>
+<span class="c1">#         self.classification_run = run_object</span>
+<span class="c1">#     # probably want this for making plots</span>
+
+
+<span class="c1"># class SaveThread(thread):</span>
+
+<span class="c1">#     def __init__(self, main_window, run_to_save, output_path):</span>
+<span class="c1">#         thread.__init__(self)</span>
+<span class="c1">#         self.run_to_save = run_to_save</span>
+<span class="c1">#         self.output_path = output_path</span>
 
 <span class="c1">#     def run(self):</span>
-<span class="c1">#         images = self.retrieve_images()</span>
-<span class="c1">#         self.scene = tile_images_in_scene(images)</span>
-<span class="c1">#         return scene</span>
-
-<span class="c1">#     def retrieve_images(self):</span>
-<span class="c1">#         indices = set(self.run.image_filter_query(</span>
-<span class="c1">#             self.image_types, self.human, self.marco))</span>
-<span class="c1">#         images = []</span>
-<span class="c1">#         for i in range(self.start, self.end):</span>
-<span class="c1">#             if i in indices:</span>
-<span class="c1">#                 images.append(self.current_run[i])</span>
-<span class="c1">#             else:</span>
-<span class="c1">#                 images.append(None)</span>
-<span class="c1">#         return images</span>
-
-<span class="c1">#     def tile_images_in_scene(self, images):</span>
-<span class="c1">#         scene = QtWidgets.QGraphicsScene()</span>
-<span class="c1">#         w, h = self.graphics_view_dims</span>
-<span class="c1">#         a_w, a_h = best_aspect_ratio(w, h, len(images))</span>
-<span class="c1">#         for i in range(1, a_h+1):</span>
-<span class="c1">#             for j in range(1, a_w+1):</span>
-<span class="c1">#                 image = images.pop(0)</span>
-<span class="c1">#                 if image:</span>
-<span class="c1">#                     pixel_map = image.get_pixel_map()</span>
-<span class="c1">#                 else:</span>
-<span class="c1">#                     pixel_map = self.empty_map</span>
-<span class="c1">#                     x, y = (</span>
-<span class="c1">#                         pixel_map.size().width() * j,</span>
-<span class="c1">#                         pixel_map.size().height() * i</span>
-<span class="c1">#                     )</span>
-<span class="c1">#                     self.place_image_in_scene(</span>
-<span class="c1">#                         scene, image, pixel_map, x, y</span>
-<span class="c1">#                     )</span>
-<span class="c1">#         return scene  # scene now inludes all images</span>
-
-<span class="c1">#     def place_image_in_scene(self, scene, image, pixel_map, x, y):</span>
-<span class="c1">#         item = QtWidgets.QGraphicsItem(pixel_map)</span>
-<span class="c1">#         item.setFlat(QtWidgets.QGraphicsItem.ItemIsSelectable)</span>
-<span class="c1">#         if image:</span>
-<span class="c1">#             item.setData(0, image)  # store image object in data</span>
-<span class="c1">#             item.setToolTip(image.get_tool_tip())</span>
-<span class="c1">#         self.scene.addItem(item)</span>
-<span class="c1">#         item.setPos(x, y)</span>
+<span class="c1">#         save_run_as_json(self.run_to_save, self.output_path)</span>
 </pre></div>
 
            </div>
@@ -366,19 +303,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -389,6 +318,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

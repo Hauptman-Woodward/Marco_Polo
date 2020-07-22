@@ -16,7 +16,22 @@ class Run():
 
     def __init__(self, image_dir, run_name, image_spectrum=None, date=None, 
                  images=[], **kwargs):
+        '''Run objects represent one particular imaging run of a sample. They
+        store `Image` objects that hold the actual imaging data as well as
+        metadata associated with the imaging run and the sample.
 
+        :param image_dir: Directory that contains the screening images
+        :type image_dir: str of Path
+        :param run_name: Name of this run. Should be unique as it is used to
+        uniquely identify each Run instance
+        :type run_name: str
+        :param image_spectrum: Imaging technology used to capture the images in this run, defaults to None
+        :type image_spectrum: str, optional
+        :param date: Date the images in this Run were taken, defaults to None
+        :type date: datetime, optional
+        :param images: List of all `Image` instances in this run, defaults to []
+        :type images: list, optional
+        '''
         self.image_dir = str(image_dir)
         self.run_name = run_name
         self.image_spectrum = image_spectrum
@@ -110,16 +125,6 @@ class Run():
                     image_class_dict[c] = [image]
         return image_class_dict
 
-    # def get_image_table_data(self, image, attributes):
-
-    #     im_dict, row_dict = image.__dict__, {}
-    #     for arg in attributes:
-    #         if arg in im_dict:
-    #             row_dict[arg] = im_dict[arg]
-    #         else:
-    #             row_dict[arg] = None
-    #     return row_dict
-
     def image_filter_query(self, image_types, human, marco, favorite):
         '''General use method for returning Images based on a set of
         filters. Used whereever a user is allowed to narrow the set
@@ -204,14 +209,14 @@ class HWIRun(Run):
         )
 
     def link_to_next_date(self, other_run):
-        '''Link this Run to another Run instance that is of the same
+        '''Link this `Run` to another `Run` instance that is of the same
         sample but photographed at a later date. This creates a
         bi-directional linked list structure between the two runs.
-        This Run instance will point to `other_run` through the `next_run`
-        attribute and `other_run` will point back to this Run through
+        This `Run` instance will point to `other_run` through the `next_run`
+        attribute and `other_run` will point back to this `Run` through
         the `previous_run` attribute. This method does not attempt to recognize
-        which run was imaged first so this should be determined before calling, likely
-        by sorting a list of Runs by their `date` attribute.
+        which run was imaged first so this should be determined before calling,
+        likely by sorting a list of Run instances by their `date` attribute.
 
         Example:
 
@@ -252,8 +257,8 @@ class HWIRun(Run):
     def link_to_alt_spectrum(self, other_run):
         '''Similar to :func:`~polo.crystallography.HWIRun.link_to_next_date`
         except instead of creating a linked list through the `next_run` and
-        `previous_run` attributes it does so through the `alt_spectrum`
-        attribute. Linked list created is mono-directional so if a
+        `previous_run` attributes this method does so through the `alt_spectrum`
+        attribute. The linked list created is mono-directional so if a
         series of runs are being linked the last run should be linked to the
         first run to circularize the linked list.
 
@@ -290,12 +295,13 @@ class HWIRun(Run):
         '''When runs are first loaded into Polo they are automatically linked together.
         Normally, runs that are linked by date should all be visible spectrum images and
         runs linked by spectrum should all be non-visible spectrum images. The visible
-        spectrum images will then point to one non-visible spectrum run via their
+        spectrum run will then point to one non-visible spectrum run via their
         `alt_spectrum` attribute. This means that one could navigate from a visible
         spectrum run to all alt spectrum runs but not get back to the visible spectrum
         run. Therefore, before a run is set to be viewed by the user this method
-        temporary inserts it into the alt spectrum circular linked list. Also see
-        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
+        temporary inserts the run it is called on into the alt spectrum 
+        circular linked list. 
+        Also see :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
         '''
         linked_runs = self.get_linked_alt_runs()
         if linked_runs:
@@ -312,12 +318,9 @@ class HWIRun(Run):
                     linked_runs[-1].link_to_alt_spectrum(self)
 
     def add_images_from_dir(self):
-        '''
-        Populates the images attribute with a list of images read from the
-        image_dir location. Currently is dependent on having a cocktail
-        menu available. This is passed into the function and would
-        normally come from the most recently used HWI file that is
-        stored as a dictionary in the mainWindow object.
+        '''Populates the `images` attribute with a list of `Images` instances
+        read from the `image_dir` attribute filepath. Currently is 
+        dependent on having a cocktail menu available.
         '''
         self.images = [BLANK_IMAGE for i in range(0, self.num_wells)]
         assert os.path.exists(self.image_dir)

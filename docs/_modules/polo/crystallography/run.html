@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -189,7 +186,10 @@
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns the number of non null Images&#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
     
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">))</span>
@@ -209,13 +209,13 @@
 <div class="viewcode-block" id="Run.add_images_from_dir"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.add_images_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_images_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Adds the contents of a directory to `images` attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Adding images to </span><span class="si">{}</span><span class="s1"> from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">image_path</span><span class="p">),</span> <span class="n">spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">,</span>
-                      <span class="n">date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-            <span class="p">)</span></div>
+            <span class="n">new_image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">image_path</span><span class="p">),</span> <span class="n">spectrum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">,</span>
+                              <span class="n">date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_image</span><span class="p">)</span></div>
+            
 
 <div class="viewcode-block" id="Run.unload_all_pixmaps"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.unload_all_pixmaps">[docs]</a>    <span class="k">def</span> <span class="nf">unload_all_pixmaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>  <span class="c1"># reduce memory usage</span>
         <span class="sd">&#39;&#39;&#39;Delete the pixmap data of all Image instances stored in the</span>
@@ -241,8 +241,7 @@
                 <span class="n">image</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Run.get_images_by_classification"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_images_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">get_images_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Create a dictionary of image classifications. Keys are</span>
+        <span class="sd">&#39;&#39;&#39;Create a dictionary of image classificationss. Keys are</span>
 <span class="sd">        each type of classification and values are list of</span>
 <span class="sd">        images with classification of the key. The human</span>
 <span class="sd">        boolean determines what classifier should be used to</span>
@@ -312,7 +311,7 @@
 
 <div class="viewcode-block" id="Run.export_to_csv"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.export_to_csv">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Exports run classifcation data to a csv table.</span>
+<span class="sd">        Exports run classification data to a csv table.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
 
@@ -391,10 +390,6 @@
 <span class="sd">        :type other_run: HWIRun</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-<<<<<<< HEAD
-<div class="viewcode-block" id="HWIRun.link_to_next_date"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_next_date">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_next_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
-=======
->>>>>>> 4bc979a66e3d54f4e9e52647ec7595fc7a37ed33
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">other_run</span><span class="p">)</span> <span class="o">==</span> <span class="n">HWIRun</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">current_image</span><span class="p">,</span> <span class="n">dec_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">other_run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">current_image</span><span class="p">:</span>
@@ -503,19 +498,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -526,6 +513,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

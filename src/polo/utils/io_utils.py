@@ -67,6 +67,29 @@ class RunImporter():
     
     @staticmethod
     def parse_hwi_dir_metadata(dir_name):
+        '''Parse the directory name of an HWIRun directory to pull out
+        metadata. If the directory name conforms to HWI naming conventions
+        the function should be able to return the image spectrum, the plate id,
+        the date and the run name. If the directory does not conform to HWI
+        naming standards this will cause an exception which is caught and the
+        function will return None.
+
+        If the parse is successful will return a dictionary with the following
+        format.
+
+         .. code-block:: text
+
+            {'image_spectrum': String describing the image spectrum,
+            'plate_id': String representing the plate id,
+            'date': Datetime instance of imaging date,
+            'run_name': String holding the run name
+            }
+
+        :param dir_name: Name of directory to check for metadata
+        :type dir_name: str or Path
+        :return: Dictionary of extracted metadata or None if parse fails
+        :rtype: dict or None
+        '''
         try:
             dir_name = str(Path(dir_name).with_suffix('').name)
             image_type = dir_name.split('-')[-1].strip()
@@ -495,7 +518,10 @@ class SceneExporter():
         :rtype: str or Exception
         '''
         try:
-            image = QImage(scene.width(), scene.height(), QImage.Format_ARGB32_Premultiplied)
+            image = QImage(
+                scene.width(), scene.height(),
+                QImage.Format_ARGB32_Premultiplied
+                )
             painter = QPainter(image)
             scene.render(painter)
             image.save(file_path)
@@ -601,19 +627,34 @@ class MsoWriter(RunSerializer):
 
 
 class MsoReader():
+    '''The MsoReader class is used to parse the content of mso formated
+    files and apply the image classifications stored in these files to
+    runs in Polo.
+    '''
 
     def __init__(self, mso_path):
         self.mso_path = mso_path
     
-    def _read_mso_file(self):
-        pass
     
     @staticmethod
-    def read_mso_classification(mso_class):
-        try:
-            mso_class = mso_class.split('-')
+    def read_mso_classification(mso_classification):
+        '''Helper method to read and convert image classifications in a mso
+        file to MARCO image classifications. The exact conversion scheme is
+        layed out in the `REV_MSO_DICT`. Additionally, MarcoscopeJ will allow
+        images to have multiple classifications by assigning multiple
+        image codes seperated by "-". If this is the case Polo takes the
+        classification corresponding to the mso code with the highest value.
 
-            mso_codes = [int(code.strip()) for code in mso_class if int(code.strip()) in REV_MSO_DICT]
+        :param mso_classification: Mso image classification code
+        :type mso_classification: str
+        :return: MARCO classification if code can be decoded, None otherwise
+        :rtype: str or None
+        '''
+        try:
+            mso_classification = mso_classification.split('-')
+
+            mso_codes = [int(code.strip()) for code in mso_classification 
+                        if int(code.strip()) in REV_MSO_DICT]
             if mso_codes:
                 return REV_MSO_DICT[max(mso_codes)]
             else:
@@ -622,6 +663,19 @@ class MsoReader():
             return None  # assume no mso classification if throws an error
 
     def classify_images_from_mso_file(self, images):
+        '''Applies the image classifications stored in an mso file to a
+        collection of `Image` objects. Allows for some degree of compatability
+        with MarcoscopeJ and for users who have stored their image classifications
+        in the mso format. Additionally, human classification backups are
+        saved as mso files when Polo is closed as they take up much less
+        space than xtal files.
+
+        :param images: List of images to apply classifications to
+        :type images: list
+        :return: List of images with mso classifications applied,
+                 or Exception if this fails
+        :rtype: list or Exception
+        ''' 
         try:
             with open(str(self.mso_path)) as mso:
                 reader = csv.reader(mso, delimiter='\t')
@@ -637,17 +691,34 @@ class MsoReader():
                             continue
                 return images
         except Exception as e:
-            print(e)
             return e
 
 class JsonWriter(RunSerializer):
+    '''Small class that can be used to serialize a run to a json formated file.
 
+    :param run: Run to write as a json file
+    :type run: Run or HWIRun
+    :param output_path: Path to write json file to
+    :type output_path: str or Path
+    '''
     def __init__(self, run, output_path):
         self.run = run
         self.output_path = output_path
     
     @staticmethod
     def json_encoder(obj):
+        '''General purpose json encoder for encoding python objects. Very
+        similar to the encoder function 
+        :func:`~polo.utils.io_utils.XtalWriter.json_encoder` except does not
+        include class and module information in the returned dictionary. If
+        the object cannot be converted to a dictionary it is returned as a
+        string.   
+
+        :param obj: Object to convert to dictionary
+        :type obj: obj
+        :return: dict or str
+        :rtype: dict or str
+        '''
         d = None
         if hasattr(obj, '__dict__'):  # can send to dict object
             d = obj.__dict__
@@ -659,12 +730,19 @@ class JsonWriter(RunSerializer):
         return d
     
     def write_json(self):
+        '''Write the run stored in the `run` attribute to a json file at
+        the location specified by the `output_path` attribute. If the file
+        is written successfully returns True otherwise returns an Exception.
+
+        :return: True or Exception
+        :rtype: bool, Exception
+        '''
         try:
             clean_run = XtalWriter.clean_run_for_save(self.run)
             json_content = json.dumps(clean_run, ensure_ascii=True, indent=4,
-                                  default=XtalWriter.json_encoder, check_circular=True)
-            
-            output_path = JsonWriter.path_suffix_checker(str(self.output_path), '.json')
+                                  default=XtalWriter.json_encoder)
+            output_path = JsonWriter.path_suffix_checker(
+                str(self.output_path), '.json')
             with open(output_path, 'w') as json_file:
                 json_file.write(json_content)
             return True
@@ -684,8 +762,7 @@ class XtalWriter(RunSerializer):
 
     @property
     def xtal_header(self):
-        '''
-        Creates the header for xtal file when called. Header lines are
+        '''Creates the header for an xtal file when called. Header lines are
         indicated as such by the string in the header_line constant,
         which should be '<>'. The last line of the header will be a row
         of equal signs and then the actual json content begins on the
@@ -704,15 +781,14 @@ class XtalWriter(RunSerializer):
 
     @staticmethod
     def json_encoder(obj):
-        '''
-        Use instead of the defauly json encoder. If the encoded object
-        is from a module within Polo will include a module and class
-        identifier so it can be more easily deserialized when loaded
-        back into the program.
+        '''Use instead of the default json encoder when writing an xtal file. 
+        If the encoded object is from a module within Polo will include a 
+        module and class identifier so it can be more easily deserialized 
+        when loaded back into the program.
 
         :param: obj: An object to serialize to json.
 
-        :returns: A dictionary or string version of passed object
+        :returns: A dictionary or string version of the passed object
         '''
         d = None
         if hasattr(obj, '__dict__'):  # can send to dict object
@@ -729,12 +805,15 @@ class XtalWriter(RunSerializer):
 
     @staticmethod
     def clean_run_for_save(run):
-        '''Remove circular references from a Run instance to avoid errors
-        when serializing using json. Uses the run stored in the run attribute
+        '''Remove circular references from the run passed through the `run`
+        argument to avoid issues when writing to json files.
 
-        :return: The cleaned run
-        :rtype: Run
+        :param run: Run to clean (remove circular references)
+        :type run: Run or HWIRun
+        :return: Run, free from circular references
+        :rtype: Run or HWIRun
         '''
+
         if run:
             run.previous_run, run.next_run, run.alt_spectrum = (
                 None, None, None)
@@ -746,8 +825,9 @@ class XtalWriter(RunSerializer):
         return run
 
     def write_xtal_file_on_thread(self, output_path):
-        """Wrapper method around `write_xtal_file` that executes on a Qthread
-        instance to prevent freezing the GUI when saving large xtal files
+        """Wrapper method around :func:`~polo.utils.io_utils.XtalWriter.write_xtal_file` 
+        that executes on a `QuickThread` instance to prevent freezing the 
+        GUI when saving large xtal files
 
         :param output_path: Path to xtal file
         :type output_path: str
@@ -1370,7 +1450,7 @@ class BarTender():
         :param cocktail_dir: Directory containing cocktail menu csv files
         :type cocktail_dir: str or Path
         :param cocktail_meta: Path to cocktail metadata file which describes the contents of
-        each cocktail menu csv file
+                              each cocktail menu csv file
         :type cocktail_meta: Path or str
 
         Cocktail metadata file should be a csv file with the following
@@ -1391,10 +1471,10 @@ class BarTender():
 
     @staticmethod
     def datetime_converter(date_string):
-        '''General utility function for converting strings to datetime objects..units
-            Attempts to convert the string by trying a couple of datetime.units
-            formats that are common in cocktail menu files and other.units
-            locations in the HWI file universe Polo runs across.
+        '''General utility function for converting strings to datetime objects.
+        Attempts to convert the string by trying a couple of datetime
+        formats that are common in cocktail menu files and other
+        locations in the HWI file universe Polo runs across.
 
         :param date_string: string to convert to datetime
         :type date_string: str
@@ -1412,18 +1492,20 @@ class BarTender():
 
     @staticmethod
     def date_range_parser(date_range_string):
-        '''Utility function for converting the date ranges in the cocktail.units
-            metadata csv file to datetime objects using the `datetime_converter`
-            classmethod.
+        '''Utility function for converting the date ranges in the cocktail
+        metadata csv file to datetime objects using the `datetime_converter`
+        function.
 
-            Date ranges should have the format
+        Date ranges should have the format
 
-            start date - end date
+        .. code-block:: text
+
+            'start date - end date'
 
             If the date range is for the most recent cocktail menu then there
             will not be an end date and the format will be
 
-            start date - 
+            'start date - '
 
         :param date_range_string: string to pull dates out of   
         :type date_range_string: str
@@ -1439,7 +1521,8 @@ class BarTender():
         return s, e
 
     def add_menus_from_metadata(self):
-        '''Adds menu objects to the menus attribute.'''
+        '''Adds menu objects to the `menus` attribute by reading the cocktail
+        csv files included in the `COCKTAIL_DATA_PATH` directory.'''
         if self.cocktail_meta:
             with open(str(self.cocktail_meta)) as menu_files:
                 reader = csv.DictReader(menu_files)
@@ -1508,6 +1591,16 @@ class BarTender():
             return self.menus[path]
 
     def get_menu_by_basename(self, basename):
+        '''Uses the basename of a mene file path to return a `Menu` object.
+        Useful for retrieving menus based on the text of comboBoxes since
+        when menus are displayed to the user only the basename is used.
+
+        :param basename: Basename of a cocktail menu file path
+        :type basename: str
+        :return: Menu instance who's basename matches the `basename` argument,
+                returns None is no menu is found
+        :rtype: Menu or None
+        '''
         for menu_key in self.menus:  # self.menus is dictionary
             if os.path.basename(menu_key) == basename:
                 return self.menus[menu_key]
@@ -1647,6 +1740,17 @@ class RunLinker():
 
     @staticmethod
     def the_big_link(runs):
+        '''Wrapper method to do all the linking required for a collection of
+        runs. First calls :func`~polo.utils.io_utils.RunLinker.unlink_runs_completely`
+        to separate any existing links so things do not get tangled. Then 
+        calls :func`~polo.utils.io_utils.RunLinker.link_runs_by_date` and
+        :func:`~polo.utils.io_utils.RunLinker.link_runs_by_spectrum`.
+
+        :param runs: List of runs to link
+        :type runs: list
+        :return: List of runs with links made
+        :rtype: list
+        '''
         runs = RunLinker.unlink_runs_completely(runs)
         runs = RunLinker.link_runs_by_date(runs)
         runs = RunLinker.link_runs_by_spectrum(runs)

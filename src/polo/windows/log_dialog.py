@@ -11,7 +11,7 @@ from polo import LOG_PATH
 
 
 class LogDialog(QtWidgets.QDialog):
-    '''Small dialog for displaying the contents of the Polo log file
+    '''Small dialog for displaying the contents of the Polo log file.
     '''
 
     def __init__(self, parent=None):

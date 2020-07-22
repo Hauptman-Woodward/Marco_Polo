@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -224,6 +221,29 @@
     
 <div class="viewcode-block" id="RunImporter.parse_hwi_dir_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Parse the directory name of an HWIRun directory to pull out</span>
+<span class="sd">        metadata. If the directory name conforms to HWI naming conventions</span>
+<span class="sd">        the function should be able to return the image spectrum, the plate id,</span>
+<span class="sd">        the date and the run name. If the directory does not conform to HWI</span>
+<span class="sd">        naming standards this will cause an exception which is caught and the</span>
+<span class="sd">        function will return None.</span>
+
+<span class="sd">        If the parse is successful will return a dictionary with the following</span>
+<span class="sd">        format.</span>
+
+<span class="sd">         .. code-block:: text</span>
+
+<span class="sd">            {&#39;image_spectrum&#39;: String describing the image spectrum,</span>
+<span class="sd">            &#39;plate_id&#39;: String representing the plate id,</span>
+<span class="sd">            &#39;date&#39;: Datetime instance of imaging date,</span>
+<span class="sd">            &#39;run_name&#39;: String holding the run name</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param dir_name: Name of directory to check for metadata</span>
+<span class="sd">        :type dir_name: str or Path</span>
+<span class="sd">        :return: Dictionary of extracted metadata or None if parse fails</span>
+<span class="sd">        :rtype: dict or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dir_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="n">image_type</span> <span class="o">=</span> <span class="n">dir_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -337,9 +357,8 @@
             <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">()</span><span class="o">.</span><span class="n">find_and_read_plate_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">file_name_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-                
+            <span class="nb">print</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">file_name_data</span><span class="p">,</span> <span class="s1">&#39;meta and filename data&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">file_name_data</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">file_name_data</span><span class="p">)</span>
                 <span class="n">date</span> <span class="o">=</span> <span class="n">file_name_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
                 <span class="n">menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
                 <span class="c1"># assuming soluble need to change based on metadata parse</span>
@@ -349,8 +368,11 @@
                 <span class="c1"># that could overwrite what is in metadata</span>
                 <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
                 <span class="k">return</span> <span class="n">new_run</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="c1"># TODO try importing as non hwi run and show error message</span>
+            
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="RunImporter.import_general_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_general_run">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">import_general_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -364,6 +386,7 @@
         <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">new_run</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">new_run</span>
         <span class="k">return</span> <span class="kc">False</span></div></div>
 
@@ -559,7 +582,7 @@
 <span class="sd">        :return: Output path</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_path</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># could use more efficent way of determining feildnames</span>
@@ -584,14 +607,13 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="n">new_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__output_path</span> <span class="o">=</span> <span class="n">new_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_path</span> <span class="o">=</span> <span class="n">new_path</span>
 
 <div class="viewcode-block" id="RunCsvWriter.get_csv_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.get_csv_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_csv_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Convert the `run` attribute to csv style data. Returns a tuple of</span>
 <span class="sd">        headers and a list of dictionaries with each dictionary representing</span>
 <span class="sd">        one row of csv data.</span>
 
-<span class="sd">        :raises e: Catch all exception.</span>
 <span class="sd">        :return: Tuple, list of headers and list of dicts</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -617,7 +639,7 @@
             <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
                 <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_path</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_path</span><span class="p">:</span>
                 <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">)</span>
                 <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
@@ -650,7 +672,10 @@
 <span class="sd">        :rtype: str or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">QImage</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">scene</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">QImage</span><span class="o">.</span><span class="n">Format_ARGB32_Premultiplied</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">QImage</span><span class="p">(</span>
+                <span class="n">scene</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">scene</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span>
+                <span class="n">QImage</span><span class="o">.</span><span class="n">Format_ARGB32_Premultiplied</span>
+                <span class="p">)</span>
             <span class="n">painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
             <span class="n">scene</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
             <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
@@ -730,10 +755,15 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>  <span class="c1"># must be hwi run to write to mso</span>
             <span class="n">cocktail_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cocktail_csv_data</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">MsoWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.mso&#39;</span><span class="p">))</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mso_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span>  <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mso_file</span><span class="p">:</span>
+                <span class="c1"># newline=&#39;&#39; added for windows compatibility</span>
+                <span class="c1"># see https://stackoverflow.com/questions/3348460/csv-file-written-with-</span>
+                <span class="c1"># python-has-blank-lines-between-each-row</span>
                 <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">mso_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">)</span>
-                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">cocktail_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># header row</span>
+                <span class="n">first_line</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_line</span><span class="p">]</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cocktail_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">first_line</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cocktail_data</span><span class="p">:</span>
                     <span class="n">row</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="o">.</span><span class="n">row_formater</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
                     <span class="n">well_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -741,15 +771,138 @@
                     <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">well_num</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">image</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">:</span>
                         <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">human_class</span><span class="p">])</span>
+                        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">use_marco_classifications</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">:</span>
                         <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">])</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MSO_DICT</span><span class="p">[</span><span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
-                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div></div>
-            
+
+
+<div class="viewcode-block" id="MsoReader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoReader">[docs]</a><span class="k">class</span> <span class="nc">MsoReader</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;The MsoReader class is used to parse the content of mso formated</span>
+<span class="sd">    files and apply the image classifications stored in these files to</span>
+<span class="sd">    runs in Polo.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mso_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mso_path</span> <span class="o">=</span> <span class="n">mso_path</span>
+    
+    
+<div class="viewcode-block" id="MsoReader.read_mso_classification"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoReader.read_mso_classification">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_mso_classification</span><span class="p">(</span><span class="n">mso_classification</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper method to read and convert image classifications in a mso</span>
+<span class="sd">        file to MARCO image classifications. The exact conversion scheme is</span>
+<span class="sd">        layed out in the `REV_MSO_DICT`. Additionally, MarcoscopeJ will allow</span>
+<span class="sd">        images to have multiple classifications by assigning multiple</span>
+<span class="sd">        image codes seperated by &quot;-&quot;. If this is the case Polo takes the</span>
+<span class="sd">        classification corresponding to the mso code with the highest value.</span>
+
+<span class="sd">        :param mso_classification: Mso image classification code</span>
+<span class="sd">        :type mso_classification: str</span>
+<span class="sd">        :return: MARCO classification if code can be decoded, None otherwise</span>
+<span class="sd">        :rtype: str or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mso_classification</span> <span class="o">=</span> <span class="n">mso_classification</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+            <span class="n">mso_codes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">mso_classification</span> 
+                        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">in</span> <span class="n">REV_MSO_DICT</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mso_codes</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">REV_MSO_DICT</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">mso_codes</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># assume no mso classification if throws an error</span></div>
+
+<div class="viewcode-block" id="MsoReader.classify_images_from_mso_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoReader.classify_images_from_mso_file">[docs]</a>    <span class="k">def</span> <span class="nf">classify_images_from_mso_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Applies the image classifications stored in an mso file to a</span>
+<span class="sd">        collection of `Image` objects. Allows for some degree of compatability</span>
+<span class="sd">        with MarcoscopeJ and for users who have stored their image classifications</span>
+<span class="sd">        in the mso format. Additionally, human classification backups are</span>
+<span class="sd">        saved as mso files when Polo is closed as they take up much less</span>
+<span class="sd">        space than xtal files.</span>
+
+<span class="sd">        :param images: List of images to apply classifications to</span>
+<span class="sd">        :type images: list</span>
+<span class="sd">        :return: List of images with mso classifications applied,</span>
+<span class="sd">                 or Exception if this fails</span>
+<span class="sd">        :rtype: list or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mso_path</span><span class="p">))</span> <span class="k">as</span> <span class="n">mso</span><span class="p">:</span>
+                <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">mso</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+                <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>  <span class="c1"># skip first two header lines</span>
+                <span class="k">if</span> <span class="n">reader</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                        <span class="n">well_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="n">classification</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="o">.</span><span class="n">read_mso_classification</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">images</span><span class="p">[</span><span class="n">well_index</span><span class="p">]</span><span class="o">.</span><span class="n">human_class</span> <span class="o">=</span> <span class="n">classification</span>
+                        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                <span class="k">return</span> <span class="n">images</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div></div>
+
+<div class="viewcode-block" id="JsonWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.JsonWriter">[docs]</a><span class="k">class</span> <span class="nc">JsonWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Small class that can be used to serialize a run to a json formated file.</span>
+
+<span class="sd">    :param run: Run to write as a json file</span>
+<span class="sd">    :type run: Run or HWIRun</span>
+<span class="sd">    :param output_path: Path to write json file to</span>
+<span class="sd">    :type output_path: str or Path</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
+    
+<div class="viewcode-block" id="JsonWriter.json_encoder"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.JsonWriter.json_encoder">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">json_encoder</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;General purpose json encoder for encoding python objects. Very</span>
+<span class="sd">        similar to the encoder function </span>
+<span class="sd">        :func:`~polo.utils.io_utils.XtalWriter.json_encoder` except does not</span>
+<span class="sd">        include class and module information in the returned dictionary. If</span>
+<span class="sd">        the object cannot be converted to a dictionary it is returned as a</span>
+<span class="sd">        string.   </span>
+
+<span class="sd">        :param obj: Object to convert to dictionary</span>
+<span class="sd">        :type obj: obj</span>
+<span class="sd">        :return: dict or str</span>
+<span class="sd">        :rtype: dict or str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">):</span>  <span class="c1"># can send to dict object</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># not castable to dict</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>  <span class="c1"># likely the base64 encoded image</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>  <span class="c1"># if all else fails case to string</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+    
+<div class="viewcode-block" id="JsonWriter.write_json"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.JsonWriter.write_json">[docs]</a>    <span class="k">def</span> <span class="nf">write_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Write the run stored in the `run` attribute to a json file at</span>
+<span class="sd">        the location specified by the `output_path` attribute. If the file</span>
+<span class="sd">        is written successfully returns True otherwise returns an Exception.</span>
+
+<span class="sd">        :return: True or Exception</span>
+<span class="sd">        :rtype: bool, Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">clean_run</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+            <span class="n">json_content</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clean_run</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                                  <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">)</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">),</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+                <span class="n">json_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div></div>
+
 
 <div class="viewcode-block" id="XtalWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter">[docs]</a><span class="k">class</span> <span class="nc">XtalWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
     <span class="n">header_flag</span> <span class="o">=</span> <span class="s1">&#39;&lt;&gt;&#39;</span>  <span class="c1"># do not change unless very good reason</span>
@@ -763,8 +916,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xtal_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Creates the header for xtal file when called. Header lines are</span>
+        <span class="sd">&#39;&#39;&#39;Creates the header for an xtal file when called. Header lines are</span>
 <span class="sd">        indicated as such by the string in the header_line constant,</span>
 <span class="sd">        which should be &#39;&lt;&gt;&#39;. The last line of the header will be a row</span>
 <span class="sd">        of equal signs and then the actual json content begins on the</span>
@@ -783,15 +935,14 @@
 
 <div class="viewcode-block" id="XtalWriter.json_encoder"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.json_encoder">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">json_encoder</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Use instead of the defauly json encoder. If the encoded object</span>
-<span class="sd">        is from a module within Polo will include a module and class</span>
-<span class="sd">        identifier so it can be more easily deserialized when loaded</span>
-<span class="sd">        back into the program.</span>
+        <span class="sd">&#39;&#39;&#39;Use instead of the default json encoder when writing an xtal file. </span>
+<span class="sd">        If the encoded object is from a module within Polo will include a </span>
+<span class="sd">        module and class identifier so it can be more easily deserialized </span>
+<span class="sd">        when loaded back into the program.</span>
 
 <span class="sd">        :param: obj: An object to serialize to json.</span>
 
-<span class="sd">        :returns: A dictionary or string version of passed object</span>
+<span class="sd">        :returns: A dictionary or string version of the passed object</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">):</span>  <span class="c1"># can send to dict object</span>
@@ -806,9 +957,31 @@
                 <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>  <span class="c1"># if all else fails case to string</span>
         <span class="k">return</span> <span class="n">d</span></div>
 
+<div class="viewcode-block" id="XtalWriter.clean_run_for_save"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.clean_run_for_save">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">clean_run_for_save</span><span class="p">(</span><span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Remove circular references from the run passed through the `run`</span>
+<span class="sd">        argument to avoid issues when writing to json files.</span>
+
+<span class="sd">        :param run: Run to clean (remove circular references)</span>
+<span class="sd">        :type run: Run or HWIRun</span>
+<span class="sd">        :return: Run, free from circular references</span>
+<span class="sd">        :rtype: Run or HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
+                    <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="n">run</span></div>
+
 <div class="viewcode-block" id="XtalWriter.write_xtal_file_on_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.write_xtal_file_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">write_xtal_file_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper method around `write_xtal_file` that executes on a Qthread</span>
-<span class="sd">        instance to prevent freezing the GUI when saving large xtal files</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper method around :func:`~polo.utils.io_utils.XtalWriter.write_xtal_file` </span>
+<span class="sd">        that executes on a `QuickThread` instance to prevent freezing the </span>
+<span class="sd">        GUI when saving large xtal files</span>
 
 <span class="sd">        :param output_path: Path to xtal file</span>
 <span class="sd">        :type output_path: str</span>
@@ -831,7 +1004,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Save to failed. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="n">XtalWriter</span><span class="o">.</span><span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+        <span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="XtalWriter.write_xtal_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.write_xtal_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_xtal_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Method to serialize run object to xtal file format.</span>
@@ -858,23 +1031,6 @@
                         <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
                     <span class="k">return</span> <span class="n">e</span></div>
 
-<div class="viewcode-block" id="XtalWriter.clean_run_for_save"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.clean_run_for_save">[docs]</a>    <span class="k">def</span> <span class="nf">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Remove circular references from a Run instance to avoid errors</span>
-<span class="sd">        when serializing using json. Uses the run stored in the run attribute</span>
-
-<span class="sd">        :return: The cleaned run</span>
-<span class="sd">        :rtype: Run</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">next_run</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
-                    <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">next_image</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-                    <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span></div>
-
 <div class="viewcode-block" id="XtalWriter.run_to_dict"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.run_to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">run_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a json string from the run stored in the run attribute.</span>
 
@@ -883,12 +1039,11 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clean_run_for_save</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">clean_run</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+                <span class="n">clean_run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clean_run</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                                   <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">)</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">,</span>
-                    <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to encode </span><span class="si">{}</span><span class="s1"> to dict. Gave </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">e</span></div></div>
@@ -926,7 +1081,6 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">string</span></div>
             
-
 <div class="viewcode-block" id="RunDeserializer.dict_to_obj"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.dict_to_obj">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">dict_to_obj</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Opposite of the obj_to_dict method in XtalWriter class, this method</span>
@@ -952,7 +1106,7 @@
                     <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># deal with object properties</span>
                         <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">elif</span> <span class="s1">&#39;_&#39;</span> <span class="o">==</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
                     <span class="n">temp_d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
                 <span class="n">obj</span> <span class="o">=</span> <span class="n">class_</span><span class="p">(</span><span class="o">**</span><span class="n">temp_d</span><span class="p">)</span>
 
@@ -1012,7 +1166,8 @@
                 <span class="n">xtal_path</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xtal_path&#39;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">xtal_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)):</span>
+            <span class="n">xtal_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">):</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_data</span><span class="p">:</span>
                     <span class="n">header_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_header_reader</span><span class="p">(</span>
                         <span class="n">xtal_data</span><span class="p">)</span>  <span class="c1"># must read header first</span>
@@ -1046,24 +1201,21 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># 13.33 x 7.5 </span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">included_attributes</span><span class="o">=</span><span class="p">{},</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span>
                  <span class="n">image_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">included_attributes</span> <span class="o">=</span> <span class="n">included_attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">human</span> <span class="o">=</span> <span class="n">human</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">marco</span> <span class="o">=</span> <span class="n">marco</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="n">favorite</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span> <span class="o">=</span> <span class="n">image_types</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">=</span> <span class="mi">10</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">=</span> <span class="mi">6</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span>
+    
 <div class="viewcode-block" id="PptxWriter.delete_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">delete_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a new clean presentation.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PptxWriter.delete_temp_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_temp_images">[docs]</a>    <span class="k">def</span> <span class="nf">delete_temp_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Delete an temporary images used to create the pptx presentation.</span>
@@ -1072,7 +1224,7 @@
 <span class="sd">        :rtype: bool or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span><span class="p">]</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">e</span></div>
@@ -1122,76 +1274,82 @@
         <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
             <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
 
-        <span class="k">if</span> <span class="n">visible</span> <span class="ow">or</span> <span class="n">other</span><span class="p">:</span>
-            <span class="n">show_all_dates</span><span class="p">,</span> <span class="n">show_single_image</span><span class="p">,</span> <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">visible</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visible</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">visible</span> <span class="ow">or</span> <span class="n">other</span><span class="p">:</span>
+                <span class="n">show_all_dates</span><span class="p">,</span> <span class="n">show_single_image</span><span class="p">,</span> <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">visible</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">visible</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">show_single_image</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">other</span><span class="p">:</span>
+                    <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">show_all_dates</span> <span class="ow">or</span> <span class="n">show_single_image</span><span class="p">:</span>
+                    <span class="n">rep_run</span> <span class="o">=</span> <span class="n">visible</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">show_single_image</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="n">other</span><span class="p">:</span>
-                <span class="n">show_alt_specs</span> <span class="o">=</span> <span class="kc">True</span>
-
-            <span class="k">if</span> <span class="n">show_all_dates</span> <span class="ow">or</span> <span class="n">show_single_image</span><span class="p">:</span>
-                <span class="n">rep_run</span> <span class="o">=</span> <span class="n">visible</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">rep_run</span> <span class="o">=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">visible</span><span class="p">],</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">show_single_image</span><span class="p">:</span>
+                        <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cocktail_data</span><span class="p">:</span>
+                            <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+                    
+                    <span class="k">if</span> <span class="n">show_alt_specs</span><span class="p">:</span>
+                        <span class="n">well_number</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_spectrum_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">other</span><span class="p">],</span> <span class="n">well_number</span><span class="p">)</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">True</span>
+                    
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rep_run</span> <span class="o">=</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div>
+        
+
+<div class="viewcode-block" id="PptxWriter.make_single_run_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_single_run_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_single_run_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                     <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                     <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+            <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
+                <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
             
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">visible</span><span class="p">],</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">show_single_image</span><span class="p">:</span>
-                    <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cocktail_data</span><span class="p">:</span>
-                        <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
-                    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span><span class="n">rep_run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
-                
-                <span class="k">if</span> <span class="n">show_alt_specs</span><span class="p">:</span>
-                    <span class="n">well_number</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_spectrum_slide</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">other</span><span class="p">],</span> <span class="n">well_number</span><span class="p">)</span>
+            <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
+                    <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
+                        <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span>
+                        <span class="n">image</span><span class="p">,</span> 
+                        <span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+                        <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">all_specs</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_spectrum_slide</span><span class="p">(</span>
+                            <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">all_dates</span> <span class="ow">and</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="ow">or</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
+
+
             
-            <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span>
-
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
-                
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
-        
-
-<div class="viewcode-block" id="PptxWriter.make_single_run_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_single_run_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_single_run_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a pptx presentation from a single run.</span>
-
-<span class="sd">        :param run: Run to create the presentation from</span>
-<span class="sd">        :type run: Run or HWIRun</span>
-<span class="sd">        :param title: Title of the presentation</span>
-<span class="sd">        :type title: str</span>
-<span class="sd">        :param subtitle: Subtitle of the presentation, defaults to None</span>
-<span class="sd">        :type subtitle: str, optional</span>
-<span class="sd">        :param cocktail_data: Include cocktail data if True, defaults to True</span>
-<span class="sd">        :type cocktail_data: bool, optional</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
-        <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
-            <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
-        
-        <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
-        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
-                <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
-                    <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span>
-                    <span class="n">image</span><span class="p">,</span> 
-                    <span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
-                    <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-                    <span class="p">)</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span></div>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">e</span></div>
                 
     
 <div class="viewcode-block" id="PptxWriter.add_classification_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_classification_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_classification_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span> <span class="n">rep_image</span><span class="p">):</span>
@@ -1213,19 +1371,12 @@
             <span class="p">[</span><span class="n">rep_image</span><span class="o">.</span><span class="n">human_class</span><span class="p">,</span> <span class="n">rep_image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">]</span>
         <span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_table_to_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_table_to_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
         <span class="c1"># do for most recent human classification image if it exits</span>
 
 <div class="viewcode-block" id="PptxWriter.add_new_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_new_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds a new slide to the current presentation.</span>
-
-<span class="sd">        :param template: Slide template number, defaults to 5</span>
-<span class="sd">        :type template: int, optional</span>
-<span class="sd">        :return: New slide</span>
-<span class="sd">        :rtype: slide</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
     
 <div class="viewcode-block" id="PptxWriter.add_timeline_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_timeline_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_timeline_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a timeline (time resolved) slide that</span>
@@ -1299,13 +1450,13 @@
         <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">max</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
         <span class="n">shapes</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span>
         
-        <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
-        <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">-</span> <span class="mi">2</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">shapes</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> 
                                  <span class="n">Inches</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
-            <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_size</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">cols</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slide_size</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">cols</span>
             <span class="c1"># set column width</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
@@ -1325,11 +1476,11 @@
 <span class="sd">        :return: slide with images added</span>
 <span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="n">img_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">img_size</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span><span class="p">:</span> <span class="n">img_size</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="mf">2.5</span>
+        <span class="n">img_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_size</span> <span class="o">&gt;=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span><span class="p">:</span> <span class="n">img_size</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span>
 
-        <span class="n">left</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.2</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.2</span>
 
         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
@@ -1337,7 +1488,7 @@
             <span class="p">)</span>
             <span class="n">label_text</span> <span class="o">=</span> <span class="n">labeler</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
-                <span class="n">slide</span><span class="p">,</span> <span class="n">label_text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">img_size</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> 
+                <span class="n">slide</span><span class="p">,</span> <span class="n">label_text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">img_size</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> 
                 <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
             <span class="n">left</span> <span class="o">+=</span> <span class="n">img_size</span>
         <span class="k">return</span> <span class="n">slide</span></div>
@@ -1360,15 +1511,15 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
-        <span class="n">img_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">*</span> <span class="n">img_scaler</span>
+        <span class="n">img_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">*</span> <span class="n">img_scaler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
-            <span class="n">image</span><span class="p">,</span> <span class="n">new_slide</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
+            <span class="n">image</span><span class="p">,</span> <span class="n">new_slide</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
-            <span class="n">metadata_offset</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">+</span> <span class="n">img_size</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
-            <span class="n">metadata_left</span> <span class="o">=</span> <span class="n">img_size</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">metadata_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_width</span> <span class="o">-</span> <span class="n">metadata_left</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
-            <span class="n">metadata_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slide_height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bumper</span>
+            <span class="n">metadata_offset</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">+</span> <span class="n">img_size</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span>
+            <span class="n">metadata_left</span> <span class="o">=</span> <span class="n">img_size</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">metadata_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">-</span> <span class="n">metadata_left</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span>
+            <span class="n">metadata_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
                 <span class="n">new_slide</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">metadata_left</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">metadata_width</span><span class="p">,</span>
                 <span class="n">metadata_height</span><span class="p">)</span>
@@ -1437,7 +1588,7 @@
             <span class="n">temp_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">))))</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
                 <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">decodebytes</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">bites</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__temp_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
             <span class="n">img_path</span> <span class="o">=</span> <span class="n">temp_path</span>
         
         <span class="k">return</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">add_picture</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> 
@@ -1453,7 +1604,7 @@
 <span class="sd">        :param cocktail_dir: Directory containing cocktail menu csv files</span>
 <span class="sd">        :type cocktail_dir: str or Path</span>
 <span class="sd">        :param cocktail_meta: Path to cocktail metadata file which describes the contents of</span>
-<span class="sd">        each cocktail menu csv file</span>
+<span class="sd">                              each cocktail menu csv file</span>
 <span class="sd">        :type cocktail_meta: Path or str</span>
 
 <span class="sd">        Cocktail metadata file should be a csv file with the following</span>
@@ -1474,10 +1625,10 @@
 
 <div class="viewcode-block" id="BarTender.datetime_converter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.datetime_converter">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">datetime_converter</span><span class="p">(</span><span class="n">date_string</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;General utility function for converting strings to datetime objects..units</span>
-<span class="sd">            Attempts to convert the string by trying a couple of datetime.units</span>
-<span class="sd">            formats that are common in cocktail menu files and other.units</span>
-<span class="sd">            locations in the HWI file universe Polo runs across.</span>
+        <span class="sd">&#39;&#39;&#39;General utility function for converting strings to datetime objects.</span>
+<span class="sd">        Attempts to convert the string by trying a couple of datetime</span>
+<span class="sd">        formats that are common in cocktail menu files and other</span>
+<span class="sd">        locations in the HWI file universe Polo runs across.</span>
 
 <span class="sd">        :param date_string: string to convert to datetime</span>
 <span class="sd">        :type date_string: str</span>
@@ -1495,18 +1646,20 @@
 
 <div class="viewcode-block" id="BarTender.date_range_parser"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.date_range_parser">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">date_range_parser</span><span class="p">(</span><span class="n">date_range_string</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Utility function for converting the date ranges in the cocktail.units</span>
-<span class="sd">            metadata csv file to datetime objects using the `datetime_converter`</span>
-<span class="sd">            classmethod.</span>
+        <span class="sd">&#39;&#39;&#39;Utility function for converting the date ranges in the cocktail</span>
+<span class="sd">        metadata csv file to datetime objects using the `datetime_converter`</span>
+<span class="sd">        function.</span>
 
-<span class="sd">            Date ranges should have the format</span>
+<span class="sd">        Date ranges should have the format</span>
 
-<span class="sd">            start date - end date</span>
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            &#39;start date - end date&#39;</span>
 
 <span class="sd">            If the date range is for the most recent cocktail menu then there</span>
 <span class="sd">            will not be an end date and the format will be</span>
 
-<span class="sd">            start date - </span>
+<span class="sd">            &#39;start date - &#39;</span>
 
 <span class="sd">        :param date_range_string: string to pull dates out of   </span>
 <span class="sd">        :type date_range_string: str</span>
@@ -1522,7 +1675,8 @@
         <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="BarTender.add_menus_from_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.add_menus_from_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_menus_from_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds menu objects to the menus attribute.&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;Adds menu objects to the `menus` attribute by reading the cocktail</span>
+<span class="sd">        csv files included in the `COCKTAIL_DATA_PATH` directory.&#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_meta</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktail_meta</span><span class="p">))</span> <span class="k">as</span> <span class="n">menu_files</span><span class="p">:</span>
                 <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">menu_files</span><span class="p">)</span>
@@ -1591,6 +1745,16 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="BarTender.get_menu_by_basename"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_basename">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Uses the basename of a mene file path to return a `Menu` object.</span>
+<span class="sd">        Useful for retrieving menus based on the text of comboBoxes since</span>
+<span class="sd">        when menus are displayed to the user only the basename is used.</span>
+
+<span class="sd">        :param basename: Basename of a cocktail menu file path</span>
+<span class="sd">        :type basename: str</span>
+<span class="sd">        :return: Menu instance who&#39;s basename matches the `basename` argument,</span>
+<span class="sd">                returns None is no menu is found</span>
+<span class="sd">        :rtype: Menu or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">menu_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">:</span>  <span class="c1"># self.menus is dictionary</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu_key</span><span class="p">)</span> <span class="o">==</span> <span class="n">basename</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">menu_key</span><span class="p">]</span></div></div>
@@ -1634,7 +1798,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_file_path</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">menu_file_path</span> <span class="o">=</span> <span class="n">menu_file_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delim</span> <span class="o">=</span> <span class="n">delim</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__row_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="CocktailMenuReader.set_cocktail_map"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.CocktailMenuReader.set_cocktail_map">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_cocktail_map</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
@@ -1730,14 +1894,15 @@
 
 <div class="viewcode-block" id="RunLinker.the_big_link"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.the_big_link">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">the_big_link</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Wrapper method around :func:`~polo.utils.io_utils.link_runs_by_date`, </span>
-<span class="sd">        :func:`~polo.utils.io_utils.link_runs_by_spectrum` and </span>
-<span class="sd">        :func:`~polo.utils.io_utils.unlink_runs_completely`. Runs are first unlinked</span>
-<span class="sd">        from each other first and then relinked.</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper method to do all the linking required for a collection of</span>
+<span class="sd">        runs. First calls :func`~polo.utils.io_utils.RunLinker.unlink_runs_completely`</span>
+<span class="sd">        to separate any existing links so things do not get tangled. Then </span>
+<span class="sd">        calls :func`~polo.utils.io_utils.RunLinker.link_runs_by_date` and</span>
+<span class="sd">        :func:`~polo.utils.io_utils.RunLinker.link_runs_by_spectrum`.</span>
 
-<span class="sd">        :param runs: List of runs to link together</span>
+<span class="sd">        :param runs: List of runs to link</span>
 <span class="sd">        :type runs: list</span>
-<span class="sd">        :return: List or runs after linking</span>
+<span class="sd">        :return: List of runs with links made</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">runs</span> <span class="o">=</span> <span class="n">RunLinker</span><span class="o">.</span><span class="n">unlink_runs_completely</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
@@ -1748,34 +1913,17 @@
 
 <div class="viewcode-block" id="RunLinker.link_runs_by_date"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.link_runs_by_date">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">link_runs_by_date</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Link a collection of runs by date into a linked list structure.</span>
-<span class="sd">        Only runs that are marked as visible (run&#39;s `image_spectrum` == &#39;Visible&#39;)</span>
-<span class="sd">        are linked by date. Linked list is bidirectional and the `next_run` and</span>
-<span class="sd">        `previous_run` attributes act as the forwards and backwards pointers. The</span>
-<span class="sd">        returned list of runs will also include non-visible runs that were not</span>
-<span class="sd">        linked together; no runs will be lost from the linking.</span>
-
-<span class="sd">        :param runs: List of runs to link together by date</span>
-<span class="sd">        :type runs: list</span>
-<span class="sd">        :return: List or runs linked by date</span>
-<span class="sd">        :rtype: list</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s1">&#39;link_to_next_date&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="n">sorted_runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="c1"># need to seperate out the runs that can be linked and not</span>
+        <span class="n">linkable_runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">runs</span> 
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;link_to_next_date&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">linkable_runs</span><span class="p">:</span>
+            <span class="n">linkable_runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>  <span class="c1"># sort by date</span>
             <span class="n">runs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-        <span class="c1"># only visible runs liked by date</span>
-        <span class="k">if</span> <span class="n">sorted_runs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># if length is only one will be linked to self</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">sorted_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sorted_runs</span><span class="p">)))</span></div>
-        <span class="c1"># sorted_runs will not contain non-visible runs so need to merge the</span>
-        <span class="c1"># linked visible runs with the non-visible runs in a way that does</span>
-        <span class="c1"># not create duplicates</span>
+            <span class="k">if</span> <span class="n">linkable_runs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">linkable_runs</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">linkable_runs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">linkable_runs</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">linkable_runs</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">runs</span></div>
 
 <div class="viewcode-block" id="RunLinker.link_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.link_runs_by_spectrum">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">link_runs_by_spectrum</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
@@ -1791,13 +1939,9 @@
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># for now this links all runs of the sample to the alt spectrums when</span>
-        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s1">&#39;link_to_alt_spectrum&#39;</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">linkable_runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">runs</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s1">&#39;link_to_alt_spectrum&#39;</span><span class="p">)]</span>
         <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">linkable_runs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># visible images only</span>
                 <span class="n">visible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1814,14 +1958,6 @@
                     <span class="n">run</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># link to first run of alts</span>
         <span class="k">return</span> <span class="n">runs</span></div>
 
-            <span class="c1"># setting up the linked list structure</span>
-            <span class="c1"># all alt spectrum (non visible) runs get linked together in a</span>
-            <span class="c1"># circular linked list. Visible runs then point at the one</span>
-            <span class="c1"># alt spectrum run. When a run is loaded in if it is in the visible</span>
-            <span class="c1"># spectrum the visible run is temprorarly inserted into the alt</span>
-            <span class="c1"># spec linked list and reconnected. If a new visible run is selected</span>
-            <span class="c1"># the current visible run in the linked list is replaced with the</span>
-            <span class="c1"># new current run</span>
 <div class="viewcode-block" id="RunLinker.unlink_runs_completely"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.unlink_runs_completely">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">unlink_runs_completely</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Cuts all links between runs and the images in those runs.</span>
@@ -1970,14 +2106,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span>
 
     <span class="nd">@cocktails</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_cocktails</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">new_cocktails</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">new_cocktails</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span> <span class="o">=</span> <span class="n">new_cocktails</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">:</span>
@@ -1987,14 +2123,9 @@
     
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+    
 
 
-
-
-<div class="viewcode-block" id="BulkImporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BulkImporter">[docs]</a><span class="k">class</span> <span class="nc">BulkImporter</span><span class="p">():</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span> <span class="o">=</span> <span class="n">image_dir</span></div>
 
     <span class="c1"># or potentially use a file browser to do this one and put it in a wdiget</span>
 
@@ -2149,19 +2280,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2172,6 +2295,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

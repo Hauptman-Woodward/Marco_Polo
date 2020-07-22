@@ -201,6 +201,21 @@ class RunOrganizer(QtWidgets.QWidget):
     
     
     def _check_for_existing_backup(self, run):
+        '''Check the directory specified by the `BACKUP_DIR` constant for
+        a backup mso file that matches the run passed through the `run`
+        argument. Run's are matched to mso backups by their run name so it
+        the user has renamed their run after the backup is saved it will not
+        be found.
+
+        See :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
+        for details on how the mso files are written.
+
+        :param run: Run to search for mso backup with
+        :type run: HWIRun
+        :return: Path to mso backup if one exists that matches the `run`, else
+                return None
+        :rtype: str or None
+        '''
         backups = list_dir_abs(str(BACKUP_DIR))
         if backups:
             for each_backup in backups:
@@ -253,10 +268,16 @@ class RunOrganizer(QtWidgets.QWidget):
                         linked_spectrums[0].link_to_alt_spectrum(linked_spectrums[-1])
 
     def backup_classifications_on_thread(self, run):
-        '''Write an MSO backup of all human classifications. Don't
-        really care as much about MARCO classifications becuase its
-        easy to rerun those.
+        '''Does the exact same thing as 
+        :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
+        except excutes the job on a `QuickThread` instance to avoid slow
+        computers complaining about the GUI being frozen. This has been
+        especially prevelant on Windows machines.
+
+        :param run: Run to save as mso file
+        :type run: HWIRun
         '''
+
         write_path = BACKUP_DIR.joinpath(run.run_name)
 
         def finished_backup():
@@ -271,6 +292,23 @@ class RunOrganizer(QtWidgets.QWidget):
         self.backup_thread.finished.connect(finished_backup)
     
     def backup_classifications(self, run):
+        '''Write the human classifications of the images in the `run` argument
+        to an mso file and store it in the directory specified by the
+        `BACKUP_DIR` constant. Does not store MARCO classifications because
+        these can be much more easily recreated than human classifications.
+        Additionally, when a run is loaded back in and a backup mso exists
+        for it Polo assumes the classifications in that mso file are human
+        classifications.
+
+        Currently only HWIRuns can be written as mso files because of mso's
+        integration with cocktail data and well assignments. Need a different
+        format for non-HWI runs that would map filenames to classifications
+        and ignore cocktail data / well assignments.
+
+        :param run: Run to backup human classifications
+        :type run: HWIRun
+        '''
+
         write_path = BACKUP_DIR.joinpath(run.run_name)
         writer = MsoWriter(run, write_path)
         writer.write_mso_file(use_marco_classifications=False)

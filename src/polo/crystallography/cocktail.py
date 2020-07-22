@@ -7,24 +7,23 @@ from polo import *
 
 
 class Cocktail():
-    '''Cocktail instances are used to hold a collection of reagents
-    that form one chemical cocktail screen. Also hold metadata including
-    their commercial code if one exists, the cocktail pH and the
+    '''Cocktail instances are used to hold a collection of `Reagents`
+    that form one chemical cocktail. Cocktails also hold other metadata including
+    their commercial code, the cocktail pH and the
     well they are assigned to. Currently, cocktails are only supported
-    for HWIRuns.
+    for HWIRuns. 
 
     :param number: The cocktail number, defaults to None
     :type number: str, optional
-    :param well_assignment: Well number in plate this cocktail belongs to, \
-        defaults to None
+    :param well_assignment: Well number in the screening plate this
+                            cocktail belongs to, defaults to None
     :type well_assignment: int, optional
-    :param commercial_code: Commercial code of cocktail if supplied by \
-        third party, defaults to None
+    :param commercial_code: Commercial code of cocktail, defaults to None
     :type commercial_code: str, optional
-    :param pH: pH of cocktail, defaults to None
+    :param pH: pH of the cocktail, defaults to None
     :type pH: float, optional
-    :param reagents: list of reagent instances that make up the contents \
-        of the cocktail instance, defaults to None
+    :param reagents: list of reagent instances that make up the contents
+        of the cocktail, defaults to None
     :type reagents: Reagent, optional
     '''
 
@@ -40,7 +39,7 @@ class Cocktail():
     def cocktail_index(self):
         '''Attempt to pull out the cocktail number from the cocktail number
         string. Dependent on consistent formating between cocktail menus that
-        I have not currently varrified.
+        I have not checked at this time.
 
         :return: cocktail number
         :rtype: int
@@ -125,18 +124,21 @@ class Cocktail():
 
 
 class Reagent():
-    '''Reagent instances represent one specific kind of chemical compound
-    used in a screening cocktail. 
+    '''Reagent instances represent one specific kind of chemical compound at
+    a specific concentration. Multiple reagents make up a cocktail. Reagents
+    are generally created from the contents of HWI cocktail csv files which
+    describe all 1536 cocktails and the reagents that compose them in one file.
+    The cocktail csv files can be found in the `data` directory.
 
-    :param chemical_additive: Name of the reagent chemical,
+    :param chemical_additive: Name of the chemical reagent,
                                 defaults to None
     :type chemical_additive: str, optional
-    :param concentration: Concentration of the reagent in a given well,
+    :param concentration: Concentration of the reagent,
                             defaults to None
     :type concentration: UnitValue, optional
     :param chemical_formula: Chemical formula for this reagent, defaults
                                 to None
-    :type chemical_formula: str, optional
+    :type chemical_formula: Formula, optional
     :param stock_con: Concentration of this reagent's stock solution,
                         defaults to None
     :type stock_con: UnitValue, optional
@@ -154,11 +156,13 @@ class Reagent():
 
     @property
     def chemical_formula(self):
-        '''Return the current chemical formula for this Reagent. It is not
-        certain that a reagent will have a chemical formula.
+        '''Return the current chemical formula for this Reagent. Not all
+        reagents have available chemical formulas as cocktail csv files do not
+        include formulas for all reagents. See the setter method for more details
+        on how chemical formulas are converted from strings to `Formula` objects.
 
         :return: Chemical formula
-        :rtype: molmass.Formula
+        :rtype: Formula
         '''
         return self._chemical_formula
 
@@ -190,7 +194,7 @@ class Reagent():
     @property
     def concentration(self):
         '''Return the current concentration for this reagent. Concentration
-        utimately refers back to a condition in a specific screening well.
+        ultimately refers back to a condition in a specific screening well.
 
         :return: Chemical concentration
         :rtype: UnitValue
@@ -214,12 +218,20 @@ class Reagent():
     @property
     def molarity(self):
         '''Attempt to calculate the molarity of this reagent at its current
-        concentration. This calculation is not certain to return a molarity
-        because HWI cocktail menu files use a variety of units to describe
-        chemical concentrations, including %w/v or %v/v. Currently, Polo is
-        not able to convert %v/v units to molarity as it would require knowing
-        both the molar mass of the reagent and its density. If the reagent
-        concentration cannot be converted to mols / liter then returns false.
+        concentration. This calculation is not certain to return a value
+        as HWI cocktail menu files use a variety of units to describe
+        chemical concentrations, including %w/v or %v/v.
+
+        %w/v is defined as grams of colute per 100 ml of solution * 100. This can
+        be converted to molarity when the molar mass of the reagent is known.
+
+        %v/v is defined as the volume of solute over the total volume of solution
+        * 100. The density of the reagent is required to convert %w/v to molarity
+        which is not included in HWI cocktail menu files. This makes conversion
+        from %w/v out of reach for now.
+        
+        If the reagent concentration cannot be converted to molarity then
+        this function will return False.
 
         :return: molarity or False
         :rtype: UnitValue or Bool
@@ -236,11 +248,11 @@ class Reagent():
     @property
     def molar_mass(self):
         '''Attempt to calculate the molar mass of this reagent. Closely related
-        to the molarity property. See its docstring for why this is not always
-        possible. Return False if cannot be calculated.
-
-        :return: Molarity or False
-        :rtype: UnitValue or False
+        to the molarity property. The molar mass of the reagent cannot be
+        calculated for all HWI reagents. 
+      
+        :return: Molar mass of the reagent if it is calculable, False otherwise.
+        :rtype: UnitValue or bool
         '''
         mm = None
         if isinstance(self.chemical_formula, Formula):
@@ -253,7 +265,7 @@ class Reagent():
         return False
 
     def peg_parser(self, peg_string):
-        '''Attempts to pull out a molar mass from a chemical name since the
+        '''Attempts to pull out a molar mass from a PEG species since the
         molar mass is often included in the name of PEG species. A string is
         considered to be a potential PEG species if it contains 'PEG' or
         'Polyethylene glycol' in it.
@@ -275,8 +287,8 @@ class Reagent():
     def stock_volume(self, target_volume):  # stock con must be in molarity
         '''Attempt to calculate the required amount of stock solution to
         produce the reagent's set concentration in the given target_volume.
-        Stock concentration is taken from the stock_con attribute. If
-        stock_con is not set or the molarity of the reagent can not be
+        Stock concentration is taken from the `stock_con` attribute. If
+        `stock_con` is not set or the molarity of the reagent can not be
         calculated this method will return False.
 
         :param target_volume: Volume in which stock will be diluted into

@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../index.html">Docs</a> &raquo;</li>
         
           <li><a href="index.html">Module code</a> &raquo;</li>
         
@@ -176,6 +173,13 @@
 <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">UNRAR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>
 <span class="n">TEMP_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;polo/.tmp&#39;</span><span class="p">)</span>
+<span class="n">BACKUP_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;polo/.backups&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="p">)):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">BACKUP_DIR</span><span class="p">)):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">BACKUP_DIR</span><span class="p">))</span>
 
 <span class="n">COCKTAIL_DATA_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_data&#39;</span><span class="p">)</span>
 <span class="n">COCKTAIL_META_DATA</span> <span class="o">=</span> <span class="n">COCKTAIL_DATA_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;cocktail_meta.csv&#39;</span><span class="p">)</span>
@@ -236,6 +240,15 @@
     <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># clear</span>
     <span class="c1">#IMAGE_CLASSIFICATIONS[3]: 5,   # garbage</span>
     <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="mi">0</span>    <span class="c1"># unsure</span>
+<span class="p">}</span>
+<span class="n">REV_MSO_DICT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">90</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># xtal</span>
+    <span class="mi">60</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="c1"># skin</span>
+    <span class="mi">50</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># precipitate</span>
+    <span class="mi">25</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># phase</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># clear</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>   <span class="c1"># garbage</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>   <span class="c1"># unsure</span>
 <span class="p">}</span>
 
 
@@ -314,19 +327,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -337,6 +342,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

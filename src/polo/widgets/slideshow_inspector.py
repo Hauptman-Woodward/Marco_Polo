@@ -17,7 +17,19 @@ logger = make_default_logger(__name__)
 
 
 class slideshowInspector(QtWidgets.QWidget):
+    '''The slideshowInspector widget is a primary run interface that allows
+    users to view their screening images in a standard slideshow format. If
+    multiple imaging runs of the sample sample exist it also allows the user to
+    navigate between or simultaneously view these images.
+
+    :param parent: Parent widget
+    :type parent: QtWidget
+    :param run: Run to show to the user, defaults to None
+    :type run: Run or HWIRun, optional
+
+    '''
     def __init__(self, parent, run=None):
+
         super(slideshowInspector, self).__init__(parent)
         self.ui = Ui_slideshowInspector()
         self.ui.setupUi(self)
@@ -96,7 +108,7 @@ class slideshowInspector(QtWidgets.QWidget):
     def sort_images_by_cocktail_number(images):
         '''Helper method that sorts a collection of images by their
         cocktail number. Returns False if the images cannot be sorted
-        by their cocktail number.
+        by this parameter.
 
         :param images: List of images to be sorted
         :type images: list
@@ -136,9 +148,8 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @run.setter
     def run(self, new_run):
-        '''
-        Setter method for __run attribute. Sets __run to `new run` and sets
-        up for displaying the first image.
+        '''Setter method for `_run` attribute. Sets `_run` to `new run` and
+        sets up the interface for displaying images.
         '''
         self._run = new_run
         self.ui.slideshowViewer.run = new_run
@@ -149,12 +160,13 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @property
     def selected_classifications(self):
+        '''Returns image classification keywords for any image classification
+        checkboxes that are checked.
+
+        :return: List of selected images classifications
+        :rtype: list
         '''
-        Returns image classification keywords for any image classification
-        checkboxes that are checked. Used for filtering images down. If no
-        image classifications are selected assume user wants images of all
-        classifications and return the IMAGE_CLASSIFICATIONS constant
-        '''
+
         selected_classes = []
         for each_checkbox in self.class_checkboxs:
             if each_checkbox.isChecked():
@@ -163,27 +175,49 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @property
     def human(self):
-        '''Human image classifier boolean'''
+        '''State of the human classifier checkbox. If True, assume the user
+        wants their selected image classifications to be in reference to image's
+        human classification.
+
+        :return: State of the checkbox
+        :rtype: bool
+        '''
         return self.ui.checkBox_5.isChecked()
 
     @property
     def favorites(self):
+        '''Returns the state of the favorite checkbox.
+
+        :return: Favorite checkbox state
+        :rtype: bool
+        '''
         return self.ui.checkBox_8.isChecked()
 
     @property
     def marco(self):
-        '''Marco image classifier boolean'''
+        '''State of the MARCO classifier checkbox. If True, assume the user
+        wants their selected image classifications to be in reference to image's
+        MARCO classification.
+
+        :return: State of the checkbox
+        :rtype: bool
+        '''
         return self.ui.checkBox_6.isChecked()
 
     @property
     def current_image(self):
-        '''Current Image object being displayed in the slideshowViewer widget'''
+        '''Current `Image` object being displayed in the `slideshowViewer`
+        widget.
+
+        :return: The current image 
+        :rtype: Image
+        '''
         return self.ui.slideshowViewer.current_image
 
     @property
     def current_sort_function(self):
         '''Return a function to use for image sorting based on current user
-        radiobutton selections.
+        radiobutton sort selections.
 
         :return: Sort function
         :rtype: func
@@ -224,7 +258,7 @@ class slideshowInspector(QtWidgets.QWidget):
     def _set_classification_button_labels(self):
         '''Private method that sets the labels of image classification
         buttons based on the `IMAGE_CLASSIFICATIONS` constant. Should be called
-        in the `__init__` function.
+        in the `__init__` method.
         '''
 
         for each_butt, img_class in zip(self.class_buttons,
@@ -234,7 +268,7 @@ class slideshowInspector(QtWidgets.QWidget):
     def _set_image_class_checkbox_labels(self):
         '''Private method to the checkbox labels for imaging filtering
         from the `IMAGE_CLASSIFICATIONS` constant. Should be called in
-        the `__init__` function.
+        the `__init__` method.
         '''
         for each_checkbox, im_cls in zip(self.class_checkboxs, IMAGE_CLASSIFICATIONS):
             each_checkbox.setText(im_cls)
@@ -252,6 +286,9 @@ class slideshowInspector(QtWidgets.QWidget):
         '''Private method that sets the value of the favorite checkbox based
         on whether the current image is marked as a favorite or not.
         Should be used when loading an image into the view.
+
+        An image is considered a favorite if it's `favorite` attribute ==
+        True.
         '''
         if self.current_image and self.current_image.favorite:
             self.ui.checkBox_7.setChecked(True)
@@ -283,9 +320,11 @@ class slideshowInspector(QtWidgets.QWidget):
         '''Private method to control the carousel using boolean flags. Calls 
         :func:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.
 
-        :param next_image: If True navigates to next image in carousel, defaults to False
+        :param next_image: If True navigates to next image in carousel, 
+                           defaults to False
         :type next_image: bool, optional
-        :param prev_image: If True navigates to previous image in carousel, defaults to False
+        :param prev_image: If True navigates to previous image in carousel,
+                           defaults to False
         :type prev_image: bool, optional
         '''
 
@@ -293,9 +332,9 @@ class slideshowInspector(QtWidgets.QWidget):
         self._display_current_image()
 
     def _display_current_image(self):
-        '''Displays the current image as determined by the `current_image`
-        attribute of the slideshowViewer widget and populates any widgets
-        that display current image metadata.
+        '''Private method that displays the current image as 
+        determined by the `current_image` attribute of the `slideshowViewer`
+        widget and populates any widgets that display current image metadata.
         '''
         self.ui.slideshowViewer.display_current_image()
         self.ui.textBrowser_2.setText(
@@ -349,8 +388,11 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.label_2.setText(os.path.basename(str(ci.path)))
 
     def _set_time_resolved_functions(self):
-        '''Turns time resolved functions on or off depending on contents
-        of the run stored in the `_run` attribute.
+        '''PRivate method that turns time resolved functions on or off 
+        depending on contents of the run stored in the `_run` attribute. Time
+        resolved functions are enabled when the `_run` is part of a time
+        resolved linked list. This means another `Run` instance is stored in
+        it's `next_run` and / or `previous_run` attributes.
         '''
 
         if self.current_image:
@@ -369,7 +411,10 @@ class slideshowInspector(QtWidgets.QWidget):
 
     def _set_alt_spectrum_buttons(self):
         '''Turns alt spectrum functions on or off depending on contents
-        of the run stored in the `_run` attribute.
+        of the run stored in the `_run` attribute. Alt spectrum buttons will be
+        enabled if the `_run` is a part of an alt spectrum linked list. This
+        means another `Run` instance is stored in it's `alt_spectrum`
+        attribute.
         '''
 
         if self.current_image and self.current_image.alt_image:
@@ -378,7 +423,8 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.pushButton_12.setEnabled(False)
 
     def export_current_view(self):
-        '''Export the current view to a png file
+        '''Export the current view to a png file. Show the user a message box
+        to tell them if the export succeeded or failed.
         '''
         save_path = QtWidgets.QFileDialog.getSaveFileName(
             self, 'Save View'

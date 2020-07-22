@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -75,7 +74,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -115,7 +113,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -154,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -837,11 +834,6 @@ stored as a dictionary in the mainWindow object.</p>
 </dd></dl>
 
 <dl class="py method">
-<<<<<<< HEAD
-<dt id="polo.crystallography.run.HWIRun.link_to_next_date">
-<code class="sig-name descname">link_to_next_date</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other_run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.link_to_next_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.link_to_next_date" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-=======
 <dt id="polo.crystallography.run.HWIRun.insert_into_alt_spec_chain">
 <code class="sig-name descname">insert_into_alt_spec_chain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.insert_into_alt_spec_chain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.insert_into_alt_spec_chain" title="Permalink to this definition">¶</a></dt>
 <dd><p>When runs are first loaded into Polo they are automatically linked together.
@@ -854,7 +846,6 @@ run. Therefore, before a run is set to be viewed by the user this method
 temporary inserts it into the alt spectrum circular linked list. Also see
 <code class="xref py py-func docutils literal notranslate"><span class="pre">link_to_alt_spectrum()</span></code>.</p>
 </dd></dl>
->>>>>>> 4bc979a66e3d54f4e9e52647ec7595fc7a37ed33
 
 <dl class="py method">
 <dt id="polo.crystallography.run.HWIRun.link_to_alt_spectrum">
@@ -931,7 +922,7 @@ base64.</p>
 <dl class="py method">
 <dt id="polo.crystallography.run.Run.export_to_csv">
 <code class="sig-name descname">export_to_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.export_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.export_to_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports run classifcation data to a csv table.</p>
+<dd><p>Exports run classification data to a csv table.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -961,7 +952,7 @@ view of results</p>
 <dl class="py method">
 <dt id="polo.crystallography.run.Run.get_images_by_classification">
 <code class="sig-name descname">get_images_by_classification</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.get_images_by_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.get_images_by_classification" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a dictionary of image classifications. Keys are
+<dd><p>Create a dictionary of image classificationss. Keys are
 each type of classification and values are list of
 images with classification of the key. The human
 boolean determines what classifier should be used to
@@ -1043,19 +1034,11 @@ is no longer being viewed by the user.</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1066,6 +1049,7 @@ is no longer being viewed by the user.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

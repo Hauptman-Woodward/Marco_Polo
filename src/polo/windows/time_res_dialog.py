@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QAction, QGridLayout
 
 from polo.crystallography.run import HWIRun
 from polo.designer.UI_time_resolved_dialog import Ui_Dialog
-from polo.utils.ftp_utils import list_dir, logon
 
 # TODO: Downloading function and reflect files in the actual FTP server
 # Probably want to look into threads for downloading so not being done on

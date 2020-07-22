@@ -4,9 +4,8 @@ from pathlib import Path
 
 
 def catch_ftp_errors(funct):
-    '''
-    General decorator function for catching any errors thrown by other
-    ftp_utils functions
+    '''General decorator function for catching any errors thrown by other
+    ftp_utils functions.
     '''
     def try_function(*args, **kwargs):
         try:
@@ -15,12 +14,9 @@ def catch_ftp_errors(funct):
             return e
     return try_function
 
-
 @catch_ftp_errors
 def logon(host, username, password, port=21):
-    '''
-    Attempts to connect to ftp server using the provided credentials on port
-    21 by default.
+    '''Attempts to connect to ftp server using the provided credentials.
 
     :param host: Host FTP server address
     :param username: Username of person attempting connection
@@ -30,16 +26,3 @@ def logon(host, username, password, port=21):
     ftp = ftplib.FTP(host)
     ftp.login(username, password)
     return ftp
-
-
-@catch_ftp_errors
-def list_dir(ftp, dir=None):
-    if dir:
-        return ftp.dir(dir)
-    else:
-        return ftp.dir()
-
-
-@catch_ftp_errors
-def get_cwd(ftp):
-    return ftp.cwd()

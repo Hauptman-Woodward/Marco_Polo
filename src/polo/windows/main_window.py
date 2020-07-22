@@ -104,6 +104,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     @staticmethod
     def delete_all_backups():
+        '''Deletes all backup mso files.
+
+        :raises e: Any exceptions thrown by the function call
+        :return: True, if backups are deleted
+        :rtype: bool
+        '''
         try:
             backup_files = list_dir_abs(str(BACKUP_DIR))
             if backup_files:
@@ -114,6 +120,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             raise e
     
     def closeEvent(self, event):
+        '''Handle main window close events. Writes mso backup files of
+        all loaded runs that have human classifications so they can be
+        restored later.
+
+        :param event: QEvent
+        :type event: QEvent
+        '''
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setEnabled(False)
         try:
@@ -161,7 +174,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def _handle_opening_run(self, new_run):
         '''Private method that handles opening a run. For the most part,
         this means setting the `run` attribute of other widgets to the
-        new run. The setter methods of these widgets should then handle
+        `new_run` argument. The setter methods of these widgets should then handle
         updating their interfaces to reflect the new run being
         opened. Also calls :func:`~polo.windows.main_window.MainWindow._tab_limiter`
         and :func:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
@@ -208,6 +221,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def _handle_tool_menu(self, selection):
+        '''Private method that handles selection of 
+        all options available to the user in 
+        the `Tools` section of the main window menu.
+
+        :param selection: User's menu selection
+        :type selection: QAction
+        '''
         if selection == self.actionView_Log_2:
             log_dialog = LogDialog(parent=self)
             log_dialog.exec_()
@@ -225,6 +245,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self._handle_delete_backups()
 
     def _handle_delete_backups(self):
+        '''Private method that handles a user request to delete all backup 
+        mso files. If backups cannot be deleted shows a message box indicating
+        failure to delete.
+        '''
         try:
             total_size = 0
             backups = list_dir_abs(str(BACKUP_DIR))
@@ -325,7 +349,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 ).exec_()
 
     def _handle_file_menu(self, selection):
-        '''Private method to handle user interaction with the file menu;
+        '''Private method that handles user interaction with the file menu;
         this usually means saving a run as an xtal file.
 
         :param selection: QAction that describes user selection
@@ -350,8 +374,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     ).exec_()
 
     def _handle_help_menu(self, action):
-        '''Handle user interaction with the help menu. All selections
-        open links to various pages of the documentation website.
+        '''Private method that handles user interaction with the help menu. 
+        All selections open links to various pages of the documentation website.
 
         :param action: QAction that describes the user's selection
         :type action: QAction

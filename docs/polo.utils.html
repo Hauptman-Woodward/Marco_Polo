@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -75,7 +74,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -118,7 +116,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -157,7 +154,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -280,18 +277,8 @@ not look like one.</p>
 <dt id="polo.utils.ftp_utils.catch_ftp_errors">
 <code class="sig-prename descclassname">polo.utils.ftp_utils.</code><code class="sig-name descname">catch_ftp_errors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">funct</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/ftp_utils.html#catch_ftp_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.ftp_utils.catch_ftp_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>General decorator function for catching any errors thrown by other
-ftp_utils functions</p>
+ftp_utils functions.</p>
 </dd></dl>
-
-<dl class="py function">
-<dt id="polo.utils.ftp_utils.get_cwd">
-<code class="sig-prename descclassname">polo.utils.ftp_utils.</code><code class="sig-name descname">get_cwd</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/ftp_utils.html#get_cwd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.ftp_utils.get_cwd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt id="polo.utils.ftp_utils.list_dir">
-<code class="sig-prename descclassname">polo.utils.ftp_utils.</code><code class="sig-name descname">list_dir</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/ftp_utils.html#list_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.ftp_utils.list_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt id="polo.utils.ftp_utils.logon">
@@ -309,22 +296,25 @@ ftp_utils functions</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.add_menus_from_metadata">
 <code class="sig-name descname">add_menus_from_metadata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.add_menus_from_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.add_menus_from_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds menu objects to the menus attribute.</p>
+<dd><p>Adds menu objects to the <cite>menus</cite> attribute by reading the cocktail
+csv files included in the <cite>COCKTAIL_DATA_PATH</cite> directory.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.date_range_parser">
 <em class="property">static </em><code class="sig-name descname">date_range_parser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date_range_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.date_range_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.date_range_parser" title="Permalink to this definition">¶</a></dt>
-<dd><dl>
-<dt>Utility function for converting the date ranges in the cocktail.units</dt><dd><p>metadata csv file to datetime objects using the <cite>datetime_converter</cite>
-classmethod.</p>
+<dd><p>Utility function for converting the date ranges in the cocktail
+metadata csv file to datetime objects using the <cite>datetime_converter</cite>
+function.</p>
 <p>Date ranges should have the format</p>
-<p>start date - end date</p>
-<p>If the date range is for the most recent cocktail menu then there
-will not be an end date and the format will be</p>
-<p>start date -</p>
-</dd>
-</dl>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&#39;start date - end date&#39;
+
+If the date range is for the most recent cocktail menu then there
+will not be an end date and the format will be
+
+&#39;start date - &#39;
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date_range_string</strong> (<em>str</em>) – string to pull dates out of</p>
@@ -341,12 +331,10 @@ will not be an end date and the format will be</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.datetime_converter">
 <em class="property">static </em><code class="sig-name descname">datetime_converter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date_string</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.datetime_converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.datetime_converter" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>General utility function for converting strings to datetime objects..units</dt><dd><p>Attempts to convert the string by trying a couple of datetime.units
-formats that are common in cocktail menu files and other.units
+<dd><p>General utility function for converting strings to datetime objects.
+Attempts to convert the string by trying a couple of datetime
+formats that are common in cocktail menu files and other
 locations in the HWI file universe Polo runs across.</p>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>date_string</strong> (<em>str</em>) – string to convert to datetime</p>
@@ -363,7 +351,22 @@ locations in the HWI file universe Polo runs across.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.get_menu_by_basename">
 <code class="sig-name descname">get_menu_by_basename</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.get_menu_by_basename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.get_menu_by_basename" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Uses the basename of a mene file path to return a <cite>Menu</cite> object.
+Useful for retrieving menus based on the text of comboBoxes since
+when menus are displayed to the user only the basename is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>basename</strong> (<em>str</em>) – Basename of a cocktail menu file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Menu instance who’s basename matches the <cite>basename</cite> argument,
+returns None is no menu is found</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.utils.io_utils.Menu" title="polo.utils.io_utils.Menu">Menu</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.get_menu_by_date">
@@ -425,12 +428,6 @@ characters should be passed to <cite>type_</cite>.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt id="polo.utils.io_utils.BulkImporter">
-<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">BulkImporter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BulkImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BulkImporter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -599,6 +596,59 @@ even if the originals are deleted or removed.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt id="polo.utils.io_utils.JsonWriter">
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">JsonWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#JsonWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.JsonWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#polo.utils.io_utils.RunSerializer" title="polo.utils.io_utils.RunSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.utils.io_utils.RunSerializer</span></code></a></p>
+<p>Small class that can be used to serialize a run to a json formated file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run to write as a json file</p></li>
+<li><p><strong>output_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to write json file to</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="polo.utils.io_utils.JsonWriter.json_encoder">
+<em class="property">static </em><code class="sig-name descname">json_encoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#JsonWriter.json_encoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.JsonWriter.json_encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>General purpose json encoder for encoding python objects. Very
+similar to the encoder function 
+<a class="reference internal" href="#polo.utils.io_utils.XtalWriter.json_encoder" title="polo.utils.io_utils.XtalWriter.json_encoder"><code class="xref py py-func docutils literal notranslate"><span class="pre">json_encoder()</span></code></a> except does not
+include class and module information in the returned dictionary. If
+the object cannot be converted to a dictionary it is returned as a
+string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>obj</em>) – Object to convert to dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict or str</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict or str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.JsonWriter.write_json">
+<code class="sig-name descname">write_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#JsonWriter.write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.JsonWriter.write_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the run stored in the <cite>run</cite> attribute to a json file at
+the location specified by the <cite>output_path</cite> attribute. If the file
+is written successfully returns True otherwise returns an Exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True or Exception</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool, Exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="polo.utils.io_utils.Menu">
 <em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">Menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">start_date</span></em>, <em class="sig-param"><span class="n">end_date</span></em>, <em class="sig-param"><span class="n">type_</span></em>, <em class="sig-param"><span class="n">cocktails</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -606,6 +656,60 @@ even if the originals are deleted or removed.</p></li>
 <dt id="polo.utils.io_utils.Menu.cocktails">
 <em class="property">property </em><code class="sig-name descname">cocktails</code><a class="headerlink" href="#polo.utils.io_utils.Menu.cocktails" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.utils.io_utils.MsoReader">
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">MsoReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mso_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#MsoReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.MsoReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The MsoReader class is used to parse the content of mso formated
+files and apply the image classifications stored in these files to
+runs in Polo.</p>
+<dl class="py method">
+<dt id="polo.utils.io_utils.MsoReader.classify_images_from_mso_file">
+<code class="sig-name descname">classify_images_from_mso_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#MsoReader.classify_images_from_mso_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.MsoReader.classify_images_from_mso_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the image classifications stored in an mso file to a
+collection of <cite>Image</cite> objects. Allows for some degree of compatability
+with MarcoscopeJ and for users who have stored their image classifications
+in the mso format. Additionally, human classification backups are
+saved as mso files when Polo is closed as they take up much less
+space than xtal files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>images</strong> (<em>list</em>) – List of images to apply classifications to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of images with mso classifications applied,
+or Exception if this fails</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list or Exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.MsoReader.read_mso_classification">
+<em class="property">static </em><code class="sig-name descname">read_mso_classification</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mso_classification</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#MsoReader.read_mso_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.MsoReader.read_mso_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method to read and convert image classifications in a mso
+file to MARCO image classifications. The exact conversion scheme is
+layed out in the <cite>REV_MSO_DICT</cite>. Additionally, MarcoscopeJ will allow
+images to have multiple classifications by assigning multiple
+image codes seperated by “-“. If this is the case Polo takes the
+classification corresponding to the mso code with the highest value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mso_classification</strong> (<em>str</em>) – Mso image classification code</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MARCO classification if code can be decoded, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -695,7 +799,7 @@ classifications, defaults to False</p>
 
 <dl class="py class">
 <dt id="polo.utils.io_utils.PptxWriter">
-<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">PptxWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span></em>, <em class="sig-param"><span class="n">included_attributes</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">image_types</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">PptxWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span></em>, <em class="sig-param"><span class="n">image_types</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Use for creating pptx presentation slides from Run instances.</p>
 <dl class="field-list simple">
@@ -815,19 +919,7 @@ imaged in.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_new_slide">
 <code class="sig-name descname">add_new_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_new_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_new_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a new slide to the current presentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>template</strong> (<em>int</em><em>, </em><em>optional</em>) – Slide template number, defaults to 5</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>New slide</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>slide</p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_single_image_slide">
@@ -926,8 +1018,7 @@ well.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.delete_presentation">
 <code class="sig-name descname">delete_presentation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.delete_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.delete_presentation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new clean presentation.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.delete_temp_images">
@@ -973,19 +1064,8 @@ long write times.</p>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.make_single_run_presentation">
-<code class="sig-name descname">make_single_run_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_single_run_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_single_run_presentation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a pptx presentation from a single run.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run to create the presentation from</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – Title of the presentation</p></li>
-<li><p><strong>subtitle</strong> (<em>str</em><em>, </em><em>optional</em>) – Subtitle of the presentation, defaults to None</p></li>
-<li><p><strong>cocktail_data</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include cocktail data if True, defaults to True</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<code class="sig-name descname">make_single_run_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">all_specs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">all_dates</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_single_run_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_single_run_presentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">
@@ -1036,14 +1116,11 @@ keyerrors later down the line.</p>
 headers and a list of dictionaries with each dictionary representing
 one row of csv data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>e</strong> – Catch all exception.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple, list of headers and list of dicts</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tuple, list of headers and list of dicts</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1333,7 +1410,35 @@ xtal files.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata">
 <em class="property">static </em><code class="sig-name descname">parse_hwi_dir_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.parse_hwi_dir_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parse the directory name of an HWIRun directory to pull out
+metadata. If the directory name conforms to HWI naming conventions
+the function should be able to return the image spectrum, the plate id,
+the date and the run name. If the directory does not conform to HWI
+naming standards this will cause an exception which is caught and the
+function will return None.</p>
+<p>If the parse is successful will return a dictionary with the following
+format.</p>
+<blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;image_spectrum&#39;: String describing the image spectrum,
+&#39;plate_id&#39;: String representing the plate id,
+&#39;date&#39;: Datetime instance of imaging date,
+&#39;run_name&#39;: String holding the run name
+}
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dir_name</strong> (<em>str</em><em> or </em><em>Path</em>) – Name of directory to check for metadata</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of extracted metadata or None if parse fails</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunImporter.unpack_rar_archive_thread">
@@ -1364,24 +1469,7 @@ date or by spectrum.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunLinker.link_runs_by_date">
 <em class="property">static </em><code class="sig-name descname">link_runs_by_date</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">runs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunLinker.link_runs_by_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunLinker.link_runs_by_date" title="Permalink to this definition">¶</a></dt>
-<dd><p>Link a collection of runs by date into a linked list structure.
-Only runs that are marked as visible (run’s <cite>image_spectrum</cite> == ‘Visible’)
-are linked by date. Linked list is bidirectional and the <cite>next_run</cite> and
-<cite>previous_run</cite> attributes act as the forwards and backwards pointers. The
-returned list of runs will also include non-visible runs that were not
-linked together; no runs will be lost from the linking.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>runs</strong> (<em>list</em>) – List of runs to link together by date</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List or runs linked by date</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunLinker.link_runs_by_spectrum">
@@ -1407,16 +1495,17 @@ linked list.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunLinker.the_big_link">
 <em class="property">static </em><code class="sig-name descname">the_big_link</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">runs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunLinker.the_big_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunLinker.the_big_link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper method around <code class="xref py py-func docutils literal notranslate"><span class="pre">link_runs_by_date()</span></code>, 
-<code class="xref py py-func docutils literal notranslate"><span class="pre">link_runs_by_spectrum()</span></code> and 
-<code class="xref py py-func docutils literal notranslate"><span class="pre">unlink_runs_completely()</span></code>. Runs are first unlinked
-from each other first and then relinked.</p>
+<dd><p>Wrapper method to do all the linking required for a collection of
+runs. First calls :func`~polo.utils.io_utils.RunLinker.unlink_runs_completely`
+to separate any existing links so things do not get tangled. Then 
+calls :func`~polo.utils.io_utils.RunLinker.link_runs_by_date` and
+<a class="reference internal" href="#polo.utils.io_utils.RunLinker.link_runs_by_spectrum" title="polo.utils.io_utils.RunLinker.link_runs_by_spectrum"><code class="xref py py-func docutils literal notranslate"><span class="pre">link_runs_by_spectrum()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>runs</strong> (<em>list</em>) – List of runs to link together</p>
+<dd class="field-odd"><p><strong>runs</strong> (<em>list</em>) – List of runs to link</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List or runs after linking</p>
+<dd class="field-even"><p>List of runs with links made</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list</p>
@@ -1602,15 +1691,18 @@ If None uses the xml path stored in <cite>xml_path</cite> attribute.</p>
 <dd><p>Bases: <a class="reference internal" href="#polo.utils.io_utils.RunSerializer" title="polo.utils.io_utils.RunSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.utils.io_utils.RunSerializer</span></code></a></p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.XtalWriter.clean_run_for_save">
-<code class="sig-name descname">clean_run_for_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalWriter.clean_run_for_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalWriter.clean_run_for_save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove circular references from a Run instance to avoid errors
-when serializing using json. Uses the run stored in the run attribute</p>
+<em class="property">static </em><code class="sig-name descname">clean_run_for_save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalWriter.clean_run_for_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalWriter.clean_run_for_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove circular references from the run passed through the <cite>run</cite>
+argument to avoid issues when writing to json files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The cleaned run</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run to clean (remove circular references)</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Run, free from circular references</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a> or <a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun">HWIRun</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1638,16 +1730,16 @@ when serializing using json. Uses the run stored in the run attribute</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.XtalWriter.json_encoder">
 <em class="property">static </em><code class="sig-name descname">json_encoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalWriter.json_encoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalWriter.json_encoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use instead of the defauly json encoder. If the encoded object
-is from a module within Polo will include a module and class
-identifier so it can be more easily deserialized when loaded
-back into the program.</p>
+<dd><p>Use instead of the default json encoder when writing an xtal file. 
+If the encoded object is from a module within Polo will include a 
+module and class identifier so it can be more easily deserialized 
+when loaded back into the program.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Param</dt>
 <dd class="field-odd"><p>obj: An object to serialize to json.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A dictionary or string version of passed object</p>
+<dd class="field-even"><p>A dictionary or string version of the passed object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1686,8 +1778,9 @@ back into the program.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.XtalWriter.write_xtal_file_on_thread">
 <code class="sig-name descname">write_xtal_file_on_thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalWriter.write_xtal_file_on_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalWriter.write_xtal_file_on_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper method around <cite>write_xtal_file</cite> that executes on a Qthread
-instance to prevent freezing the GUI when saving large xtal files</p>
+<dd><p>Wrapper method around <a class="reference internal" href="#polo.utils.io_utils.XtalWriter.write_xtal_file" title="polo.utils.io_utils.XtalWriter.write_xtal_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_xtal_file()</span></code></a> 
+that executes on a <cite>QuickThread</cite> instance to prevent freezing the 
+GUI when saving large xtal files</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>output_path</strong> (<em>str</em>) – Path to xtal file</p>
@@ -1698,7 +1791,7 @@ instance to prevent freezing the GUI when saving large xtal files</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.XtalWriter.xtal_header">
 <em class="property">property </em><code class="sig-name descname">xtal_header</code><a class="headerlink" href="#polo.utils.io_utils.XtalWriter.xtal_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the header for xtal file when called. Header lines are
+<dd><p>Creates the header for an xtal file when called. Header lines are
 indicated as such by the string in the header_line constant,
 which should be ‘&lt;&gt;’. The last line of the header will be a row
 of equal signs and then the actual json content begins on the
@@ -1844,19 +1937,11 @@ operating systems but not for Linux.</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1867,6 +1952,7 @@ operating systems but not for Linux.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

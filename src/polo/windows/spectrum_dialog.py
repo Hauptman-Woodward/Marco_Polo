@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QAction, QGridLayout
 from polo import make_default_logger
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_spectrum_dialog import Ui_Dialog
-from polo.utils.ftp_utils import list_dir, logon
+from polo.utils.ftp_utils import logon
 
 logger = make_default_logger(__name__)
 

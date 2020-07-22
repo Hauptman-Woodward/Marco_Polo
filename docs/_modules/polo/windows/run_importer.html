@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -351,7 +348,7 @@
         <span class="p">}</span>  <span class="c1"># need to hardy this up to prevent errors</span>
     
 <div class="viewcode-block" id="RunImporterDialog._could_not_import_message"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._could_not_import_message">[docs]</a>    <span class="k">def</span> <span class="nf">_could_not_import_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that creates an message box popup for when imports fail.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that creates a message box popup for when imports fail.</span>
 
 <span class="sd">        :param prefix: First part of the error message. Something</span>
 <span class="sd">                       like &quot;Could not import the following files:&quot;</span>
@@ -368,6 +365,17 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._import_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_files">[docs]</a>    <span class="k">def</span> <span class="nf">_import_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that attempts to import a collection of file paths</span>
+<span class="sd">        specified by the user. If importing a rar archive creates a `QuickThread`</span>
+<span class="sd">        instance and runs all rar operations on that thread to avoid freezing</span>
+<span class="sd">        the GUI on slower machines. Imported runs are added to the `import_candidates`</span>
+<span class="sd">        dictionary and then displayed to the user by calling</span>
+<span class="sd">        :func:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.</span>
+
+<span class="sd">        :param rar: If True opens the filebrowser for rar archives and filters</span>
+<span class="sd">                    out all other import types, defaults to True</span>
+<span class="sd">        :type rar: bool, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">file_paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_browser</span><span class="p">(</span><span class="n">rar</span><span class="o">=</span><span class="n">rar</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">file_paths</span><span class="p">:</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
@@ -665,20 +673,27 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_run</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">import_type</span> <span class="o">=</span> <span class="n">import_candidate</span><span class="o">.</span><span class="n">import_type</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">import_type</span><span class="p">,</span> <span class="s1">&#39;import type&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">import_type</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
             <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_hwi_run</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
                                                  <span class="o">**</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="s1">&#39;after import&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">import_type</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
             <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_general_run</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">),</span>
                                                      <span class="o">**</span><span class="n">import_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">new_run</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._display_cocktail_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_cocktail_files">[docs]</a>    <span class="k">def</span> <span class="nf">_display_cocktail_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that displays the available cocktail files to the</span>
+<span class="sd">        user via the cocktail menu comboBox widget.</span>
+
+<span class="sd">        :param menu_type: Key for which kind of cocktail screens to display, defaults to None. </span>
+<span class="sd">                          &quot;m&quot; for membrane screens and &quot;s&quot; for soluble screens.</span>
+<span class="sd">        :type menu_type: str, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu_type_radiobuttons</span><span class="p">(</span><span class="n">menu_type</span><span class="p">)</span>
-            <span class="c1"># self._display_cocktail_files()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>  <span class="c1"># soluble screens</span>
             <span class="n">menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
@@ -705,24 +720,6 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">selection_dict</span><span class="p">)</span></div></div>
-
-    <span class="c1"># def _show_import_error_message(self, unimported_paths):</span>
-    <span class="c1">#     &#39;&#39;&#39;Private helper method for creating import error messages to show</span>
-    <span class="c1">#     to the user.</span>
-
-    <span class="c1">#     :param unimported_paths: List of files that could not be imported</span>
-    <span class="c1">#     :type unimported_paths: list</span>
-    <span class="c1">#     &#39;&#39;&#39;</span>
-    <span class="c1">#     make_message_box(</span>
-    <span class="c1">#         message=&#39;Could not import the following items:&#39;</span>
-    <span class="c1">#     ).exec_()</span>
-
-    <span class="c1"># def open_file_browser(self, rar=False, dir=False):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># def make_run(self, import_candidate):</span>
-    <span class="c1">#     if isinstance(import_candidate.import_type, HWIRun):</span>
-            <span class="c1"># pass</span>
 </pre></div>
 
            </div>
@@ -735,19 +732,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -758,6 +747,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

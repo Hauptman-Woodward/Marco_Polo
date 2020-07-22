@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -94,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -201,12 +198,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shown_unrar_message</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># x of y downloads complete</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_classification_request</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_current_run</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">run</span> <span class="k">for</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">run</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
 
 <div class="viewcode-block" id="RunOrganizer._clear_current_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._clear_current_run">[docs]</a>    <span class="k">def</span> <span class="nf">_clear_current_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_list</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Clear out the current run from other widgets by emiting a</span>
@@ -238,7 +240,31 @@
         <span class="n">selected_run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">selected_run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
             <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_run_name</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="n">selected_run</span><span class="p">])</span></div>
+            <span class="k">if</span> <span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="s1">&#39;save_file_path&#39;</span><span class="p">)):</span>
+                <span class="n">backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_existing_backup</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">backup</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">backup</span><span class="p">)):</span>
+                    <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
+                        <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Found backed up classifications for this run.</span><span class="se">\</span>
+<span class="s1">                            Would you like to use them?&#39;</span><span class="p">,</span>
+                        <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                        <span class="n">reader</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="p">(</span><span class="n">backup</span><span class="p">)</span>
+                        <span class="n">classified_images</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">(</span>
+                            <span class="n">images</span><span class="o">=</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">classified_images</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="n">selected_run</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">classified_images</span>
+                            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Loaded classifications from backup.&#39;</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to load classifications.&#39;</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="n">selected_run</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._open_classification_thread"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._open_classification_thread">[docs]</a>    <span class="k">def</span> <span class="nf">_open_classification_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to create and run a classification thread which will run</span>
@@ -323,12 +349,34 @@
         <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_run_from_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">new_run</span><span class="p">])</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added run </span><span class="si">{}</span><span class="s1"> with name </span><span class="si">{}</span><span class="s1"> from directory&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">new_run</span><span class="p">,</span> <span class="n">new_run</span><span class="o">.</span><span class="n">run_name</span>
-            <span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added run </span><span class="si">{}</span><span class="s1"> from directory&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_run</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">new_run</span></div>
         <span class="c1"># message box failed to import?</span>
-   
+    
+    
+<div class="viewcode-block" id="RunOrganizer._check_for_existing_backup"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._check_for_existing_backup">[docs]</a>    <span class="k">def</span> <span class="nf">_check_for_existing_backup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Check the directory specified by the `BACKUP_DIR` constant for</span>
+<span class="sd">        a backup mso file that matches the run passed through the `run`</span>
+<span class="sd">        argument. Run&#39;s are matched to mso backups by their run name so it</span>
+<span class="sd">        the user has renamed their run after the backup is saved it will not</span>
+<span class="sd">        be found.</span>
+
+<span class="sd">        See :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`</span>
+<span class="sd">        for details on how the mso files are written.</span>
+
+<span class="sd">        :param run: Run to search for mso backup with</span>
+<span class="sd">        :type run: HWIRun</span>
+<span class="sd">        :return: Path to mso backup if one exists that matches the `run`, else</span>
+<span class="sd">                return None</span>
+<span class="sd">        :rtype: str or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">backups</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">BACKUP_DIR</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">backups</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">each_backup</span> <span class="ow">in</span> <span class="n">backups</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">each_backup</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">each_backup</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
 <div class="viewcode-block" id="RunOrganizer._remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to completely remove a run from Polo.</span>
 
@@ -373,6 +421,54 @@
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">linked_spectrums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
 
+<div class="viewcode-block" id="RunOrganizer.backup_classifications_on_thread"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.backup_classifications_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">backup_classifications_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Does the exact same thing as </span>
+<span class="sd">        :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` </span>
+<span class="sd">        except excutes the job on a `QuickThread` instance to avoid slow</span>
+<span class="sd">        computers complaining about the GUI being frozen. This has been</span>
+<span class="sd">        especially prevelant on Windows machines.</span>
+
+<span class="sd">        :param run: Run to save as mso file</span>
+<span class="sd">        :type run: HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">write_path</span> <span class="o">=</span> <span class="n">BACKUP_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">finished_backup</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backup_thread</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to backup </span><span class="si">{}</span><span class="s1"> human classifications to mso file.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">write_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backup_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backup_classifications</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backup_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">finished_backup</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="RunOrganizer.backup_classifications"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.backup_classifications">[docs]</a>    <span class="k">def</span> <span class="nf">backup_classifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Write the human classifications of the images in the `run` argument</span>
+<span class="sd">        to an mso file and store it in the directory specified by the</span>
+<span class="sd">        `BACKUP_DIR` constant. Does not store MARCO classifications because</span>
+<span class="sd">        these can be much more easily recreated than human classifications.</span>
+<span class="sd">        Additionally, when a run is loaded back in and a backup mso exists</span>
+<span class="sd">        for it Polo assumes the classifications in that mso file are human</span>
+<span class="sd">        classifications.</span>
+
+<span class="sd">        Currently only HWIRuns can be written as mso files because of mso&#39;s</span>
+<span class="sd">        integration with cocktail data and well assignments. Need a different</span>
+<span class="sd">        format for non-HWI runs that would map filenames to classifications</span>
+<span class="sd">        and ignore cocktail data / well assignments.</span>
+
+<span class="sd">        :param run: Run to backup human classifications</span>
+<span class="sd">        :type run: HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">write_path</span> <span class="o">=</span> <span class="n">BACKUP_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">write_path</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write_mso_file</span><span class="p">(</span><span class="n">use_marco_classifications</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+        
 <div class="viewcode-block" id="RunOrganizer.import_saved_runs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.import_saved_runs">[docs]</a>    <span class="k">def</span> <span class="nf">import_saved_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_files</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&#39;&#39;&#39;Import runs saved to xtal files.</span>
 
@@ -385,16 +481,23 @@
             <span class="n">xtal_files</span> <span class="o">=</span> <span class="n">xtal_dialog</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">xtal_files</span><span class="p">:</span>  <span class="c1"># returned as a list</span>
             <span class="n">runs_to_add</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">xtal</span> <span class="ow">in</span> <span class="n">xtal_files</span><span class="p">:</span>
+                <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtal</span><span class="p">):</span>
                     <span class="n">deserializer</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal</span><span class="p">)</span>
                     <span class="n">new_run</span> <span class="o">=</span> <span class="n">deserializer</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span><span class="p">)):</span>
                         <span class="n">runs_to_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_run</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Could not load run from </span><span class="si">{}</span><span class="s1">. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">xtal</span><span class="p">,</span> <span class="n">new_run</span><span class="p">)</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">(</span><span class="n">runs_to_add</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added </span><span class="si">{}</span><span class="s1"> runs from saved files&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runs_to_add</span><span class="p">))</span>
-            <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
+        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunOrganizer.import_run_from_dialog"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.import_run_from_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">import_run_from_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Import a run from a file dialog.</span>
@@ -475,8 +578,56 @@
         <span class="c1"># is in the visible spectrum and another run is not already</span>
         <span class="c1"># going can create a kind of que for classification here</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
         <span class="c1"># do something to tell the user that they need to unpack their files</span>
+        <span class="c1"># message box failed to import?</span>
+
+<div class="viewcode-block" id="RunOrganizer.add_run_from_directory"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.add_run_from_directory">[docs]</a>    <span class="k">def</span> <span class="nf">add_run_from_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
+        <span class="c1"># use run importer class to make the run</span>
+        <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_run_from_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">new_run</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">new_run</span></div>
+        <span class="c1"># message box failed to import?</span>
+   
+<div class="viewcode-block" id="RunOrganizer.remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
+            <span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">condemned_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_from_view</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condemned_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
+                <span class="c1"># need to cut any links that had this run in it</span>
+                <span class="n">next_run</span><span class="p">,</span> <span class="n">prev_run</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span><span class="p">:</span>
+                    <span class="n">next_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span>
+                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">:</span>
+                    <span class="n">prev_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span>
+                
+                <span class="k">if</span> <span class="n">next_run</span> <span class="ow">and</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># cut condemned run out</span>
+                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">prev_run</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">next_run</span><span class="p">)</span>
+                
+                <span class="k">elif</span> <span class="n">next_run</span><span class="p">:</span>  <span class="c1"># condemned run was first in the list</span>
+                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">next_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">elif</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># condemned was last in the list</span>
+                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">prev_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                        <span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="kc">None</span>
+                
+                <span class="c1"># need to go around the horn since no backwards pointer</span>
+                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span>
+                    <span class="n">linked_spectrums</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">while</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">start</span><span class="o">.</span><span class="n">run_name</span> <span class="o">!=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">:</span>
+                        <span class="n">linked_spectrums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+                        <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">alt_spectrum</span>
+                    <span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">linked_spectrums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div></div>
 
 
 
@@ -495,19 +646,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -518,6 +661,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,4 +1,3 @@
-from polo.utils.ftp_utils import list_dir, logon
 from polo.designer.UI_image_pop_dialog import Ui_Dialog
 from polo import make_default_logger, IMAGE_CLASSIFICATIONS
 import os
@@ -41,15 +40,20 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.ui.pushButton_7.clicked.connect(
             lambda: self.show_alt_image(alt=True))
         self.image = image
-        #self.set_allowed_navigation_functions()
+        #self._set_allowed_navigation_functions()
         self.ui.radioButton.toggled.connect(
-            self.change_favorite_status
+            self._change_favorite_status
         )
         logger.info('Created {}'.format(self))
         # must set image before any other widget population
 
     @property
     def image(self):
+        '''Image being displayed.
+
+        :return: The image
+        :rtype: Image
+        '''
         return self._image
 
     @image.setter
@@ -58,33 +62,35 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.show_image()
 
     def show(self):
-        '''Shows the dialog window
+        '''Shows the dialog window.
         '''
         super(ImagePopDialog, self).show()
         self.show_image()
 
-    def set_groupbox_title(self):
-        '''Set the the title of main groupbox to the image path basename
+    def _set_groupbox_title(self):
+        '''Private method that set the the title of main groupbox to the 
+        image path basename.
         '''
         if self.image:
             self.ui.groupBox.setTitle(os.path.basename(str(self.image.path)))
 
-    def set_cocktail_details(self):
-        '''Shows image metadata in display widgets
+    def _set_cocktail_details(self):
+        '''Private method that shows `Image` metadata in the text 
+        display widgets.
         '''
         if self.image and self.image.cocktail:
             self.ui.textBrowser.setText(str(self.image.cocktail))
     
-    def change_favorite_status(self):
-        '''Update the favorite status of the current image to the
-        state of the favorite radioButton.
+    def _change_favorite_status(self):
+        '''Private method that updates the favorite status of the current 
+        image to the state of the favorite radioButton.
         '''
         if self.image:
             self.image.favorite = self.ui.radioButton.isChecked()
 
-    def set_image_details(self):
-        '''Displays the current image metadata in a
-        testBrowser widget.
+    def _set_image_details(self):
+        '''Private method that displays the current image metadata in a
+        textBrowser widget.
         '''
         if self.image:
             self.ui.textBrowser_2.setText(str(self.image))
@@ -98,10 +104,10 @@ class ImagePopDialog(QtWidgets.QDialog):
                 self.image.setPixmap()
             self.ui.photoViewer.add_pixmap(self.image)
             self.ui.photoViewer.fitInView()
-            self.set_groupbox_title()
-            self.set_cocktail_details()
-            self.set_image_details()
-            self.set_allowed_navigation_functions()
+            self._set_groupbox_title()
+            self._set_cocktail_details()
+            self._set_image_details()
+            self._set_allowed_navigation_functions()
     
 
     def classify_image(self, crystals=False, clear=False,
@@ -148,8 +154,8 @@ class ImagePopDialog(QtWidgets.QDialog):
         elif alt and self.image.alt_image:
             self.image = self.image.alt_image
 
-    def set_allowed_navigation_functions(self):
-        '''Enable or disable navigation by date or spectrum buttons
+    def _set_allowed_navigation_functions(self):
+        '''Private method to enable or disable navigation by date or spectrum buttons
         based on the content of the current image. Tests the Image
         stored in the `image` attribute to determine if it is linked to
         a future date, previous date or alt spectrum image through it's

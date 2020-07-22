@@ -1,14 +1,19 @@
-import matplotlib.pyplot as plt
-import numpy as np
+import pylab as plt
 
+# Load the image
+img = plt.imread("lena512color.tiff")
 
-total_images = 1536 * 8 * 2
+# Grid lines at these intervals (in pixels)
+# dx and dy can be different
+dx, dy = 100,100
 
-rand_vals = np.random.rand(156, 156)
-ax = plt.imshow(rand_vals)
-ax.set_cmap('Spectral')
+# Custom (rgb) grid color
+grid_color = [0,0,0]
 
-ax.axes.xaxis.set_visible(False)
-ax.axes.yaxis.set_visible(False)
+# Modify the image to include the grid
+img[:,::dy,:] = grid_color
+img[::dx,:,:] = grid_color
 
+# Show the result
+plt.imshow(img)
 plt.show()
