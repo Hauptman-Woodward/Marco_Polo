@@ -15,7 +15,7 @@ from polo.windows.run_updater_dialog import RunUpdaterDialog
 logger = make_default_logger(__name__)
 
 class RunTree(QtWidgets.QTreeWidget):
-    '''Inherits the QTreeWidget class and acts as the sample and
+    '''Inherits the :class:`QTreeWidget` class and acts as the sample and
     run display. The User uses the RunTree to open and classify runs
     they load into Polo.
 
@@ -40,16 +40,16 @@ class RunTree(QtWidgets.QTreeWidget):
 
     @property
     def current_run_names(self):
-        '''List of all currently loaded run names.
+        '''List of all currently loaded :class:`Run` names.
 
-        :return: List of run names
+        :return: List of :class:Run` names
         :rtype: list
         '''
         return list(self.loaded_runs.keys())
     
     @property
     def selected_run(self):
-        '''The `Run` that is currently selected in the `RunTree`. If no run is
+        '''The: class:`Run` that is currently selected. If no :class:`Run` is
         selected returns False.
 
         :return: The currently selected run, if one exists, otherwise returns False
@@ -61,7 +61,7 @@ class RunTree(QtWidgets.QTreeWidget):
             return False
 
     def _open_run_slot(self, event=None):
-        '''Private method that emits the `opening_run` signal when called. This
+        '''Private method that emits the :attr:`opening_run` signal when called. This
         signal can be connected to other widgets to communicate that the user
         has selected a run and wants to open it for analysis.   
 
@@ -71,8 +71,8 @@ class RunTree(QtWidgets.QTreeWidget):
         self.opening_run.emit()
 
     def _edit_data_slot(self, event=None):
-        '''Private method used to update the data in a run after it has
-        been modified by the user through the `RunUpdater` dialog.
+        '''Private method used to update the data in a :class:`Run` after it has
+        been modified by the user through the :class:`RunUpdater` dialog.
 
         :param event: QEvent, defaults to None
         :type event: QEvent, optional
@@ -93,7 +93,7 @@ class RunTree(QtWidgets.QTreeWidget):
             self.loaded_runs[run_name] = updater.run
 
     def _add_run_node(self, run, tree=None):
-        '''Private method that adds a new run node to the `RunTree`.
+        '''Private method that adds a new run node.
 
         :param run: Run to add to the tree
         :type run: Run or HWIRun
@@ -117,12 +117,12 @@ class RunTree(QtWidgets.QTreeWidget):
         return new_node
 
     def _get_run_node(self, run):
-        '''Private helper method that returns the `QTreeWidgetItem`
-        corresponding to a given run. Returns None if a node cannot be found.
+        '''Private helper method that returns the :class:`QTreeWidgetItem`
+        corresponding to a given :class:`Run`. Returns None if a node cannot be found.
 
         :param run: Run to search for
         :type run: Run or HWIRun
-        :return: Given run's corresponding `QTreeWidgetItem` if it exists
+        :return: Given run's corresponding :class:`QTreeWidgetItem` if it exists
         :rtype: QTreeWidgetItem
         '''
         run_name = run.run_name
@@ -136,10 +136,10 @@ class RunTree(QtWidgets.QTreeWidget):
                 return child_node
 
     def _add_classifications_from_mso_slot(self, event=None):
-        '''Add classifications to an existing run from the contents of an
+        '''Add classifications to an existing :class:`Run` from the contents of an
         MSO file. Intended to be connected to the `classify_from_mso`
         QAction that is defined in the :
-        func:`~polo.widgets.run_tree.RunTree.contextMenuEvent
+        :meth:`~polo.widgets.run_tree.RunTree.contextMenuEvent`
         method.
 
         :param event: QEvent, defaults to None
@@ -173,9 +173,10 @@ class RunTree(QtWidgets.QTreeWidget):
             self._remove_run(run_name)
 
     def _remove_run(self, run_name):
-        '''Private method to remove a run completely from the Polo interface.
+        '''Private method to remove a :class:`Run` completely from the
+         Polo interface.
 
-        :param run_name: Run name of run to remove
+        :param run_name: Run name of :class:`Run` instance to remove
         :type run_name: str
         '''
         # get all runs in the sample and just relink everything together
@@ -199,9 +200,11 @@ class RunTree(QtWidgets.QTreeWidget):
         # the above is a temp fix
 
     def remove_run_from_view(self, run_name):
-        '''Remove a run using its `run_name` attribute. Does not effect
-        any other widgets. Calling this method only removes the run from
-        the `RunTree display`. If a run is removed from RunTree it is returned.
+        '''Remove a :class:`Run` instance using its :attr:`run_name` attribute.
+        Does not effect any other widgets. Calling this method only 
+        removes the :class:`Run` instance from
+        the display. If a :class:`Run` instance is removed from successfully
+        it is returned.
 
         :param run_name: Name of run to remove
         :type run_name: str
@@ -228,8 +231,8 @@ class RunTree(QtWidgets.QTreeWidget):
             return condemned_run
 
     def add_classified_run(self, run):
-        '''Marks a run as classified by adding it to the
-        `classified_status` dictionary.
+        '''Marks a :class:`Run` instance as classified by adding it to the
+        :attr:`classified_status` dictionary.
 
         :param run: Run to mark as classified
         :type run: Run or HWIRun
@@ -238,7 +241,7 @@ class RunTree(QtWidgets.QTreeWidget):
             self.classified_status[run] = True
 
     def add_sample(self, sample_name, *args):
-        '''Adds a new sample to the `RunTree`. Samples are the
+        '''Adds a new sample to the tree. Samples are the
         highest level node in the `RunTree`.
 
         :param sample_name: Name of sample to add, acts as key so should 
@@ -254,10 +257,11 @@ class RunTree(QtWidgets.QTreeWidget):
         logger.info('Added sample: {}'.format(sample_name))
 
     def link_sample(self, sample_name):
-        '''Links all runs in a given sample together by both date
-        and spectrum using the methods in the `RunLinker` class.
+        '''Links all :class:`Run` instances in a given sample together by both date
+        and spectrum using the :meth:`~polo.utils.io_utils.RunLinker.the_big_link`
+        method.
 
-        :param sample_name: Name of sample who's runs should be linked
+        :param sample_name: Name of the sample who's runs should be linked
         :type sample_name: str
         '''
         # gather runs with this sample
@@ -268,12 +272,14 @@ class RunTree(QtWidgets.QTreeWidget):
         self.loaded_runs.update(linked_runs_dict)
 
     def add_run_to_tree(self, new_run):
-        '''Add a new run to the RunTree. Uses the run's `sampleName`
-        attribute to determine what sample node the run should be added
-        to. If the sample name does not exist it is made. If the run
-        lacks the `sampleName` attribute as is the case for non-HWIRuns
-        the `sampleName` attribute is set to "Non-HWI Runs". If the run
-        is an HWIRun as lacks the `sampleName` attribute `sampleName` is
+        '''Add a new :class:`Run` instance to the tree. Uses the :class:`Run` instance's 
+        :attr:`sampleName` attribute to determine what sample node 
+        the :class:`Run` instance should be added
+        to. If the sample name does not exist in the tree a new sample node is added.
+        If the :class:`Run` instance lacks the :attr:`sampleName` attribute as is the case for 
+        non-HWIRuns the :attr:`sampleName` attribute is set to "Non-HWI Runs". 
+        If the :class:`Run` instance is an :class:`HWIRun` and lacks the 
+        :attr:`sampleName` attribute :attr:`sampleName` is
         set to "Sampleless Runs".
 
         :param new_run: Run to add to the tree

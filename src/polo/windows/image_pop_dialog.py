@@ -89,14 +89,16 @@ class ImagePopDialog(QtWidgets.QDialog):
     def _change_favorite_status(self):
         '''Private method that updates the favorite status of the current 
         :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
-        attribute to the state of the favorite radioButton.
+        attribute to the state of the favorite :class:`QRadioButton`.
         '''
         if self.image:
             self.image.favorite = self.ui.radioButton.isChecked()
 
     def _set_image_details(self):
-        '''Private method that displays the :class:`~polo.crystallography.image.Image` instance referenced
-        by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` attribute.
+        '''Private method that displays the 
+        :class:`~polo.crystallography.image.Image` instance referenced
+        by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
         '''
         if self.image:
             self.ui.textBrowser_2.setText(str(self.image))
@@ -182,8 +184,8 @@ class ImagePopDialog(QtWidgets.QDialog):
         attribute to determine if it is linked to
         a future date, previous date or alt spectrum image through it's
         :attr:`~polo.crystallography.image.Image.next_image`
-        , :attr:`~polo.crystallography.image.Image.next_image.previous_image 
-        and :attr:`~polo.crystallography.image.Image.next_image.alt_image attributes
+        , :attr:`~polo.crystallography.image.Image.next_image.previous_image`     
+        and :attr:`~polo.crystallography.image.Image.next_image.alt_image` attributes
         respectively. If an attribute == None, then the button that
         requires that attribute will be disabled.
         '''

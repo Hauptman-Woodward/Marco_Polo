@@ -48,7 +48,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
         self.image_type_checkboxes = dict(zip(IMAGE_CLASSIFICATIONS,
         [self.ui.checkBox_23, self.ui.checkBox_24, self.ui.checkBox_25,
-        self.ui.checkBox_26]))  # define checkboxes that determine image
+        self.ui.checkBox_26]))  # define :class:`QCheckBox` instances that determine image
         # classification filters and zip with the image classifications
         # doesnt matter what is assigned to what as long as order in
         # image classificaions list does not change
@@ -86,9 +86,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
     @property
     def selected_classifications(self):
-        '''Returns a list that includes only image classifications that are
-        selected via the image filtering checkboxes. Also see the
-        `image_type_checkboxes` property.
+        '''Image classifications that are
+        selected via the image filtering :class:`QCheckBox` instances. Also see the
+        :attr:`~PlateInspectorWidget.image_type_checkboxes` property.
 
         :return: List of currently selected image classifications. Images
                 who's classification is in this list should be shown / 
@@ -101,18 +101,18 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
     @property
     def human(self):
-        '''Status of human image classification checkbox.
+        '''Status of human image classification :class:`QCheckBox`.
         
-        :return: State of the human filter checkbox
+        :return: State of the human filter :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_21.isChecked()
     
     @property
     def marco(self):
-        '''Status of marco image classification checkbox.
+        '''Status of marco image classification :class:`QCheckBox`.
 
-        :return: State of the marco filter checkbox
+        :return: State of the marco filter :class:`QCheckBox`
         :rtype: bool
         '''
 
@@ -120,9 +120,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     
     @property
     def favorite(self):
-        '''Status of the `favorite` checkbox filter.
+        '''Status of the `favorite` :class:`QCheckBox` filter.
 
-        :return: State of the favorite checkbox
+        :return: State of the favorite :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_6.isChecked()
@@ -130,8 +130,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     @property
     def color_mapping(self):
         '''Creates a color mapping dictionary that reflects the currently selected
-        color selector comboboxes. The dictionary maps each image
-        classifications to a QColor instance that can then be used
+        color selector :class:`QComboBox` instances. The dictionary maps each image
+        classifications to a :class:`QColor` instance that can then be used
         to color images in the plate viewer.
         '''
         mapping = {}
@@ -163,16 +163,16 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_alt_spectrum_buttons()
     
     def _set_images_per_page(self):
-        '''Private method that tells the `plateViewer` widget to set 
-        its `images_per_page` atttribute to the value specified in the 
-        images per page comboBox.
+        '''Private method that tells the :class:`plateViewer` UI widget to set 
+        its :attr:`images_per_page` atttribute to the value specified in the 
+        images per page :class:`QComboBox`.
         '''
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
     
     def _set_color_comboboxs(self):
         '''Private method that sets the label text associated with each color
-        selector combobox. Should be called in the `__init__` method before
+        selector :class:`QComboBox`. Should be called in the `__init__` method before
         the widget is shown to the user.
         '''
         self.color_combos = [
@@ -195,9 +195,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.ui.comboBox_7.setCurrentIndex(0)
 
     def _set_color_options(self):
-        '''
-        Private methods that uses the `COLORS` constant to set the color options 
-        for each color selector combobox in the image coloring tab.
+        '''Private methods that uses the :const:`COLORS` constant to set the color options 
+        for each color selector :class:`QComboBox` instance in the image coloring tab.
         '''
         colors, i  = list(COLORS.keys()), 0
         for each_combobox in self.color_combos:
@@ -208,10 +207,11 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             i += 1
 
     def _parse_label_checkboxes(self):
-        '''Private method that reads values from checkboxes related to image filtering.
-        Returns a dictionary where keys are the labels of the checkboxes
+        '''Private method that reads values from :class:`QCheckBox`
+        instances related to image filtering.
+        Returns a dictionary where keys are the labels of the :class:`QCheckBox` instances
         which should also be the possible image classifications and values
-        are the state of the checkbox (True or False).
+        are the state of the :class:`QCheckBox` (True or False).
 
         Returned dictionary will have following structure.
 
@@ -224,7 +224,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
             'Other': False
             }
 
-        :return: Dict of checkbox states.
+        :return: Dict of :class:`QCheckBox` states.
         :rtype: dict
         '''
         boxes = [
@@ -310,7 +310,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
     def set_aspect_ratio_mode(self):
         '''Sets the `preserve_aspect` attribute based on the status of
-        the preserve aspect ratio checkbox. Preserving the 
+        the preserve aspect ratio :class:`QCheckBox`. Preserving the 
         aspect ratio results in displaying undistorted crystallization images 
         but utilizes available display space less efficiently.
         '''
@@ -325,8 +325,9 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self.apply_plate_settings()
     
     def apply_plate_settings(self):
-        '''Parses checkboxes in the Plate View tab to determine what behavior
-        of the `plateViewer` widget is requested by the user.
+        '''Parses :class:`QCheckBox` instances in the Plate View tab
+        to determine what behavior of the :class:`plateViewer` 
+        widget is requested by the user.
         '''
         if self._run:
             self.ui.plateViewer.images_per_page = self.images_per_page[

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -152,8 +155,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for polo.windows.image_pop_dialog</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">polo.utils.ftp_utils</span> <span class="kn">import</span> <span class="n">list_dir</span><span class="p">,</span> <span class="n">logon</span>
-<span class="kn">from</span> <span class="nn">polo.designer.UI_image_pop_dialog</span> <span class="kn">import</span> <span class="n">Ui_Dialog</span>
+<span></span><span class="kn">from</span> <span class="nn">polo.designer.UI_image_pop_dialog</span> <span class="kn">import</span> <span class="n">Ui_Dialog</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">make_default_logger</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -204,6 +206,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The :class:`~polo.crystallography.image.Image`</span>
+<span class="sd">         being displayed.</span>
+
+<span class="sd">        :return: The :class:`~polo.crystallography.image.Image` instance to be displayed</span>
+<span class="sd">        :rtype: Image</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
 
     <span class="nd">@image</span><span class="o">.</span><span class="n">setter</span>
@@ -212,39 +220,50 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">show_image</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ImagePopDialog.show"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Shows the dialog window</span>
+        <span class="sd">&#39;&#39;&#39;Shows the dialog window.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ImagePopDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_image</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog._set_groupbox_title"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._set_groupbox_title">[docs]</a>    <span class="k">def</span> <span class="nf">_set_groupbox_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Set the the title of main groupbox to the image path basename</span>
+        <span class="sd">&#39;&#39;&#39;Private method that set the the title of main groupbox to the </span>
+<span class="sd">        basename of the :attr:`~polo.crystallography.image.Image.path`</span>
+<span class="sd">        attribute of the :class:`~polo.crystallography.image.Image` instance</span>
+<span class="sd">        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">groupBox</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog._set_cocktail_details"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._set_cocktail_details">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Shows image metadata in display widgets</span>
+        <span class="sd">&#39;&#39;&#39;Private method that shows the </span>
+<span class="sd">        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute metadata in the text display widgets.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">))</span></div>
     
 <div class="viewcode-block" id="ImagePopDialog._change_favorite_status"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._change_favorite_status">[docs]</a>    <span class="k">def</span> <span class="nf">_change_favorite_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Update the favorite status of the current image to the</span>
-<span class="sd">        state of the favorite radioButton.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates the favorite status of the current </span>
+<span class="sd">        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute to the state of the favorite :class:`QRadioButton`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog._set_image_details"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._set_image_details">[docs]</a>    <span class="k">def</span> <span class="nf">_set_image_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Displays the current image metadata in a</span>
-<span class="sd">        testBrowser widget.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that displays the </span>
+<span class="sd">        :class:`~polo.crystallography.image.Image` instance referenced</span>
+<span class="sd">        by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textBrowser_2</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog.show_image"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.show_image">[docs]</a>    <span class="k">def</span> <span class="nf">show_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Show the image stored in the `image` attribute</span>
+        <span class="sd">&#39;&#39;&#39;Show the :class:`~polo.crystallography.image.Image`</span>
+<span class="sd">        instance referenced by the</span>
+<span class="sd">        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">photoViewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -260,15 +279,22 @@
 
 <div class="viewcode-block" id="ImagePopDialog.classify_image"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">crystals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                        <span class="n">precipitate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Classify the image in the popout. Sets the human classification.</span>
+        <span class="sd">&#39;&#39;&#39;Set the human classification of the </span>
+<span class="sd">        :class:`~polo.crystallography.image.Image` instances</span>
+<span class="sd">        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute.</span>
 
-<span class="sd">        :param crystals: Classify as crystals flag, defaults to False</span>
+<span class="sd">        :param crystals: If True, classify the `image` as crystal,</span>
+<span class="sd">                         default False</span>
 <span class="sd">        :type crystals: bool, optional</span>
-<span class="sd">        :param clear: Classify as clear flag, defaults to False</span>
+<span class="sd">        :param clear: If True, classify the `image` as clear,</span>
+<span class="sd">                      defaults to False</span>
 <span class="sd">        :type clear: bool, optional</span>
-<span class="sd">        :param precipitate: Classify as precipitate flag, defaults to False</span>
+<span class="sd">        :param precipitate: If True, classify the `image` as precipitate, </span>
+<span class="sd">                            defaults to False</span>
 <span class="sd">        :type precipitate: bool, optional</span>
-<span class="sd">        :param other: Classify as other flag, defaults to False</span>
+<span class="sd">        :param other: If True, classify as the `image` as other,</span>
+<span class="sd">                      defaults to False</span>
 <span class="sd">        :type other: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">crystals</span><span class="p">:</span>
@@ -285,13 +311,18 @@
 <div class="viewcode-block" id="ImagePopDialog.show_alt_image"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.show_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">show_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Show a linked image based on boolean flags. </span>
 
-<span class="sd">        :param next_date: If True, set `image` attribute to next</span>
-<span class="sd">                          available imaging date, defaults to False</span>
+<span class="sd">        :param next_date: If True, set</span>
+<span class="sd">                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` </span>
+<span class="sd">                          attribute to next the available imaging date, defaults to False</span>
 <span class="sd">        :type next_date: bool, optional</span>
-<span class="sd">        :param prev_date: If True, set `image` attribute to previous </span>
+<span class="sd">        :param prev_date: If True, set </span>
+<span class="sd">                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">                          attribute to previous </span>
 <span class="sd">                          imaging date, defaults to False</span>
 <span class="sd">        :type prev_date: bool, optional</span>
-<span class="sd">        :param alt: If True, set `image` attribute to alt spectrum</span>
+<span class="sd">        :param alt: If True, set </span>
+<span class="sd">                    :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">                    attribute to an alt spectrum</span>
 <span class="sd">                    image, defaults to False</span>
 <span class="sd">        :type alt: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -303,11 +334,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">alt_image</span></div>
 
 <div class="viewcode-block" id="ImagePopDialog._set_allowed_navigation_functions"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._set_allowed_navigation_functions">[docs]</a>    <span class="k">def</span> <span class="nf">_set_allowed_navigation_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Enable or disable navigation by date or spectrum buttons</span>
-<span class="sd">        based on the content of the current image. Tests the Image</span>
-<span class="sd">        stored in the `image` attribute to determine if it is linked to</span>
+        <span class="sd">&#39;&#39;&#39;Private method to enable or disable navigation by date or spectrum buttons</span>
+<span class="sd">        based on the content of the current image. </span>
+<span class="sd">        Tests the :class:`~polo.crystallography.image.Image` instance</span>
+<span class="sd">        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`</span>
+<span class="sd">        attribute to determine if it is linked to</span>
 <span class="sd">        a future date, previous date or alt spectrum image through it&#39;s</span>
-<span class="sd">        `next_image`, `previous_image` and `alt_image` attributes</span>
+<span class="sd">        :attr:`~polo.crystallography.image.Image.next_image`</span>
+<span class="sd">        , :attr:`~polo.crystallography.image.Image.next_image.previous_image`     </span>
+<span class="sd">        and :attr:`~polo.crystallography.image.Image.next_image.alt_image` attributes</span>
 <span class="sd">        respectively. If an attribute == None, then the button that</span>
 <span class="sd">        requires that attribute will be disabled.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -335,11 +370,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -350,7 +393,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -159,7 +162,8 @@
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="c1"># from polo.utils.io_utils import list_dir_abs, parse_HWI_filename_meta</span>
-<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">if_dir_not_exists_make</span><span class="p">,</span> <span class="n">list_dir_abs</span><span class="p">,</span> <span class="n">parse_HWI_filename_meta</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">if_dir_not_exists_make</span><span class="p">,</span>
+                                <span class="n">list_dir_abs</span><span class="p">,</span> <span class="n">parse_HWI_filename_meta</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -170,7 +174,26 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">image_spectrum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                  <span class="n">images</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Run objects represent one particular imaging run of a sample. They</span>
+<span class="sd">        store :class:`~polo.crystallography.image.Image`</span>
+<span class="sd">        objects that hold the actual imaging data as well as</span>
+<span class="sd">        metadata associated with the imaging run and the sample.</span>
 
+<span class="sd">        :param image_dir: Directory that contains the screening images</span>
+<span class="sd">        :type image_dir: str of Path</span>
+<span class="sd">        :param run_name: Name of this run. Should be unique as it is used to</span>
+<span class="sd">        uniquely identify each Run instance</span>
+<span class="sd">        :type run_name: str</span>
+<span class="sd">        :param image_spectrum: Imaging technology used to capture</span>
+<span class="sd">                               the images in this run, defaults to None</span>
+<span class="sd">        :type image_spectrum: str, optional</span>
+<span class="sd">        :param date: Date the images in this Run were taken, defaults to None</span>
+<span class="sd">        :type date: datetime, optional</span>
+<span class="sd">        :param images: List of all</span>
+<span class="sd">                       :class:`~polo.crystallography.image.Image`</span>
+<span class="sd">                       instances in this run, defaults to []</span>
+<span class="sd">        :type images: list, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">image_spectrum</span>
@@ -185,7 +208,9 @@
             <span class="k">return</span> <span class="n">e</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Returns the number of non null Images&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;Returns the length of the</span>
+<span class="sd">        :attr:`~polo.crystallography.run.Run.images` attribute.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -200,14 +225,16 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Run.encode_images_to_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.encode_images_to_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_images_to_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Helper method that encodes all images in the Run to</span>
-<span class="sd">        base64.</span>
+        <span class="sd">&#39;&#39;&#39;Helper method that encodes all images in the</span>
+<span class="sd">        `class`~polo.crystallography.run.Run` to base64.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">image</span><span class="p">:</span> <span class="n">image</span><span class="o">.</span><span class="n">encode_base64</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Run.add_images_from_dir"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.add_images_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_images_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds the contents of a directory to `images` attribute.</span>
+        <span class="sd">&#39;&#39;&#39;Adds the contents of a directory to </span>
+<span class="sd">        :attr:`~polo.crystallography.run.Run.images`</span>
+<span class="sd">        attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -218,15 +245,20 @@
             
 
 <div class="viewcode-block" id="Run.unload_all_pixmaps"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.unload_all_pixmaps">[docs]</a>    <span class="k">def</span> <span class="nf">unload_all_pixmaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>  <span class="c1"># reduce memory usage</span>
-        <span class="sd">&#39;&#39;&#39;Delete the pixmap data of all Image instances stored in the</span>
-<span class="sd">        `images` attribute. Should be used to free up memory after the run</span>
-<span class="sd">        is no longer being viewed by the user.</span>
+        <span class="sd">&#39;&#39;&#39;Delete the pixmap data of all </span>
+<span class="sd">        :class:`~polo.crystallography.image.Image` instances referenced by the</span>
+<span class="sd">        :attr:`~polo.crystallography.run.Run.images` attribute. </span>
+<span class="sd">        This method should be used to free up memory after the </span>
+<span class="sd">        :class:`~polo.crystallography.run.Run`is no longer being</span>
+<span class="sd">        viewed by the user.</span>
 
 <span class="sd">        :param start: Start index for range of images to unload, defaults to None</span>
 <span class="sd">        :type start: int, optional</span>
 <span class="sd">        :param end: End index for range of images to unload, defaults to None</span>
 <span class="sd">        :type end: int, optional</span>
-<span class="sd">        :param a: Flag to unload pixmap data for all images and images they are linked to, defaults to False</span>
+<span class="sd">        :param a: Flag to unload pixmap data for all `Images`</span>
+<span class="sd">                  this :class:`~polo.crystallography.image.Image` is linked</span>
+<span class="sd">                  to</span>
 <span class="sd">        :type all: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -241,9 +273,10 @@
                 <span class="n">image</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Run.get_images_by_classification"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_images_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">get_images_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a dictionary of image classificationss. Keys are</span>
-<span class="sd">        each type of classification and values are list of</span>
-<span class="sd">        images with classification of the key. The human</span>
+        <span class="sd">&#39;&#39;&#39;Create a dictionary of image classifications. Keys are</span>
+<span class="sd">        each type of classification and values are lists of</span>
+<span class="sd">        :class:`~polo.crystallography.image.Image` s </span>
+<span class="sd">        with classification equal to the key value. The `human`</span>
 <span class="sd">        boolean determines what classifier should be used to</span>
 <span class="sd">        determine the image type. Human = True sets the human</span>
 <span class="sd">        as the classifier and False sets MARCO as the classifier.</span>
@@ -264,31 +297,24 @@
                     <span class="n">image_class_dict</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">image_class_dict</span></div>
 
-    <span class="c1"># def get_image_table_data(self, image, attributes):</span>
-
-    <span class="c1">#     im_dict, row_dict = image.__dict__, {}</span>
-    <span class="c1">#     for arg in attributes:</span>
-    <span class="c1">#         if arg in im_dict:</span>
-    <span class="c1">#             row_dict[arg] = im_dict[arg]</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#             row_dict[arg] = None</span>
-    <span class="c1">#     return row_dict</span>
-
 <div class="viewcode-block" id="Run.image_filter_query"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.image_filter_query">[docs]</a>    <span class="k">def</span> <span class="nf">image_filter_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;General use method for returning Images based on a set of</span>
-<span class="sd">        filters. Used whereever a user is allowed to narrow the set</span>
-<span class="sd">        of images available for view.</span>
+        <span class="sd">&#39;&#39;&#39;General use method for returning :class:`~polo.crystallography.image.Image`s</span>
+<span class="sd">        based on a set of filters. Used whereever a user is allowed to narrow the set</span>
+<span class="sd">        of :class:`~polo.crystallography.image.Image`s available for view.</span>
 
-<span class="sd">        :param image_types: Returned images must have a classification that is included in this variable</span>
+<span class="sd">        :param image_types: Returned images must have a</span>
+<span class="sd">                            classification that is included in </span>
+<span class="sd">                            this variable</span>
 <span class="sd">        :type image_types: list or set</span>
-<span class="sd">        :param human: Qualify the classification type with a human classifier. </span>
+<span class="sd">        :param human: Qualify the classification type</span>
+<span class="sd">                      with a human classifier. </span>
 <span class="sd">        :type human: bool</span>
-<span class="sd">        :param marco: Qualify the classification type with a MARCO classifier.</span>
+<span class="sd">        :param marco: Qualify the classification type with</span>
+<span class="sd">                      a MARCO classifier.</span>
 <span class="sd">        :type marco: bool</span>
-<span class="sd">        :param favorite: Returned images must be marked as `favorite` if set to True</span>
+<span class="sd">        :param favorite: Returned images must be marked as </span>
+<span class="sd">                         `favorite` if set to True</span>
 <span class="sd">        :type favorite: bool</span>
-<span class="sd">        :return: Images that meet the specified requirements specified in the above arguments.</span>
-<span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">i</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span>
             <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span>
@@ -296,31 +322,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">images</span><span class="p">:</span>
             <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">no_image</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">images</span></div>
-
-<div class="viewcode-block" id="Run.get_human_statistics"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_human_statistics">[docs]</a>    <span class="k">def</span> <span class="nf">get_human_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns stats that would be shown in the stats tab of the viewer.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Run.get_cocktails"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_cocktails">[docs]</a>    <span class="k">def</span> <span class="nf">get_cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns list of list of cocktails assigned to this run</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Run.export_to_csv"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.export_to_csv">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Exports run classification data to a csv table.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Run.get_heap_map_data"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_heap_map_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_heap_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns data that will be needed to render the heatmap</span>
-<span class="sd">        view of results</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Run.get_current_hits"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.get_current_hits">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_hits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># hits are classified as images with human crystal designation</span>
@@ -346,7 +347,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">HWIRun</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="HWIRun.get_tooltip"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.get_tooltip">[docs]</a>    <span class="k">def</span> <span class="nf">get_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;The same as :func:`~polo.crystallography.Run.get_tooltip`.</span>
+        <span class="sd">&#39;&#39;&#39;The same as :meth:`~polo.crystallography.Run.get_tooltip`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="s1">&#39;plateName&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="n">platename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;plateName&#39;</span><span class="p">]</span>
@@ -358,14 +359,20 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="HWIRun.link_to_next_date"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_next_date">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_next_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Link this Run to another Run instance that is of the same</span>
+        <span class="sd">&#39;&#39;&#39;Link this :class:`~polo.crystallography.run.HWIRun` to another </span>
+<span class="sd">        :class:`~polo.crystallography.run.HWIRun` instance that is of the same</span>
 <span class="sd">        sample but photographed at a later date. This creates a</span>
-<span class="sd">        bi-directional linked list structure between the two runs.</span>
-<span class="sd">        This Run instance will point to `other_run` through the `next_run`</span>
-<span class="sd">        attribute and `other_run` will point back to this Run through</span>
-<span class="sd">        the `previous_run` attribute. This method does not attempt to recognize</span>
-<span class="sd">        which run was imaged first so this should be determined before calling, likely</span>
-<span class="sd">        by sorting a list of Runs by their `date` attribute.</span>
+<span class="sd">        bi-directional linked list structure between the two </span>
+<span class="sd">        :class:`~polo.crystallography.run.HWIRun`s.</span>
+<span class="sd">        This :class:`~polo.crystallography.run.HWIRun` instance will point to the </span>
+<span class="sd">        `other_run` through the </span>
+<span class="sd">        :attr:`~polo.crystallography.run.HWIRun.next_run` attribute and</span>
+<span class="sd">        `other_run` will point back to this :class:`~polo.crystallography.run.HWIRun` through</span>
+<span class="sd">        its :attr:`~polo.crystallography.run.HWIRun.previous_run`</span>
+<span class="sd">        attribute. This method does not attempt to recognize</span>
+<span class="sd">        which run was imaged first so this should be determined before calling,</span>
+<span class="sd">        likely by sorting a list of `HWIRun instances by their </span>
+<span class="sd">        :attr:`~polo.crystallography.run.Run.date` attribute.</span>
 
 <span class="sd">        Example:</span>
 
@@ -386,7 +393,8 @@
 <span class="sd">            run_a &lt;-&gt; run_b &lt;-&gt; run_c &lt;-&gt; run_d</span>
 
 
-<span class="sd">        :param other_run: HWIRun instance representing the next imaging run</span>
+<span class="sd">        :param other_run: :class:`~polo.crystallography.run.HWIRun`</span>
+<span class="sd">                          instance representing the next imaging run</span>
 <span class="sd">        :type other_run: HWIRun</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -404,14 +412,19 @@
             <span class="n">other_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="HWIRun.link_to_alt_spectrum"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_alt_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_alt_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Similar to :func:`~polo.crystallography.HWIRun.link_to_next_date`</span>
-<span class="sd">        except instead of creating a linked list through the `next_run` and</span>
-<span class="sd">        `previous_run` attributes it does so through the `alt_spectrum`</span>
-<span class="sd">        attribute. Linked list created is mono-directional so if a</span>
-<span class="sd">        series of runs are being linked the last run should be linked to the</span>
+        <span class="sd">&#39;&#39;&#39;Similar to :meth:`~polo.crystallography.HWIRun.link_to_next_date`</span>
+<span class="sd">        except instead of creating a linked list through the </span>
+<span class="sd">        :attr:`~polo.crystallography.run.HWIRun.next_run` and</span>
+<span class="sd">        :attr:`~polo.crystallography.run.HWIRun.previous_run`</span>
+<span class="sd">        attributes this method does so through the </span>
+<span class="sd">        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum`</span>
+<span class="sd">        attribute. The linked list created is mono-directional so if a</span>
+<span class="sd">        series of :class:`~polo.crystallography.run.HWIRun`&#39;s </span>
+<span class="sd">        are being linked the last run should be linked to the</span>
 <span class="sd">        first run to circularize the linked list.</span>
 
-<span class="sd">        :param other_run: Run to link to this Run by spectrum </span>
+<span class="sd">        :param other_run: :class:`~polo.crystallography.run.HWIRun` to </span>
+<span class="sd">                          link to this :class:`~polo.crystallography.run.HWIRun` by spectrum </span>
 <span class="sd">        :type other_run: HWIRun</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         
@@ -421,8 +434,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="n">other_run</span></div>
     
 <div class="viewcode-block" id="HWIRun.get_linked_alt_runs"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.get_linked_alt_runs">[docs]</a>    <span class="k">def</span> <span class="nf">get_linked_alt_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return all runs that this run is linked to by spectrum. See</span>
-<span class="sd">        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`</span>
+        <span class="sd">&#39;&#39;&#39;Return all :class:`~polo.crystallography.run.HWIRun`s that this </span>
+<span class="sd">        :class:`~polo.crystallography.run.HWIRun` is linked to by spectrum. See</span>
+<span class="sd">        :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.</span>
 
 <span class="sd">        :return: List of runs linked to this run by spectrum</span>
 <span class="sd">        :rtype: list</span>
@@ -442,14 +456,19 @@
     
 <div class="viewcode-block" id="HWIRun.insert_into_alt_spec_chain"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.insert_into_alt_spec_chain">[docs]</a>    <span class="k">def</span> <span class="nf">insert_into_alt_spec_chain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;When runs are first loaded into Polo they are automatically linked together.</span>
-<span class="sd">        Normally, runs that are linked by date should all be visible spectrum images and</span>
-<span class="sd">        runs linked by spectrum should all be non-visible spectrum images. The visible</span>
-<span class="sd">        spectrum images will then point to one non-visible spectrum run via their</span>
-<span class="sd">        `alt_spectrum` attribute. This means that one could navigate from a visible</span>
-<span class="sd">        spectrum run to all alt spectrum runs but not get back to the visible spectrum</span>
-<span class="sd">        run. Therefore, before a run is set to be viewed by the user this method</span>
-<span class="sd">        temporary inserts it into the alt spectrum circular linked list. Also see</span>
-<span class="sd">        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.</span>
+<span class="sd">        Normally, `HWIRuns` that are linked by date should contain only </span>
+<span class="sd">        visible spectrum images and :class:`~polo.crystallography.run.HWIRun`s </span>
+<span class="sd">        linked by spectrum should contain only all</span>
+<span class="sd">        non-visible spectrum images. The visible spectrum HWIRun will then point to </span>
+<span class="sd">        one non-visible spectrum run via their</span>
+<span class="sd">        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum` attribute.</span>
+<span class="sd">        This means that one could navigate from a visible</span>
+<span class="sd">        spectrum :class:`~polo.crystallography.run.HWIRun` to all alt spectrum </span>
+<span class="sd">        :class:`~polo.crystallography.run.HWIRun`s but not be abe to </span>
+<span class="sd">        get back to the visible spectrum</span>
+<span class="sd">        HWIRun. Therefore, before a HWIRun is set to be viewed by the user this method</span>
+<span class="sd">        temporary inserts it into the alt spectrum circular linked list. </span>
+<span class="sd">        Also see :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">linked_runs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_alt_runs</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">linked_runs</span><span class="p">:</span>
@@ -466,12 +485,11 @@
                     <span class="n">linked_runs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HWIRun.add_images_from_dir"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.add_images_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">add_images_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Populates the images attribute with a list of images read from the</span>
-<span class="sd">        image_dir location. Currently is dependent on having a cocktail</span>
-<span class="sd">        menu available. This is passed into the function and would</span>
-<span class="sd">        normally come from the most recently used HWI file that is</span>
-<span class="sd">        stored as a dictionary in the mainWindow object.</span>
+        <span class="sd">&#39;&#39;&#39;Populates the :attr:`~polo.crystallography.run.HWIRun.images` </span>
+<span class="sd">        attribute with a list of `Images` instances</span>
+<span class="sd">        read from the :attr:`~polo.crystallography.run.HWIRun.image_dir`</span>
+<span class="sd">        attribute filepath. Currently is </span>
+<span class="sd">        dependent on having a cocktail Menu available.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">BLANK_IMAGE</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_wells</span><span class="p">)]</span>
         <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_dir</span><span class="p">)</span>
@@ -498,11 +516,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -513,7 +539,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

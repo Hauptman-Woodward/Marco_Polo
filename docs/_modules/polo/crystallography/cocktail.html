@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -161,24 +164,24 @@
 
 
 <div class="viewcode-block" id="Cocktail"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail">[docs]</a><span class="k">class</span> <span class="nc">Cocktail</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;Cocktail instances are used to hold a collection of reagents</span>
-<span class="sd">    that form one chemical cocktail screen. Also hold metadata including</span>
-<span class="sd">    their commercial code if one exists, the cocktail pH and the</span>
-<span class="sd">    well they are assigned to. Currently, cocktails are only supported</span>
-<span class="sd">    for HWIRuns.</span>
+    <span class="sd">&#39;&#39;&#39;Cocktail instances are used to hold a collection of </span>
+<span class="sd">    :class:`~polo.crystallography.cocktail.Reagent`</span>
+<span class="sd">    instances that form one chemical cocktail. </span>
+<span class="sd">    Cocktails also hold other metadata including their commercial code,</span>
+<span class="sd">    the cocktail pH and the well they are assigned to.</span>
+<span class="sd">    Currently, cocktails are only supported for HWIRuns. </span>
 
 <span class="sd">    :param number: The cocktail number, defaults to None</span>
 <span class="sd">    :type number: str, optional</span>
-<span class="sd">    :param well_assignment: Well number in plate this cocktail belongs to, \</span>
-<span class="sd">        defaults to None</span>
+<span class="sd">    :param well_assignment: Well number in the screening plate this</span>
+<span class="sd">                            cocktail belongs to, defaults to None</span>
 <span class="sd">    :type well_assignment: int, optional</span>
-<span class="sd">    :param commercial_code: Commercial code of cocktail if supplied by \</span>
-<span class="sd">        third party, defaults to None</span>
+<span class="sd">    :param commercial_code: Commercial code of cocktail, defaults to None</span>
 <span class="sd">    :type commercial_code: str, optional</span>
-<span class="sd">    :param pH: pH of cocktail, defaults to None</span>
+<span class="sd">    :param pH: pH of the cocktail, defaults to None</span>
 <span class="sd">    :type pH: float, optional</span>
-<span class="sd">    :param reagents: list of reagent instances that make up the contents \</span>
-<span class="sd">        of the cocktail instance, defaults to None</span>
+<span class="sd">    :param reagents: list of reagent instances that make up the contents</span>
+<span class="sd">        of the cocktail, defaults to None</span>
 <span class="sd">    :type reagents: Reagent, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -192,11 +195,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cocktail_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Attempt to pull out the cocktail number from the cocktail number</span>
-<span class="sd">        string. Dependent on consistent formating between cocktail menus that</span>
-<span class="sd">        I have not currently varrified.</span>
+        <span class="sd">&#39;&#39;&#39;Attempt to pull out the cocktail number as an integer</span>
+<span class="sd">        from the :attr:`~polo.crystallography.cocktail.Cocktail.number` attribute.</span>
+<span class="sd">        This property is dependent on consistent formating </span>
+<span class="sd">        between cocktail menus that has not checked at this time.</span>
 
-<span class="sd">        :return: cocktail number</span>
+<span class="sd">        :return: Cocktail number</span>
 <span class="sd">        :rtype: int</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>     
@@ -207,7 +211,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">well_assignment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return the current well assignment for this cocktail</span>
+        <span class="sd">&#39;&#39;&#39;Return the current well assignment for this Cocktail.</span>
 
 <span class="sd">        :return: well assignment</span>
 <span class="sd">        :rtype: int</span>
@@ -216,19 +220,14 @@
 
     <span class="nd">@well_assignment</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">well_assignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Setter function for the well_assignment attribute.</span>
-
-<span class="sd">        :param value: well number</span>
-<span class="sd">        :type value: str, int or float</span>
-<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_well_assignment</span> <span class="o">=</span> <span class="n">value</span>
     
 
 <div class="viewcode-block" id="Cocktail.add_reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.add_reagent">[docs]</a>    <span class="k">def</span> <span class="nf">add_reagent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_reagent</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds a reagent to the existing list of reagents stored in the</span>
-<span class="sd">        reagents attribute.</span>
+        <span class="sd">&#39;&#39;&#39;Adds a reagent to the existing list of reagents referenced by the</span>
+<span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.reagents attribute.</span>
 
 <span class="sd">        :param new_reagent: Reagent to add to this cocktail</span>
 <span class="sd">        :type new_reagent: Reagent</span>
@@ -279,18 +278,21 @@
 
 
 <div class="viewcode-block" id="Reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent">[docs]</a><span class="k">class</span> <span class="nc">Reagent</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;Reagent instances represent one specific kind of chemical compound</span>
-<span class="sd">    used in a screening cocktail. </span>
+    <span class="sd">&#39;&#39;&#39;Reagent instances represent one specific kind of chemical compound at</span>
+<span class="sd">    a specific concentration. Multiple Reagents make up a cocktail. Reagents</span>
+<span class="sd">    are generally created from the contents of HWI cocktail csv files which</span>
+<span class="sd">    describe all 1536 cocktails and the reagents that compose them in one file.</span>
+<span class="sd">    The cocktail csv files can be found in the `data` directory.</span>
 
-<span class="sd">    :param chemical_additive: Name of the reagent chemical,</span>
+<span class="sd">    :param chemical_additive: Name of the chemical reagent,</span>
 <span class="sd">                                defaults to None</span>
 <span class="sd">    :type chemical_additive: str, optional</span>
-<span class="sd">    :param concentration: Concentration of the reagent in a given well,</span>
+<span class="sd">    :param concentration: Concentration of the reagent,</span>
 <span class="sd">                            defaults to None</span>
 <span class="sd">    :type concentration: UnitValue, optional</span>
 <span class="sd">    :param chemical_formula: Chemical formula for this reagent, defaults</span>
 <span class="sd">                                to None</span>
-<span class="sd">    :type chemical_formula: str, optional</span>
+<span class="sd">    :type chemical_formula: Formula, optional</span>
 <span class="sd">    :param stock_con: Concentration of this reagent&#39;s stock solution,</span>
 <span class="sd">                        defaults to None</span>
 <span class="sd">    :type stock_con: UnitValue, optional</span>
@@ -308,11 +310,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chemical_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return the current chemical formula for this Reagent. It is not</span>
-<span class="sd">        certain that a reagent will have a chemical formula.</span>
+        <span class="sd">&#39;&#39;&#39;The chemical formula for of this Reagent. Not all</span>
+<span class="sd">        Reagents have available chemical formulas as cocktail csv files do not</span>
+<span class="sd">        include formulas for all reagents. See the setter method for more details</span>
+<span class="sd">        on how chemical formulas are converted from strings to `Formula` objects.</span>
 
 <span class="sd">        :return: Chemical formula</span>
-<span class="sd">        :rtype: molmass.Formula</span>
+<span class="sd">        :rtype: Formula</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chemical_formula</span>
 
@@ -343,8 +347,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">concentration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return the current concentration for this reagent. Concentration</span>
-<span class="sd">        utimately refers back to a condition in a specific screening well.</span>
+        <span class="sd">&#39;&#39;&#39;The current concentration of this Reagent. Concentration</span>
+<span class="sd">        ultimately refers back to a condition in a specific screening well.</span>
 
 <span class="sd">        :return: Chemical concentration</span>
 <span class="sd">        :rtype: UnitValue</span>
@@ -368,12 +372,20 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">molarity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Attempt to calculate the molarity of this reagent at its current</span>
-<span class="sd">        concentration. This calculation is not certain to return a molarity</span>
-<span class="sd">        because HWI cocktail menu files use a variety of units to describe</span>
-<span class="sd">        chemical concentrations, including %w/v or %v/v. Currently, Polo is</span>
-<span class="sd">        not able to convert %v/v units to molarity as it would require knowing</span>
-<span class="sd">        both the molar mass of the reagent and its density. If the reagent</span>
-<span class="sd">        concentration cannot be converted to mols / liter then returns false.</span>
+<span class="sd">        concentration. This calculation is not certain to return a value</span>
+<span class="sd">        as HWI cocktail menu files use a variety of units to describe</span>
+<span class="sd">        chemical concentrations, including %w/v or %v/v.</span>
+
+<span class="sd">        %w/v is defined as grams of colute per 100 ml of solution * 100. This can</span>
+<span class="sd">        be converted to molarity when the molar mass of the reagent is known.</span>
+
+<span class="sd">        %v/v is defined as the volume of solute over the total volume of solution</span>
+<span class="sd">        * 100. The density of the reagent is required to convert %w/v to molarity</span>
+<span class="sd">        which is not included in HWI cocktail menu files. This makes conversion</span>
+<span class="sd">        from %w/v out of reach for now.</span>
+<span class="sd">        </span>
+<span class="sd">        If the reagent concentration cannot be converted to molarity then</span>
+<span class="sd">        this function will return False.</span>
 
 <span class="sd">        :return: molarity or False</span>
 <span class="sd">        :rtype: UnitValue or Bool</span>
@@ -390,11 +402,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">molar_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Attempt to calculate the molar mass of this reagent. Closely related</span>
-<span class="sd">        to the molarity property. See its docstring for why this is not always</span>
-<span class="sd">        possible. Return False if cannot be calculated.</span>
-
-<span class="sd">        :return: Molarity or False</span>
-<span class="sd">        :rtype: UnitValue or False</span>
+<span class="sd">        to the molarity property. The molar mass of the reagent cannot be</span>
+<span class="sd">        calculated for all HWI reagents. </span>
+<span class="sd">      </span>
+<span class="sd">        :return: Molar mass of the Reagent if it is calculable, False otherwise.</span>
+<span class="sd">        :rtype: UnitValue or bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">mm</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chemical_formula</span><span class="p">,</span> <span class="n">Formula</span><span class="p">):</span>
@@ -407,7 +419,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Reagent.peg_parser"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent.peg_parser">[docs]</a>    <span class="k">def</span> <span class="nf">peg_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peg_string</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Attempts to pull out a molar mass from a chemical name since the</span>
+        <span class="sd">&#39;&#39;&#39;Attempts to pull out a molar mass from a PEG species since the</span>
 <span class="sd">        molar mass is often included in the name of PEG species. A string is</span>
 <span class="sd">        considered to be a potential PEG species if it contains &#39;PEG&#39; or</span>
 <span class="sd">        &#39;Polyethylene glycol&#39; in it.</span>
@@ -428,10 +440,12 @@
 
 <div class="viewcode-block" id="Reagent.stock_volume"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Reagent.stock_volume">[docs]</a>    <span class="k">def</span> <span class="nf">stock_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_volume</span><span class="p">):</span>  <span class="c1"># stock con must be in molarity</span>
         <span class="sd">&#39;&#39;&#39;Attempt to calculate the required amount of stock solution to</span>
-<span class="sd">        produce the reagent&#39;s set concentration in the given target_volume.</span>
-<span class="sd">        Stock concentration is taken from the stock_con attribute. If</span>
-<span class="sd">        stock_con is not set or the molarity of the reagent can not be</span>
-<span class="sd">        calculated this method will return False.</span>
+<span class="sd">        produce the Reagent&#39;s set concentration in the given `target_volume`</span>
+<span class="sd">        argument. Stock concentration is taken from the </span>
+<span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` attribute. If</span>
+<span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` is not</span>
+<span class="sd">        set or the molarity of the reagent can not be calculated this method</span>
+<span class="sd">        will return False.</span>
 
 <span class="sd">        :param target_volume: Volume in which stock will be diluted into</span>
 <span class="sd">        :type target_volume: UnitValue</span>
@@ -456,7 +470,8 @@
 <span class="sd">    are not the most robust but help to keep things more organized.</span>
 <span class="sd">    UnitValues can be created by either passing values to the</span>
 <span class="sd">    `values` and `units` args explicitly or by calling the classmethod</span>
-<span class="sd">    `make_from_string` which will use regex to pull out supported units and</span>
+<span class="sd">    :meth:`~polo.crystallography.cocktail.UnitValue.make_from_string`</span>
+<span class="sd">    which will use regex to pull out supported units and</span>
 <span class="sd">    values.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">saved_scalers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">}</span>
@@ -471,8 +486,9 @@
 
 <div class="viewcode-block" id="UnitValue.make_from_string"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.make_from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">make_from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a UnitValue from a string containing a value and a unit.</span>
-<span class="sd">        Used the `unit_regex` to pull out the units. </span>
+        <span class="sd">&#39;&#39;&#39;Create a `UnitValue` from a string containing a value and a unit.</span>
+<span class="sd">        Utilizes the :const:`polo.unit_regex` expression </span>
+<span class="sd">        to pull out the units. </span>
 
 <span class="sd">        .. highlight:: python</span>
 <span class="sd">        .. code-block:: python</span>
@@ -509,10 +525,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="UnitValue.scale"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale_key</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Scale the value of the UnitValue instance using a key character</span>
-<span class="sd">        in the `saved_scalers` dictionary. First converts the value to its</span>
-<span class="sd">        base unit and then divides by the `scale_key` value. The `scale_key`</span>
-<span class="sd">        can be thought of as a SI prefix for a base unit.</span>
+        <span class="sd">&#39;&#39;&#39;Scale the :attr:`~polo.crystallography.cocktail.UnitValue.value`</span>
+<span class="sd">        using a key character that exists in the </span>
+<span class="sd">        :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`</span>
+<span class="sd">        dictionary. First converts the value to its</span>
+<span class="sd">        base unit and then divides by the `scale_key` argument value. </span>
+<span class="sd">        The `scale_key` can be thought of as a SI prefix for a base unit.</span>
 
 <span class="sd">        .. highlight:: python</span>
 <span class="sd">        .. code-block:: python</span>
@@ -521,7 +539,8 @@
 <span class="sd">            v_one = UnitValue(10, &#39;L&#39;)  # value of 10 liters</span>
 <span class="sd">            v_one = v_one.scale(&#39;u&#39;)  # get v_one in microliters</span>
 
-<span class="sd">        :param scale_key: Character in `saved_scalers` to convert value to.</span>
+<span class="sd">        :param scale_key: Character in :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`</span>
+<span class="sd">                          to convert value to.</span>
 <span class="sd">        :type scale_key: str</span>
 <span class="sd">        :return: UnitValue converted to scale_key unit prefix</span>
 <span class="sd">        :rtype: UnitValue</span>
@@ -532,10 +551,10 @@
                 <span class="n">temp</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">[</span><span class="n">scale_key</span><span class="p">],</span> <span class="n">scale_key</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="UnitValue.to_base"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.UnitValue.to_base">[docs]</a>    <span class="k">def</span> <span class="nf">to_base</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Converts the value to the base unit, if it is not already in the</span>
-<span class="sd">        base unit.</span>
+        <span class="sd">&#39;&#39;&#39;Converts the :attr:`~polo.crystallography.cocktail.UnitValue.value`</span>
+<span class="sd">        to the base unit, if it is not already in the base unit.</span>
 
-<span class="sd">        :return: UnitValue converted to base unit of called UnitValue instance</span>
+<span class="sd">        :return: UnitValue converted to base unit</span>
 <span class="sd">        :rtype: UnitValue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_scalers</span><span class="p">:</span>
@@ -574,11 +593,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -589,7 +616,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

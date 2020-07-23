@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -169,21 +172,21 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RunTree"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree">[docs]</a><span class="k">class</span> <span class="nc">RunTree</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidget</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Inherits the :class:`QTreeWidget` class and acts as the sample and</span>
+<span class="sd">    run display. The User uses the RunTree to open and classify runs</span>
+<span class="sd">    they load into Polo.</span>
+
+<span class="sd">    :param parent: Parent widget, defaults to None</span>
+<span class="sd">    :type parent: QWidget, optional</span>
+<span class="sd">    :param auto_link: If True automatically link runs together, defaults to True</span>
+<span class="sd">    :type auto_link: bool, optional</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">opening_run</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
     <span class="n">save_run_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
     <span class="n">remove_run_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">auto_link</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Inherits the QTreeWidget class and acts as the sample and</span>
-<span class="sd">        run display. User uses the RunTree to open and classify runs</span>
-<span class="sd">        they load into Polo.</span>
-
-<span class="sd">        :param parent: Parent widget, defaults to None</span>
-<span class="sd">        :type parent: QWidget, optional</span>
-<span class="sd">        :param auto_link: If True automatically link runs together, defaults to True</span>
-<span class="sd">        :type auto_link: bool, optional</span>
-<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classified_status</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
@@ -194,22 +197,43 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_run_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;List of current run names.</span>
+        <span class="sd">&#39;&#39;&#39;List of all currently loaded :class:`Run` names.</span>
+
+<span class="sd">        :return: List of :class:Run` names</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The: class:`Run` that is currently selected. If no :class:`Run` is</span>
+<span class="sd">        selected returns False.</span>
+
+<span class="sd">        :return: The currently selected run, if one exists, otherwise returns False</span>
+<span class="sd">        :rtype: Run, HWIRun or False</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">_open_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+<div class="viewcode-block" id="RunTree._open_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._open_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_open_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that emits the :attr:`opening_run` signal when called. This</span>
+<span class="sd">        signal can be connected to other widgets to communicate that the user</span>
+<span class="sd">        has selected a run and wants to open it for analysis.   </span>
 
-    <span class="k">def</span> <span class="nf">_edit_data_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="sd">        :param event: QEvent, defaults to None</span>
+<span class="sd">        :type event: QEvent, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunTree._edit_data_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._edit_data_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_edit_data_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method used to update the data in a :class:`Run` after it has</span>
+<span class="sd">        been modified by the user through the :class:`RunUpdater` dialog.</span>
+
+<span class="sd">        :param event: QEvent, defaults to None</span>
+<span class="sd">        :type event: QEvent, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
             <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -223,14 +247,14 @@
             <span class="c1">#     run_node = self._get_run_node(run)</span>
             <span class="c1">#     if run_node:</span>
             <span class="c1">#         run_node.setText(0, updater.run.run_name)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span></div>
 
 <div class="viewcode-block" id="RunTree._add_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._add_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_add_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Helper method to add a new run node to the RunTree.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that adds a new run node.</span>
 
 <span class="sd">        :param run: Run to add to the tree</span>
 <span class="sd">        :type run: Run or HWIRun</span>
-<span class="sd">        :param tree: QTreeWidgetItem to act as parent node, defaults to None.</span>
+<span class="sd">        :param tree: `QTreeWidgetItem` to act as parent node, defaults to None.</span>
 <span class="sd">                     If None uses the root as the parent node.</span>
 <span class="sd">        :type tree: QTreeWidgetItem, optional</span>
 <span class="sd">        :return: Node added to the tree</span>
@@ -249,13 +273,13 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added new run: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">new_node</span></div>
 
-    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private helper method that returns the QTreeWidget item</span>
-<span class="sd">        corresponding to a given run.</span>
+<div class="viewcode-block" id="RunTree._get_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._get_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private helper method that returns the :class:`QTreeWidgetItem`</span>
+<span class="sd">        corresponding to a given :class:`Run`. Returns None if a node cannot be found.</span>
 
 <span class="sd">        :param run: Run to search for</span>
 <span class="sd">        :type run: Run or HWIRun</span>
-<span class="sd">        :return: Given run&#39;s corresponding QTreeWidgetItem if it exists</span>
+<span class="sd">        :return: Given run&#39;s corresponding :class:`QTreeWidgetItem` if it exists</span>
 <span class="sd">        :rtype: QTreeWidgetItem</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">run_name</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
@@ -266,20 +290,50 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">parent_node</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
             <span class="n">child_node</span> <span class="o">=</span> <span class="n">parent_node</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">run_name</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">child_node</span>
+                <span class="k">return</span> <span class="n">child_node</span></div>
 
-    <span class="k">def</span> <span class="nf">_remove_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Slot to connect to contextmenu popup to remove the selected run</span>
+<div class="viewcode-block" id="RunTree._add_classifications_from_mso_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._add_classifications_from_mso_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_add_classifications_from_mso_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add classifications to an existing :class:`Run` from the contents of an</span>
+<span class="sd">        MSO file. Intended to be connected to the `classify_from_mso`</span>
+<span class="sd">        QAction that is defined in the :</span>
+<span class="sd">        :meth:`~polo.widgets.run_tree.RunTree.contextMenuEvent`</span>
+<span class="sd">        method.</span>
+
+<span class="sd">        :param event: QEvent, defaults to None</span>
+<span class="sd">        :type event: QEvent, optional</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="p">:</span>
+            <span class="n">mso_browser</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;MSO Hunter&#39;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;mso files (*.mso)&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mso_browser</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mso_browser</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">mso_file</span> <span class="o">=</span> <span class="n">mso_browser</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">reader</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="p">(</span><span class="n">mso_file</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">result</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Added MSO classifications from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">mso_file</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failed to add MSO classifications from </span><span class="si">{}</span><span class="s1">. Failed with error </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">mso_file</span><span class="p">,</span> <span class="n">result</span>
+                    <span class="p">)</span>
+                <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RunTree._remove_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Slot to connect to contextMenu popup to remove the selected run.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
             <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunTree._remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to remove a run completely from Polo interface.</span>
+        <span class="sd">&#39;&#39;&#39;Private method to remove a :class:`Run` completely from the</span>
+<span class="sd">         Polo interface.</span>
 
-<span class="sd">        :param run_name: Run name of run to remove</span>
+<span class="sd">        :param run_name: Run name of :class:`Run` instance to remove</span>
 <span class="sd">        :type run_name: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># get all runs in the sample and just relink everything together</span>
@@ -303,9 +357,11 @@
         <span class="c1"># the above is a temp fix</span>
 
 <div class="viewcode-block" id="RunTree.remove_run_from_view"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.remove_run_from_view">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run_from_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Remove a run using its `run_name` attribute. Does not effect</span>
-<span class="sd">        any other widgets. Calling this method only removes the run from</span>
-<span class="sd">        the RunTree display. If a run is removed from RunTree it is returned.</span>
+        <span class="sd">&#39;&#39;&#39;Remove a :class:`Run` instance using its :attr:`run_name` attribute.</span>
+<span class="sd">        Does not effect any other widgets. Calling this method only </span>
+<span class="sd">        removes the :class:`Run` instance from</span>
+<span class="sd">        the display. If a :class:`Run` instance is removed from successfully</span>
+<span class="sd">        it is returned.</span>
 
 <span class="sd">        :param run_name: Name of run to remove</span>
 <span class="sd">        :type run_name: str</span>
@@ -332,9 +388,8 @@
             <span class="k">return</span> <span class="n">condemned_run</span></div>
 
 <div class="viewcode-block" id="RunTree.add_classified_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.add_classified_run">[docs]</a>    <span class="k">def</span> <span class="nf">add_classified_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Marks a run as classified by adding it to the</span>
-<span class="sd">        `classified_status` dictionary.</span>
+        <span class="sd">&#39;&#39;&#39;Marks a :class:`Run` instance as classified by adding it to the</span>
+<span class="sd">        :attr:`classified_status` dictionary.</span>
 
 <span class="sd">        :param run: Run to mark as classified</span>
 <span class="sd">        :type run: Run or HWIRun</span>
@@ -343,10 +398,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">classified_status</span><span class="p">[</span><span class="n">run</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="RunTree.add_sample"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.add_sample">[docs]</a>    <span class="k">def</span> <span class="nf">add_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds a new sample to the RunTree. Samples are the</span>
-<span class="sd">        highest level node in the RunTree.</span>
+        <span class="sd">&#39;&#39;&#39;Adds a new sample to the tree. Samples are the</span>
+<span class="sd">        highest level node in the `RunTree`.</span>
 
-<span class="sd">        :param sample_name: Name of sample to add, acts as key so should be unique.</span>
+<span class="sd">        :param sample_name: Name of sample to add, acts as key so should </span>
+<span class="sd">                            be unique.</span>
 <span class="sd">        :type sample_name: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">parent_item</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -358,10 +414,11 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added sample: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_name</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="RunTree.link_sample"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.link_sample">[docs]</a>    <span class="k">def</span> <span class="nf">link_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_name</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Links all runs in a given sample together by both date</span>
-<span class="sd">        and spectrum using the methods in the `RunLinker` class.</span>
+        <span class="sd">&#39;&#39;&#39;Links all :class:`Run` instances in a given sample together by both date</span>
+<span class="sd">        and spectrum using the :meth:`~polo.utils.io_utils.RunLinker.the_big_link`</span>
+<span class="sd">        method.</span>
 
-<span class="sd">        :param sample_name: Name of sample who&#39;s runs should be linked</span>
+<span class="sd">        :param sample_name: Name of the sample who&#39;s runs should be linked</span>
 <span class="sd">        :type sample_name: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># gather runs with this sample</span>
@@ -372,12 +429,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">linked_runs_dict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunTree.add_run_to_tree"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.add_run_to_tree">[docs]</a>    <span class="k">def</span> <span class="nf">add_run_to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Add a new run to the RunTree. Uses the run&#39;s `sampleName`</span>
-<span class="sd">        attribute to determine what sample node the run should be added</span>
-<span class="sd">        to. If the sample name does not exist it is made. If the run</span>
-<span class="sd">        lacks the `sampleName` attribute as is the case for non-HWIRuns</span>
-<span class="sd">        the `sampleName` attribute is set to &quot;Non-HWI Runs&quot;. If the run</span>
-<span class="sd">        is an HWIRun as lacks the `sampleName` attribute `sampleName` is</span>
+        <span class="sd">&#39;&#39;&#39;Add a new :class:`Run` instance to the tree. Uses the :class:`Run` instance&#39;s </span>
+<span class="sd">        :attr:`sampleName` attribute to determine what sample node </span>
+<span class="sd">        the :class:`Run` instance should be added</span>
+<span class="sd">        to. If the sample name does not exist in the tree a new sample node is added.</span>
+<span class="sd">        If the :class:`Run` instance lacks the :attr:`sampleName` attribute as is the case for </span>
+<span class="sd">        non-HWIRuns the :attr:`sampleName` attribute is set to &quot;Non-HWI Runs&quot;. </span>
+<span class="sd">        If the :class:`Run` instance is an :class:`HWIRun` and lacks the </span>
+<span class="sd">        :attr:`sampleName` attribute :attr:`sampleName` is</span>
 <span class="sd">        set to &quot;Sampleless Runs&quot;.</span>
 
 <span class="sd">        :param new_run: Run to add to the tree</span>
@@ -417,7 +476,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_node</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="n">non_hwi_runs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunTree.contextMenuEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.contextMenuEvent">[docs]</a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Handle left click events by creating a popup context menu</span>
+        <span class="sd">&#39;&#39;&#39;Handle left click events by creating a popup context menu.</span>
 
 <span class="sd">        :param event: QEvent</span>
 <span class="sd">        :type event: QEvent</span>
@@ -436,9 +495,10 @@
             <span class="n">open_run_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
                 <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_run_slot</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
 
-            <span class="n">classify_from_mso</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Add MSO classifications&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-            <span class="n">classify_from_mso</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_classifications_from_mso_slot</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
-
+            <span class="n">classify_from_mso</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QAction</span><span class="p">(</span>
+                <span class="s1">&#39;Add MSO classifications&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="n">classify_from_mso</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_classifications_from_mso_slot</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">open_run_action</span><span class="p">)</span>
             <span class="c1">#self.menu.addAction(edit_data_action)</span>
@@ -446,65 +506,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">classify_from_mso</span><span class="p">)</span>
             
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QCursor</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QCursor</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span></div></div>
     
-<div class="viewcode-block" id="RunTree._open_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._open_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_open_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="RunTree._edit_data_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._edit_data_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_edit_data_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span>
-            <span class="n">updater</span> <span class="o">=</span> <span class="n">RunUpdaterDialog</span><span class="p">(</span><span class="n">run</span><span class="o">=</span><span class="n">run</span><span class="p">,</span> <span class="n">run_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run_names</span><span class="p">)</span>
-            <span class="n">updater</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-            <span class="c1"># if updater.run.run_name != run_name:</span>
-            <span class="c1">#     # need to change the run name in the viewer</span>
-            <span class="c1">#     print(type(run))</span>
-            <span class="c1">#     run_node = self._get_run_node(run)</span>
-            <span class="c1">#     if run_node:</span>
-            <span class="c1">#         run_node.setText(0, updater.run.run_name)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span></div>
-    
-<div class="viewcode-block" id="RunTree._add_classifications_from_mso_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._add_classifications_from_mso_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_add_classifications_from_mso_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="p">:</span>
-            <span class="n">mso_browser</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;MSO Hunter&#39;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s1">&#39;mso files (*.mso)&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mso_browser</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mso_browser</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">mso_file</span> <span class="o">=</span> <span class="n">mso_browser</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">reader</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="p">(</span><span class="n">mso_file</span><span class="p">)</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">result</span>
-                    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Added MSO classifications from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">mso_file</span>
-                    <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failed to add MSO classifications from </span><span class="si">{}</span><span class="s1">. Failed with error </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">mso_file</span><span class="p">,</span> <span class="n">result</span>
-                    <span class="p">)</span>
-                <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="RunTree._get_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._get_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
-        <span class="n">run_name</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
-        <span class="n">sample_name</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">sampleName</span>
-        <span class="n">parent_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findItems</span><span class="p">(</span>
-                            <span class="n">run</span><span class="o">.</span><span class="n">sampleName</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchExactly</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">parent_node</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
-            <span class="n">child_node</span> <span class="o">=</span> <span class="n">parent_node</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">run_name</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">child_node</span></div>
-
-    <span class="c1"># open edit run data dialog window</span>
-
-<div class="viewcode-block" id="RunTree._remove_run_slot"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run_slot">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">current_selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">current_selection</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="n">current_selection</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_run</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span></div></div>
 
     
         
@@ -524,11 +527,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -539,7 +550,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

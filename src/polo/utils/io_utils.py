@@ -1461,9 +1461,10 @@ class PptxWriter():
 
 
 class BarTender():
-    '''Class for organizing and accessing cocktail menu data.
+    '''Class for organizing and accessing 
+    :class:`~polo.utils.io_utils.Menu` data.
 
-    :param cocktail_dir: Directory containing cocktail menu csv files
+    :param cocktail_dir: Directory containing cocktail menu csv filepaths
     :type cocktail_dir: str or Path
     :param cocktail_meta: Path to cocktail metadata file which describes the contents of
                             each cocktail menu csv file
@@ -1612,11 +1613,11 @@ class BarTender():
             return self.menus[path]
 
     def get_menu_by_basename(self, basename):
-        '''Uses the basename of a :class:`Menu` file path to return a :class`~Menu` object.
+        '''Uses the basename of a :class:`Menu` file path to return a :class:`~Menu` object.
         Useful for retrieving menus based on the text of comboBoxes since
         when menus are displayed to the user only the basename is used.
 
-        :param basename: Basename of a cocktail menu file path
+        :param basename: Basename of a :class:`~polo.utils.io_utils.Menu` file path
         :type basename: str
         :return: Menu instance who's basename matches the `basename` argument,
                 returns None is no menu is found
@@ -1672,8 +1673,9 @@ class CocktailMenuReader():
         '''Classmethod to edit the
         :attr:`~polo.utils.io_utils.CocktailMenuReader.cocktail_map`.
         The :attr:`~polo.utils.io_utils.CocktailMenuReader.cocktail_map`
-        describes where the Cocktail level information is stored in a given cocktail menu
-        row in the csv file. It is a dictionary that maps specific indices in a row to
+        describes where the :class:`Cocktail` level information 
+        is stored in a given cocktail row in the csv file. 
+        It is a dictionary that maps specific indices in a row to
         :class:`Cocktail` attributes.
 
         The default cocktail_map dictionary is below.

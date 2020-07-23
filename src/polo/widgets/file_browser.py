@@ -19,7 +19,7 @@ class fileBrowser(QtWidgets.QTreeWidget):
     DIR_ICON = str(ICON_DICT['dir'])
 
     def __init__(self, parent=None):
-        '''Extension of the QTreeWidget specifically designed as the file
+        '''Extension of the :class:`QTreeWidget` specifically designed as the file
         interface for the FTP Dialog. Allows the user to browse files stored
         on an FTP server and select files for download.
 
@@ -29,8 +29,9 @@ class fileBrowser(QtWidgets.QTreeWidget):
         super(fileBrowser, self).__init__(parent)
 
     def grow_tree_using_mlsd(self, ftp, home_dir, set_checkable=True):
-        '''Rescursively add child nodes to the fileBrowser tree by traversing
-        a user's home directory of an ftp server using mlsd formating.  
+        '''Rescursively add child nodes to the tree by traversing
+        a user's home directory at a remote ftp server. Filepaths
+        are read using mlsd formating.  
 
         :param ftp: FTP object with valid connection
         :type ftp: FTP

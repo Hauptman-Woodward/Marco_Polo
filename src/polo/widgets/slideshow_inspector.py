@@ -161,7 +161,7 @@ class slideshowInspector(QtWidgets.QWidget):
     @property
     def selected_classifications(self):
         '''Returns image classification keywords for any image classification
-        checkboxes that are checked.
+        :class:`QCheckBox` instances that are checked.
 
         :return: List of selected images classifications
         :rtype: list
@@ -175,31 +175,31 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @property
     def human(self):
-        '''State of the human classifier checkbox. If True, assume the user
+        '''State of the human classifier :class:`QCheckBox`. If True, assume the user
         wants their selected image classifications to be in reference to image's
         human classification.
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_5.isChecked()
 
     @property
     def favorites(self):
-        '''Returns the state of the favorite checkbox.
+        '''Returns the state of the favorite :class:`QCheckBox`.
 
-        :return: Favorite checkbox state
+        :return: Favorite :class:`QCheckBox` state
         :rtype: bool
         '''
         return self.ui.checkBox_8.isChecked()
 
     @property
     def marco(self):
-        '''State of the MARCO classifier checkbox. If True, assume the user
+        '''State of the MARCO classifier :class:`QCheckBox`. If True, assume the user
         wants their selected image classifications to be in reference to image's
         MARCO classification.
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_6.isChecked()
@@ -257,7 +257,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
     def _set_classification_button_labels(self):
         '''Private method that sets the labels of image classification
-        buttons based on the `IMAGE_CLASSIFICATIONS` constant. Should be called
+        buttons based on the :const:`IMAGE_CLASSIFICATIONS` constant. Should be called
         in the `__init__` method.
         '''
 
@@ -266,7 +266,7 @@ class slideshowInspector(QtWidgets.QWidget):
             each_butt.setText(img_class)
 
     def _set_image_class_checkbox_labels(self):
-        '''Private method to the checkbox labels for imaging filtering
+        '''Private method to the :class:`QCheckBox` labels for imaging filtering
         from the `IMAGE_CLASSIFICATIONS` constant. Should be called in
         the `__init__` method.
         '''
@@ -283,7 +283,7 @@ class slideshowInspector(QtWidgets.QWidget):
         self._display_current_image()
 
     def _set_favorite_checkbox(self):
-        '''Private method that sets the value of the favorite checkbox based
+        '''Private method that sets the value of the favorite :class:`QCheckBox` based
         on whether the current image is marked as a favorite or not.
         Should be used when loading an image into the view.
 
@@ -297,7 +297,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
     def _mark_current_image_as_favorite(self):
         '''Private method that sets the favorite label on the current
-        image to the current value of the favorite checkbox.
+        image to the current value of the favorite :class:`QCheckBox`.
 
         :param favorite_status: Whether this image is a favorite or not
         :type favorite_status: bool

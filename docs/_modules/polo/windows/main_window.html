@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -236,7 +239,8 @@
     
 <div class="viewcode-block" id="MainWindow.get_widget_dims"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.get_widget_dims">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_widget_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Returns the width and height as a tuple of a given widget.</span>
+        <span class="sd">&#39;&#39;&#39;Returns the width and height of a :class:`QWidget`</span>
+<span class="sd">        as a tuple.</span>
 
 <span class="sd">        :param widget: QWidget</span>
 <span class="sd">        :type widget: QWidget</span>
@@ -258,6 +262,12 @@
     
 <div class="viewcode-block" id="MainWindow.delete_all_backups"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.delete_all_backups">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">delete_all_backups</span><span class="p">():</span>
+        <span class="sd">&#39;&#39;&#39;Deletes all backup mso files.</span>
+
+<span class="sd">        :raises e: Any exceptions thrown by the function call</span>
+<span class="sd">        :return: True, if backups are deleted</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">backup_files</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">BACKUP_DIR</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">backup_files</span><span class="p">:</span>
@@ -268,6 +278,13 @@
             <span class="k">raise</span> <span class="n">e</span></div>
     
 <div class="viewcode-block" id="MainWindow.closeEvent"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Handle main window close events. Writes mso backup files of</span>
+<span class="sd">        all loaded runs that have human classifications so they can be</span>
+<span class="sd">        restored later.</span>
+
+<span class="sd">        :param event: QEvent</span>
+<span class="sd">        :type event: QEvent</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -296,8 +313,8 @@
 
 <div class="viewcode-block" id="MainWindow._tab_limiter"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._tab_limiter">[docs]</a>    <span class="k">def</span> <span class="nf">_tab_limiter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that limits the interfaces that a user is allowed</span>
-<span class="sd">        to interact with based on the type of run they have loaded and</span>
-<span class="sd">        selected. Currently, `Run` functionality is limited due to the fact</span>
+<span class="sd">        to interact with based on the type of :class:`Run` they have loaded and</span>
+<span class="sd">        selected. Currently, :class:`Run` functionality is limited due to the fact</span>
 <span class="sd">        cocktails cannot be mapped to images.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
@@ -314,19 +331,19 @@
 
 <div class="viewcode-block" id="MainWindow._handle_opening_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that handles opening a run. For the most part,</span>
-<span class="sd">        this means setting the `run` attribute of other widgets to the</span>
-<span class="sd">        new run. The setter methods of these widgets should then handle</span>
+<span class="sd">        this means setting the :attr:`run` attribute of other widgets to the</span>
+<span class="sd">        `new_run` argument. The setter methods of these widgets should then handle</span>
 <span class="sd">        updating their interfaces to reflect the new run being</span>
-<span class="sd">        opened. Also calls :func:`~polo.windows.main_window.MainWindow._tab_limiter`</span>
-<span class="sd">        and :func:`~polo.windows.main_window.MainWindow._plot_limiter` to set </span>
+<span class="sd">        opened. Also calls :meth:`~polo.windows.main_window.MainWindow._tab_limiter`</span>
+<span class="sd">        and :meth:`~polo.windows.main_window.MainWindow._plot_limiter` to set </span>
 <span class="sd">        allowed functions for the user based on the type of run they open.</span>
 
 <span class="sd">        Additionally, if this is not the first run to be opened, before</span>
-<span class="sd">        the `new_run` is set as the `current_run` the pixmaps of the `current_run`</span>
-<span class="sd">        are unloaded to free up memory.</span>
+<span class="sd">        the `new_run` is set as the :attr:`current_run` the pixmaps of the </span>
+<span class="sd">        :attr:`current_run` are unloaded to free up memory.</span>
 
 <span class="sd">        :param q: List containing the run to be opened. Likely originating from</span>
-<span class="sd">                  the `RunOrganizer` widget.</span>
+<span class="sd">                  the :class:`RunOrganizer` widget.</span>
 <span class="sd">        :type q: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -362,6 +379,13 @@
 
 
 <div class="viewcode-block" id="MainWindow._handle_tool_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_tool_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_tool_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles selection of </span>
+<span class="sd">        all options available to the user in </span>
+<span class="sd">        the `Tools` section of the main window menu.</span>
+
+<span class="sd">        :param selection: User&#39;s menu selection</span>
+<span class="sd">        :type selection: QAction</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actionView_Log_2</span><span class="p">:</span>
             <span class="n">log_dialog</span> <span class="o">=</span> <span class="n">LogDialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">log_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
@@ -379,6 +403,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_handle_delete_backups</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MainWindow._handle_delete_backups"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_delete_backups">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_delete_backups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles a user request to delete all backup </span>
+<span class="sd">        mso files. If backups cannot be deleted shows a message box indicating</span>
+<span class="sd">        failure to delete.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">total_size</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">backups</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">BACKUP_DIR</span><span class="p">))</span>
@@ -479,7 +507,7 @@
                 <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MainWindow._handle_file_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_file_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_file_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to handle user interaction with the file menu;</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles user interaction with the file menu;</span>
 <span class="sd">        this usually means saving a run as an xtal file.</span>
 
 <span class="sd">        :param selection: QAction that describes user selection</span>
@@ -504,8 +532,8 @@
                     <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MainWindow._handle_help_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_help_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_help_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Handle user interaction with the help menu. All selections</span>
-<span class="sd">        open links to various pages of the documentation website.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles user interaction with the help menu. </span>
+<span class="sd">        All selections open links to various pages of the documentation website.</span>
 
 <span class="sd">        :param action: QAction that describes the user&#39;s selection</span>
 <span class="sd">        :type action: QAction</span>
@@ -747,11 +775,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -762,7 +798,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

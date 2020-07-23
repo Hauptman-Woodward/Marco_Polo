@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -213,6 +216,7 @@
 <span class="sd">        2D list. We divide the new grid into 4 quadrants each 2 X 2 and label them</span>
 <span class="sd">        with an index (0, 1, 2, 3). Given an index of the original list we want to</span>
 <span class="sd">        find the subgrid it belongs to. </span>
+
 <span class="sd">        :param i: Index of point to locate in the 1D list</span>
 <span class="sd">        :type i: int</span>
 <span class="sd">        :param c_r: Number of rows in each subgrid</span>
@@ -239,6 +243,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">images_per_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Number of images in the current page.</span>
+
+<span class="sd">        :return: Number of images</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_images_per_page</span>
 
     <span class="nd">@images_per_page</span><span class="o">.</span><span class="n">setter</span>
@@ -249,6 +258,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">total_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Total number of pages based on the number of images per page</span>
+<span class="sd">        and the number of images in the current run.</span>
+
+<span class="sd">        :return: Number of pages</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -256,10 +271,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">view_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Current view dimensions in pixels.</span>
+
+<span class="sd">        :return: Width and height of the view</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Current &quot;best&quot; aspect ratio for the view given the size of the</span>
+<span class="sd">        view and the number of images that need to be fit into the view.</span>
+
+<span class="sd">        :return: Dimensions of the image grid, in images</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">:</span>
             <span class="n">view_w</span><span class="p">,</span> <span class="n">view_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_dims</span>
             <span class="k">return</span> <span class="n">best_aspect_ratio</span><span class="p">(</span><span class="n">view_w</span><span class="p">,</span> <span class="n">view_h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">)</span>
@@ -268,17 +294,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Current page</span>
+
+<span class="sd">        :return: Current page</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_page</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span>
-
-    <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="n">QPixmapCache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="nd">@current_page</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">current_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_page_number</span><span class="p">):</span>
@@ -287,6 +308,21 @@
         <span class="k">elif</span> <span class="n">new_page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">new_page_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_pages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_page</span> <span class="o">=</span> <span class="n">new_page_number</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The current run being displayed.</span>
+
+<span class="sd">        :return: The current run</span>
+<span class="sd">        :rtype: HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span>
+
+    <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">QPixmapCache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
 <div class="viewcode-block" id="plateViewer._get_visible_wells"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer._get_visible_wells">[docs]</a>    <span class="k">def</span> <span class="nf">_get_visible_wells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Return indices of images that should be shown in the</span>
@@ -312,7 +348,7 @@
                 <span class="k">yield</span> <span class="n">i</span></div>
 
 <div class="viewcode-block" id="plateViewer._make_image_label"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer._make_image_label">[docs]</a>    <span class="k">def</span> <span class="nf">_make_image_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">label_dict</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">35</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Helper method for creating label strings to overlay onto</span>
+        <span class="sd">&#39;&#39;&#39;Private helper method for creating label strings to overlay onto</span>
 <span class="sd">        each image in the view.</span>
 
 <span class="sd">        :param image: Image to create label from</span>
@@ -368,7 +404,7 @@
 <span class="sd">        adding them to `_scene` attribute. </span>
 
 <span class="sd">        :param label_dict: Dictionary of Image attributes to pass along to</span>
-<span class="sd">                           :func:`~polo.widgets.plate_viewer.plateViewer._make_image_label`</span>
+<span class="sd">                           :meth:`~polo.widgets.plate_viewer.plateViewer._make_image_label`</span>
 <span class="sd">                           to create image labels, defaults to {}</span>
 <span class="sd">        :type label_dict: dict, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -422,7 +458,7 @@
         <span class="sd">&#39;&#39;&#39;Sets the opacity of all items in the current scene (`_scene` attribute)</span>
 <span class="sd">        based on image filtering criteria. Allows for highlighting images that</span>
 <span class="sd">        meet specific qualifications such has having a MARCO classification of</span>
-<span class="sd">        crystals. Image&#39;s that do not meet the set filter requirements will have</span>
+<span class="sd">        crystals. Images that do not meet the set filter requirements will have</span>
 <span class="sd">        their opacity set to the value specificed by the `filtered_opacity`</span>
 <span class="sd">        argument.</span>
 
@@ -452,14 +488,15 @@
 
 <div class="viewcode-block" id="plateViewer.set_scene_colors_from_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.set_scene_colors_from_filters">[docs]</a>    <span class="k">def</span> <span class="nf">set_scene_colors_from_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_mapping</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Set the color of images based on their current classifications. Very similar</span>
-<span class="sd">        to :func:`~polo.widgets.plate_viewer.plateViewer.set_opacity_from_filters`.</span>
+<span class="sd">        to :meth:`~polo.widgets.plate_viewer.plateViewer.set_opacity_from_filters`.</span>
 <span class="sd">        Images can be colored by their MARCO or human classification.</span>
 
 <span class="sd">        :param color_mapping: Dictionary that maps image classifications to QColors</span>
 <span class="sd">        :type color_mapping: dict</span>
 <span class="sd">        :param strength: Image color strength, defaults to 0.5</span>
 <span class="sd">        :type strength: float, optional</span>
-<span class="sd">        :param human: If True, use the human classification to color images, defaults to False</span>
+<span class="sd">        :param human: If True, use the human classification to color images,</span>
+<span class="sd">                      defaults to False</span>
 <span class="sd">        :type human: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -495,6 +532,12 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">plateViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fitInView</span><span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">itemsBoundingRect</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="plateViewer.wheelEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_viewer.plateViewer.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Handle Qt wheelEvents by setting the `_zoom` attribute. Allows users</span>
+<span class="sd">        to zoom in and out of the current view.</span>
+
+<span class="sd">        :param event: event</span>
+<span class="sd">        :type event: QEvent</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">event</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">angleDelta</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.25</span>
@@ -540,8 +583,8 @@
         <span class="sd">&#39;&#39;&#39;Exports the current content of the QGraphicsScene `_scene` attribute</span>
 <span class="sd">        to a png file.</span>
 
-<span class="sd">        :param save_path: Path to save the image to, defaults to None. If kept as</span>
-<span class="sd">                          None opens a QFileDialog to get a save file path.</span>
+<span class="sd">        :param save_path: Path to save the image to, defaults to None. If kept </span>
+<span class="sd">                          as None opens a QFileDialog to get a save file path.</span>
 <span class="sd">        :type save_path: str or Path, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span><span class="p">:</span>
@@ -577,11 +620,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -592,7 +643,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

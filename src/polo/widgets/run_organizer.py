@@ -294,18 +294,18 @@ class RunOrganizer(QtWidgets.QWidget):
     def backup_classifications(self, run):
         '''Write the human classifications of the images in the `run` argument
         to an mso file and store it in the directory specified by the
-        `BACKUP_DIR` constant. Does not store MARCO classifications because
+        :const:`BACKUP_DIR` constant. Does not store MARCO classifications because
         these can be much more easily recreated than human classifications.
         Additionally, when a run is loaded back in and a backup mso exists
         for it Polo assumes the classifications in that mso file are human
         classifications.
 
-        Currently only HWIRuns can be written as mso files because of mso's
+        Currently only :class:`HWIRun` instances can be written as mso files because of mso's
         integration with cocktail data and well assignments. Need a different
         format for non-HWI runs that would map filenames to classifications
         and ignore cocktail data / well assignments.
 
-        :param run: Run to backup human classifications
+        :param run: :class:`HWIRun` to backup human classifications
         :type run: HWIRun
         '''
 
