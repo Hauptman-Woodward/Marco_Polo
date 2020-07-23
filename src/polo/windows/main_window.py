@@ -176,8 +176,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         this means setting the `run` attribute of other widgets to the
         `new_run` argument. The setter methods of these widgets should then handle
         updating their interfaces to reflect the new run being
-        opened. Also calls :func:`~polo.windows.main_window.MainWindow._tab_limiter`
-        and :func:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
+        opened. Also calls :meth:`~polo.windows.main_window.MainWindow._tab_limiter`
+        and :meth:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
         allowed functions for the user based on the type of run they open.
 
         Additionally, if this is not the first run to be opened, before

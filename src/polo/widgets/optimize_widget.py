@@ -161,7 +161,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def hit_images(self):
-        '''Retrieves a list of `Image` object instances that have human
+        '''Retrieves a list of :class:`~polo.crystallography.image.Image` object instances that have human
         classification (`human_class` attribute) == 'Crystals'. Used to
         determine what wells to allow the user to optimize. Currently, only
         allow the user to optimize wells they have marked as crystal.
@@ -324,8 +324,8 @@ class OptimizeWidget(QtWidgets.QWidget):
     def _set_reagent_stock_con(self):
         '''Private method. If a reagent has already been assigned a 
         stock concentration displays that concentration to the user 
-        through the appropriate UnitCombobBox. Should be called when a 
-        reagent is changed. Only displays reagent concentrations
+        through the appropriate UnitCombobBox. This method should be
+        called when a reagent is changed. Only displays reagent concentrations
         for the x and y reagents.
         '''
         if self.x_reagent and self.x_reagent.stock_con:
@@ -392,8 +392,8 @@ class OptimizeWidget(QtWidgets.QWidget):
             1, num_wells+1)]  # return a list of signed values
 
     def _write_optimization_screen(self):
-        '''Private method to write the current to the table widget for display
-        to the user.
+        '''Private method to write the current optimization screen
+        to the table widget for display to the user.
         '''
         if self._error_checker():
 

@@ -69,7 +69,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def _handle_classification_request(self):
         '''Private method to open a classification thread of the currently selected run.
-        Calls  :func:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
+        Calls  :meth:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
         start the classification thread.
         '''
         selected_runname = self.ui.runTree.currentItem().text(0)
@@ -167,7 +167,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.label_32.setText(time_string)
 
     def _add_runs_to_tree(self, runs):
-        '''Add a set of runs to the runTree.
+        '''Private method to add a set of runs to the runTree.
 
         :param runs: List of runs to add to the runTree
         :type runs: list
@@ -207,7 +207,7 @@ class RunOrganizer(QtWidgets.QWidget):
         the user has renamed their run after the backup is saved it will not
         be found.
 
-        See :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
+        See :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
         for details on how the mso files are written.
 
         :param run: Run to search for mso backup with
@@ -269,7 +269,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def backup_classifications_on_thread(self, run):
         '''Does the exact same thing as 
-        :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
+        :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
         except excutes the job on a `QuickThread` instance to avoid slow
         computers complaining about the GUI being frozen. This has been
         especially prevelant on Windows machines.

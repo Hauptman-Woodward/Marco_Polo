@@ -14,13 +14,12 @@ from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
 from polo.marco.run_marco import classify_image
 
 
-
 class Image(QtGui.QPixmap):
 
     '''Image objects hold the data relating to one image in a particular
     screening well of a paricular run. Images encode the actual image file as
     a file path to the image if it available on the local machine, as 
-    as a base64 encoded image or both.
+    as a base64 encoded image held in memory or both.
 
     :param path: Path to the actual image file, defaults to None
     :type path: str or Path, optional
@@ -82,12 +81,12 @@ class Image(QtGui.QPixmap):
     def clean_base64_string(string):
         '''Image instances may contain byte strings that store their actual
         crystallization image encoded as base64. Previously, these byte strings
-        were written directly into the json file as strings causing the b'
+        were written directly into the json file as strings causing the `b`
         byte string identifier to be written along with the actual base64 data.
         This method removes those artifacts if they are present and returns a
         clean byte string with only the actual base64 data.
 
-        :param string: a string to interrogate for base64 compliance
+        :param string: A string to interrogate for base64 compliance
         :type string: str
         :return: byte string with non-data artifacts removed
         :rtype: bytes
@@ -120,11 +119,13 @@ class Image(QtGui.QPixmap):
 
     @classmethod
     def no_image(cls):
-        '''Return an Image instance with the default image data.
-        Used to fill in for missing data and when filters cannot
-        find any matching results.
+        '''Return an :class:`~polo.crystallography.image.Image` 
+        instance using the image data referenced by the
+        :const:`polo.DEFAULT_IMAGE_PATH` constant.
+        The default image is used to fill in for missing 
+        data and when filters cannot find any matching results.
 
-        :return: Default image
+        :return: Default :class:`~polo.crystallography.image.Image`
         :rtype: Image
         '''
         # return default no images found image instance
@@ -132,10 +133,13 @@ class Image(QtGui.QPixmap):
 
     @property
     def date(self):
-        '''Retrun the date associated with this image. Presumably should be
-        the date the image was taken.
+        '''The date associated with this 
+        :class:`~polo.crystallography.image.Image`.
+        Presumably should be the date the image was taken.
 
-        :return: datetime object representation of the image's imageing date
+        :return: Datetime object representation of
+                 the :class:`~polo.crystallography.image.Image`'s
+                 imaging date
         :rtype: datetime
         '''
         return self._date
@@ -150,6 +154,13 @@ class Image(QtGui.QPixmap):
 
     @property
     def path(self):
+        '''Filepath for the image. Note that if this path is loaded
+        from an xtal file, this path may not exists because the xtal
+        file may have been created on a different machine.
+
+        :return: Path to image file
+        :rtype: str
+        '''
         return self._path
 
     @path.setter
@@ -175,44 +186,52 @@ class Image(QtGui.QPixmap):
             self._bites = None
 
     @property
-    def marco_class(self):
-        '''Return the `__marco_class` hidden attribute.
+    def machine_class(self):
+        '''MARCO classification of the :class:`~polo.crystallography.image.Image`.
 
         :return: Current MARCO classification of this image
         :rtype: str
         '''
-        return self._marco_class
+        return self._machine_class
 
-    @marco_class.setter
-    def marco_class(self, new_class):
-        '''Setter method for `_marco_class` attribute. If this image has alt images
-        linked to it and has its `spectrum` attribute set as 'Visible' linked alt images
-        will share this image's marco classification. This is because the MARCO
-        model has only been trained on visible light images and therefore is
-        not cabable of reliably classifying images taken in differenet spectrums.
-        Since linked alt images should in theory be images of the exact same
+    @machine_class.setter
+    def machine_class(self, new_class):
+        '''Setter method for 
+        :attr:`~polo.crystallography.image.Image.machine_class` attribute. 
+        If this image has alt images linked to it and has its 
+        :attr:`~polo.crystallography.image.Image.spectrum` attribute set as 
+        'Visible' linked alt images will share this :class:`~polo.crystallography.image.Image`'s 
+        :attr:`~polo.crystallography.image.Image.machine_class` attribute value. 
+        This is because the MARCO model has only been trained on visible light
+        images and therefore is not cabable of reliably classifying images 
+        taken in differenet spectrums. Since linked alt images 
+        should in theory be images of the exact same
         well in the exact same plate the visible spectrum image can share
         its MARCO classification with it's linked alt images.
 
-        :param new_class: New MARCO classification for the image
+        :param new_class: New MARCO classification for the 
+                          :class:`~polo.crystallography.image.Image`
         :type new_class: str
         '''
         if new_class in IMAGE_CLASSIFICATIONS:
-            self._marco_class = new_class
+            self._machine_class = new_class
             if hasattr(self, 'alt_image') and self.alt_image and self.spectrum == 'Visible':
                 # alt images inherit their linked classifications
                 alt_image = self.alt_image
                 while alt_image.path and alt_image.path != self.path:
-                    alt_image.__marco_class = new_class
+                    alt_image._machine_class = new_class
                     alt_image = alt_image.alt_image
         else:
-            self._marco_class = None
+            self._machine_class = None
 
     @property
     def human_class(self):
-        '''Return the `_human_class` hidden attribute
+        '''Return the :attr:`~polo.crystallography.image.Image.human_class`
+        attribute which specifies the current human classification of the
+        :class:`~polo.crystallography.image.Image`.
 
-        :return: Current human classification of this image
+        :return: Current human classification of the
+                 :class:`~polo.crystallography.image.Image`
         :rtype: str
         '''
         return self._human_class
@@ -223,11 +242,13 @@ class Image(QtGui.QPixmap):
             self._human_class = new_class
         else:
             self._human_class = None
-    
+
     @property
     def formated_date(self):
-        '''Get the image's `data` attribute formated in the
-        month/date/year format. If image has no `date` returns
+        '''Get the image's :attr:`~polo.crystallography.image.Image.marco_date`
+        attribute formated in the month/date/year format. If the 
+        :class:`~polo.crystallography.image.Image` 
+        has no :attr:`~polo.crystallography.image.Image.date` returns
         an empty string.
 
         :return: Date
@@ -238,12 +259,16 @@ class Image(QtGui.QPixmap):
         else:
             return ''
 
-
     def setPixmap(self, scaling=None):
-        '''Loads the images pixmap into memory which then allows for displaying
-        the image to the user. Images that are displayed before loading
-        will not appear. It is recommended to only load the image pixmap when
-        the image actually needs to be shown to the user as it is expensive
+        '''Loads the :class:`~polo.crystallography.image.Image`'s 
+        pixmap into memory which then allows for displaying
+        the :class:`~polo.crystallography.image.Image` to the user. 
+        :class:`~polo.crystallography.image.Image`s 
+        that are displayed before loading will not appear.
+        It is recommended to only load the 
+        :class:`~polo.crystallography.image.Image` pixmap when
+        the :class:`~polo.crystallography.image.Image` actually
+        needs to be shown to the user as it is expensive
         to hold in memory.
 
         :param scaling: Scaler for the pixmap; between 0 and 1, defaults to None
@@ -258,16 +283,23 @@ class Image(QtGui.QPixmap):
                         scaling, Qt.KeepAspectRatio)
 
     def delete_pixmap_data(self):
-        '''Replaces the Image's pixmap data with a null pixmap which
+        '''Replaces the :class:`~polo.crystallography.image.Image`'s
+        pixmap data with a null pixmap which
         effectively deletes the existing pixmap data. Used to free up
         memory after a pixmap is no longer needed.
         '''
         self.swap(QPixmap())  # swap with null pixel map
 
     def delete_all_pixmap_data(self):
-        '''Deletes the pixmap data for the Image object this function is
-        called on and for any other images that this image is linked to. This
-        includes images stored in the `alt_image`, `next_image` and `previous_image`
+        '''Deletes the pixmap data for the
+        :class:`~polo.crystallography.image.Image` instance this method is
+        called on and for any other 
+        :class:`~polo.crystallography.image.Image`s
+        that this :class:`~polo.crystallography.image.Image` is linked to.
+        This includes images referenced by the 
+        :attr:`~polo.crystallography.image.Image.alt_image`
+        , :attr:`~polo.crystallography.image.Image.next_image` and
+        :attr:`~polo.crystallography.image.Image.previous_image`
         attributes.
         '''
         for i in self.get_linked_images_by_date():
@@ -276,19 +308,25 @@ class Image(QtGui.QPixmap):
             i.delete_pixmap_data()
 
     def height(self):
-        '''Get the height of the image's pixmap. The pixmap must be set
-        for this function to return an actual size.
+        '''Get the height of the 
+        :class:`~polo.crystallography.image.Image`'s pixmap. 
+        The pixmap must be set for this function to 
+        return an actual size.
 
-        :return: Height of the image's pixmap
+        :return: Height of the :class:`~polo.crystallography.image.Image`'s pixmap
         :rtype: int
         '''
         return self.size().height()
 
     def width(self):
-        '''Get the height of the image's pixmap. The pixmap must be set
-        for this function to return an actual size.
+        '''Get the height of the 
+        :class:`~polo.crystallography.image.Image`'s pixmap. 
+        The pixmap must be set for this function to return 
+        an actual size.
 
-        :return: Width of the image's pixmap
+        :return: Width of the 
+                 :class:`~polo.crystallography.image.Image`'s
+                 pixmap
         :rtype: int
         '''
         return self.size().width()
@@ -312,8 +350,10 @@ class Image(QtGui.QPixmap):
                 self.bites = base64.b64encode(image_file.read())
 
     def encode_bytes(self):
-        '''If the `path` attribute exists and is an image file then encodes
-        that file as a base64 string and returns the encoded image data.
+        '''If the :attr:`~polo.crystallography.image.Image.path`
+        attribute exists and is an image file then encodes
+        that file as a base64 string and returns the encoded
+        image data.
 
         :return: base64 encoded image
         :rtype: str
@@ -325,7 +365,8 @@ class Image(QtGui.QPixmap):
                 return base64.b64encode(image.read())
 
     def get_tool_tip(self):
-        '''Create a string to use as the tooltip for this image.
+        '''Create a string to use as the tooltip for this
+        :class:`~polo.crystallography.image.Image`.
 
         :return: Tooltip string
         :rtype: str
@@ -340,13 +381,19 @@ class Image(QtGui.QPixmap):
         )
 
     def get_linked_images_by_date(self):
-        '''Get all images that are linked to this Image instance by date. 
-        Image linking by date is accomplished by creating a bi-directional
-        linked list between Image instances, where each Image acts as a node
-        and the `next_image` and `previous_images` act as the forwards and
-        backwards pointers respectively.
+        '''Get all :class:`~polo.crystallography.image.Image`s
+        that are linked to this :class:`~polo.crystallography.image.Image`
+        instance by date. Image linking by date is accomplished 
+        by creating a bi-directional linked list between 
+        :class:`~polo.crystallography.image.Image` instances, 
+        where each :class:`~polo.crystallography.image.Image` acts as a node
+        and the :attr:`~polo.crystallography.image.Image.next_image` and 
+        :attr:`~polo.crystallography.image.Image.previous_images` 
+        act as the forwards and backwards pointers respectively.
 
-        :return: All Images connected to this Image by date
+        :return: All :class:`~polo.crystallography.image.Image`s
+                 connected to this :class:`~polo.crystallography.image.Image`
+                 by date
         :rtype: list
         '''
         linked_images = [self]
@@ -363,13 +410,16 @@ class Image(QtGui.QPixmap):
         return sorted(linked_images, key=lambda i: i.date)
 
     def get_linked_images_by_spectrum(self):
-        '''Get all images that are linked to this Image instance by
+        '''Get all :class:`~polo.crystallography.image.Image`s 
+        that are linked to this :class:`~polo.crystallography.image.Image` instance by
         spectrum. Linking images by spectrum is accomplished by
         creating a mono-directional circular linked list where
-        Image instances serve as nodes and their `alt_image` attribute
+        :class:`~polo.crystallography.image.Image` instances serve as nodes and their 
+        :attr:`~polo.crystallography.image.Image.alt_image` attribute
         acts as the pointer to the next node.
 
-        :return: List of all Images linked to this Image by spectrum
+        :return: List of all `Images` linked to this
+                 :class:`~polo.crystallography.image.Image` by spectrum
         :rtype: list
         '''
         linked_images, paths = [self], set([])
@@ -387,9 +437,11 @@ class Image(QtGui.QPixmap):
             return linked_images
 
     def classify_image(self):
-        '''Classify the image using the MARCO CNN model. Sets the 
-           `machine class` and `prediction_dict` attributes based on the
-           model results.
+        '''Classify the :class:`~polo.crystallography.image.Image`
+        using the MARCO CNN model. Sets the 
+        :attr:`~polo.crystallography.image.Image.machine class` and 
+        :attr:`~polo.crystallography.image.Image.prediction_dict` 
+        attributes based on the model results.
         '''
         try:
             self.machine_class, self.prediction_dict = classify_image(MODEL,
@@ -398,22 +450,33 @@ class Image(QtGui.QPixmap):
             return e
 
     def standard_filter(self, image_types, human, marco, favorite):
-        '''Method that determines if this image should be included in a set
-        of filtered images based on given image types and a classifier: human,
-        marco or both. Returns True if the Image meets the filtering requirements
-        specified by the method's arguments, otherwise returns False.
+        '''Method that determines if this 
+        :class:`~polo.crystallography.image.Image` should be
+        included in a set of filtered :class:`~polo.crystallography.image.Image`s
+        based on given image classifications and a classifier: human,
+        marco or both. Returns True if the 
+        :class:`~polo.crystallography.image.Image` meets the
+        filtering requirements specified by the method's arguments,
+        otherwise returns False.
 
-        :param image_types: Collection of image classifications. The Image's
+        :param image_types: Collection of image classifications.
+                            The :class:`~polo.crystallography.image.Image`'s
                             classification must in included in this collection 
                             for the method to return True.
         :type image_types: list or set
-        :param human: If True, use the Image's human classification as the
+        :param human: If True, use the 
+                      :class:`~polo.crystallography.image.Image`'s
+                      human classification as the
                       overall image classification.
         :type human: bool
-        :param marco: If True, use the Image's MARCO classification as the
+        :param marco: If True, use the
+                      :class:`~polo.crystallography.image.Image`'s
+                      MARCO classification as the
                       overall image classification.
         :type marco: bool
-        :return: True if the Image meets the filter requirements, False otherwise 
+        :return: True if the
+                 :class:`~polo.crystallography.image.Image`
+                 meets the filter requirements, False otherwise 
         :rtype: bool
         '''
         if favorite == self.favorite:
@@ -434,5 +497,4 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
-
 from polo.utils.io_utils import BarTender

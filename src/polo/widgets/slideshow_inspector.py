@@ -206,7 +206,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
     @property
     def current_image(self):
-        '''Current `Image` object being displayed in the `slideshowViewer`
+        '''Current :class:`~polo.crystallography.image.Image` object being displayed in the `slideshowViewer`
         widget.
 
         :return: The current image 
@@ -318,7 +318,7 @@ class slideshowInspector(QtWidgets.QWidget):
 
     def _navigate_carousel(self, next_image=False, prev_image=False):
         '''Private method to control the carousel using boolean flags. Calls 
-        :func:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.
+        :meth:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.
 
         :param next_image: If True navigates to next image in carousel, 
                            defaults to False
@@ -388,10 +388,11 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.label_2.setText(os.path.basename(str(ci.path)))
 
     def _set_time_resolved_functions(self):
-        '''PRivate method that turns time resolved functions on or off 
-        depending on contents of the run stored in the `_run` attribute. Time
-        resolved functions are enabled when the `_run` is part of a time
-        resolved linked list. This means another `Run` instance is stored in
+        '''Private method that turns time resolved functions on or off 
+        depending on contents of the `Run` instance referenced by 
+        the `run` attribute. Time resolved functions are enabled 
+        when the `run` is part of a time resolved linked list. 
+        This means another `Run` instance is referenced by 
         it's `next_run` and / or `previous_run` attributes.
         '''
 
@@ -411,10 +412,10 @@ class slideshowInspector(QtWidgets.QWidget):
 
     def _set_alt_spectrum_buttons(self):
         '''Turns alt spectrum functions on or off depending on contents
-        of the run stored in the `_run` attribute. Alt spectrum buttons will be
-        enabled if the `_run` is a part of an alt spectrum linked list. This
-        means another `Run` instance is stored in it's `alt_spectrum`
-        attribute.
+        of the `Run` instance referenced by the `run` attribute.
+        Alt spectrum buttons will be enabled if the `run` is a part
+        of an alt spectrum linked list. This means another `Run`
+        instance is referenced by it's `alt_spectrum` attribute.
         '''
 
         if self.current_image and self.current_image.alt_image:

@@ -124,7 +124,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _browse_and_update_line_edit(self):
         '''Private method that calls 
-        :func:`~polo.windows.pptx_dialog.PptxDialog._get_save_path`
+        :meth:`~polo.windows.pptx_dialog.PptxDialog._get_save_path`
         to open a file browser. If the user selects a save path using the file
         browser then displays this path in the filepath lineEdit widget.
         '''

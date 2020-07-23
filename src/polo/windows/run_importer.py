@@ -282,7 +282,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         thread to avoid freezing the GUI on slower machines. 
         Imported runs are added to the `import_candidates` attribute
         dictionary and then displayed to the user by calling
-        :func:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
+        :meth:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
 
         :param rar: If True opens the filebrowser for rar archives and filters
                     out all other import types, defaults to True
@@ -357,9 +357,9 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _update_selected_candidate(self):
         '''Private method that updates currently selected `ImportCandidate` by
-        calling :func:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`
+        calling :meth:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`
         and then updating the display by calling
-        :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.
+        :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.
         '''
         new_candidate = self.ui.listWidget.currentItem()
         if new_candidate:
@@ -372,8 +372,8 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _handle_candidate_change(self):
         '''Private method that calls 
-        :func:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
-        and then  :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. This updates
+        :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
+        and then  :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. This updates
         the data of the previously selected `ImportCandidate` if it has been changed and then
         updates data display widgets with the information from the currently selected
         `ImportCandidate` instance.
@@ -501,8 +501,9 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _set_cocktail_menu(self):
         '''Private method that sets the cocktail comboBox based on the
-        cocktail menu stored in the `selected_candidate`. Used to convey to
-        the user which cocktail menu has been selected for a given
+        `Menu` instance referenced by the `selected_candidate`
+        attribute. This method is used to convey to
+        the user which cocktail `Menu` has been selected for a given
         `ImportCandidate`.
         '''
         if ('cocktail_menu' in self.selected_candidate.data
@@ -576,7 +577,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _import_run(self, import_candidate):
         '''Private helper method that is called by
-        :func:`~polo.windows.run_importer.RunImporterDialog._import_runs` that
+        :meth:`~polo.windows.run_importer.RunImporterDialog._import_runs` that
         attempts to import a run from an `ImportCandidate`. 
 
         :param import_candidate: `ImportCandidate` to create run from    

@@ -236,7 +236,7 @@ class SlideshowViewer(PhotoViewer):
     @run.setter
     def run(self, new_run):
         '''Setter function for the run attribute. Updates the current slides
-        by calling :func:`~polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters
+        by calling :meth:`~polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters
         with arguments that ensure all images in the run are included. 
         Effectively resets the images in the slideshow to reflect the new run.
 
@@ -258,7 +258,7 @@ class SlideshowViewer(PhotoViewer):
             self.current_image = None
 
     def _set_all_dates_scene(self, image):
-        '''Private method that creates a time resolved view from the `Image`
+        '''Private method that creates a time resolved view from the :class:`~polo.crystallography.image.Image` 
         instance passed through the `image` argument.
     
         :param image: Image to create time resolved view from
@@ -272,7 +272,7 @@ class SlideshowViewer(PhotoViewer):
     
     def _set_all_spectrums_scene(self, image):
         '''Private method that creates a view that includes all alt spectrum
-        images the `Image` instance is linked to.
+        images the :class:`~polo.crystallography.image.Image` instance is linked to.
 
         :param image: Image to create the view from
         :type image: Image
@@ -285,7 +285,7 @@ class SlideshowViewer(PhotoViewer):
             
     def _set_single_image_scene(self, image):
         '''Private method that creates a standard single image view from the 
-        `Image` instance passed to the `image` argument.
+        :class:`~polo.crystallography.image.Image` instance passed to the `image` argument.
 
         :param image: Image to display
         :type image: Image
@@ -320,7 +320,7 @@ class SlideshowViewer(PhotoViewer):
         t.setPos(x, y)
 
     def set_current_image_by_well_number(self, well_number):
-        '''Set the current image to the `Image` instance associated with a
+        '''Set the current image to the :class:`~polo.crystallography.image.Image` instance associated with a
         specific well number.
 
         :param well_number: Well number to display
@@ -334,7 +334,7 @@ class SlideshowViewer(PhotoViewer):
 
 
     def carousel_controls(self, next_image=False, previous_image=False):
-        '''Wrapper around the :func:`~polo.widgets.slideshow_viewer.Carousel.controls`
+        '''Wrapper around the :meth:`~polo.widgets.slideshow_viewer.Carousel.controls`
         method that allows image navigation. Does not actually display the
         image.
 
@@ -357,7 +357,7 @@ class SlideshowViewer(PhotoViewer):
 
     def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
         '''Creates new `Carousel` slides based on selected image filters.
-        Sets the `current_image` attribute to the `Image` instance at the 
+        Sets the `current_image` attribute to the :class:`~polo.crystallography.image.Image` instance at the 
         the `current slide` attribute of `_carousel` attribute.
 
         :param image_types: Set of image classifications to include in results.
