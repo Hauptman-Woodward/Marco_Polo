@@ -173,16 +173,6 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                  Exception otherwise.
         :rtype: str or Exception
         ''' 
-        self.setEnabled(False)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        if not self.ui.lineEdit_3.text():
-            file_path = _get_save_path()
-        else:
-            file_path = self.ui.lineEdit_3.text()
-
-        writer = PptxWriter(file_path,
-                            image_types=self._parse_image_classifications(),
-                            marco=self.marco, human=self.human)
         if not isinstance(run, (Run, HWIRun)):
             if self.ui.runTreeWidget.selected_run:
                 run = self.ui.runTreeWidget.selected_run
@@ -190,6 +180,18 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                 make_message_box('Please select a run').exec_()
                 QApplication.restoreOverrideCursor()
                 return
+
+        if not self.ui.lineEdit_3.text():
+            file_path = self._get_save_path()
+        else:
+            file_path = self.ui.lineEdit_3.text()
+
+        writer = PptxWriter(file_path,
+                            image_types=self._parse_image_classifications(),
+                            marco=self.marco, human=self.human)
+
+        self.setEnabled(False)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
 
         write_result = writer.make_single_run_presentation(
             run=run,
@@ -204,9 +206,9 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         else:
             message = 'Error writing presentation {}'.format(write_result)
 
-        make_message_box(parent=self, message=message).exec_()
         self.setEnabled(True)
         QApplication.restoreOverrideCursor()
+        make_message_box(parent=self, message=message).exec_()
         return write_result
 
     def check_for_warnings(self):
