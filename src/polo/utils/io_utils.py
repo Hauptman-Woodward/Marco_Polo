@@ -204,7 +204,6 @@ class RunImporter():
             from polo import tim
             metadata = XmlReader().find_and_read_plate_data(data_dir)
             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-            print(metadata, file_name_data, 'meta and filename data')
             if metadata and file_name_data:
                 date = file_name_data['date']
                 menu = tim.get_menu_by_date(date, 's')
@@ -233,7 +232,6 @@ class RunImporter():
         if RunImporter.directory_validator(data_dir) == True:
             new_run = Run(image_dir=data_dir, **kwargs)
             new_run.add_images_from_dir()
-            print(new_run, type(new_run))
             return new_run
         return False
 
@@ -272,6 +270,8 @@ class RunSerializer():
                 else:
                     return str(path.with_suffix(desired_suffix))
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                e, self.path_suffix_checker))
             return None
 
     @staticmethod
@@ -352,6 +352,8 @@ class HtmlWriter(RunSerializer):
                             html_file.write(html)
                             return True
                     except Exception as e:
+                        logger.error('Caught {} while calling {}'.format(
+                            e, self.write_complete_run))
                         return e
 
     def write_grid_screen(self, output_path, plate_list, well_number,
@@ -475,7 +477,9 @@ class RunCsvWriter(RunSerializer):
                 fieldnames = fieldnames.union(set(row.keys()))
             return fieldnames, rows
         except Exception as e:
-            raise e  # pass it along will ya
+            logger.error('Caught and re-raised {} while calling {}'.format(
+                            e, self.get_csv_data))
+            raise e
 
     def write_csv(self):
         '''Write the :class:`Run` object referenced by the 
@@ -537,6 +541,8 @@ class SceneExporter():
             painter.end()
             return file_path
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, SceneExporter.write_image))
             return e
     
     def write(self):
@@ -672,6 +678,8 @@ class MsoReader():
             else:
                 return None
         except Exception:
+            logger.error('Caught {} while calling {}'.format(
+                            e, MsoReader.read_mso_classification))
             return None  # assume no mso classification if throws an error
 
     def classify_images_from_mso_file(self, images):
@@ -704,6 +712,8 @@ class MsoReader():
                             continue
                 return images
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.classify_images_from_mso_file))
             return e
 
 class JsonWriter(RunSerializer):
@@ -764,6 +774,8 @@ class JsonWriter(RunSerializer):
                 json_file.write(json_content)
             return True
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.write_json))
             return e
 
 
@@ -962,7 +974,9 @@ class RunDeserializer():  # convert saved file into a run
                 try:
                     module = __import__(mod_name)
                     class_ = getattr(module, class_name)
-                except AttributeError:
+                except AttributeError as e:
+                    logger.error('Caught {} while calling {}'.format(
+                            e, RunDeserializer.dict_to_obj))
                     return None
                 temp_d = {}
                 for key, item in d.items():
@@ -981,8 +995,6 @@ class RunDeserializer():  # convert saved file into a run
                 obj = d  # just a regular dictionary to read in
             return obj
         else:
-            logger.warning(
-                'Attempted to serialize an empty dictionary at {}'.format(dict_to_obj))
             return None
 
     def xtal_to_run_on_thread(self):
@@ -1043,6 +1055,8 @@ class RunDeserializer():  # convert saved file into a run
             else:
                 return FileNotFoundError
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.xtal_to_run))
             return e
 
 
@@ -1092,6 +1106,8 @@ class PptxWriter():
             [os.remove(img_path) for img_path in self._temp_images]
             return True
         except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.delete_temp_images))
             return e
     
     def sort_runs_by_spectrum(self, runs):
@@ -1214,6 +1230,8 @@ class PptxWriter():
             self.delete_temp_images()
             return True
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.make_single_run_presentation))
             return e
                 
     
@@ -1915,6 +1933,8 @@ class XmlReader():
             return d
 
         except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.read_plate_data_xml))
             return e
 
     def discover_xml_files(self, parent_dir):
@@ -1932,6 +1952,8 @@ class XmlReader():
             xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
             return xmls
         except (PermissionError, FileNotFoundError) as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.discover_xml_files))
             return e
 
     def find_and_read_plate_data(self, parent_dir):

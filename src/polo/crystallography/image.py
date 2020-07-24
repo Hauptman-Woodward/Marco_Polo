@@ -13,6 +13,7 @@ from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger)
 from polo.marco.run_marco import classify_image
 
+logger = make_default_logger(__name__)
 
 class Image(QtGui.QPixmap):
 
@@ -447,6 +448,7 @@ class Image(QtGui.QPixmap):
             self.machine_class, self.prediction_dict = classify_image(MODEL,
                                                                       self.path)
         except AttributeError as e:
+            logger.error('Caught {} at classify_image method'.format(e))
             return e
 
     def standard_filter(self, image_types, human, marco, favorite):

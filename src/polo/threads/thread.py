@@ -25,7 +25,7 @@ class thread(QThread):
     '''
 
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
+        super(thread, self).__init__(parent=parent)
 
     def __del__(self):
         self.existing = True
@@ -62,7 +62,7 @@ class QuickThread(thread):
     '''
 
     def __init__(self, job_func, parent=None, **kwargs):
-        super().__init__(parent=parent)
+        super(QuickThread, self).__init__(parent=parent)
         self.job_func = job_func
         self.func_args = dict(kwargs)
         self.result = None
@@ -86,8 +86,8 @@ class ClassificationThread(thread):
     change_value = pyqtSignal(int)
     estimated_time = pyqtSignal(float, int)
 
-    def __init__(self, run_object):
-        super(ClassificationThread, self).__init__(self)
+    def __init__(self, run_object, parent=None):
+        super(ClassificationThread, self).__init__(parent)
         self.classification_run = run_object
 
     def run(self):
@@ -127,8 +127,8 @@ class FTPDownloadThread(thread):
     file_downloaded = pyqtSignal(int)
     download_path = pyqtSignal(str)
 
-    def __init__(self, ftp_connection, file_paths, save_dir_path):
-        super(FTPDownloadThread, self).__init__(self)
+    def __init__(self, ftp_connection, file_paths, save_dir_path, parent=None):
+        super(FTPDownloadThread, self).__init__(parent)
         self.ftp = ftp_connection
         self.file_paths = file_paths
         self.save_dir_path = save_dir_path

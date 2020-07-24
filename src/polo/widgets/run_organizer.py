@@ -121,7 +121,7 @@ class RunOrganizer(QtWidgets.QWidget):
         '''
         self.ui.progressBar.setMaximum(len(run))
         self.ui.progressBar.setValue(1)  # reset the bar to 0
-        self.classification_thread = ClassificationThread(run)
+        self.classification_thread = ClassificationThread(run, parent=self)
         self.classification_thread.change_value.connect(
             self._set_progress_value)
         self.classification_thread.estimated_time.connect(

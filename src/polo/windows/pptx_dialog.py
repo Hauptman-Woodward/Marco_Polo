@@ -48,7 +48,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         :rtype: True or None
         ''' 
         path = self.ui.lineEdit_3.text()
-        if RunSerializer.path_validator(parent=True):
+        if RunSerializer().path_validator(path, parent=True):
             return True
         else:
             make_message_box(parent=self,

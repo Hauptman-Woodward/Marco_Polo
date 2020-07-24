@@ -5,6 +5,7 @@ from molmass import Formula
 import re
 from polo import *
 
+logger = make_default_logger(__name__)
 
 class Cocktail():
     '''Cocktail instances are used to hold a collection of 
@@ -48,7 +49,8 @@ class Cocktail():
         '''
         try:     
             return int(self.number.split('_C')[-1].lstrip('0'))
-        except IndexError:
+        except IndexError as e:
+            logger.error('Caught {} at cocktail_index property'.format(e))
             return None
         # normal cocktail number format 13_C0001
 

@@ -1,10 +1,12 @@
 import platform
 import os
-from polo import UNRAR_EXE
+from polo import UNRAR_EXE, make_default_logger
 import subprocess
 from pathlib import Path
 
 UNRAR_EXE = str(UNRAR_EXE)
+
+logger = make_default_logger(__name__)
 
 def unrar_archive(rar_path, target_dir=None):
     '''De-compress a rar archive and return the path to the
@@ -30,6 +32,8 @@ def unrar_archive(rar_path, target_dir=None):
         else:
             return exit_status
     except Exception as e:
+        logger.error('Caught {} while calling {}'.format(
+                            e, unrar_archive))
         return e
         # do some exception handling here
 
@@ -68,6 +72,8 @@ def test_for_working_unrar(unrar_exe=UNRAR_EXE):
             else:
                return False
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, test_for_working_unrar))
             return False
     else:
         return False

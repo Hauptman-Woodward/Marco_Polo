@@ -108,7 +108,6 @@ class RunTree(QtWidgets.QTreeWidget):
         new_node = QtWidgets.QTreeWidgetItem(tree)
         new_node.setText(0, run.run_name)
         new_node.setToolTip(0, run.get_tooltip())
-        print(type(run.images), 'at add run node in tree')
         if run.run_name in self.loaded_runs:
             self.handle_dup_run_import()
         else:

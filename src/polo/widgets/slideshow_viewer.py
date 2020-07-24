@@ -329,7 +329,9 @@ class SlideshowViewer(PhotoViewer):
         if self.run:
             try:
                 self.current_image = self.run.images[well_number-1]
-            except IndexError:
+            except Exception as e:
+                logger.error('Caught {} while calling {}'.format(
+                            e, self.set_current_image_by_well_number))
                 return
 
 

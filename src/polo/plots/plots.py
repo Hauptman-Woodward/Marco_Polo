@@ -11,8 +11,11 @@ from matplotlib.backends.backend_qt5agg import \
 from matplotlib.figure import Figure
 from polo.plots.plot_utils import *
 from polo.utils.dialog_utils import make_message_box
+from polo import make_default_logger
 
 matplotlib.use('QT5Agg')
+
+logger = make_default_logger(__name__)
 
 
 # Ensure using PyQt5 backend
@@ -100,6 +103,7 @@ class StaticCanvas(MplCanvas):
             ax.set_title('Classification Progress By MARCO Designation')
             self.draw()
         except Exception as e:
+            logger.error('Caught {} calling plot_classification_progress'.format(e))
             m = make_message_box(
                 parent=self,
                 message='Could not complete plot drawing. Failed with error {}'.format(e)
@@ -121,6 +125,7 @@ class StaticCanvas(MplCanvas):
                 'MARCO Classification Accuracy')
             self.draw()
         except Exception as e:
+            logger.error('Caught {} while calling plot_meta_stats'.format(e))
             m = make_message_box(
                 parent=self,
                 message='Could not complete plot drawing. Failed with error {}'.format(e)
@@ -171,6 +176,9 @@ class StaticCanvas(MplCanvas):
 
             self.draw()
         except Exception:  # lazy error handling for now see code above try block
+            logger.error('Caught {} while calling {}'.format(
+                e, self.plot_plate_heatmaps
+            ))
             m = make_message_box(
                 parent=self,
                 message='Could not complete plot drawing. Failed with error {}'.format(e)

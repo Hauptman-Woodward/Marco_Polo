@@ -1,6 +1,9 @@
 import ftplib
 import os
 from pathlib import Path
+from polo import make_default_logger
+
+logger = make_default_logger(__name__)
 
 
 def catch_ftp_errors(funct):
@@ -11,6 +14,7 @@ def catch_ftp_errors(funct):
         try:
             return funct(*args, **kwargs)
         except ftplib.all_errors as e:
+            logger.error('Caught {} while calling {}'.format(funct))
             return e
     return try_function
 

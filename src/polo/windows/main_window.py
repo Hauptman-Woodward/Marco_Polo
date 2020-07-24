@@ -118,6 +118,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     os.remove(str(each_file))
             return True
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, MainWindow.delete_all_backups))
             raise e
     
     def closeEvent(self, event):
@@ -139,6 +141,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             break
                     # only backup files for runs with human classifications
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.closeEvent))
             QApplication.restoreOverrideCursor()
             make_message_box(
                 parent=self,
@@ -277,6 +281,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     make_message_box(parent=self,
                     message='Backups have been deleted.').exec_()
         except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self._handle_delete_backups))
             make_message_box(
                 parent=self,
                 message='Could not delete backups. Failed with error {}.\

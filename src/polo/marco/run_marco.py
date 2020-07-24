@@ -1,6 +1,9 @@
 import os
 import sys
 import operator
+from polo import make_default_logger
+
+logger = make_default_logger(__name__)
 
 def classify_image(tf_predictor, image_path):
     '''Given a tensorflow predictor (the MARCO model) and the path to an image, 
@@ -18,29 +21,31 @@ def classify_image(tf_predictor, image_path):
     :return: tuple
     :rtype: tuple
     '''
+    try:
+        def load_image():
+            f = open(image_path, 'rb')
+            return {'image_bytes': [f.read()]}
+
+        sys.stdout = open(os.devnull, "w")
+        results = tf_predictor(load_image())
+        sys.stdout = sys.__stdout__
+        # suppress output
+
+        vals = results['scores'][0]
+        classes = results['classes'][0]
+        dictionary = dict(zip(classes, vals))
+        prediction = max(dictionary.items(), key=operator.itemgetter(1))[
+            0]  # gets max confidence prediction
+        new_dict = {}
+        for key in dictionary:
+            if type(key) == bytes:
+                new_dict[key.decode('utf-8')] = dictionary[key]
+            else:
+                new_dict[key] = dictionary
+
+        return prediction.decode('utf-8'), new_dict
+    except Exception as e:
+        logger.error('Caught exception {}'.format(e))
+        return None, {}
 
 
-
-    sys.stdout = open(os.devnull, "w")
-    results = tf_predictor(load_image(image_path))
-    sys.stdout = sys.__stdout__
-    # suppress output
-
-
-    def load_image(file_path):
-        f = open(file_path, 'rb')
-        return {'image_bytes': [f.read()]}
-
-    vals = results['scores'][0]
-    classes = results['classes'][0]
-    dictionary = dict(zip(classes, vals))
-    prediction = max(dictionary.items(), key=operator.itemgetter(1))[
-        0]  # gets max confidence prediction
-    new_dict = {}
-    for key in dictionary:
-        if type(key) == bytes:
-            new_dict[key.decode('utf-8')] = dictionary[key]
-        else:
-            new_dict[key] = dictionary
-
-    return prediction.decode('utf-8'), new_dict

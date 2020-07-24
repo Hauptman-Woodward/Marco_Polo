@@ -102,6 +102,8 @@ class slideshowInspector(QtWidgets.QWidget):
                 reverse=True
             )
         except Exception:
+            logger.error('Caught {} while calling {}'.format(
+                            e, slideshowInspector.sort_images_by_marco_confidence))
             return False
 
     @staticmethod
@@ -121,6 +123,8 @@ class slideshowInspector(QtWidgets.QWidget):
                 key=lambda i: i.cocktail.number
             )
         except Exception:
+            logger.error('Caught {} while calling {}'.format(
+                            e, slideshowInspector.sort_images_by_cocktail_number))
             return False
 
     @staticmethod
@@ -140,6 +144,8 @@ class slideshowInspector(QtWidgets.QWidget):
                 key=lambda i: i.well_number
             )
         except Exception:
+            logger.error('Caught {} while calling {}'.format(
+                            e, slideshowInspector.sort_images_by_well_number))
             return False
 
     @property

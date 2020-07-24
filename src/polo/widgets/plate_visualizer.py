@@ -9,6 +9,8 @@ from polo import IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
 
+logger = make_default_logger(__name__)
+
 
 class PlateVisualizer(QtWidgets.QGraphicsView):
     '''The PlateVisualizer is a small widget to assist users understand
@@ -128,6 +130,8 @@ class PlateVisualizer(QtWidgets.QGraphicsView):
                 x = int(x)
                 y = int(y)
             except Exception:
+                logger.error('Caught {} while calling {}'.format(
+                            e, self.setup_view))
                 return
             # if cannot be based to int there is a problem
             w, h = self.frameGeometry().width(), self.frameGeometry().height()
@@ -147,6 +151,8 @@ class PlateVisualizer(QtWidgets.QGraphicsView):
                 cur_x = 0
             self.fitInView(self.scene.itemsBoundingRect())
         except Exception:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self.setup_view))
             return
             # not worth throwing an error if something goes wrong but a crash
             # just don't render the visualizer
