@@ -119,6 +119,7 @@ class RunOrganizer(QtWidgets.QWidget):
         :param run: Run or HWIRun instance to run MARCO on
         :type run: Run or HWIRun
         '''
+        self.ui.pushButton.setEnabled(False)
         self.ui.progressBar.setMaximum(len(run))
         self.ui.progressBar.setValue(1)  # reset the bar to 0
         self.classification_thread = ClassificationThread(run, parent=self)
@@ -133,6 +134,7 @@ class RunOrganizer(QtWidgets.QWidget):
             logger.info('Closed classification thread: {}'.format(
                 self.classification_thread
             ))
+            self.ui.pushButton.setEnabled(True)
 
         self.classification_thread.finished.connect(classification_cleanup)
         self.ui.runTree.setEnabled(False)
