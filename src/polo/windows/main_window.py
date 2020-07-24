@@ -132,7 +132,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             for run in self.runOrganizer:
                 if run:
-                    self.runOrganizer.backup_classifications(run)
+                    for image in run.images:
+                        if image.human_class:
+                            self.runOrganizer.backup_classifications(run)
+                            break
+                    # only backup files for runs with human classifications
         except Exception as e:
             QApplication.restoreOverrideCursor()
             make_message_box(
