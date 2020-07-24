@@ -7,11 +7,12 @@ from polo import *
 
 
 class Cocktail():
-    '''Cocktail instances are used to hold a collection of `Reagents`
-    that form one chemical cocktail. Cocktails also hold other metadata including
-    their commercial code, the cocktail pH and the
-    well they are assigned to. Currently, cocktails are only supported
-    for HWIRuns. 
+    '''Cocktail instances are used to hold a collection of 
+    :class:`~polo.crystallography.cocktail.Reagent`
+    instances that form one chemical cocktail. 
+    Cocktails also hold other metadata including their commercial code,
+    the cocktail pH and the well they are assigned to.
+    Currently, cocktails are only supported for HWIRuns. 
 
     :param number: The cocktail number, defaults to None
     :type number: str, optional
@@ -37,11 +38,12 @@ class Cocktail():
 
     @property
     def cocktail_index(self):
-        '''Attempt to pull out the cocktail number from the cocktail number
-        string. Dependent on consistent formating between cocktail menus that
-        I have not checked at this time.
+        '''Attempt to pull out the cocktail number as an integer
+        from the :attr:`~polo.crystallography.cocktail.Cocktail.number` attribute.
+        This property is dependent on consistent formating 
+        between cocktail menus that has not checked at this time.
 
-        :return: cocktail number
+        :return: Cocktail number
         :rtype: int
         '''
         try:     
@@ -52,7 +54,7 @@ class Cocktail():
 
     @property
     def well_assignment(self):
-        '''Return the current well assignment for this cocktail
+        '''Return the current well assignment for this Cocktail.
 
         :return: well assignment
         :rtype: int
@@ -61,19 +63,14 @@ class Cocktail():
 
     @well_assignment.setter
     def well_assignment(self, value):
-        '''Setter function for the well_assignment attribute.
-
-        :param value: well number
-        :type value: str, int or float
-        '''
         if isinstance(value, (str, float)):
             value = int(value)
         self._well_assignment = value
     
 
     def add_reagent(self, new_reagent):
-        '''Adds a reagent to the existing list of reagents stored in the
-        reagents attribute.
+        '''Adds a reagent to the existing list of reagents referenced by the
+        :attr:`~polo.crystallography.cocktail.Cocktail.reagents attribute.
 
         :param new_reagent: Reagent to add to this cocktail
         :type new_reagent: Reagent
@@ -125,7 +122,7 @@ class Cocktail():
 
 class Reagent():
     '''Reagent instances represent one specific kind of chemical compound at
-    a specific concentration. Multiple reagents make up a cocktail. Reagents
+    a specific concentration. Multiple Reagents make up a cocktail. Reagents
     are generally created from the contents of HWI cocktail csv files which
     describe all 1536 cocktails and the reagents that compose them in one file.
     The cocktail csv files can be found in the `data` directory.
@@ -156,8 +153,8 @@ class Reagent():
 
     @property
     def chemical_formula(self):
-        '''Return the current chemical formula for this Reagent. Not all
-        reagents have available chemical formulas as cocktail csv files do not
+        '''The chemical formula for of this Reagent. Not all
+        Reagents have available chemical formulas as cocktail csv files do not
         include formulas for all reagents. See the setter method for more details
         on how chemical formulas are converted from strings to `Formula` objects.
 
@@ -193,7 +190,7 @@ class Reagent():
 
     @property
     def concentration(self):
-        '''Return the current concentration for this reagent. Concentration
+        '''The current concentration of this Reagent. Concentration
         ultimately refers back to a condition in a specific screening well.
 
         :return: Chemical concentration
@@ -251,7 +248,7 @@ class Reagent():
         to the molarity property. The molar mass of the reagent cannot be
         calculated for all HWI reagents. 
       
-        :return: Molar mass of the reagent if it is calculable, False otherwise.
+        :return: Molar mass of the Reagent if it is calculable, False otherwise.
         :rtype: UnitValue or bool
         '''
         mm = None
@@ -286,10 +283,12 @@ class Reagent():
 
     def stock_volume(self, target_volume):  # stock con must be in molarity
         '''Attempt to calculate the required amount of stock solution to
-        produce the reagent's set concentration in the given target_volume.
-        Stock concentration is taken from the `stock_con` attribute. If
-        `stock_con` is not set or the molarity of the reagent can not be
-        calculated this method will return False.
+        produce the Reagent's set concentration in the given `target_volume`
+        argument. Stock concentration is taken from the 
+        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` attribute. If
+        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` is not
+        set or the molarity of the reagent can not be calculated this method
+        will return False.
 
         :param target_volume: Volume in which stock will be diluted into
         :type target_volume: UnitValue
@@ -314,7 +313,8 @@ class UnitValue():
     are not the most robust but help to keep things more organized.
     UnitValues can be created by either passing values to the
     `values` and `units` args explicitly or by calling the classmethod
-    `make_from_string` which will use regex to pull out supported units and
+    :meth:`~polo.crystallography.cocktail.UnitValue.make_from_string`
+    which will use regex to pull out supported units and
     values.
     '''
     saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
@@ -329,8 +329,9 @@ class UnitValue():
 
     @classmethod
     def make_from_string(cls, string):
-        '''Create a UnitValue from a string containing a value and a unit.
-        Used the `unit_regex` to pull out the units. 
+        '''Create a `UnitValue` from a string containing a value and a unit.
+        Utilizes the :const:`polo.unit_regex` expression 
+        to pull out the units. 
 
         .. highlight:: python
         .. code-block:: python
@@ -367,10 +368,12 @@ class UnitValue():
         self._value = value
 
     def scale(self, scale_key):
-        '''Scale the value of the UnitValue instance using a key character
-        in the `saved_scalers` dictionary. First converts the value to its
-        base unit and then divides by the `scale_key` value. The `scale_key`
-        can be thought of as a SI prefix for a base unit.
+        '''Scale the :attr:`~polo.crystallography.cocktail.UnitValue.value`
+        using a key character that exists in the 
+        :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`
+        dictionary. First converts the value to its
+        base unit and then divides by the `scale_key` argument value. 
+        The `scale_key` can be thought of as a SI prefix for a base unit.
 
         .. highlight:: python
         .. code-block:: python
@@ -379,7 +382,8 @@ class UnitValue():
             v_one = UnitValue(10, 'L')  # value of 10 liters
             v_one = v_one.scale('u')  # get v_one in microliters
 
-        :param scale_key: Character in `saved_scalers` to convert value to.
+        :param scale_key: Character in :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`
+                          to convert value to.
         :type scale_key: str
         :return: UnitValue converted to scale_key unit prefix
         :rtype: UnitValue
@@ -390,10 +394,10 @@ class UnitValue():
                 temp.value / self.saved_scalers[scale_key], scale_key + temp.units)
     
     def to_base(self):
-        '''Converts the value to the base unit, if it is not already in the
-        base unit.
+        '''Converts the :attr:`~polo.crystallography.cocktail.UnitValue.value`
+        to the base unit, if it is not already in the base unit.
 
-        :return: UnitValue converted to base unit of called UnitValue instance
+        :return: UnitValue converted to base unit
         :rtype: UnitValue
         '''
         if self.units and self.units[0] in self.saved_scalers:

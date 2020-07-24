@@ -155,8 +155,9 @@ USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
 DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
 BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
 
-from polo.crystallography.cocktail import Cocktail, Reagent, UnitValue
+
 from polo.crystallography.image import Image
+from polo.crystallography.cocktail import Cocktail, Reagent, UnitValue
 from polo.utils.io_utils import BarTender, Menu
 from polo.crystallography.run import HWIRun, Run
 from polo.threads import thread

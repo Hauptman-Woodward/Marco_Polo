@@ -42,10 +42,10 @@ class RunUpdaterDialog(QtWidgets.QDialog):
 
     @property
     def current_menus(self):
-        '''The `CocktailMenu` instances that are currently being displayed
-        to the user via the cocktail menu comboBox widget.
+        '''The :class:`polo.utils.io_utils.Menu` instances that are currently being displayed
+        to the user via the :class:`~polo.utils.io_utils.Menu` ::class:`QComboBox` widget.
 
-        :return: List of `CocktailMenu` instances 
+        :return: List of :class:`polo.utils.io_utils.Menu` instances 
         :rtype: list
         '''
         return self._current_menus
@@ -72,14 +72,16 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         logger.info('Opened new run {}'.format(self._run))
     
     def _set_run_date(self):
-        '''Set the `date` attribute of the `run` based on
-        the value in the dateEdit widget.
+        '''Set the :attr:`date` attribute of the :class:`Run` referenced
+        by the :attr:`run` attribute from 
+        the value in the :class:`QDateEdit` widget.
         '''
         if self.run:
             self.ui.dateEdit.setDate(self.run.date)
 
     def _set_cocktail_menu(self):
-        '''Private method that display cocktails in the cocktail comboBox based on
+        '''Private method that display cocktails in the 
+        :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` based on
         the current menu type selection. Either displays
         soluble or membrane cocktail menus.
         '''
@@ -94,9 +96,9 @@ class RunUpdaterDialog(QtWidgets.QDialog):
                 self.current_menus, key=lambda m: m.start_date)])
 
     def _select_run_menu(self):
-        '''Private method that sets the current index of the comboBox
-        based on the current `cocktail_menu` attribute of the `Run` instance 
-        referenced by the `run` attribute.
+        '''Private method that sets the current index of the  :class:`QComboBox`
+        based on the current :attr:`cocktail_menu` attribute of the :class:`Run`
+        instance  referenced by the :attr:`run` attribute.
         '''
         run_menu = self.run.cocktail_menu
         menu_index = self.ui.comboBox.findText(os.path.basename(run_menu.path))
@@ -105,8 +107,8 @@ class RunUpdaterDialog(QtWidgets.QDialog):
 
     def _update_run_cocktail_menu(self):
         '''Private method that updates the `cocktail_menu` attribute of the 
-        `Run` instance referenced by the `run` attribute based on the current 
-        cocktail comboBox selection.
+        `Run` instance referenced by the :attr:`run` attribute based on the current 
+        :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` selection.
         '''
         new_menu = tim.get_menu_by_basename(self.ui.comboBox.currentText())
         if new_menu and new_menu.path != self.run.cocktail_menu.path:
@@ -123,9 +125,9 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     #         self.run.run_name = new_name
 
     def _update_spectrum(self):
-        '''Private method that update the spectrum of the `run` attribute 
+        '''Private method that update the spectrum of the :attr:`run` attribute 
         and the images in that run based on the current selection of the 
-        spectrum comboBox.
+        spectrum  :class:`QComboBox`.
         '''
         new_spectrum = self.ui.comboBox_2.currentText()
         if new_spectrum != self.run.image_spectrum:
@@ -135,8 +137,8 @@ class RunUpdaterDialog(QtWidgets.QDialog):
 
     def _update_plate_id(self):
         '''Private method that updates the `plate_id` attribute of the 
-        Run instance references by the `run` attribute based on the contents
-        of the plate ID lineEdit widget.
+        Run instance references by the :attr:`run` attribute based on the contents
+        of the plate ID :class:`QLineEdit` widget.
         '''
         new_id = self.ui.lineEdit_2.text()
         if new_id != self.run.plate_id:

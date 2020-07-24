@@ -50,13 +50,15 @@ class ImportCandidate():
 
     @property
     def cocktail_menu(self):
-        '''If the `ImportCandidate`'s `import_type` attribute is the HWIRun
-        class and the candidate has a valid date then returns a `CocktailMenu`
-        instance that was in use at the `ImportCandidate`'s date. If any
-        of these conditions are not meet then returns None.
+        '''If the :class:`ImportCandidate` instances's :attr:`import_type` 
+        attribute is the :class:`HWIRun`class and the candidate has a valid 
+        date then returns a :class:`polo.utils.io_utils.Menu`
+        instance that was in use at the :class:`ImportCandidate` 
+        instanes's date. If anyof these conditions are not meet then
+        returns None.
 
-        :return: CocktailMenu or None
-        :rtype: CocktailMenu or None
+        :return: :class:`polo.utils.io_utils.Menu` or None
+        :rtype: :class:`polo.utils.io_utils.Menu` or None
         '''
         if isinstance(self.import_type, HWIRun) and 'date' in self.data:
             return tim.get_menu_by_date(self.data['date'])
@@ -65,7 +67,7 @@ class ImportCandidate():
 
     @property
     def path(self):
-        '''Return the `ImportCandidate`'s path. 
+        '''Return the :class:`ImportCandidate` instances's path. 
 
         :return: Path to the file which will actually be imported
         :rtype: str
@@ -79,9 +81,10 @@ class ImportCandidate():
         # set basename of the directory as the default run name
 
     def unrar(self):
-        '''If the `ImportCandidate`'s `is_rar` property is True then this
-        method will attempt to de-compress the rar archive specified by the
-        `path` attribute.
+        '''If the :class:`ImportCandidate` instances's :attr:`~ImportCandidate.is_rar`
+        property is True then this method will attempt to de-compress the 
+        rar archive referenced by the instance's 
+        :attr:`~ImportCandidate.path` attribute.
 
         :return: Path to un-compressed rar archive if unrar was successful, 
                  otherwise returns False
@@ -97,7 +100,7 @@ class ImportCandidate():
 
     def read_xmldata(self, dir_path):
         '''Attempts to read any xml metadata files in the path referenced by
-        the `dir_path` argument.
+        the :attr:`dir_path` argument.
 
         :param dir_path: Path to check for xml files in
         :type dir_path: str or Path
@@ -114,10 +117,10 @@ class ImportCandidate():
             return {}  # empty dict so always safe to pass to update method
 
     def verify_path(self):
-        '''Verifies that the path referenced by the `path` attribute could
+        '''Verifies that the path referenced by the :attr:`path` attribute could
         potentially be imported into Polo.
 
-        :return: True if `path` is verified, False otherwise
+        :return: True if :attr:`path` is verified, False otherwise
         :rtype: bool
         '''
         str_path = str(self.path)
@@ -130,13 +133,13 @@ class ImportCandidate():
         return self.is_verified
 
     def assign_run_type(self):
-        '''If the `path` attribute is verified as importable assigns a run class
-        (Run or HWIRun) to the `import_type` attribute. Later on in the import
-        pipeline this attribute tells other methods how the `ImportCandidate`
+        '''If the :attr:`path` attribute is verified as importable assigns a run class
+        (Run or HWIRun) to the :attr:`import_type` attribute. Later on in the import
+        pipeline this attribute tells other methods how the :class:`ImportCandidate`
         should be imported as different operations are required to create `Run`
         instances then `HWIRun` instances.
 
-        The `ImportCandidate` is assigned to a HWIRun is its metadata is
+        The :class:`ImportCandidate` is assigned to a HWIRun is its metadata is
         successfully parsed.
 
         :return: The import type
@@ -204,7 +207,8 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     @property
     def all_run_names(self):
-        '''All run names of all current import candidates.
+        '''All run names of all current :class:ImportCandidate
+        instances.
 
         :return: Set of all run names
         :rtype: set
@@ -216,7 +220,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     @property
     def selected_candidate(self):
-        '''The currently selected import candidate if one exists, otherwise
+        '''The currently selected :class:`ImportCandidate` if one exists, otherwise
         returns None.
 
         :return: Currently selected candidate
@@ -233,8 +237,8 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     @property
     def selection_dict(self):
-        '''Returns a dictionary who's keys are `Run` attributes and values
-        are the values of `RunImporterDialog` widgets that correspond to
+        '''Returns a dictionary who's keys are :class:`Run` attributes and values
+        are the values of :class:`RunImporterDialog` widgets that correspond to
         these attributes.
 
         Example of the dictionary returned below.
@@ -242,7 +246,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         .. code-block:: python
         
             {
-                'cocktail_menu': CocktailMenu,
+                'cocktail_menu': Menu,
                 'date': datetime,
                 'run_name': str,
                 'image_spectrum': str
@@ -278,11 +282,12 @@ class RunImporterDialog(QtWidgets.QDialog):
     def _import_files(self, rar=True):
         '''Private method that attempts to import a collection of file paths
         specified by the user. If importing a rar archive the method 
-        creates a `QuickThread` instance and runs all rar operations on that 
+        creates a :class:`polo.threads.thread.QuickThread` 
+        instance and runs all rar operations on that 
         thread to avoid freezing the GUI on slower machines. 
-        Imported runs are added to the `import_candidates` attribute
+        Imported runs are added to the :attr:`import_candidates` attribute
         dictionary and then displayed to the user by calling
-        :func:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
+        :meth:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
 
         :param rar: If True opens the filebrowser for rar archives and filters
                     out all other import types, defaults to True
@@ -333,8 +338,9 @@ class RunImporterDialog(QtWidgets.QDialog):
 
 
     def _open_browser(self, rar=True):
-        '''Private method that opens a `QFileBrowser` instance that allows the 
-        user to select files for import. The allowed filetype is set using the `rar` flag.
+        '''Private method that opens a :class:`QFileBrowser` instance that allows the 
+        user to select files for import. 
+        The allowed filetype is set using the `rar` flag.
 
         :param rar: If True, allow user to only import Rar archive files 
                             defaults to True. If False
@@ -356,10 +362,10 @@ class RunImporterDialog(QtWidgets.QDialog):
         return browser.selectedFiles()
 
     def _update_selected_candidate(self):
-        '''Private method that updates currently selected `ImportCandidate` by
-        calling :func:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`
+        '''Private method that updates currently selected :class:`ImportCandidate` by
+        calling :meth:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`
         and then updating the display by calling
-        :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.
+        :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.
         '''
         new_candidate = self.ui.listWidget.currentItem()
         if new_candidate:
@@ -372,11 +378,12 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _handle_candidate_change(self):
         '''Private method that calls 
-        :func:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
-        and then  :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. This updates
-        the data of the previously selected `ImportCandidate` if it has been changed and then
+        :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
+        and then  :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. 
+        This updates the data of the previously selected 
+        :class:`ImportCandidate` if it has been changed and then
         updates data display widgets with the information from the currently selected
-        `ImportCandidate` instance.
+        :class:`ImportCandidate` instance.
         '''
         # connect to when index changed of list widget
         self._update_selected_candidate()
@@ -406,7 +413,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _verify_run_name(self):
         '''Private method to verify a run name. If run name fails verification
-        clears the runname lineEdit widget and shows an error message to the user.
+        clears the runname :class:`QLineEdit` widget and shows an error message to the user.
         '''
         run_name, error, message = self.ui.lineEdit.text(), False, ''
         if run_name in self.all_run_names:
@@ -422,14 +429,14 @@ class RunImporterDialog(QtWidgets.QDialog):
             self.ui.lineEdit.clear()
 
     def _restore_defaults(self):
-        '''Restore suggested import settings for an `ImportCandidate` in case
+        '''Restore suggested import settings for an :class:`ImportCandidate` in case
         the user has changed them and then wants to undo those changes.
         '''
         self.selected_candidate.assign_run_type()  # reread the metadata
         self._populate_fields()
 
     def _remove_run(self):
-        '''Removes a run as an import candidate and refreshes the listWidget
+        '''Removes a run as an import candidate and refreshes the :class:`QlistWidget`
         to reflect the removal.
         '''
         key = str(self.selected_candidate.path)
@@ -438,8 +445,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         self._display_candidate_paths()
 
     def _test_candidate_paths(self, file_paths):
-        '''Private method that validates file paths to ensure they could be
-        imported into Polo
+        '''Private method that validates filepaths to ensure they could be
+        imported into Polo.
 
         :param file_paths: List of filepaths to be imported
         :type file_paths: list
@@ -458,7 +465,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         return verified_paths, bad_paths
     
     def _add_import_candidates(self, new_candidates):
-        '''Add `ImportCandidates` to the `import_candidates` attribute.
+        '''Adds :class:`ImportCandidate` instances to the 
+        :attr:`import_candidates` attribute.
 
         :param new_candidates: List of `ImportCandidates`
         :type new_candidates: list
@@ -469,16 +477,17 @@ class RunImporterDialog(QtWidgets.QDialog):
         )
 
     def _display_candidate_paths(self):
-        '''Private method that updates the dialog's listWidget with the
-        file paths of the current import candidates in the `import_candidates`
-        attribute.
+        '''Private method that updates the dialog's :class:`QListWidget` with the
+        file paths of the current :class:`ImportCandidate` instances referenced
+        by the  :attr:`import_candidates` attribute.
         '''
         self.ui.listWidget.clear()
         self.ui.listWidget.addItems(
             sorted(list(self.import_candidates.keys())))
 
     def _populate_fields(self, import_candidate):
-        '''Private method to populate candidate data to the user.
+        '''Private method to display :class:`ImportCandidate` 
+        data to the user.
 
         :param import_candidate: ImportCandidate to display
         :type import_candidate: ImportCandidate
@@ -500,10 +509,12 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self.ui.dateEdit_2.setDate(value)
 
     def _set_cocktail_menu(self):
-        '''Private method that sets the cocktail comboBox based on the
-        cocktail menu stored in the `selected_candidate`. Used to convey to
-        the user which cocktail menu has been selected for a given
-        `ImportCandidate`.
+        '''Private method that sets the cocktail :class:`QComboBox` based on the
+        :class:`~polo.utils.io_utils.Menu` instance referenced by the 
+        :attr:`selected_candidate`attribute. This method is used to convey to
+        the user which
+        :class:`~polo.utils.io_utils.Menu` has been selected for a given
+        :class:`ImportCandidate`.
         '''
         if ('cocktail_menu' in self.selected_candidate.data
                 and isinstance(self.selected_candidate.data['cocktail_menu'], Menu)
@@ -516,10 +527,11 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self.ui.comboBox_3.setCurrentIndex(menu_index)
 
     def _set_cocktail_menu_type_radiobuttons(self, type_):
-        '''Private method that sets the cocktail menu type radioButtons
-        given a cocktail menu type key.
+        '''Private method that sets the :class:`~polo.utils.io_utils.Menu` 
+        type :class:`QRadioButtons`
+        given a :class:`~polo.utils.io_utils.Menu` type key.
 
-        :param type_: Cocktail menu type key. If `type_` == 's' then soluble
+        :param type_: Menu type key. If `type_` == 's' then soluble
                       menu radioButton state is set to True. If 'type_` == 'm' then
                       membrane radiobutton state is set to True
         :type type_: str
@@ -531,7 +543,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _enable_hwi_import_tools(self):
         '''Private method to enable widgets that should only be used
-        for HWIRun imports. 
+        for :class:`HWIRun` imports. 
         '''
         items = (self.ui.gridLayout.itemAt(i)
                  for i in range(self.ui.gridLayout.count()))
@@ -542,7 +554,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _disable_hwi_import_tools(self):
         '''Private method to disable widgets that should only be used for
-        HWIRun imports.
+        :class:`HWIRun` imports.
         '''
         self.ui.comboBox_3.setEnabled(False)
         self.ui.radioButton.setEnabled(False)
@@ -563,7 +575,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _import_runs(self):
         '''Private method that attempts to create run objects from all available
-        `ImportCandidates`.
+        :class:`ImportCandidate` instances.
         '''
         self.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -576,10 +588,10 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _import_run(self, import_candidate):
         '''Private helper method that is called by
-        :func:`~polo.windows.run_importer.RunImporterDialog._import_runs` that
-        attempts to import a run from an `ImportCandidate`. 
+        :meth:`~polo.windows.run_importer.RunImporterDialog._import_runs` that
+        attempts to import a run from an :class:`ImportCandidate. 
 
-        :param import_candidate: `ImportCandidate` to create run from    
+        :param import_candidate: :class:`ImportCandidate` to create run from    
         :type import_candidate: ImportCandidate
         :return: Run or HWIRun if successful
         :rtype: Run or HWIRun
@@ -598,7 +610,7 @@ class RunImporterDialog(QtWidgets.QDialog):
 
     def _display_cocktail_files(self, menu_type=None):
         '''Private method that displays the available cocktail files to the
-        user via the cocktail menu comboBox widget.
+        user via the :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` widget.
 
         :param menu_type: Key for which kind of cocktail screens to display, defaults to None. 
                           "m" for membrane screens and "s" for soluble screens.
@@ -618,10 +630,10 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.comboBox_3.addItems(menus)
 
     def _update_candidate_run_data(self):
-        '''Private method that allows the user to update an `ImportCandidate`
+        '''Private method that allows the user to update an :class:`ImportCandidate`
         instance's data from the widgets in the `RunImporterDialog` by updating
-        the dictionary referenced by an `ImportCandidate`'s `data` attribute
-        with user entered values.
+        the dictionary referenced by an :class:`ImportCandidate` instacnes's 
+        :attr:`~ImportCandidate.data` attribute with user entered values.
         '''
         if self.selected_candidate:
             selection_dict = {

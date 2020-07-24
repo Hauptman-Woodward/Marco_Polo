@@ -87,7 +87,7 @@ class TableInspector(QtWidgets.QWidget):
     def _set_column_options(self):
         '''Private method that sets the availabe columns to display
         based on the attributes of the run stored in the `run` attribute.
-        Adds a checkbox widget for each attribute.
+        Adds a :class:`QCheckBox` widget for each attribute.
 
         TODO: formating for private attributes to make them prettier
         '''

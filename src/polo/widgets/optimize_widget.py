@@ -26,10 +26,10 @@ class OptimizeWidget(QtWidgets.QWidget):
     that yielded xtal hits. The concept is very similar to the program MakeTray
     available from Hampton Research. Currently, users cannot specify their
     own conditions and are limited to the predetermined conditions of the
-    HWI cocktail menu that was selected when the run was originally imported
-    into Polo. Additionally, `OptimizeWidget` is only available to HWIRuns
+    :class:`~polo.utils.io_utils.Menu` that was selected when the run was originally imported
+    into Polo. Additionally, the OptimizeWidget is only available to :class:`HWIRun` instances
     as the cocktail to well mapping cannot be inferred for other more
-    general Run types.
+    general :class:`Run` types.
 
     :param parent: Parent Widget 
     :type parent: QWidget
@@ -94,18 +94,20 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def x_wells(self):
-        '''Returns spinBox value that is to be interpreted as number x wells'''
+        '''Returns spinBox value that representing the number 
+        wells on the x axis of the screen.'''
         return self.ui.spinBox_2.value()
 
     @property
     def y_wells(self):
-        '''Returns spinBox value that is number of y wells'''
+        '''Returns spinBox value representing the number of
+        wells on the y axis of the screen.'''
         return self.ui.spinBox_3.value()
 
     @property
     def x_reagent(self):
-        '''Used to retrieve the `Reagent` object that is to be varied along
-        the x axis of the optimization plate.
+        '''Used to retrieve the :class:`Reagent` object that is to be varied along
+        the x axis of the screen.
         '''
         reagent_text = self.ui.comboBox_6.currentText()
         if reagent_text and reagent_text in self._current_reagents:
@@ -115,7 +117,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def y_reagent(self):
-        '''Used to retreive the `Reagent` object that is to be varied along
+        '''Used to retreive the :class:`Reagent` object that is to be varied along
         the y axis of the optimization plate
         '''
         reagent_text = self.ui.comboBox_13.currentText()
@@ -124,7 +126,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def constant_reagents(self):
-        '''Retrieve a set of reagents that are not included as either the
+        '''Retrieve a set of :class:`Reagents` that are not included as either the
         x reagent or the y reagent but are still part of the crystallization
         cocktail and therefore need to be included in the screen. Unlike
         either the x or y reagents, constant reagents do not change their
@@ -138,7 +140,8 @@ class OptimizeWidget(QtWidgets.QWidget):
     
     @property
     def selected_constant(self):
-        '''Return the constant reagent that is currently selected by the user.
+        '''Return the constant :class:`Reagent` that is currently
+        selected by the user.
 
         :return: Currently selected constant reagent if exists and selected, 
                 None otherwise
@@ -161,7 +164,8 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def hit_images(self):
-        '''Retrieves a list of `Image` object instances that have human
+        '''Retrieves a list of :class:`~polo.crystallography.image.Image`
+        object instances that have human
         classification (`human_class` attribute) == 'Crystals'. Used to
         determine what wells to allow the user to optimize. Currently, only
         allow the user to optimize wells they have marked as crystal.
@@ -175,15 +179,13 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def x_step(self):
-        '''Retrieves the x_step divided by 100. Determines the percent
-        variance between x_reagent wells.
+        '''The percent variance between x reagent wells.
         '''
         return self.ui.doubleSpinBox_4.value() / 100
 
     @property
     def y_step(self):
-        '''Retrieves the y_step divided by 100. Determines the percent
-        variance between y_reagent wells.
+        '''The percent variance between y reagent wells.
         '''
         return self.ui.doubleSpinBox_5.value() / 100
 
@@ -193,10 +195,6 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @run.setter
     def run(self, new_run):
-        '''
-        Setter method for the __run attribute. Also sets the hit well choices
-        and updates the current reagents that are selectable by the user.
-        '''
         self._run = new_run
         if isinstance(new_run, (Run, HWIRun)):
             self._set_hit_well_choices()  # give use options of crystal hits
@@ -205,7 +203,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     
     def _set_up_unit_comboboxes(self):
         '''Private method that sets the base unit and the scalers
-        of the unitComboboxes that are part of the `OptimizeWidget`.
+        of all :class:`unitComboBox` instances that are apart of the UI.
         '''
         self.ui.unitComboBox.base_unit = 'M'  # x reagent stock con setter
         self.ui.unitComboBox.scalers = UnitComboBox.saved_scalers
@@ -240,7 +238,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                 self.ui.unitComboBox_4.set_value(self.selected_constant.stock_con)
 
     def update(self):
-        '''Method to update reagents and wells selectable to the user after
+        '''Method to update reagents and selectable wells to the user after
         they have made additional classifications that would increase or
         decrease the pool of crystal classified images.
         '''
@@ -258,8 +256,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         
     def _set_hit_well_choices(self):
         '''Private method that sets the hit well comboBox widget choices 
-        based on the images in the `_run` attribute that are human classified 
-        as crystal. Wells are identified in the comboBox by their well number.
+        based on the images in the :attr:`~OptimizeWidget.run` attribute that 
+        are human classified as crystal.
+        Wells are identified in the comboBox by their well number.
         '''
         if isinstance(self.run, (Run, HWIRun)):
             hits = self.hit_images
@@ -275,9 +274,10 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def _update_current_reagents(self, image_index=None):
         '''Private method that updates x and y reagent comboBox widgets to 
-        show what reagents are contained in the currently selected well.
+        reflect what :class:`Reagent` instances are contained in the
+        currently selected well.
 
-        :param image_index: Index of the Image to set reagent choices from,
+        :param image_index: Index of the :class:`Image` to set :class:`Reagent` choices from,
                             defaults to None.
         :type image_index: int, optional
         '''
@@ -300,9 +300,9 @@ class OptimizeWidget(QtWidgets.QWidget):
             self.ui.listWidget_4.setCurrentRow(0)
 
     def _set_reagent_choices(self):
-        '''Private method that sets reagent choices for the x and y reagents
-        based on the currently selected well. Reagents must come from the
-        cocktail associated with the selected well.
+        '''Private method that sets :class:`Reagent` choices for the x and y reagents
+        based on the currently selected well. :class:`Reagents` must come from the
+        class:`Cocktail` instance associated with the selected well.
 
         TODO: Add the option to vary pH instead of a reagent along either
         axis. This would also mean that the constant reagents would need to
@@ -322,11 +322,10 @@ class OptimizeWidget(QtWidgets.QWidget):
             self._set_constant_reagents()
 
     def _set_reagent_stock_con(self):
-        '''Private method. If a reagent has already been assigned a 
-        stock concentration displays that concentration to the user 
-        through the appropriate UnitCombobBox. Should be called when a 
-        reagent is changed. Only displays reagent concentrations
-        for the x and y reagents.
+        '''Private method. If a :class:`Reagent` has already been assigned a 
+        stock concentration this method displays that concentration to the user 
+        through the appropriate :class:`UnitCombobBox` instance.
+        Only displays concentrations for the x and y reagents.
         '''
         if self.x_reagent and self.x_reagent.stock_con:
             self.ui.unitComboBox.set_value(self.x_reagent.stock_con)
@@ -340,10 +339,11 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def _set_reagent_stock_con_values(self, x=False, y=False, const=False):
         '''Private method to update the stock concentations of current
-        reagents through their `stock_con` attribute. The reagent to update
+        reagents through their :attr:`~polo.crystallography.cocktail.Reagent.stock_con`
+        attribute. The :class:`Reagent` to update
         is indicated by the flag set to True at the time the method is
         called. The stock concentration value is pulled from each reagent's
-        respective unitComboBox.
+        respective `unitComboBox` instance.
 
         :param x: If True, set x reagent stock con, defaults to False
         :type x: bool, optional
@@ -365,10 +365,9 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def _gradient(self, reagent, num_wells, step, stock=False):
         '''Private method for calculating a concentration gradient for a
-        given reagent using a given step size as a percentage of the reagent's
-        base concentration. A reagent's base concentration refers to the
-        concentration assigned in the cocktail menu csv file and is
-        stored in each reagent's `concentration` attribute.
+        given :class:`Reagent` using a given step size as a proportion of the
+        :class:`Reagent` instance's :attr:`~polo.crystallography.cocktail.Reagent.concentration`
+        attribute.
 
         :param reagent: Reagent to vary concentration
         :type reagent: Reagent
@@ -392,8 +391,8 @@ class OptimizeWidget(QtWidgets.QWidget):
             1, num_wells+1)]  # return a list of signed values
 
     def _write_optimization_screen(self):
-        '''Private method to write the current to the table widget for display
-        to the user.
+        '''Private method to write the current optimization screen
+        to the :class:`tableWidget` UI for display to the user.
         '''
         if self._error_checker():
 
@@ -460,8 +459,8 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def _make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
         '''Private method to format the information that describes the
-        contents of an individual well into nice html that can be displayed
-        to the user in a textBrowser widget.
+        contents of an individual well into prettier html that can be displayed
+        to the user in a :class:`textBrowser` widget.
 
         :param x_con: Concentration of x reagent in this well
         :type x_con: UnitValue
@@ -528,7 +527,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     def _make_plate_list(self):
         '''Private method that converts the concents of the 
-        tablewidget (assuming that a optimization screen has been
+        :class:`tableWidget` UI (assuming that a optimization screen has been
         already rendered to the user) to a list of lists that
         is easier to write to html using the jinja2 template.
 
@@ -544,7 +543,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         return plate_list
 
     def _export_screen(self):
-        '''Private method to write the current optimization screen to an 
+        '''Private method to write the current optimization screen to a
         html file.
         '''
         if self._run and self._error_checker():
@@ -559,10 +558,12 @@ class OptimizeWidget(QtWidgets.QWidget):
                                   self.well_volume, export_path, )
 
     def _check_for_overflow(self, volume_list):
-        '''Private method to check if the volume of reagents in a given 
-        well exceeds the total well volume. If an overflow is detected, 
-        return False otherwise return the volume of H20 that should be added 
-        to the well as a `UnitValue`.
+        '''Private method to check if the volume of :class:`Reagent`
+        instancess in a given well exceeds the total well volume. 
+        If an overflow is detected, return False otherwise return the volume 
+        of H20 that should be added 
+        to the well as a :class:`~polo.crystallography.cocktail.UnitValue`
+        instance.
 
         :param volume_list: List of `UnitValues` that consitute the contents of a
                             well in the optimization plate

@@ -247,7 +247,7 @@ class plateViewer(QtWidgets.QGraphicsView):
         adding them to `_scene` attribute. 
 
         :param label_dict: Dictionary of Image attributes to pass along to
-                           :func:`~polo.widgets.plate_viewer.plateViewer._make_image_label`
+                           :meth:`~polo.widgets.plate_viewer.plateViewer._make_image_label`
                            to create image labels, defaults to {}
         :type label_dict: dict, optional
         '''
@@ -331,7 +331,7 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
         '''Set the color of images based on their current classifications. Very similar
-        to :func:`~polo.widgets.plate_viewer.plateViewer.set_opacity_from_filters`.
+        to :meth:`~polo.widgets.plate_viewer.plateViewer.set_opacity_from_filters`.
         Images can be colored by their MARCO or human classification.
 
         :param color_mapping: Dictionary that maps image classifications to QColors

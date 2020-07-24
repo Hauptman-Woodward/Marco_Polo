@@ -9,7 +9,7 @@ def classify_image(tf_predictor, image_path):
     keys are image classification types and values are model confidence for that
     classification. The image classifications of this dictionary are used
     universally throughout the program and are accessible through the
-    `IMAGE_CLASSIFICATIONS` constant.
+    :const:`IMAGE_CLASSIFICATIONS` constant.
 
     :param tf_predictor: Loaded MARCO model
     :type tf_predictor: tensorflow model

@@ -5,7 +5,8 @@ import os
 from polo import *
 from polo.crystallography.image import Image
 # from polo.utils.io_utils import list_dir_abs, parse_HWI_filename_meta
-from polo.utils.io_utils import if_dir_not_exists_make, list_dir_abs, parse_HWI_filename_meta
+from polo.utils.io_utils import (if_dir_not_exists_make,
+                                list_dir_abs, parse_HWI_filename_meta)
 logger = make_default_logger(__name__)
 
 
@@ -17,7 +18,8 @@ class Run():
     def __init__(self, image_dir, run_name, image_spectrum=None, date=None, 
                  images=[], **kwargs):
         '''Run objects represent one particular imaging run of a sample. They
-        store `Image` objects that hold the actual imaging data as well as
+        store :class:`~polo.crystallography.image.Image`
+        objects that hold the actual imaging data as well as
         metadata associated with the imaging run and the sample.
 
         :param image_dir: Directory that contains the screening images
@@ -25,11 +27,14 @@ class Run():
         :param run_name: Name of this run. Should be unique as it is used to
         uniquely identify each Run instance
         :type run_name: str
-        :param image_spectrum: Imaging technology used to capture the images in this run, defaults to None
+        :param image_spectrum: Imaging technology used to capture
+                               the images in this run, defaults to None
         :type image_spectrum: str, optional
         :param date: Date the images in this Run were taken, defaults to None
         :type date: datetime, optional
-        :param images: List of all `Image` instances in this run, defaults to []
+        :param images: List of all
+                       :class:`~polo.crystallography.image.Image`
+                       instances in this run, defaults to []
         :type images: list, optional
         '''
         self.image_dir = str(image_dir)
@@ -46,7 +51,9 @@ class Run():
             return e
 
     def __len__(self):
-        '''Returns the number of non null Images'''
+        '''Returns the length of the
+        :attr:`~polo.crystallography.run.Run.images` attribute.
+        '''
         if isinstance(self.images, list):
             return len(self.images)
         else:
@@ -61,14 +68,16 @@ class Run():
         )
 
     def encode_images_to_base64(self):
-        '''Helper method that encodes all images in the Run to
-        base64.
+        '''Helper method that encodes all images in the
+        `class`~polo.crystallography.run.Run` to base64.
         '''
         for image in self.images:
             if image: image.encode_base64()
 
     def add_images_from_dir(self):
-        '''Adds the contents of a directory to `images` attribute.
+        '''Adds the contents of a directory to 
+        :attr:`~polo.crystallography.run.Run.images`
+        attribute.
         '''
         self.images = []
         for image_path in list_dir_abs(self.image_dir, allowed=True):
@@ -79,15 +88,20 @@ class Run():
             
 
     def unload_all_pixmaps(self, start=None, end=None, a=False):  # reduce memory usage
-        '''Delete the pixmap data of all Image instances stored in the
-        `images` attribute. Should be used to free up memory after the run
-        is no longer being viewed by the user.
+        '''Delete the pixmap data of all 
+        :class:`~polo.crystallography.image.Image` instances referenced by the
+        :attr:`~polo.crystallography.run.Run.images` attribute. 
+        This method should be used to free up memory after the 
+        :class:`~polo.crystallography.run.Run`is no longer being
+        viewed by the user.
 
         :param start: Start index for range of images to unload, defaults to None
         :type start: int, optional
         :param end: End index for range of images to unload, defaults to None
         :type end: int, optional
-        :param a: Flag to unload pixmap data for all images and images they are linked to, defaults to False
+        :param a: Flag to unload pixmap data for all `Images`
+                  this :class:`~polo.crystallography.image.Image` is linked
+                  to
         :type all: bool, optional
         '''
 
@@ -102,9 +116,10 @@ class Run():
                 image.delete_pixmap_data()
 
     def get_images_by_classification(self, human=True):
-        '''Create a dictionary of image classificationss. Keys are
-        each type of classification and values are list of
-        images with classification of the key. The human
+        '''Create a dictionary of image classifications. Keys are
+        each type of classification and values are lists of
+        :class:`~polo.crystallography.image.Image` s 
+        with classification equal to the key value. The `human`
         boolean determines what classifier should be used to
         determine the image type. Human = True sets the human
         as the classifier and False sets MARCO as the classifier.
@@ -126,20 +141,23 @@ class Run():
         return image_class_dict
 
     def image_filter_query(self, image_types, human, marco, favorite):
-        '''General use method for returning Images based on a set of
-        filters. Used whereever a user is allowed to narrow the set
-        of images available for view.
+        '''General use method for returning :class:`~polo.crystallography.image.Image`s
+        based on a set of filters. Used whereever a user is allowed to narrow the set
+        of :class:`~polo.crystallography.image.Image`s available for view.
 
-        :param image_types: Returned images must have a classification that is included in this variable
+        :param image_types: Returned images must have a
+                            classification that is included in 
+                            this variable
         :type image_types: list or set
-        :param human: Qualify the classification type with a human classifier. 
+        :param human: Qualify the classification type
+                      with a human classifier. 
         :type human: bool
-        :param marco: Qualify the classification type with a MARCO classifier.
+        :param marco: Qualify the classification type with
+                      a MARCO classifier.
         :type marco: bool
-        :param favorite: Returned images must be marked as `favorite` if set to True
+        :param favorite: Returned images must be marked as 
+                         `favorite` if set to True
         :type favorite: bool
-        :return: Images that meet the specified requirements specified in the above arguments.
-        :rtype: list
         '''
         images = [i for i in self.images if i and i.standard_filter(
             image_types, human, marco, favorite
@@ -147,31 +165,6 @@ class Run():
         if not images:
             images.append(Image.no_image())
         return images
-
-    def get_human_statistics(self):
-        '''
-        Returns stats that would be shown in the stats tab of the viewer.
-        '''
-        return NotImplementedError
-
-    def get_cocktails(self):
-        '''
-        Returns list of list of cocktails assigned to this run
-        '''
-        return NotImplementedError
-
-    def export_to_csv(self, output_dir):
-        '''
-        Exports run classification data to a csv table.
-        '''
-        return NotImplementedError
-
-    def get_heap_map_data(self):
-        '''
-        Returns data that will be needed to render the heatmap
-        view of results
-        '''
-        return NotImplementedError
 
     def get_current_hits(self):
         # hits are classified as images with human crystal designation
@@ -197,7 +190,7 @@ class HWIRun(Run):
         super(HWIRun, self).__init__(**kwargs)
 
     def get_tooltip(self):
-        '''The same as :func:`~polo.crystallography.Run.get_tooltip`.
+        '''The same as :meth:`~polo.crystallography.Run.get_tooltip`.
         '''
         if 'plateName' in self.__dict__:
             platename = self.__dict__['plateName']
@@ -209,14 +202,20 @@ class HWIRun(Run):
         )
 
     def link_to_next_date(self, other_run):
-        '''Link this `Run` to another `Run` instance that is of the same
+        '''Link this :class:`~polo.crystallography.run.HWIRun` to another 
+        :class:`~polo.crystallography.run.HWIRun` instance that is of the same
         sample but photographed at a later date. This creates a
-        bi-directional linked list structure between the two runs.
-        This `Run` instance will point to `other_run` through the `next_run`
-        attribute and `other_run` will point back to this `Run` through
-        the `previous_run` attribute. This method does not attempt to recognize
+        bi-directional linked list structure between the two 
+        :class:`~polo.crystallography.run.HWIRun`s.
+        This :class:`~polo.crystallography.run.HWIRun` instance will point to the 
+        `other_run` through the 
+        :attr:`~polo.crystallography.run.HWIRun.next_run` attribute and
+        `other_run` will point back to this :class:`~polo.crystallography.run.HWIRun` through
+        its :attr:`~polo.crystallography.run.HWIRun.previous_run`
+        attribute. This method does not attempt to recognize
         which run was imaged first so this should be determined before calling,
-        likely by sorting a list of Run instances by their `date` attribute.
+        likely by sorting a list of `HWIRun instances by their 
+        :attr:`~polo.crystallography.run.Run.date` attribute.
 
         Example:
 
@@ -237,7 +236,8 @@ class HWIRun(Run):
             run_a <-> run_b <-> run_c <-> run_d
 
 
-        :param other_run: HWIRun instance representing the next imaging run
+        :param other_run: :class:`~polo.crystallography.run.HWIRun`
+                          instance representing the next imaging run
         :type other_run: HWIRun
         '''
 
@@ -255,14 +255,19 @@ class HWIRun(Run):
             other_run.previous_run = self
 
     def link_to_alt_spectrum(self, other_run):
-        '''Similar to :func:`~polo.crystallography.HWIRun.link_to_next_date`
-        except instead of creating a linked list through the `next_run` and
-        `previous_run` attributes this method does so through the `alt_spectrum`
+        '''Similar to :meth:`~polo.crystallography.HWIRun.link_to_next_date`
+        except instead of creating a linked list through the 
+        :attr:`~polo.crystallography.run.HWIRun.next_run` and
+        :attr:`~polo.crystallography.run.HWIRun.previous_run`
+        attributes this method does so through the 
+        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum`
         attribute. The linked list created is mono-directional so if a
-        series of runs are being linked the last run should be linked to the
+        series of :class:`~polo.crystallography.run.HWIRun`'s 
+        are being linked the last run should be linked to the
         first run to circularize the linked list.
 
-        :param other_run: Run to link to this Run by spectrum 
+        :param other_run: :class:`~polo.crystallography.run.HWIRun` to 
+                          link to this :class:`~polo.crystallography.run.HWIRun` by spectrum 
         :type other_run: HWIRun
         '''
         
@@ -272,8 +277,9 @@ class HWIRun(Run):
             self.alt_spectrum = other_run
     
     def get_linked_alt_runs(self):
-        '''Return all runs that this run is linked to by spectrum. See
-        :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`
+        '''Return all :class:`~polo.crystallography.run.HWIRun`s that this 
+        :class:`~polo.crystallography.run.HWIRun` is linked to by spectrum. See
+        :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
 
         :return: List of runs linked to this run by spectrum
         :rtype: list
@@ -293,15 +299,19 @@ class HWIRun(Run):
     
     def insert_into_alt_spec_chain(self):
         '''When runs are first loaded into Polo they are automatically linked together.
-        Normally, runs that are linked by date should all be visible spectrum images and
-        runs linked by spectrum should all be non-visible spectrum images. The visible
-        spectrum run will then point to one non-visible spectrum run via their
-        `alt_spectrum` attribute. This means that one could navigate from a visible
-        spectrum run to all alt spectrum runs but not get back to the visible spectrum
-        run. Therefore, before a run is set to be viewed by the user this method
-        temporary inserts the run it is called on into the alt spectrum 
-        circular linked list. 
-        Also see :func:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
+        Normally, `HWIRuns` that are linked by date should contain only 
+        visible spectrum images and :class:`~polo.crystallography.run.HWIRun`s 
+        linked by spectrum should contain only all
+        non-visible spectrum images. The visible spectrum HWIRun will then point to 
+        one non-visible spectrum run via their
+        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum` attribute.
+        This means that one could navigate from a visible
+        spectrum :class:`~polo.crystallography.run.HWIRun` to all alt spectrum 
+        :class:`~polo.crystallography.run.HWIRun`s but not be abe to 
+        get back to the visible spectrum
+        HWIRun. Therefore, before a HWIRun is set to be viewed by the user this method
+        temporary inserts it into the alt spectrum circular linked list. 
+        Also see :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
         '''
         linked_runs = self.get_linked_alt_runs()
         if linked_runs:
@@ -318,9 +328,11 @@ class HWIRun(Run):
                     linked_runs[-1].link_to_alt_spectrum(self)
 
     def add_images_from_dir(self):
-        '''Populates the `images` attribute with a list of `Images` instances
-        read from the `image_dir` attribute filepath. Currently is 
-        dependent on having a cocktail menu available.
+        '''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
+        attribute with a list of `Images` instances
+        read from the :attr:`~polo.crystallography.run.HWIRun.image_dir`
+        attribute filepath. Currently is 
+        dependent on having a cocktail Menu available.
         '''
         self.images = [BLANK_IMAGE for i in range(0, self.num_wells)]
         assert os.path.exists(self.image_dir)

@@ -82,7 +82,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     @staticmethod
     def get_widget_dims(self, widget):
-        '''Returns the width and height as a tuple of a given widget.
+        '''Returns the width and height of a :class:`QWidget`
+        as a tuple.
 
         :param widget: QWidget
         :type widget: QWidget
@@ -159,8 +160,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def _tab_limiter(self):
         '''Private method that limits the interfaces that a user is allowed
-        to interact with based on the type of run they have loaded and
-        selected. Currently, `Run` functionality is limited due to the fact
+        to interact with based on the type of :class:`Run` they have loaded and
+        selected. Currently, :class:`Run` functionality is limited due to the fact
         cocktails cannot be mapped to images.
         '''
         if self.current_run and not isinstance(self.current_run, HWIRun):
@@ -177,19 +178,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def _handle_opening_run(self, new_run):
         '''Private method that handles opening a run. For the most part,
-        this means setting the `run` attribute of other widgets to the
+        this means setting the :attr:`run` attribute of other widgets to the
         `new_run` argument. The setter methods of these widgets should then handle
         updating their interfaces to reflect the new run being
-        opened. Also calls :func:`~polo.windows.main_window.MainWindow._tab_limiter`
-        and :func:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
+        opened. Also calls :meth:`~polo.windows.main_window.MainWindow._tab_limiter`
+        and :meth:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
         allowed functions for the user based on the type of run they open.
 
         Additionally, if this is not the first run to be opened, before
-        the `new_run` is set as the `current_run` the pixmaps of the `current_run`
-        are unloaded to free up memory.
+        the `new_run` is set as the :attr:`current_run` the pixmaps of the 
+        :attr:`current_run` are unloaded to free up memory.
 
         :param q: List containing the run to be opened. Likely originating from
-                  the `RunOrganizer` widget.
+                  the :class:`RunOrganizer` widget.
         :type q: list
         '''
 

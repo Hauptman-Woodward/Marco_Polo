@@ -8,17 +8,16 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import *
 
 from polo import BLANK_IMAGE
-from polo.crystallography.image import Image
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 
 
 class thread(QThread):
-    '''Very basic wrapper class around `QThread` class. Should be
+    '''Very basic wrapper class around :class:`QThread` class. Should be
     inherited by a more specific class and then the `run` method
     can be overwritten to provide functionality. Whatever code is in the
-    :func:`~polo.threads.thread.thread.run` method will be executed when
-    :func:`~polo.threads.thread.thread.start` is called. The
-    :func:`~polo.threads.thread.thread.run` method should not be called
+    :meth:`~polo.threads.thread.thread.run` method will be executed when
+    :meth:`~polo.threads.thread.thread.start` is called. The
+    :meth:`~polo.threads.thread.thread.run` method should not be called
     explicitly.
 
     :param parent: parent widget, defaults to None
@@ -44,7 +43,8 @@ class QuickThread(thread):
     will execute is passed as an argument to the `__init__`. Any arguments
     that the passed function requires are passed as key word arguments. Once
     the thread finished any values returned by the passed function are stored
-    in the `QuickThread`'s `results` attribute.
+    in the `QuickThread`'s :attr:`polo.threads.thread.QuickThread.results`
+    attribute.
 
     .. highlight:: python
     .. code-block:: python
@@ -92,10 +92,10 @@ class ClassificationThread(thread):
 
     def run(self):
         '''Method that actually does the classification work. Emits the the
-        `change_value` signal everytime an image is classified. This is primary
+        :const:`change_value` signal everytime an image is classified. This is primary
         to update the progress bar widget in the `RunOrganizer` widget to
         notify the user how many images have been classified. Additionally,
-        every five images classified the `estimated_time` signal is emitted
+        every five images classified the :const:`estimated_time` signal is emitted
         which includes a tuple that contains as the first item the time in
         seconds it took to classify the last five images and the number
         of images that remain to be classified as the second item. This allows
@@ -118,7 +118,7 @@ class FTPDownloadThread(thread):
     '''Thread specific for downloading files from a remote FTP server.
 
     :param ftp_connection: FTP connection object to download files from
-    :type ftp_connection: FTP
+    :type ftp_connection: :class:`FTP`
     :param file_paths: List absolute filepaths on the FTP server to download
     :type file_paths: list
     :param save_dir_path: Path on the local machine to store all downloaded files in

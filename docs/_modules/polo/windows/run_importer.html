@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -191,6 +194,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_rar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Import candidate is a rar file. True if the file is rar file, False</span>
+<span class="sd">        otherwise.</span>
+
+<span class="sd">        :return: Rar status</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
@@ -198,6 +207,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If the :class:`ImportCandidate` instances&#39;s :attr:`import_type` </span>
+<span class="sd">        attribute is the :class:`HWIRun`class and the candidate has a valid </span>
+<span class="sd">        date then returns a :class:`polo.utils.io_utils.Menu`</span>
+<span class="sd">        instance that was in use at the :class:`ImportCandidate` </span>
+<span class="sd">        instanes&#39;s date. If anyof these conditions are not meet then</span>
+<span class="sd">        returns None.</span>
+
+<span class="sd">        :return: :class:`polo.utils.io_utils.Menu` or None</span>
+<span class="sd">        :rtype: :class:`polo.utils.io_utils.Menu` or None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_type</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;date&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -205,6 +224,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return the :class:`ImportCandidate` instances&#39;s path. </span>
+
+<span class="sd">        :return: Path to the file which will actually be imported</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
 
     <span class="nd">@path</span><span class="o">.</span><span class="n">setter</span>
@@ -214,6 +238,15 @@
         <span class="c1"># set basename of the directory as the default run name</span>
 
 <div class="viewcode-block" id="ImportCandidate.unrar"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.unrar">[docs]</a>    <span class="k">def</span> <span class="nf">unrar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If the :class:`ImportCandidate` instances&#39;s :attr:`~ImportCandidate.is_rar`</span>
+<span class="sd">        property is True then this method will attempt to de-compress the </span>
+<span class="sd">        rar archive referenced by the instance&#39;s </span>
+<span class="sd">        :attr:`~ImportCandidate.path` attribute.</span>
+
+<span class="sd">        :return: Path to un-compressed rar archive if unrar was successful, </span>
+<span class="sd">                 otherwise returns False</span>
+<span class="sd">        :rtype: Path or str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rar</span><span class="p">:</span>
             <span class="n">unrar_result</span> <span class="o">=</span> <span class="n">unrar_archive</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">target_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
@@ -223,6 +256,15 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="ImportCandidate.read_xmldata"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.read_xmldata">[docs]</a>    <span class="k">def</span> <span class="nf">read_xmldata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Attempts to read any xml metadata files in the path referenced by</span>
+<span class="sd">        the :attr:`dir_path` argument.</span>
+
+<span class="sd">        :param dir_path: Path to check for xml files in</span>
+<span class="sd">        :type dir_path: str or Path</span>
+<span class="sd">        :return: Dictionary of data pulled from xml files. If no data is found</span>
+<span class="sd">                 then returns an empty dictionary.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># read xml data from HWI uncompressed rar files</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
         <span class="n">platedata</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_and_read_platedata</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
@@ -232,6 +274,12 @@
             <span class="k">return</span> <span class="p">{}</span>  <span class="c1"># empty dict so always safe to pass to update method</span></div>
 
 <div class="viewcode-block" id="ImportCandidate.verify_path"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.verify_path">[docs]</a>    <span class="k">def</span> <span class="nf">verify_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Verifies that the path referenced by the :attr:`path` attribute could</span>
+<span class="sd">        potentially be imported into Polo.</span>
+
+<span class="sd">        :return: True if :attr:`path` is verified, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">str_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">str_path</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rar</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">str_path</span><span class="p">):</span>
@@ -242,6 +290,18 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span></div>
 
 <div class="viewcode-block" id="ImportCandidate.assign_run_type"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.ImportCandidate.assign_run_type">[docs]</a>    <span class="k">def</span> <span class="nf">assign_run_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If the :attr:`path` attribute is verified as importable assigns a run class</span>
+<span class="sd">        (Run or HWIRun) to the :attr:`import_type` attribute. Later on in the import</span>
+<span class="sd">        pipeline this attribute tells other methods how the :class:`ImportCandidate`</span>
+<span class="sd">        should be imported as different operations are required to create `Run`</span>
+<span class="sd">        instances then `HWIRun` instances.</span>
+
+<span class="sd">        The :class:`ImportCandidate` is assigned to a HWIRun is its metadata is</span>
+<span class="sd">        successfully parsed.</span>
+
+<span class="sd">        :return: The import type</span>
+<span class="sd">        :rtype: Run or HWIRun</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>  <span class="c1"># should be a directory now</span>
             <span class="n">hwi_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hwi_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -266,7 +326,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog">[docs]</a><span class="k">class</span> <span class="nc">RunImporterDialog</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDialog</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;RunImporterDialog instances are the user interface for importing</span>
-<span class="sd">    runs from rar archives or directories on the local machine. </span>
+<span class="sd">    runs from rar archives or directories stored on the local machine. </span>
 
 <span class="sd">    :param current_run_names: Runnames that are already in use by the</span>
 <span class="sd">                                current Polo session (Run names should be unique)</span>
@@ -304,6 +364,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">all_run_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;All run names of all current :class:ImportCandidate</span>
+<span class="sd">        instances.</span>
+
+<span class="sd">        :return: Set of all run names</span>
+<span class="sd">        :rtype: set</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span>
             <span class="p">[</span><span class="n">can_path</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">can_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
              <span class="k">if</span> <span class="s1">&#39;run_name&#39;</span> <span class="ow">in</span> <span class="n">can_path</span><span class="o">.</span><span class="n">data</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_run_names</span>
@@ -311,6 +377,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;The currently selected :class:`ImportCandidate` if one exists, otherwise</span>
+<span class="sd">        returns None.</span>
+
+<span class="sd">        :return: Currently selected candidate</span>
+<span class="sd">        :rtype: ImportCandidate</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_candidate</span>
 
     <span class="nd">@selected_candidate</span><span class="o">.</span><span class="n">setter</span>
@@ -322,8 +394,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selection_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Returns a dictionary who&#39;s keys are `Run` attributes and values</span>
-<span class="sd">        are the values of `RunImporterDialog` widgets that correspond to</span>
+        <span class="sd">&#39;&#39;&#39;Returns a dictionary who&#39;s keys are :class:`Run` attributes and values</span>
+<span class="sd">        are the values of :class:`RunImporterDialog` widgets that correspond to</span>
 <span class="sd">        these attributes.</span>
 
 <span class="sd">        Example of the dictionary returned below.</span>
@@ -331,7 +403,7 @@
 <span class="sd">        .. code-block:: python</span>
 <span class="sd">        </span>
 <span class="sd">            {</span>
-<span class="sd">                &#39;cocktail_menu&#39;: CocktailMenu,</span>
+<span class="sd">                &#39;cocktail_menu&#39;: Menu,</span>
 <span class="sd">                &#39;date&#39;: datetime,</span>
 <span class="sd">                &#39;run_name&#39;: str,</span>
 <span class="sd">                &#39;image_spectrum&#39;: str</span>
@@ -366,11 +438,13 @@
 
 <div class="viewcode-block" id="RunImporterDialog._import_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_files">[docs]</a>    <span class="k">def</span> <span class="nf">_import_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that attempts to import a collection of file paths</span>
-<span class="sd">        specified by the user. If importing a rar archive creates a `QuickThread`</span>
-<span class="sd">        instance and runs all rar operations on that thread to avoid freezing</span>
-<span class="sd">        the GUI on slower machines. Imported runs are added to the `import_candidates`</span>
+<span class="sd">        specified by the user. If importing a rar archive the method </span>
+<span class="sd">        creates a :class:`polo.threads.thread.QuickThread` </span>
+<span class="sd">        instance and runs all rar operations on that </span>
+<span class="sd">        thread to avoid freezing the GUI on slower machines. </span>
+<span class="sd">        Imported runs are added to the :attr:`import_candidates` attribute</span>
 <span class="sd">        dictionary and then displayed to the user by calling</span>
-<span class="sd">        :func:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.</span>
+<span class="sd">        :meth:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.</span>
 
 <span class="sd">        :param rar: If True opens the filebrowser for rar archives and filters</span>
 <span class="sd">                    out all other import types, defaults to True</span>
@@ -421,11 +495,13 @@
 
 
 <div class="viewcode-block" id="RunImporterDialog._open_browser"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._open_browser">[docs]</a>    <span class="k">def</span> <span class="nf">_open_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that opens a QFileBrowser that allows the user to select</span>
-<span class="sd">        files for import. They type of file import allowed is set using the `rar` flag.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that opens a :class:`QFileBrowser` instance that allows the </span>
+<span class="sd">        user to select files for import. </span>
+<span class="sd">        The allowed filetype is set using the `rar` flag.</span>
 
-<span class="sd">        :param rar: If True, allow user to only import Rar archive files defaults to True. IF False</span>
-<span class="sd">                    only allows the user to import directories.</span>
+<span class="sd">        :param rar: If True, allow user to only import Rar archive files </span>
+<span class="sd">                            defaults to True. If False</span>
+<span class="sd">                            only allows the user to import directories.</span>
 <span class="sd">        :type rar: bool, optional</span>
 <span class="sd">        :return: List of files the user has selected for import </span>
 <span class="sd">        :rtype: list</span>
@@ -443,10 +519,10 @@
         <span class="k">return</span> <span class="n">browser</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._update_selected_candidate"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._update_selected_candidate">[docs]</a>    <span class="k">def</span> <span class="nf">_update_selected_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that updates currently selected `ImportCandidate` by</span>
-<span class="sd">        calling :func:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates currently selected :class:`ImportCandidate` by</span>
+<span class="sd">        calling :meth:`~polo.windows.run_importer.RunImporterDialog._update_candidate_run_data`</span>
 <span class="sd">        and then updating the display by calling</span>
-<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.</span>
+<span class="sd">        :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">new_candidate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">new_candidate</span><span class="p">:</span>
@@ -459,11 +535,12 @@
 
 <div class="viewcode-block" id="RunImporterDialog._handle_candidate_change"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._handle_candidate_change">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_candidate_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that calls </span>
-<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`</span>
-<span class="sd">        and then  :func:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. This updates</span>
-<span class="sd">        the data of the previously selected `ImportCandidate` if it has been changed and then</span>
+<span class="sd">        :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`</span>
+<span class="sd">        and then  :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. </span>
+<span class="sd">        This updates the data of the previously selected </span>
+<span class="sd">        :class:`ImportCandidate` if it has been changed and then</span>
 <span class="sd">        updates data display widgets with the information from the currently selected</span>
-<span class="sd">        `ImportCandidate` instance.</span>
+<span class="sd">        :class:`ImportCandidate` instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># connect to when index changed of list widget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_selected_candidate</span><span class="p">()</span>
@@ -493,7 +570,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog._verify_run_name"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._verify_run_name">[docs]</a>    <span class="k">def</span> <span class="nf">_verify_run_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to verify a run name. If run name fails verification</span>
-<span class="sd">        clears the runname lineEdit widget and shows an error message to the user.</span>
+<span class="sd">        clears the runname :class:`QLineEdit` widget and shows an error message to the user.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">run_name</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="n">run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_run_names</span><span class="p">:</span>
@@ -509,14 +586,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._restore_defaults"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._restore_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">_restore_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Restore suggested import settings for an `ImportCandidate` in case</span>
+        <span class="sd">&#39;&#39;&#39;Restore suggested import settings for an :class:`ImportCandidate` in case</span>
 <span class="sd">        the user has changed them and then wants to undo those changes.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">assign_run_type</span><span class="p">()</span>  <span class="c1"># reread the metadata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_fields</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._remove_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Removes a run as an import candidate and refreshes the listWidget</span>
+        <span class="sd">&#39;&#39;&#39;Removes a run as an import candidate and refreshes the :class:`QlistWidget`</span>
 <span class="sd">        to reflect the removal.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
@@ -525,8 +602,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_candidate_paths</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._test_candidate_paths"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._test_candidate_paths">[docs]</a>    <span class="k">def</span> <span class="nf">_test_candidate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_paths</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that validates file paths to ensure they could be</span>
-<span class="sd">        imported into Polo</span>
+        <span class="sd">&#39;&#39;&#39;Private method that validates filepaths to ensure they could be</span>
+<span class="sd">        imported into Polo.</span>
 
 <span class="sd">        :param file_paths: List of filepaths to be imported</span>
 <span class="sd">        :type file_paths: list</span>
@@ -545,7 +622,8 @@
         <span class="k">return</span> <span class="n">verified_paths</span><span class="p">,</span> <span class="n">bad_paths</span></div>
     
 <div class="viewcode-block" id="RunImporterDialog._add_import_candidates"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._add_import_candidates">[docs]</a>    <span class="k">def</span> <span class="nf">_add_import_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_candidates</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Add `ImportCandidates` to the `import_candidates` attribute.</span>
+        <span class="sd">&#39;&#39;&#39;Adds :class:`ImportCandidate` instances to the </span>
+<span class="sd">        :attr:`import_candidates` attribute.</span>
 
 <span class="sd">        :param new_candidates: List of `ImportCandidates`</span>
 <span class="sd">        :type new_candidates: list</span>
@@ -556,16 +634,17 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._display_candidate_paths"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_candidate_paths">[docs]</a>    <span class="k">def</span> <span class="nf">_display_candidate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that updates the dialog&#39;s listWidget with the</span>
-<span class="sd">        file paths of the current import candidates in the `import_candidates`</span>
-<span class="sd">        attribute.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates the dialog&#39;s :class:`QListWidget` with the</span>
+<span class="sd">        file paths of the current :class:`ImportCandidate` instances referenced</span>
+<span class="sd">        by the  :attr:`import_candidates` attribute.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span>
             <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._populate_fields"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._populate_fields">[docs]</a>    <span class="k">def</span> <span class="nf">_populate_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_candidate</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to populate candidate data to the user.</span>
+        <span class="sd">&#39;&#39;&#39;Private method to display :class:`ImportCandidate` </span>
+<span class="sd">        data to the user.</span>
 
 <span class="sd">        :param import_candidate: ImportCandidate to display</span>
 <span class="sd">        :type import_candidate: ImportCandidate</span>
@@ -587,10 +666,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">setDate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._set_cocktail_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that sets the cocktail comboBox based on the</span>
-<span class="sd">        cocktail menu stored in the `selected_candidate`. Used to convey to</span>
-<span class="sd">        the user which cocktail menu has been selected for a given</span>
-<span class="sd">        `ImportCandidate`.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the cocktail :class:`QComboBox` based on the</span>
+<span class="sd">        :class:`~polo.utils.io_utils.Menu` instance referenced by the </span>
+<span class="sd">        :attr:`selected_candidate`attribute. This method is used to convey to</span>
+<span class="sd">        the user which</span>
+<span class="sd">        :class:`~polo.utils.io_utils.Menu` has been selected for a given</span>
+<span class="sd">        :class:`ImportCandidate`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;cocktail_menu&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span>
                 <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">],</span> <span class="n">Menu</span><span class="p">)</span>
@@ -603,12 +684,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">menu_index</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._set_cocktail_menu_type_radiobuttons"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._set_cocktail_menu_type_radiobuttons">[docs]</a>    <span class="k">def</span> <span class="nf">_set_cocktail_menu_type_radiobuttons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Pirvate method that sets the cocktail menu type radioButtons</span>
-<span class="sd">        given a cocktail menu type key.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the :class:`~polo.utils.io_utils.Menu` </span>
+<span class="sd">        type :class:`QRadioButtons`</span>
+<span class="sd">        given a :class:`~polo.utils.io_utils.Menu` type key.</span>
 
-<span class="sd">        :param type_: Cocktail menu type key. If `type_` == &#39;s&#39; then soluble</span>
-<span class="sd">        menu radioButton state is set to True. If &#39;type_` == &#39;m&#39; then</span>
-<span class="sd">        membrane radiobutton state is set to True</span>
+<span class="sd">        :param type_: Menu type key. If `type_` == &#39;s&#39; then soluble</span>
+<span class="sd">                      menu radioButton state is set to True. If &#39;type_` == &#39;m&#39; then</span>
+<span class="sd">                      membrane radiobutton state is set to True</span>
 <span class="sd">        :type type_: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
@@ -618,7 +700,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog._enable_hwi_import_tools"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._enable_hwi_import_tools">[docs]</a>    <span class="k">def</span> <span class="nf">_enable_hwi_import_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to enable widgets that should only be used</span>
-<span class="sd">        for HWIRun imports. </span>
+<span class="sd">        for :class:`HWIRun` imports. </span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">gridLayout</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span>
@@ -629,7 +711,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog._disable_hwi_import_tools"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._disable_hwi_import_tools">[docs]</a>    <span class="k">def</span> <span class="nf">_disable_hwi_import_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to disable widgets that should only be used for</span>
-<span class="sd">        HWIRun imports.</span>
+<span class="sd">        :class:`HWIRun` imports.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -650,7 +732,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog._import_runs"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_runs">[docs]</a>    <span class="k">def</span> <span class="nf">_import_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that attempts to create run objects from all available</span>
-<span class="sd">        `ImportCandidates`.</span>
+<span class="sd">        :class:`ImportCandidate` instances.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
@@ -663,10 +745,10 @@
 
 <div class="viewcode-block" id="RunImporterDialog._import_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_run">[docs]</a>    <span class="k">def</span> <span class="nf">_import_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_candidate</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private helper method that is called by</span>
-<span class="sd">        :func:`~polo.windows.run_importer.RunImporterDialog._import_runs` that</span>
-<span class="sd">        attempts to import a run from an `ImportCandidate`. </span>
+<span class="sd">        :meth:`~polo.windows.run_importer.RunImporterDialog._import_runs` that</span>
+<span class="sd">        attempts to import a run from an :class:`ImportCandidate. </span>
 
-<span class="sd">        :param import_candidate: `ImportCandidate` to create run from    </span>
+<span class="sd">        :param import_candidate: :class:`ImportCandidate` to create run from    </span>
 <span class="sd">        :type import_candidate: ImportCandidate</span>
 <span class="sd">        :return: Run or HWIRun if successful</span>
 <span class="sd">        :rtype: Run or HWIRun</span>
@@ -685,7 +767,7 @@
 
 <div class="viewcode-block" id="RunImporterDialog._display_cocktail_files"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_cocktail_files">[docs]</a>    <span class="k">def</span> <span class="nf">_display_cocktail_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">menu_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that displays the available cocktail files to the</span>
-<span class="sd">        user via the cocktail menu comboBox widget.</span>
+<span class="sd">        user via the :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` widget.</span>
 
 <span class="sd">        :param menu_type: Key for which kind of cocktail screens to display, defaults to None. </span>
 <span class="sd">                          &quot;m&quot; for membrane screens and &quot;s&quot; for soluble screens.</span>
@@ -705,9 +787,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">menus</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunImporterDialog._update_candidate_run_data"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data">[docs]</a>    <span class="k">def</span> <span class="nf">_update_candidate_run_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to allow the user to update `ImportCandidate`</span>
-<span class="sd">        instance&#39;s data from the Widgets in the `RunImporterDialog`. Updates the</span>
-<span class="sd">        `ImportCandidate`&#39;s `data` attribute dictionary.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that allows the user to update an :class:`ImportCandidate`</span>
+<span class="sd">        instance&#39;s data from the widgets in the `RunImporterDialog` by updating</span>
+<span class="sd">        the dictionary referenced by an :class:`ImportCandidate` instacnes&#39;s </span>
+<span class="sd">        :attr:`~ImportCandidate.data` attribute with user entered values.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_candidate</span><span class="p">:</span>
             <span class="n">selection_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -732,11 +815,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -747,7 +838,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

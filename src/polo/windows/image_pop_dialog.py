@@ -49,9 +49,10 @@ class ImagePopDialog(QtWidgets.QDialog):
 
     @property
     def image(self):
-        '''Image being displayed.
+        '''The :class:`~polo.crystallography.image.Image`
+         being displayed.
 
-        :return: The image
+        :return: The :class:`~polo.crystallography.image.Image` instance to be displayed
         :rtype: Image
         '''
         return self._image
@@ -69,34 +70,43 @@ class ImagePopDialog(QtWidgets.QDialog):
 
     def _set_groupbox_title(self):
         '''Private method that set the the title of main groupbox to the 
-        image path basename.
+        basename of the :attr:`~polo.crystallography.image.Image.path`
+        attribute of the :class:`~polo.crystallography.image.Image` instance
+        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
         '''
         if self.image:
             self.ui.groupBox.setTitle(os.path.basename(str(self.image.path)))
 
     def _set_cocktail_details(self):
-        '''Private method that shows `Image` metadata in the text 
-        display widgets.
+        '''Private method that shows the 
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute metadata in the text display widgets.
         '''
         if self.image and self.image.cocktail:
             self.ui.textBrowser.setText(str(self.image.cocktail))
     
     def _change_favorite_status(self):
         '''Private method that updates the favorite status of the current 
-        image to the state of the favorite radioButton.
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute to the state of the favorite :class:`QRadioButton`.
         '''
         if self.image:
             self.image.favorite = self.ui.radioButton.isChecked()
 
     def _set_image_details(self):
-        '''Private method that displays the current image metadata in a
-        textBrowser widget.
+        '''Private method that displays the 
+        :class:`~polo.crystallography.image.Image` instance referenced
+        by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
         '''
         if self.image:
             self.ui.textBrowser_2.setText(str(self.image))
 
     def show_image(self):
-        '''Show the image stored in the `image` attribute
+        '''Show the :class:`~polo.crystallography.image.Image`
+        instance referenced by the
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` attribute.
         '''
         if self.image:
             self.ui.photoViewer.scene.clear()
@@ -112,15 +122,22 @@ class ImagePopDialog(QtWidgets.QDialog):
 
     def classify_image(self, crystals=False, clear=False,
                        precipitate=False, other=False):
-        '''Classify the image in the popout. Sets the human classification.
+        '''Set the human classification of the 
+        :class:`~polo.crystallography.image.Image` instances
+        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
 
-        :param crystals: Classify as crystals flag, defaults to False
+        :param crystals: If True, classify the `image` as crystal,
+                         default False
         :type crystals: bool, optional
-        :param clear: Classify as clear flag, defaults to False
+        :param clear: If True, classify the `image` as clear,
+                      defaults to False
         :type clear: bool, optional
-        :param precipitate: Classify as precipitate flag, defaults to False
+        :param precipitate: If True, classify the `image` as precipitate, 
+                            defaults to False
         :type precipitate: bool, optional
-        :param other: Classify as other flag, defaults to False
+        :param other: If True, classify as the `image` as other,
+                      defaults to False
         :type other: bool, optional
         '''
         if crystals:
@@ -137,13 +154,18 @@ class ImagePopDialog(QtWidgets.QDialog):
     def show_alt_image(self, next_date=False, prev_date=False, alt=False):
         '''Show a linked image based on boolean flags. 
 
-        :param next_date: If True, set `image` attribute to next
-                          available imaging date, defaults to False
+        :param next_date: If True, set
+                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` 
+                          attribute to next the available imaging date, defaults to False
         :type next_date: bool, optional
-        :param prev_date: If True, set `image` attribute to previous 
+        :param prev_date: If True, set 
+                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+                          attribute to previous 
                           imaging date, defaults to False
         :type prev_date: bool, optional
-        :param alt: If True, set `image` attribute to alt spectrum
+        :param alt: If True, set 
+                    :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+                    attribute to an alt spectrum
                     image, defaults to False
         :type alt: bool, optional
         '''
@@ -156,10 +178,14 @@ class ImagePopDialog(QtWidgets.QDialog):
 
     def _set_allowed_navigation_functions(self):
         '''Private method to enable or disable navigation by date or spectrum buttons
-        based on the content of the current image. Tests the Image
-        stored in the `image` attribute to determine if it is linked to
+        based on the content of the current image. 
+        Tests the :class:`~polo.crystallography.image.Image` instance
+        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute to determine if it is linked to
         a future date, previous date or alt spectrum image through it's
-        `next_image`, `previous_image` and `alt_image` attributes
+        :attr:`~polo.crystallography.image.Image.next_image`
+        , :attr:`~polo.crystallography.image.Image.next_image.previous_image`     
+        and :attr:`~polo.crystallography.image.Image.next_image.alt_image` attributes
         respectively. If an attribute == None, then the button that
         requires that attribute will be disabled.
         '''

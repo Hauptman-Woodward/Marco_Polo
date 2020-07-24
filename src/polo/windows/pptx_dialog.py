@@ -24,10 +24,10 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _set_up_image_classification_checkboxes(self):
         '''Private method that sets up the labels for the image classifications
-        checkboxes. Should be called in the `__init__` function before
+        :class:`QCheckBox` instances. Should be called in the `__init__` function before
         displaying the dialog to the user.
 
-        :return: Dictionary of image classifications which map to the checkbox 
+        :return: Dictionary of image classifications which map to the :class:`QCheckBox` 
                  that corresponds to that image classification
         :rtype: dict
         ''' 
@@ -40,8 +40,8 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _validate_typed_path(self):
         '''Private method that validates that a filepath in the filepath
-        lineEdit widget is actually a valid path that a pptx file could be
-        saved to.
+        :class:`QLineEdit` widget is actually a valid path that a pptx file could be
+        saved there.
 
         :return: True if the path is valid, otherwise returns None and shows
                  a message box to the user.
@@ -57,18 +57,18 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     @property
     def human(self):
-        '''State of the human classifier checkbox.
+        '''State of the human classifier :class:`QCheckBox`.
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.radioButton.isChecked()
 
     @property
     def marco(self):
-        '''State of the MARCO classifier checkbox. 
+        '''State of the MARCO classifier :class:`QCheckBox`. 
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.radioButton_2.isChecked()
@@ -76,7 +76,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
     @property
     def title(self):
         '''Title the user has entered for the presentation via the title
-        lineEdit widget. If no string has been entered will return the empty
+        :class:`QLineEdit` widget. If no string has been entered will return the empty
         string.
 
         :return: The presentation title
@@ -87,7 +87,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
     @property
     def subtitle(self):
         '''Subtitle the user has entered for the presentation via the subtitle
-        lineEdit widget. If no string has been entered will return the empty
+        :class:`QLineEdit` widget. If no string has been entered will return the empty
         string.
 
         :return: The presentation subtitle
@@ -97,22 +97,22 @@ class PptxDesignerDialog(QtWidgets.QDialog):
     
     @property
     def all_dates(self):
-        '''The state of the "Include all Dates" checkbox. If it is checked this
+        '''The state of the "Include all Dates" :class:`QCheckBox`. If it is checked this
         indicates that a time resolved slide should be included in the
         presentation.
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_9.isChecked()
     
     @property
     def all_specs(self):
-        '''The state of the "Include all Spectrums" checkbox. If it is checked this
+        '''The state of the "Include all Spectrums" :class:`QCheckBox`. If it is checked this
         indicates that a multi-spectrum slide should be included in the
         presentation.
 
-        :return: State of the checkbox
+        :return: State of the :class:`QCheckBox`
         :rtype: bool
         '''
         return self.ui.checkBox_8.isChecked()
@@ -124,9 +124,9 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _browse_and_update_line_edit(self):
         '''Private method that calls 
-        :func:`~polo.windows.pptx_dialog.PptxDialog._get_save_path`
+        :meth:`~polo.windows.pptx_dialog.PptxDialog._get_save_path`
         to open a file browser. If the user selects a save path using the file
-        browser then displays this path in the filepath lineEdit widget.
+        browser then displays this path in the filepath :class:`QLineEdit` widget.
         '''
         file_path = self._get_save_path()
         if file_path:
@@ -153,7 +153,8 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _parse_image_classifications(self):
         '''Private method to get all currently selected image classifications
-        by reading the state of all image classification checkboxes. 
+        by reading the state of all image classification 
+        :class:`QCheckBox` instances. 
 
         :return: Set of all selected image classifications
         :rtype: set
@@ -164,7 +165,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
     def _write_presentation(self, run=None):
         '''Private method that actually does the work of generating a
-        presentation from a run or HWIRun instance.
+        presentation from a :class:`Run` or :class:`HWIRun` instance.
 
         :param run: Run to create a presentation from, defaults to None
         :type run: Run or HWIRun, optional
@@ -175,7 +176,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         self.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if not self.ui.lineEdit_3.text():
-            file_path = _get_save_path
+            file_path = _get_save_path()
         else:
             file_path = self.ui.lineEdit_3.text()
 

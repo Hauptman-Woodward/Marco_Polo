@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -72,6 +73,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,6 +94,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,7 +133,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -177,7 +180,7 @@
         <span class="sd">&#39;&#39;&#39;The PlateInspectorWidget is a primary run interface widget and is</span>
 <span class="sd">        designed to emulate the MarcoScopeJ image viewer with extended</span>
 <span class="sd">        functionality. It allows users to view their screening images in grids</span>
-<span class="sd">        of pre-set numbers of images from 24 to an entire 1536 well plate. </span>
+<span class="sd">        of pre-set numbers of images from 24 to 96 images at a time.</span>
 
 <span class="sd">        :param parent: Parent widget</span>
 <span class="sd">        :type parent: QWidget</span>
@@ -202,7 +205,7 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_type_checkboxes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span>
         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_23</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_24</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_25</span><span class="p">,</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_26</span><span class="p">]))</span>  <span class="c1"># define checkboxes that determine image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_26</span><span class="p">]))</span>  <span class="c1"># define :class:`QCheckBox` instances that determine image</span>
         <span class="c1"># classification filters and zip with the image classifications</span>
         <span class="c1"># doesnt matter what is assigned to what as long as order in</span>
         <span class="c1"># image classificaions list does not change</span>
@@ -240,34 +243,53 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected_classifications</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns a list that includes only image classifications that are</span>
-<span class="sd">        selected via the image filtering checkboxes. Also see</span>
-<span class="sd">        `image_type_checkboxes` property.</span>
+        <span class="sd">&#39;&#39;&#39;Image classifications that are</span>
+<span class="sd">        selected via the image filtering :class:`QCheckBox` instances. Also see the</span>
+<span class="sd">        :attr:`~PlateInspectorWidget.image_type_checkboxes` property.</span>
+
+<span class="sd">        :return: List of currently selected image classifications. Images</span>
+<span class="sd">                who&#39;s classification is in this list should be shown / </span>
+<span class="sd">                emphasized to the user.</span>
+<span class="sd">        :rtype: list</span>
+
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_type_checkboxes</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_type_checkboxes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_type_checkboxes</span> 
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_type_checkboxes</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()]</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Status of human image classification checkbox&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;Status of human image classification :class:`QCheckBox`.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: State of the human filter :class:`QCheckBox`</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_21</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">marco</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Status of marco image classification checkbox&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;Status of marco image classification :class:`QCheckBox`.</span>
+
+<span class="sd">        :return: State of the marco filter :class:`QCheckBox`</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_22</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">favorite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Status of the `favorite` :class:`QCheckBox` filter.</span>
+
+<span class="sd">        :return: State of the favorite :class:`QCheckBox`</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_6</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Creates a color mapping dictionary from the current selections of the</span>
-<span class="sd">        color selector comboboxes. Each image classification maps to a color</span>
-<span class="sd">        or the string &quot;none&quot; to tell the plateViewer to not color that</span>
-<span class="sd">        image type.</span>
+        <span class="sd">&#39;&#39;&#39;Creates a color mapping dictionary that reflects the currently selected</span>
+<span class="sd">        color selector :class:`QComboBox` instances. The dictionary maps each image</span>
+<span class="sd">        classifications to a :class:`QColor` instance that can then be used</span>
+<span class="sd">        to color images in the plate viewer.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">each_combo_box</span><span class="p">,</span> <span class="n">img_class</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_combos</span><span class="p">,</span>
@@ -281,10 +303,11 @@
     
     <span class="nd">@run</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets run attribute to the given run. Setting the run also sets the</span>
-<span class="sd">        run for the plateViewer widget and checks if time resolved and</span>
+        <span class="sd">&#39;&#39;&#39;Sets run attribute to the given run. Setting the run also sets the</span>
+<span class="sd">        run for the `plateViewer` widget and checks if time resolved and</span>
 <span class="sd">        spectrum navigation should be enabled by calling </span>
+<span class="sd">        :meth:`~polo.widgets.plate_inspector_widget.PlateInspector._set_time_resolved_buttons`</span>
+<span class="sd">        and :meth:`~polo.widgets.plate_inspector_widget.PlateInspector._set_alt_spectrum_buttons`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">new_run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="o">=</span> <span class="n">new_run</span>
@@ -297,32 +320,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_alt_spectrum_buttons</span><span class="p">()</span>
     
 <div class="viewcode-block" id="PlateInspectorWidget._set_images_per_page"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_images_per_page">[docs]</a>    <span class="k">def</span> <span class="nf">_set_images_per_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that tells the :class:`plateViewer` UI widget to set </span>
+<span class="sd">        its :attr:`images_per_page` atttribute to the value specified in the </span>
+<span class="sd">        images per page :class:`QComboBox`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()]</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget._set_color_comboboxs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_color_comboboxs">[docs]</a>    <span class="k">def</span> <span class="nf">_set_color_comboboxs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Private method that sets the label text associated with each color</span>
-<span class="sd">        selector combobox.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that sets the label text associated with each color</span>
+<span class="sd">        selector :class:`QComboBox`. Should be called in the `__init__` method before</span>
+<span class="sd">        the widget is shown to the user.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_combos</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span><span class="p">]</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_19</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_21</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_20</span><span class="p">]</span>
-        <span class="c1">#self.color_combos_assignments = dict(zip(combos, IMAGE_CLASSIFICATIONS))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_combos</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_4</span>
+            <span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_19</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_4</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_21</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_20</span>
+            <span class="p">]</span>
         <span class="k">for</span> <span class="n">each_label</span><span class="p">,</span> <span class="n">each_class</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">):</span>
             <span class="n">each_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">each_class</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget._set_image_count_options"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_image_count_options">[docs]</a>    <span class="k">def</span> <span class="nf">_set_image_count_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private Helper method to be called in `__init__` that sets the options</span>
-<span class="sd">        for number of images per view.</span>
+        <span class="sd">&#39;&#39;&#39;Private method to be called in the `__init__` method that sets</span>
+<span class="sd">        the allowed number of images per page.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_7</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PlateInspectorWidget._set_color_options"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_color_options">[docs]</a>    <span class="k">def</span> <span class="nf">_set_color_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Private methods that uses the `COLORS` constant to set the color options for each </span>
-<span class="sd">        colorselector combobox in the image coloring tab.</span>
+        <span class="sd">&#39;&#39;&#39;Private methods that uses the :const:`COLORS` constant to set the color options </span>
+<span class="sd">        for each color selector :class:`QComboBox` instance in the image coloring tab.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">colors</span><span class="p">,</span> <span class="n">i</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">COLORS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">each_combobox</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_combos</span><span class="p">:</span>
@@ -333,10 +364,11 @@
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="PlateInspectorWidget._parse_label_checkboxes"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._parse_label_checkboxes">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_label_checkboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that reads values from checkboxes related to image filtering.</span>
-<span class="sd">        Returns a dictionary where keys are the labels of the checkboxes</span>
+        <span class="sd">&#39;&#39;&#39;Private method that reads values from :class:`QCheckBox`</span>
+<span class="sd">        instances related to image filtering.</span>
+<span class="sd">        Returns a dictionary where keys are the labels of the :class:`QCheckBox` instances</span>
 <span class="sd">        which should also be the possible image classifications and values</span>
-<span class="sd">        are the state of the checkbox (True or False).</span>
+<span class="sd">        are the state of the :class:`QCheckBox` (True or False).</span>
 
 <span class="sd">        Returned dictionary will have following structure.</span>
 
@@ -349,7 +381,7 @@
 <span class="sd">            &#39;Other&#39;: False</span>
 <span class="sd">            }</span>
 
-<span class="sd">        :return: Dict of checkbox states.</span>
+<span class="sd">        :return: Dict of :class:`QCheckBox` states.</span>
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span>
@@ -359,9 +391,8 @@
         <span class="k">return</span> <span class="p">{</span><span class="n">b</span><span class="o">.</span><span class="n">text</span><span class="p">():</span> <span class="n">b</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">boxes</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="PlateInspectorWidget._set_plate_label"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_plate_label">[docs]</a>    <span class="k">def</span> <span class="nf">_set_plate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Private method to change the plate label to tell the user what view or &quot;page&quot;</span>
-<span class="sd">        they are currently looking at.</span>
+        <span class="sd">&#39;&#39;&#39;Private method to change the plate label to tell the user what view or </span>
+<span class="sd">        &quot;page&quot; they are currently looking at.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">label_18</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
             <span class="s1">&#39;Page </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -380,18 +411,19 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="PlateInspectorWidget._apply_image_filters"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._apply_image_filters">[docs]</a>    <span class="k">def</span> <span class="nf">_apply_image_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Wrapper function around plateViewer</span>
-<span class="sd">        :func:`~polo.widgets.plate_viewer.plateViewer.deemphasize_filtered_images`</span>
+        <span class="sd">&#39;&#39;&#39;Wrapper function around `plateViewer`</span>
+<span class="sd">        :meth:`~polo.widgets.plate_viewer.plateViewer.deemphasize_filtered_images`</span>
 <span class="sd">        which changes the opacity of currently displayed images based on</span>
-<span class="sd">        their classification.</span>
+<span class="sd">        their classifications.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">set_scene_opacity_from_filters</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">selected_classifications</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> 
             <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span>
         <span class="p">)</span></div>
 <div class="viewcode-block" id="PlateInspectorWidget._set_time_resolved_buttons"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_time_resolved_buttons">[docs]</a>    <span class="k">def</span> <span class="nf">_set_time_resolved_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private helper function that determines if navigation buttons that display</span>
-<span class="sd">        alt spectrum images, previous and next date images can be used.</span>
+        <span class="sd">&#39;&#39;&#39;Private helper function that determines if navigation buttons </span>
+<span class="sd">        that display alt spectrum images, previous and next date images </span>
+<span class="sd">        can be used.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="o">.</span><span class="n">next_run</span><span class="p">:</span>
@@ -408,9 +440,10 @@
 
 <div class="viewcode-block" id="PlateInspectorWidget._set_alt_spectrum_buttons"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_alt_spectrum_buttons">[docs]</a>    <span class="k">def</span> <span class="nf">_set_alt_spectrum_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private helper function similar to </span>
-<span class="sd">        :func:`~polo.widgets.plate_viewer.plateViewer._set_time_resolved_buttons`</span>
-<span class="sd">        that determines if the navigation button that allows users to view alt spectrum</span>
-<span class="sd">        images should be enabled. If conditions are not met then the button is disabled.</span>
+<span class="sd">        :meth:`~polo.widgets.plate_viewer.plateViewer._set_time_resolved_buttons`</span>
+<span class="sd">        that determines if the navigation button that allows users to view </span>
+<span class="sd">        alt spectrum images should be enabled. If conditions are not met then </span>
+<span class="sd">        the button is disabled.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton_22</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -423,7 +456,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">spinBox</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">total_pages</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget._set_current_page"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_current_page">[docs]</a>    <span class="k">def</span> <span class="nf">_set_current_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_number</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Set the current page number</span>
+        <span class="sd">&#39;&#39;&#39;Set the current page number and show the view for that page by</span>
+<span class="sd">        calling :meth:`~polo.widgets.plate_inspector_widget.PlateInspector.show_current_page`</span>
 
 <span class="sd">        :param page_number: The new page number</span>
 <span class="sd">        :type page_number: int</span>
@@ -433,14 +467,14 @@
 
 <div class="viewcode-block" id="PlateInspectorWidget.set_aspect_ratio_mode"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.set_aspect_ratio_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_aspect_ratio_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Sets the `preserve_aspect` attribute based on the status of</span>
-<span class="sd">        the preserve aspect ratio checkbox available to the user. Preserving</span>
+<span class="sd">        the preserve aspect ratio :class:`QCheckBox`. Preserving the </span>
 <span class="sd">        aspect ratio results in displaying undistorted crystallization images </span>
 <span class="sd">        but utilizes available display space less efficiently.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">preserve_aspect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_29</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget.reset_all"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.reset_all">[docs]</a>    <span class="k">def</span> <span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Method to uncheck all user selected settings.</span>
+        <span class="sd">&#39;&#39;&#39;Method to un-check all user selected settings.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">groupBox_26</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QCheckBox</span><span class="p">):</span>
@@ -448,8 +482,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">apply_plate_settings</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PlateInspectorWidget.apply_plate_settings"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.apply_plate_settings">[docs]</a>    <span class="k">def</span> <span class="nf">apply_plate_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Parses checkboxes in the Plate View tab to determine what behavior</span>
-<span class="sd">        for the plateViewer widget is requested by the user.</span>
+        <span class="sd">&#39;&#39;&#39;Parses :class:`QCheckBox` instances in the Plate View tab</span>
+<span class="sd">        to determine what behavior of the :class:`plateViewer` </span>
+<span class="sd">        widget is requested by the user.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plateViewer</span><span class="o">.</span><span class="n">images_per_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_per_page</span><span class="p">[</span>
@@ -511,11 +546,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -526,7 +569,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -74,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -111,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -149,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -183,6 +186,14 @@
 <dt id="polo.threads.thread.ClassificationThread">
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">ClassificationThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_object</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#ClassificationThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.ClassificationThread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<p>Thread that is specifically for classifying images using the MARCO
+model. This is a very CPU intensive process so it cannot be run on
+the GUI thread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run_object</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run who’s images are to be classified</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="polo.threads.thread.ClassificationThread.change_value">
 <code class="sig-name descname">change_value</code><a class="headerlink" href="#polo.threads.thread.ClassificationThread.change_value" title="Permalink to this definition">¶</a></dt>
@@ -195,8 +206,18 @@
 
 <dl class="py method">
 <dt id="polo.threads.thread.ClassificationThread.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#ClassificationThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.ClassificationThread.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#ClassificationThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.ClassificationThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that actually does the classification work. Emits the the
+<a class="reference internal" href="#polo.threads.thread.ClassificationThread.change_value" title="polo.threads.thread.ClassificationThread.change_value"><code class="xref py py-const docutils literal notranslate"><span class="pre">change_value</span></code></a> signal everytime an image is classified. This is primary
+to update the progress bar widget in the <cite>RunOrganizer</cite> widget to
+notify the user how many images have been classified. Additionally,
+every five images classified the <a class="reference internal" href="#polo.threads.thread.ClassificationThread.estimated_time" title="polo.threads.thread.ClassificationThread.estimated_time"><code class="xref py py-const docutils literal notranslate"><span class="pre">estimated_time</span></code></a> signal is emitted
+which includes a tuple that contains as the first item the time in
+seconds it took to classify the last five images and the number
+of images that remain to be classified as the second item. This allows
+for making an estimate on about how much time remains in until the
+thread finishes.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -204,6 +225,16 @@
 <dt id="polo.threads.thread.FTPDownloadThread">
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">FTPDownloadThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ftp_connection</span></em>, <em class="sig-param"><span class="n">file_paths</span></em>, <em class="sig-param"><span class="n">save_dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#FTPDownloadThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
+<p>Thread specific for downloading files from a remote FTP server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ftp_connection</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FTP</span></code>) – FTP connection object to download files from</p></li>
+<li><p><strong>file_paths</strong> (<em>list</em>) – List absolute filepaths on the FTP server to download</p></li>
+<li><p><strong>save_dir_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path on the local machine to store all downloaded files in</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="polo.threads.thread.FTPDownloadThread.download_path">
 <code class="sig-name descname">download_path</code><a class="headerlink" href="#polo.threads.thread.FTPDownloadThread.download_path" title="Permalink to this definition">¶</a></dt>
@@ -226,12 +257,13 @@
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">QuickThread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_func</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#QuickThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.QuickThread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.threads.thread.thread" title="polo.threads.thread.thread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.thread</span></code></a></p>
 <p>QuickThreads are very similar
-to thread objects except instead of writing code that would be
-executed by the <cite>run</cite> function directly, the function to be run
-on the thread is passed as an argument to <cite>job_func</cite> and any arguments
-that the passed function requires are passed as key word arguments.
-When the thread is started the key word arguments are passed to the
-job_func and the results of the call are stored in the <cite>results</cite> attribute.</p>
+to thread objects except instead of you writing code that would be
+executed by the <cite>run</cite> method directly, the function that the <cite>QuickThread</cite>
+will execute is passed as an argument to the <cite>__init__</cite>. Any arguments
+that the passed function requires are passed as key word arguments. Once
+the thread finished any values returned by the passed function are stored
+in the <cite>QuickThread</cite>’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">polo.threads.thread.QuickThread.results</span></code>
+attribute.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span>
 <span class="n">my_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="n">job_func</span><span class="o">=</span><span class="n">my_func</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -242,10 +274,7 @@ job_func and the results of the call are stored in the <cite>results</cite> attr
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>job_func</strong> (<em>[</em><em>type</em><em>]</em>) – function to execute on the thread</p></li>
-<li><p><strong>parent</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
-</ul>
+<dd class="field-odd"><p><strong>job_func</strong> (<em>func</em>) – Function to execute on the thread</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -259,10 +288,13 @@ job_func and the results of the call are stored in the <cite>results</cite> attr
 <dt id="polo.threads.thread.thread">
 <em class="property">class </em><code class="sig-prename descclassname">polo.threads.thread.</code><code class="sig-name descname">thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/threads/thread.html#thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.threads.thread.thread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QThread</span></code></p>
-<p>Very basic wrapper class around <cite>QThread</cite> class. Should be
+<p>Very basic wrapper class around <code class="xref py py-class docutils literal notranslate"><span class="pre">QThread</span></code> class. Should be
 inherited by a more specific class and then the <cite>run</cite> method
-can be overwritten do run the code that should be executed on the
-thread instance.</p>
+can be overwritten to provide functionality. Whatever code is in the
+<a class="reference internal" href="#polo.threads.thread.thread.run" title="polo.threads.thread.thread.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method will be executed when
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">start()</span></code> is called. The
+<a class="reference internal" href="#polo.threads.thread.thread.run" title="polo.threads.thread.thread.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> method should not be called
+explicitly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – parent widget, defaults to None</p>
@@ -301,11 +333,19 @@ thread instance.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -316,7 +356,6 @@ thread instance.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

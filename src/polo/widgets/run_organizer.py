@@ -69,7 +69,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def _handle_classification_request(self):
         '''Private method to open a classification thread of the currently selected run.
-        Calls  :func:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
+        Calls  :meth:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
         start the classification thread.
         '''
         selected_runname = self.ui.runTree.currentItem().text(0)
@@ -167,7 +167,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.label_32.setText(time_string)
 
     def _add_runs_to_tree(self, runs):
-        '''Add a set of runs to the runTree.
+        '''Private method to add a set of runs to the runTree.
 
         :param runs: List of runs to add to the runTree
         :type runs: list
@@ -207,7 +207,7 @@ class RunOrganizer(QtWidgets.QWidget):
         the user has renamed their run after the backup is saved it will not
         be found.
 
-        See :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
+        See :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
         for details on how the mso files are written.
 
         :param run: Run to search for mso backup with
@@ -269,7 +269,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def backup_classifications_on_thread(self, run):
         '''Does the exact same thing as 
-        :func:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
+        :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
         except excutes the job on a `QuickThread` instance to avoid slow
         computers complaining about the GUI being frozen. This has been
         especially prevelant on Windows machines.
@@ -294,18 +294,18 @@ class RunOrganizer(QtWidgets.QWidget):
     def backup_classifications(self, run):
         '''Write the human classifications of the images in the `run` argument
         to an mso file and store it in the directory specified by the
-        `BACKUP_DIR` constant. Does not store MARCO classifications because
+        :const:`BACKUP_DIR` constant. Does not store MARCO classifications because
         these can be much more easily recreated than human classifications.
         Additionally, when a run is loaded back in and a backup mso exists
         for it Polo assumes the classifications in that mso file are human
         classifications.
 
-        Currently only HWIRuns can be written as mso files because of mso's
+        Currently only :class:`HWIRun` instances can be written as mso files because of mso's
         integration with cocktail data and well assignments. Need a different
         format for non-HWI runs that would map filenames to classifications
         and ignore cocktail data / well assignments.
 
-        :param run: Run to backup human classifications
+        :param run: :class:`HWIRun` to backup human classifications
         :type run: HWIRun
         '''
 
