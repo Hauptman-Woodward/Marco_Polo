@@ -334,8 +334,10 @@ class HWIRun(Run):
         attribute filepath. Currently is 
         dependent on having a cocktail Menu available.
         '''
-        self.images = [BLANK_IMAGE for i in range(0, self.num_wells)]
-        assert os.path.exists(self.image_dir)
+
+        self.images = [Image.no_image() for i in range(0, self.num_wells)]
+        # fill in all wells with place holder image to start in case
+        # there is missing data.
 
         for image_path in list_dir_abs(self.image_dir, allowed=True):
             # cast to string as read in as Path object

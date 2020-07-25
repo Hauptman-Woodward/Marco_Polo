@@ -134,6 +134,14 @@ class RunOrganizer(QtWidgets.QWidget):
             logger.info('Closed classification thread: {}'.format(
                 self.classification_thread
             ))
+            if self.classification_thread.exceptions:
+                make_message_box(
+                    parent=self,
+                    message='Polo encountered an error while classifying your images {}'.format(
+                        self.classification_thread.exceptions
+                    )
+                ).exec_()
+
             self.ui.pushButton.setEnabled(True)
 
         self.classification_thread.finished.connect(classification_cleanup)
@@ -407,8 +415,15 @@ class RunOrganizer(QtWidgets.QWidget):
         logger.info('Finished FTP download thread {}'.format(
             self.ftp_download_thread
         ))
+
+        if self.ftp_download_thread.exceptions:
+            message = 'Failed to download all files from FTP server {}'.format(
+                self.ftp_download_thread.exceptions)
+        else:
+            message = 'All FTP downloads completed!'
+            
         make_message_box(
-            message='All FTP downloads completed!', parent=self
+            message=message, parent=self
         ).exec_()
 
     def handle_ftp_download(self, file_path):

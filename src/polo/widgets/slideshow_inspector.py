@@ -342,16 +342,23 @@ class slideshowInspector(QtWidgets.QWidget):
         determined by the `current_image` attribute of the `slideshowViewer`
         widget and populates any widgets that display current image metadata.
         '''
-        self.ui.slideshowViewer.display_current_image()
-        self.ui.textBrowser_2.setText(
-            self.ui.slideshowViewer.get_cur_img_meta_str())
-        self.ui.textBrowser.setText(
-            self.ui.slideshowViewer.get_cur_img_cocktail_str()
-        )
-        self._set_image_name()
-        self._set_favorite_checkbox()
-        self._set_time_resolved_functions()
-        self._set_alt_spectrum_buttons()
+        try:
+            self.ui.slideshowViewer.display_current_image()
+            self.ui.textBrowser_2.setText(
+                self.ui.slideshowViewer.get_cur_img_meta_str())
+            self.ui.textBrowser.setText(
+                self.ui.slideshowViewer.get_cur_img_cocktail_str()
+            )
+            self._set_image_name()
+            self._set_favorite_checkbox()
+            self._set_time_resolved_functions()
+            self._set_alt_spectrum_buttons()
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._display_current_image))
+            make_message_box(
+                parent=self,
+                message='Failed to display current image {}'.format(e)
+            ).exec_()
 
     def _submit_filters(self):
         '''Private method that passes the current user selected

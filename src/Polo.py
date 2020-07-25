@@ -15,7 +15,7 @@ import astor
 from polo.windows.main_window import MainWindow
 from polo import LOG_PATH, APP_ICON, make_default_logger
 
-__version__ = '0.0.1'
+__version__ = '0.0.6'
 # set up logging
 logger = make_default_logger(__name__)
 

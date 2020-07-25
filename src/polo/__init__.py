@@ -10,7 +10,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-__version__ = '0.0.2'
+__version__ = '0.0.6'
 dirname = Path(os.path.dirname(__file__)).parent
 
 # CONSTANT FILE PATHS

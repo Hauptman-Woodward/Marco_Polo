@@ -7,8 +7,10 @@ from PyQt5.QtGui import *
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import *
 
-from polo import BLANK_IMAGE
+from polo import BLANK_IMAGE, make_default_logger
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
+
+logger = make_default_logger(__name__)
 
 
 class thread(QThread):
@@ -89,6 +91,7 @@ class ClassificationThread(thread):
     def __init__(self, run_object, parent=None):
         super(ClassificationThread, self).__init__(parent)
         self.classification_run = run_object
+        self.exceptions = None
 
     def run(self):
         '''Method that actually does the classification work. Emits the the
@@ -102,15 +105,20 @@ class ClassificationThread(thread):
         for making an estimate on about how much time remains in until the
         thread finishes.
         '''
-        for i, image in enumerate(self.classification_run.images):
-            if image and image.path != str(BLANK_IMAGE):
+        try:
+            for i, image in enumerate(self.classification_run.images):
                 s = time.time()
-                image.classify_image()
-                e = time.time()
-            self.change_value.emit(i+1)
-            if i % 5 == 0:
-                self.estimated_time.emit(
-                    e-s, len(self.classification_run.images)-(i+1))
+                if image and not image.is_placeholder:
+                    image.classify_image()
+                self.change_value.emit(i+1)
+                if i % 5 == 0:
+                    e = time.time()
+                    self.estimated_time.emit(
+                        e-s, len(self.classification_run.images)-(i+1))
+        except Exception as e:
+            self.change_value.emit(0)  # reset the progress bar
+            logger.error('Caught {} at {}'.format(e, self.run))
+            self.exceptions = e
             # emit signal so know to move progress par forward
 
 
@@ -132,16 +140,21 @@ class FTPDownloadThread(thread):
         self.ftp = ftp_connection
         self.file_paths = file_paths
         self.save_dir_path = save_dir_path
+        self.exceptions = None
 
     def run(self):
-        for i, remote_file_path in enumerate(self.file_paths):
-            if self.ftp:
-                local_file_path = os.path.join(
-                    str(self.save_dir_path),
-                    os.path.basename(str(remote_file_path))
-                )
-                with open(local_file_path, 'wb') as local_file:
-                    cmd = 'RETR {}'.format(remote_file_path)
-                    status = self.ftp.retrbinary(cmd, local_file.write)
-            self.file_downloaded.emit(i)
-            self.download_path.emit(local_file_path)
+        try:
+            for i, remote_file_path in enumerate(self.file_paths):
+                if self.ftp:
+                    local_file_path = os.path.join(
+                        str(self.save_dir_path),
+                        os.path.basename(str(remote_file_path))
+                    )
+                    with open(local_file_path, 'wb') as local_file:
+                        cmd = 'RETR {}'.format(remote_file_path)
+                        status = self.ftp.retrbinary(cmd, local_file.write)
+                self.file_downloaded.emit(i)
+                self.download_path.emit(local_file_path)
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(e, self.run))
+            self.exceptions = e

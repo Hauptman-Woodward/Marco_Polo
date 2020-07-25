@@ -10,6 +10,7 @@ from polo import ALLOWED_IMAGE_COUNTS, COLORS, ICON_DICT, IMAGE_CLASSIFICATIONS
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_table_inspector import Ui_Form
 from polo.widgets.slideshow_viewer import PhotoViewer
+from polo.utils.dialog_utils import make_message_box
 from polo.utils.math_utils import *
 from polo import make_default_logger
 
@@ -103,9 +104,16 @@ class TableInspector(QtWidgets.QWidget):
         '''Private method that updates the data being displayed
         in the tableViewer.
         '''
-        if self.run:
-            self.ui.tableViewer.selected_headers = self.selected_headers
-            self.ui.tableViewer.populate_table(
-                self.selected_classifications,
-                self.ui.checkBox_12.isChecked(),
-                self.ui.checkBox_11.isChecked())
+        try:
+            if self.run:
+                self.ui.tableViewer.selected_headers = self.selected_headers
+                self.ui.tableViewer.populate_table(
+                    self.selected_classifications,
+                    self.ui.checkBox_12.isChecked(),
+                    self.ui.checkBox_11.isChecked())
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self.update_table_view))
+            make_message_box(
+                parent=self,
+                message='Failed to update the table.'
+            ).exec_()

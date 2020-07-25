@@ -10,7 +10,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
-                  make_default_logger)
+                  make_default_logger, BLANK_IMAGE)
 from polo.marco.run_marco import classify_image
 
 logger = make_default_logger(__name__)
@@ -130,7 +130,7 @@ class Image(QtGui.QPixmap):
         :rtype: Image
         '''
         # return default no images found image instance
-        return cls(path=DEFAULT_IMAGE_PATH)
+        return cls(path=BLANK_IMAGE)
 
     @property
     def date(self):
@@ -259,6 +259,14 @@ class Image(QtGui.QPixmap):
             return datetime.strftime(self.date, '%m/%d/%Y')
         else:
             return ''
+    
+    @property
+    def is_placeholder(self):
+        if(str(self.path) == str(BLANK_IMAGE) 
+           or str(self.path) == str(DEFAULT_IMAGE_PATH)):
+            return True
+        else:
+            return False
 
     def setPixmap(self, scaling=None):
         '''Loads the :class:`~polo.crystallography.image.Image`'s 

@@ -146,10 +146,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QApplication.restoreOverrideCursor()
             make_message_box(
                 parent=self,
-                message='Failed to backup all runs with error {}'.format(e)).exec_()
+                message='Failed to backup all runs {}'.format(e)).exec_()
         self.setEnabled(True)
         QApplication.restoreOverrideCursor()
         event.accept()
+    
+    def _check_current_run_for_missing_images(self):
+        if isinstance(self.current_run, HWIRun):
+            num_images = len([1 for i in self.current_run.images if not i.is_placeholder])
+            message = ''
+            if num_images > 1536:
+                message = [
+                    'There are {} more images in the selected run than'.format(num_images - 1536),
+                    'the max plate size of 1536. Well assignments may not be',
+                    'accurate! Please re-download this run or remove the',
+                    'the extra images.' 
+                ]
+            elif num_images < 1536 and num_images != 96:
+                message=[
+                    'It looks like this run may be missing images.',
+                    'HWI runs usually have 1536 images or sometimes 96 images',
+                    'but this run has {} images.'.format(num_images),
+                    'It is recommended to redownload this run before you do',
+                    'any further image processing or classification'
+                ]
+            if message:
+                make_message_box(
+                    parent=self,
+                    message=' '.join(message)
+                ).exec_()
 
     def _set_tab_icons(self):
         '''Private method that assigns icons to each of the main run 
@@ -197,32 +222,38 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                   the :class:`RunOrganizer` widget.
         :type q: list
         '''
+        try:
+            if isinstance(new_run, list) and len(new_run) > 0:
+                if self.current_run:
+                    self.current_run.unload_all_pixmaps()
+                    QPixmapCache.clear()
+                
+                    for image in self.current_run.images:
+                        if image.human_class:
+                            self.runOrganizer.backup_classifications_on_thread(
+                                self.current_run)
+                            break
 
-        if isinstance(new_run, list) and len(new_run) > 0:
-            if self.current_run:
-                self.current_run.unload_all_pixmaps()
-                QPixmapCache.clear()
-            
-                for image in self.current_run.images:
-                    if image.human_class:
-                        self.runOrganizer.backup_classifications_on_thread(
-                            self.current_run)
-                        break
-
-            self.current_run = new_run.pop()
-            if (hasattr(self.current_run, 'insert_into_alt_spec_chain')
-                and self.current_run.image_spectrum == IMAGE_SPECS[0]
-                ):
-                self.current_run.insert_into_alt_spec_chain()
-            self.slideshowInspector.run = self.current_run
-            self.tableInspector.run = self.current_run
-            self.tableInspector.update_table_view()
-            self.optimizeWidget.run = self.current_run
-            self.plateInspector.run = self.current_run
-            self._tab_limiter()  # set allowed tabs by run type
-            self._plot_limiter()  # set allowed polo.plots
-            
-            logger.info('Opened run: {}'.format(self.current_run))
+                self.current_run = new_run.pop()
+                self._check_current_run_for_missing_images()
+                if (hasattr(self.current_run, 'insert_into_alt_spec_chain')
+                    and self.current_run.image_spectrum == IMAGE_SPECS[0]
+                    ):
+                    self.current_run.insert_into_alt_spec_chain()
+                self.slideshowInspector.run = self.current_run
+                self.tableInspector.run = self.current_run
+                self.tableInspector.update_table_view()
+                self.optimizeWidget.run = self.current_run
+                self.plateInspector.run = self.current_run
+                self._tab_limiter()  # set allowed tabs by run type
+                self._plot_limiter()  # set allowed polo.plots
+                
+                logger.info('Opened run: {}'.format(self.current_run))
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(e, self._handle_opening_run))
+            make_message_box(parent=self,
+                            message='Could not open current run. Failed {}'.format(e)
+                            ).exec_()
             # enable nav by time if has linked runs
     
     # Menu handling methods
@@ -237,21 +268,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param selection: User's menu selection
         :type selection: QAction
         '''
-        if selection == self.actionView_Log_2:
-            log_dialog = LogDialog(parent=self)
-            log_dialog.exec_()
-        elif selection == self.actionEdit_Current_Run_Data:
-            if self.current_run:
-                updater_dialog = RunUpdaterDialog(
-                    self.current_run,
-                    self.runOrganizer.ui.runTree.current_run_names)
-                updater_dialog.exec_()
-            else:
-                make_message_box(
-                    parent=self,
-                    message='Please load a run first.').exec_()
-        elif selection == self.actionDelete_Classification_Backups:
-            self._handle_delete_backups()
+        try:
+            if selection == self.actionView_Log_2:
+                log_dialog = LogDialog(parent=self)
+                log_dialog.exec_()
+            elif selection == self.actionEdit_Current_Run_Data:
+                if self.current_run:
+                    updater_dialog = RunUpdaterDialog(
+                        self.current_run,
+                        self.runOrganizer.ui.runTree.current_run_names)
+                    updater_dialog.exec_()
+                else:
+                    make_message_box(
+                        parent=self,
+                        message='Please load a run first.').exec_()
+            elif selection == self.actionDelete_Classification_Backups:
+                self._handle_delete_backups()
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._handle_tool_menu))
+            make_message_box(
+                parent=self,
+                message='Failed to execute {} {}'.format(selection.text(), e)
+            ).exec_()
 
     def _handle_delete_backups(self):
         '''Private method that handles a user request to delete all backup 
@@ -285,7 +323,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             e, self._handle_delete_backups))
             make_message_box(
                 parent=self,
-                message='Could not delete backups. Failed with error {}.\
+                message='Could not delete backups. Failed {}.\
                     They can be deleted manually at {}'.format(e, BACKUP_DIR)
             ).exec_()
 
@@ -296,14 +334,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         :param selection: QAction. QAction from user menu selection.
         '''
-        if selection == self.actionFrom_FTP:
-            self.runOrganizer.import_run_from_ftp()
-        elif selection == self.actionFrom_Saved_Run_3:
-            self.runOrganizer.import_saved_runs()
-        elif selection == self.actionFrom_Directory:
-            self.runOrganizer.import_run_from_dialog()
-        elif selection == self.actionCocktails:
-            pass
+        try:
+            if selection == self.actionFrom_FTP:
+                self.runOrganizer.import_run_from_ftp()
+            elif selection == self.actionFrom_Saved_Run_3:
+                self.runOrganizer.import_saved_runs()
+            elif selection == self.actionFrom_Directory:
+                self.runOrganizer.import_run_from_dialog()
+            elif selection == self.actionCocktails:
+                pass
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._handle_image_import))
+            make_message_box(
+                parent=self,
+                message='Failed to execute {} {}'.format(selection.text(), e)
+            ).exec_()
 
     def _handle_export(self, action, export_path=None):
         '''Private method to handle when a user requests to export a run
@@ -366,23 +411,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param selection: QAction that describes user selection
         :type selection: QAction
         '''
-        save_path = None
-        if self.current_run:
-            current_run_saver = XtalWriter(self.current_run, self)
-            if selection == self.actionSave_Run:
-                sp = self.current_run.save_file_path
-                if sp and os.path.exists(sp):  # save run path already exist
-                    save_path = sp
-            elif selection == self.actionSave_Run_As or save_path == None:
-                save_path = self._save_file_dialog()
+        try:
+            save_path = None
+            if self.current_run:
+                current_run_saver = XtalWriter(self.current_run, self)
+                if selection == self.actionSave_Run:
+                    sp = self.current_run.save_file_path
+                    if sp and os.path.exists(sp):  # save run path already exist
+                        save_path = sp
+                elif selection == self.actionSave_Run_As or save_path == None:
+                    save_path = self._save_file_dialog()
 
-            if save_path:  # double check wonky stuff happening in save dialog
-                current_run_saver.write_xtal_file_on_thread(save_path)
-            else:
-                make_message_box(
-                    parent=self,
-                    message='No suitable filepath was given.'
-                    ).exec_()
+                if save_path:  # double check wonky stuff happening in save dialog
+                    current_run_saver.write_xtal_file_on_thread(save_path)
+                else:
+                    make_message_box(
+                        parent=self,
+                        message='No suitable filepath was given.'
+                        ).exec_()
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._handle_file_menu))
+            make_message_box(
+                parent=self,
+                message='Failed to execute {} {}'.format(selection.text(), e)
+            )
 
     def _handle_help_menu(self, action):
         '''Private method that handles user interaction with the help menu. 
@@ -391,16 +443,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param action: QAction that describes the user's selection
         :type action: QAction
         '''
-        if action == self.actionQuickstart_Guide:
-            webbrowser.open(QUICKSTART)
-        elif action == self.actionDocumentation:
-            webbrowser.open(DOCS)
-        elif action == self.actionFAQ:
-            webbrowser.open(FAQS)
-        elif action == self.actionUser_Guide:
-            webbrowser.open(USER_GUIDE)
-        elif action == self.actionAbout:
-            webbrowser.open(ABOUT)
+        try:
+            if action == self.actionQuickstart_Guide:
+                webbrowser.open(QUICKSTART)
+            elif action == self.actionDocumentation:
+                webbrowser.open(DOCS)
+            elif action == self.actionFAQ:
+                webbrowser.open(FAQS)
+            elif action == self.actionUser_Guide:
+                webbrowser.open(USER_GUIDE)
+            elif action == self.actionAbout:
+                webbrowser.open(ABOUT)
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._handle_help_menu))
+            make_message_box(
+                parent=self,
+                message='Failed to execute {} {}'.format(action.text(), e)
+            )
 
     # Plot Window Methods
     # =========================================================================

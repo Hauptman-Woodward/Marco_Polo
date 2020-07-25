@@ -173,7 +173,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         hits = []
         if isinstance(self.run, (Run, HWIRun)):
             for image in self.run.images:
-                if image.human_class == IMAGE_CLASSIFICATIONS[0]:
+                if (image.human_class == IMAGE_CLASSIFICATIONS[0] 
+                    and not image.is_placeholder):
                     hits.append(image)
         return hits
 
