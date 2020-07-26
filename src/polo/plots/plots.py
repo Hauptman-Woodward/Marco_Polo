@@ -4,6 +4,7 @@ import random
 from PyQt5 import QtWidgets
 
 import matplotlib
+matplotlib.use('QT5Agg')
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as Canvas
 from matplotlib.backends.backend_qt5agg import \
@@ -11,7 +12,7 @@ from matplotlib.backends.backend_qt5agg import \
 from matplotlib.figure import Figure
 from polo.plots.plot_utils import *
 
-matplotlib.use('QT5Agg')
+
 
 
 # Ensure using PyQt5 backend
