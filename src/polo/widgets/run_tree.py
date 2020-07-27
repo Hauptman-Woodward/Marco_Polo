@@ -28,6 +28,7 @@ class RunTree(QtWidgets.QTreeWidget):
     opening_run = pyqtSignal()
     save_run_signal = pyqtSignal()
     remove_run_signal = pyqtSignal(list)
+    dropped_links_signal = pyqtSignal(list)
 
     def __init__(self, parent=None, auto_link=True):
         self.classified_status = {}
@@ -36,6 +37,7 @@ class RunTree(QtWidgets.QTreeWidget):
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.setAcceptDrops(True)
         logger.info('Created {}'.format(self))
 
     @property
@@ -208,7 +210,31 @@ class RunTree(QtWidgets.QTreeWidget):
         # BUG: run unlinking not working for non visible images
         # the images within a run are unlinked but not the actual run objects
         # the above is a temp fix
-
+    
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+    
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+    
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+            paths = []
+            for url in event.mimeData().urls():
+                paths.append(Path(str(url.toLocalFile())))
+            self.dropped_links_signal.emit(paths)
+        else:
+            event.ignore()
+                
     def remove_run_from_view(self, run_name):
         '''Remove a :class:`Run` instance using its :attr:`run_name` attribute.
         Does not effect any other widgets. Calling this method only 

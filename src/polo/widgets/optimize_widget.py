@@ -493,7 +493,6 @@ class OptimizeWidget(QtWidgets.QWidget):
             a, b, d = c
             s += template.format(a, b, self.adjust_unit(d, write_unit))  # rename this so it makes sense
         s += '<h4>Volume of H20</h4>\n{}'.format(self.adjust_unit(water, write_unit))
-        logger.info('Added well with contents {}'.format(s))
         return s
 
     def _error_checker(self):

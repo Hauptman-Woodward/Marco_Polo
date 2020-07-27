@@ -86,7 +86,6 @@ class StaticCanvas(MplCanvas):
         for i in range(len(hits)):
             matrix.append([])
             for j in range(len(hits)):
-                print(i, j)
                 d = hits[i].compute_distance(hits[j])
                 if d:
                     matrix[i].append(d)

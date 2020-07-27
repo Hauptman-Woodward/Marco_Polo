@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
-from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
+from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS, make_default_logger
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_run_organizer import Ui_Form
 from polo.threads.thread import *
@@ -20,6 +20,7 @@ from polo.windows.run_importer import RunImporterDialog
 # run organizer should be the outer class and
 # run tree should be the inner calss widget
 
+logger = make_default_logger(__name__)
 
 class RunOrganizer(QtWidgets.QWidget):
     '''Widget for organizing and importing runs into Polo.
@@ -49,6 +50,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
+        self.ui.runTree.dropped_links_signal.connect(self._import_runs_from_drop)
 
         logger.info('Created {}'.format(self))
 
@@ -209,6 +211,32 @@ class RunOrganizer(QtWidgets.QWidget):
         return new_run
         # message box failed to import?
     
+    def _import_runs_from_drop(self, paths):
+        self.setEnabled(False)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        for each_path in paths:
+            try:
+                if each_path.is_file() and each_path.suffix == '.rar':
+                    unrar_result = RunImporter.crack_open_a_rar_one(each_path)
+                    if isinstance(unrar_result, Path):
+                        each_path = unrar_result
+                if each_path.is_dir():
+                    self._add_run_from_directory(each_path)
+                elif each_path.is_file() and each_path.suffix == '.xtal':
+                    reader = RunDeserializer(str(each_path))
+                    xtal_result = reader.xtal_to_run()
+                    if isinstance(xtal_result, (Run, HWIRun)):
+                        self._add_runs_to_tree([xtal_result])
+            except Exception as e:
+                QApplication.restoreOverrideCursor()
+                logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
+                make_message_box(
+                    parent=self,
+                    message='Could not import run from {}'.format(each_path)
+                ).exec_()
+        self.setEnabled(True)
+        QApplication.restoreOverrideCursor()
+
     
     def _check_for_existing_backup(self, run):
         '''Check the directory specified by the `BACKUP_DIR` constant for

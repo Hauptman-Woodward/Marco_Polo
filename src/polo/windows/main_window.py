@@ -181,11 +181,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         interface tabs. Should be called in the `__init__` method before
         the main window is shown to the user.
         '''
-        self.run_interface.setTabIcon(0, QIcon(str(ICON_DICT['camera'])))
-        self.run_interface.setTabIcon(1, QIcon(str(ICON_DICT['plate'])))
-        self.run_interface.setTabIcon(2, QIcon(str(ICON_DICT['table'])))
-        self.run_interface.setTabIcon(3, QIcon(str(ICON_DICT['graph'])))
-        self.run_interface.setTabIcon(4, QIcon(str(ICON_DICT['target'])))
+        try:
+            self.run_interface.setTabIcon(0, QIcon(str(ICON_DICT['camera'])))
+            self.run_interface.setTabIcon(1, QIcon(str(ICON_DICT['plate'])))
+            self.run_interface.setTabIcon(2, QIcon(str(ICON_DICT['table'])))
+            self.run_interface.setTabIcon(3, QIcon(str(ICON_DICT['graph'])))
+            self.run_interface.setTabIcon(4, QIcon(str(ICON_DICT['target'])))
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(self._set_tab_icons))
+            make_message_box(
+                parent=self,
+                message='Failed to set icons {}'.format(e)
+            ).exec_()
 
     def _tab_limiter(self):
         '''Private method that limits the interfaces that a user is allowed
@@ -362,7 +369,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_run:        
             if action != self.actionAs_PPTX:
                 if not export_path:
-                    export_path = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Run')[0]
+                    export_path = QtWidgets.QFileDialog.getSaveFileName(self, 
+                    'Save Run')[0]
 
                 if export_path:
                     export_path, export_results = Path(export_path), None
