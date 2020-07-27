@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/slideshow_inspector.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -386,15 +386,9 @@ class Ui_slideshowInspector(object):
         self.tab_2.setObjectName("tab_2")
         self.gridLayout_6 = QtWidgets.QGridLayout(self.tab_2)
         self.gridLayout_6.setObjectName("gridLayout_6")
-        self.label = QtWidgets.QLabel(self.tab_2)
-        self.label.setMaximumSize(QtCore.QSize(16777215, 30))
-        self.label.setObjectName("label")
-        self.gridLayout_6.addWidget(self.label, 0, 0, 1, 1)
         self.radioButton_3 = QtWidgets.QRadioButton(self.tab_2)
         self.radioButton_3.setObjectName("radioButton_3")
         self.gridLayout_6.addWidget(self.radioButton_3, 5, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 5, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.gridLayout_6.addItem(spacerItem, 2, 0, 1, 1)
         self.radioButton_2 = QtWidgets.QRadioButton(self.tab_2)
         self.radioButton_2.setObjectName("radioButton_2")
         self.gridLayout_6.addWidget(self.radioButton_2, 4, 0, 1, 1)
@@ -406,6 +400,12 @@ class Ui_slideshowInspector(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.gridLayout_6.addWidget(self.line, 1, 0, 1, 1)
+        self.label = QtWidgets.QLabel(self.tab_2)
+        self.label.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.label.setObjectName("label")
+        self.gridLayout_6.addWidget(self.label, 0, 0, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(20, 5, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.gridLayout_6.addItem(spacerItem, 2, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
         self.pushButton_11 = QtWidgets.QPushButton(self.groupBox_5)
@@ -692,13 +692,13 @@ class Ui_slideshowInspector(object):
         self.checkBox_6.setText(_translate("slideshowInspector", "MARCO"))
         self.checkBox_6.setShortcut(_translate("slideshowInspector", "M"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), _translate("slideshowInspector", "Filters"))
-        self.label.setText(_translate("slideshowInspector", "Sort By"))
         self.radioButton_3.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Sort images in the slideshow by their well number. This is the standard sort. If the currently loaded run is not an HWI Run well number = order the image was read into Polo.</p></body></html>"))
         self.radioButton_3.setText(_translate("slideshowInspector", "Well Number"))
         self.radioButton_2.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Sort the images in the slideshow by their cocktail number, if it is available for the current run.</p></body></html>"))
         self.radioButton_2.setText(_translate("slideshowInspector", "Cocktail Number"))
         self.radioButton.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Sort images by their MARCO confidence. When classified the MARCO model assigns a confidence score between 0 and 1. Selecting this option will order the images in the slideshow from highest score to lowest score. <span style=\" font-weight:600;\">NOTE</span>: The sort ignores image classification so it is recommended to use this setting in combination with image filters.</p></body></html>"))
         self.radioButton.setText(_translate("slideshowInspector", "MARCO Confidence"))
+        self.label.setText(_translate("slideshowInspector", "Sort By"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("slideshowInspector", "Sort"))
         self.pushButton_11.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Apply the selected filters and sorts.</p><p><br/></p><p>Shortcut: <span style=\" font-weight:600;\">Ctrl+F</span></p></body></html>"))
         self.pushButton_11.setText(_translate("slideshowInspector", "Submit Filters"))

@@ -340,7 +340,7 @@ class HtmlWriter(RunSerializer):
                     self.run.encode_images_to_base64()
                 images = json.loads(json.dumps(
                     self.run.images, default=XtalWriter.json_encoder))
-                [RunDeserializer.clean_base64_string(image['_Image__bites'], str) for image in images]
+                [RunDeserializer.clean_base64_string(image['_bites'], str) for image in images]
 
                 template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
                 if template:
@@ -677,7 +677,7 @@ class MsoReader():
                 return REV_MSO_DICT[max(mso_codes)]
             else:
                 return None
-        except Exception:
+        except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, MsoReader.read_mso_classification))
             return None  # assume no mso classification if throws an error
@@ -1776,7 +1776,7 @@ class CocktailMenuReader():
                                 concentration=con
                             )
                         )
-                cocktail_menu[new_cocktail.well_assignment] = new_cocktail
+                cocktail_menu[int(new_cocktail.well_assignment)] = new_cocktail
         return cocktail_menu
 
 

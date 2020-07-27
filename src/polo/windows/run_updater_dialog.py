@@ -6,6 +6,8 @@ from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo.designer.UI_run_updater_dialog import Ui_runUpdater
+from polo.utils.dialog_utils import make_message_box
+from polo.utils.io_utils import RunLinker
 
 from polo import LOG_PATH, tim, IMAGE_SPECS, make_default_logger
 
@@ -114,7 +116,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         if new_menu and new_menu.path != self.run.cocktail_menu.path:
             self.run.cocktail_menu = new_menu
             for i, image in enumerate(self.run.images):
-                image.cocktail = self.run.cocktail_menu.cocktails[str(image.well_number)]
+                image.cocktail = self.run.cocktail_menu.cocktails[image.well_number]
 
     # NOTE: Currently working on doing this one. Updating run name is a much bigger
     # deal since it is used as the key for identifying a run
@@ -134,6 +136,26 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             self.run.image_spectrum = new_spectrum
             for image in self.run.images:
                 image.spectrum = new_spectrum
+            all_linked_runs = self.run.get_linked_date_runs() + self.run.get_linked_alt_runs()
+            RunLinker.the_big_link(all_linked_runs)
+    
+    def _update_date(self):
+        new_date = self.ui.dateEdit.dateTime().toPyDateTime()
+        if new_date != self.run.date:
+            self.run.date = new_date
+            for image in self.run.images:
+                image.date = new_date
+            linked_runs = self.run.get_linked_date_runs()
+            if len(linked_runs) > 1:
+                for run in linked_runs:
+                    for image in run.images:
+                        image.next_image = None
+                        image.previous_image = None
+                    run.next_run = None
+                    run.previous_run = None
+
+                RunLinker.link_runs_by_date(linked_runs)
+        
 
     def _update_plate_id(self):
         '''Private method that updates the `plate_id` attribute of the 
@@ -149,7 +171,15 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         and then closes the dialog.
         '''
         # self.update_run_name()
-        self._update_run_cocktail_menu()
-        self._update_spectrum()
-        self._update_plate_id()
+        try:
+            self._update_run_cocktail_menu()
+            self._update_spectrum()
+            self._update_plate_id()
+            self._update_date()
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(e, self._update_run))
+            make_message_box(
+                parent=self,
+                message='Could not update run {}'.format(e)
+            ).exec_()
         self.close()

@@ -176,7 +176,7 @@ class HWIRun(Run):
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress',
-                     'Plate Heatmaps']
+                     'Plate Heatmaps', 'Cocktail']
     # HWI still store images in list but in order of well number
     # index = well -1
     def __init__(self, cocktail_menu, plate_id=None, num_wells=1536,
@@ -296,6 +296,20 @@ class HWIRun(Run):
             return linked_runs
         else:
             return []
+    
+    def get_linked_date_runs(self):
+        linked_runs = [self]
+        if self.next_run:
+            start_run = self.next_run
+            while isinstance(start_run, HWIRun) and start_run.run_name != self.run_name:
+                linked_runs.append(start_run)
+                start_run = start_run.next_run
+        if self.previous_run:
+            start_run = self.previous_run
+            while isinstance(start_run, HWIRun) and start_run.run_name != self.run_name:
+                linked_runs.append(start_run)
+                start_run = start_run.previous_run
+        return linked_runs
     
     def insert_into_alt_spec_chain(self):
         '''When runs are first loaded into Polo they are automatically linked together.

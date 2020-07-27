@@ -577,6 +577,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         '''Private method that attempts to create run objects from all available
         :class:`ImportCandidate` instances.
         '''
+        self._update_selected_candidate()  # normally called when candidate
+        # selection is changed but if only importing one candidate and data
+        # is updated would have never been called if not added here
         self.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         for run_name, candidate in self.import_candidates.items():

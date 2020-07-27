@@ -101,7 +101,7 @@ class slideshowInspector(QtWidgets.QWidget):
                 key=lambda i: float(i.prediction_dict[i.machine_class]),
                 reverse=True
             )
-        except Exception:
+        except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, slideshowInspector.sort_images_by_marco_confidence))
             return False
@@ -122,7 +122,7 @@ class slideshowInspector(QtWidgets.QWidget):
                 images,
                 key=lambda i: i.cocktail.number
             )
-        except Exception:
+        except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, slideshowInspector.sort_images_by_cocktail_number))
             return False
@@ -143,10 +143,33 @@ class slideshowInspector(QtWidgets.QWidget):
                 images,
                 key=lambda i: i.well_number
             )
-        except Exception:
+        except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, slideshowInspector.sort_images_by_well_number))
             return False
+    
+    def sort_images_by_fastest_to_crystallize(self, images):
+        # images must have at least one other date
+        # sort more likely to return false because of this
+        # could add to time res buttons enabled
+        # only sorting options that could include some filtering
+
+        def key(image):
+            dates = image.get_linked_images_by_date()
+            dates = sorted(dates, key=lambda i: i.date)
+            for i, each_date in enumerate(dates):
+                if image.human_class == IMAGE_CLASSIFICATIONS[0]:
+                   return i
+            return len(dates)
+        
+        try:
+            return sorted(images, key=key)
+        except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                e, self.sort_images_by_fastest_to_crystallize
+            ))
+            return False
+        
 
     @property
     def run(self):

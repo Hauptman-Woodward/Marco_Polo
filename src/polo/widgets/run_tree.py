@@ -91,6 +91,17 @@ class RunTree(QtWidgets.QTreeWidget):
             #     if run_node:
             #         run_node.setText(0, updater.run.run_name)
             self.loaded_runs[run_name] = updater.run
+    
+    def _sort_sample_nodes(self, sample_node):
+        # sort sample nodes by date
+        num_run_nodes = sample_node.childCount()
+        run_names = [sample_node.child(i) for i in range(num_run_nodes)]
+        for i in range(num_run_nodes):
+            sample_node.removeChild(i)  # remove all nodes
+        for run_name in run_names:
+            self._add_run_node(self.loaded_runs[run])
+        # sort run nodes by date
+
 
     def _add_run_node(self, run, tree=None):
         '''Private method that adds a new run node.

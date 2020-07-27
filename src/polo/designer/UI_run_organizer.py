@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/Marco_Polo/pyqt_designer/run_organizer.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,10 +13,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(318, 575)
+        Form.resize(630, 575)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
         self.runTree = RunTree(Form)
+        self.runTree.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.runTree.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.runTree.setWordWrap(True)
         self.runTree.setObjectName("runTree")
         self.gridLayout.addWidget(self.runTree, 0, 0, 1, 2)
         self.label_30 = QtWidgets.QLabel(Form)

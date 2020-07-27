@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>318</width>
+    <width>630</width>
     <height>575</height>
    </rect>
   </property>
@@ -18,6 +18,15 @@
     <widget class="RunTree" name="runTree">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Runs that have been loaded into Polo will be displayed here. Individual runs will appear under their respective sample. Runs of the same sample will be automatically associated, or &amp;quot;linked&amp;quot;, by date or spectrum to allow you to swap between spectrum or navigate between dates.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To open a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;doubleclick &lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;it.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To remove a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;left-click&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; and select &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;remove run&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;To run the MARCO model on a run &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;click&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; the run and the hit the &lt;/span&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;Classify Selected Run&lt;/span&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt; button below.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
      <column>
       <property name="text">

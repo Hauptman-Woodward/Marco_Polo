@@ -129,7 +129,7 @@ class PlateVisualizer(QtWidgets.QGraphicsView):
             try:
                 x = int(x)
                 y = int(y)
-            except Exception:
+            except Exception as e:
                 logger.error('Caught {} while calling {}'.format(
                             e, self.setup_view))
                 return
@@ -150,7 +150,7 @@ class PlateVisualizer(QtWidgets.QGraphicsView):
                 cur_y += h
                 cur_x = 0
             self.fitInView(self.scene.itemsBoundingRect())
-        except Exception:
+        except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, self.setup_view))
             return

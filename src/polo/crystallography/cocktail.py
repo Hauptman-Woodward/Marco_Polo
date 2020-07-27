@@ -1,6 +1,5 @@
-from polo.utils.exceptions import NotASolutionError
-#from cockatoo.screen import _parse_cocktail_csv
-#from cockatoo.metric import distance
+# from cockatoo.screen import _parse_cocktail_csv
+# from cockatoo.metric import distance
 from molmass import Formula
 import re
 from polo import *
@@ -68,7 +67,6 @@ class Cocktail():
         if isinstance(value, (str, float)):
             value = int(value)
         self._well_assignment = value
-    
 
     def add_reagent(self, new_reagent):
         '''Adds a reagent to the existing list of reagents referenced by the
@@ -82,13 +80,13 @@ class Cocktail():
 
     # def compute_distance(self, other_cocktail):
     #     if isinstance(other_cocktail, Cocktail):
-    #         this_cockatoo_cocktail = self.to_cockatoo_cocktail()
-    #         other_cockatoo_cocktail = other_cocktail.to_cockatoo_cocktail()
+    #         this_cockatoo_cocktail = self._to_cockatoo_cocktail()
+    #         other_cockatoo_cocktail = other_cocktail._to_cockatoo_cocktail()
     #         if this_cockatoo_cocktail and other_cockatoo_cocktail:
     #             return distance(this_cockatoo_cocktail, other_cockatoo_cocktail)
-    #     return False 
+    #     return False
 
-    # def to_cockatoo_cocktail(self):
+    # def _to_cockatoo_cocktail(self):
     #     # convert cocktail object to a "row" as read from a csv file for use with
     #     # cockatoo package
     #     # name,overall_ph,[conc,unit,name,ph]*
@@ -106,7 +104,6 @@ class Cocktail():
     #         else:
     #             break
     #     return False
-
 
     def __repr__(self):
         return ''.join(sorted(['{}: {}\n'.format(key, value) for key, value in self.__dict__.items()]))

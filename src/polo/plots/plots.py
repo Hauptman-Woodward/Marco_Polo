@@ -4,6 +4,7 @@ import random
 from PyQt5 import QtWidgets
 
 import matplotlib
+from polo.crystallography.image import Image
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as Canvas
 from matplotlib.backends.backend_qt5agg import \
@@ -11,7 +12,7 @@ from matplotlib.backends.backend_qt5agg import \
 from matplotlib.figure import Figure
 from polo.plots.plot_utils import *
 from polo.utils.dialog_utils import make_message_box
-from polo import make_default_logger
+from polo import make_default_logger, IMAGE_CLASSIFICATIONS
 
 matplotlib.use('QT5Agg')
 
@@ -74,6 +75,28 @@ class StaticCanvas(MplCanvas):
                     else:
                         correctness[1] += 1
         return correctness
+    
+
+    def cocktail_distance_heatmap(self, current_run):
+        hits = []
+        for image in current_run.images:
+            if isinstance(image, Image) and image.human_class == IMAGE_CLASSIFICATIONS[0]:
+                hits.append(image.cocktail)
+        matrix = []
+        for i in range(len(hits)):
+            matrix.append([])
+            for j in range(len(hits)):
+                print(i, j)
+                d = hits[i].compute_distance(hits[j])
+                if d:
+                    matrix[i].append(d)
+                else:
+                    matrix[i].append(0)
+            
+        self.clear_axis()
+        ax = self.fig.add_subplot(111)
+        self.fig.get_axes()[0].imshow(matrix, cmap='hot')
+        self.draw()     
 
     def classification_progress(self, current_run):
         # need to know total classified and
@@ -132,9 +155,6 @@ class StaticCanvas(MplCanvas):
             )
             m.exec_()
 
-        
-
-
     def plot_plate_heatmaps(self, current_run):
 
         self.clear_axis()
@@ -175,7 +195,7 @@ class StaticCanvas(MplCanvas):
             # check if want to redraw it
 
             self.draw()
-        except Exception:  # lazy error handling for now see code above try block
+        except Exception as e:  #
             logger.error('Caught {} while calling {}'.format(
                 e, self.plot_plate_heatmaps
             ))

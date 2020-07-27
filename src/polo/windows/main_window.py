@@ -484,8 +484,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.matplotlib_widget.plot_classification_progress(
                         self.current_run)
                 elif current_text == 'Cocktail':
-                    self.matplotlib_widget.plot_additive_map(self.current_run)
-
+                    #self.matplotlib_widget.cocktail_distance_heatmap(self.current_run)
+                    pass
     # allow or disallow access to ploting methods based on run object type
     def _plot_limiter(self):
         '''Private method to limit the types of plots that can be shown
