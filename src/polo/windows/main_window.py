@@ -155,6 +155,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         event.accept()
     
     def _check_for_new_version(self):
+        '''Use requests to check the Polo GitHub page for a newer release
+        version. If a newer version exists open a message box that the user
+        can click to take them to the releases page.
+        '''
         try:
             tags = requests.get(RELEASES)
             new_version = False
@@ -167,7 +171,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for version in versions:
                     version = version.split('/')[-1]
                     version = number_puller.findall(version)
-                    print(version)
                     if len(version) == 3:
                         if (int(version[0]) > int(str_ver[0])
                         or int(version[1]) > int(str_ver[1])

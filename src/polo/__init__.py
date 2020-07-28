@@ -20,8 +20,8 @@ LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
 APP_ICON = Path('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
-TEMP_DIR = dirname.joinpath('polo/.tmp')
-BACKUP_DIR = dirname.joinpath('polo/.backups')
+TEMP_DIR = dirname.joinpath('.tmp')
+BACKUP_DIR = dirname.joinpath('.backups')
 
 if not os.path.isdir(str(TEMP_DIR)):
     os.makedirs(str(TEMP_DIR))
@@ -46,8 +46,6 @@ MODEL_PATH = DATA_DIR.joinpath('savedmodel')
 
 
 # HTML jinja2 templates
-
-
 RUN_HTML_TEMPLATE = dirname.joinpath('templates/exportRunTemplate.html')
 SCREEN_HTML_TEMPLATE = dirname.joinpath('templates/exportPlatesTemplate.html')
 BLANK_IMAGE = Path('data/images/default_images/blank_image.png')
