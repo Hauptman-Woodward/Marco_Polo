@@ -430,9 +430,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         export_results = csv_exporter.write_csv()
 
                     elif action == self.actionAs_MSO:
+                        message = make_message_box(
+                            parent=self,
+                            message='Press Yes to use human classifications or No to use MARCO classifications',
+                            buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel
+                        ).exec_()
+                        export_path = export_path.with_suffix('.mso')
                         writer = MsoWriter(self.current_run, export_path)
-                        export_results = writer.write_mso_file()
-                    
+                        if message == QtWidgets.QMessageBox.Cancel:
+                            return
+                        elif message == QtWidgets.QMessageBox.No:
+                            export_results = writer.write_mso_file(use_marco_classifications=True)
+                        else:
+                            export_results = writer.write_mso_file(use_marco_classifications=False)
                     elif action == self.actionAs_JSON:
                         writer = JsonWriter(self.current_run, export_path)
                         export_results = writer.write_json()
