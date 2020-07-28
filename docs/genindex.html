@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,6 +83,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
@@ -94,7 +94,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +132,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
       <li>Index</li>
     
@@ -210,7 +209,11 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog._change_favorite_status">_change_favorite_status() (polo.windows.image_pop_dialog.ImagePopDialog method)</a>
 </li>
+      <li><a href="polo.windows.html#polo.windows.main_window.MainWindow._check_current_run_for_missing_images">_check_current_run_for_missing_images() (polo.windows.main_window.MainWindow method)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._check_for_existing_backup">_check_for_existing_backup() (polo.widgets.run_organizer.RunOrganizer method)</a>
+</li>
+      <li><a href="polo.windows.html#polo.windows.main_window.MainWindow._check_for_new_version">_check_for_new_version() (polo.windows.main_window.MainWindow method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._check_for_overflow">_check_for_overflow() (polo.widgets.optimize_widget.OptimizeWidget method)</a>
 </li>
@@ -279,6 +282,8 @@
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_run">_import_run() (polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._import_runs">_import_runs() (polo.windows.run_importer.RunImporterDialog method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop">_import_runs_from_drop() (polo.widgets.run_organizer.RunOrganizer method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer._make_image_label">_make_image_label() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
@@ -416,6 +421,8 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._show_image_from_well_number">_show_image_from_well_number() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._sort_sample_nodes">_sort_sample_nodes() (polo.widgets.run_tree.RunTree method)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._submit_filters">_submit_filters() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.main_window.MainWindow._tab_limiter">_tab_limiter() (polo.windows.main_window.MainWindow method)</a>
@@ -427,6 +434,8 @@
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data">_update_candidate_run_data() (polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._update_current_reagents">_update_current_reagents() (polo.widgets.optimize_widget.OptimizeWidget method)</a>
+</li>
+      <li><a href="polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_date">_update_date() (polo.windows.run_updater_dialog.RunUpdaterDialog method)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog._update_plate_id">_update_plate_id() (polo.windows.run_updater_dialog.RunUpdaterDialog method)</a>
 </li>
@@ -484,12 +493,12 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.add_sample">add_sample() (polo.widgets.run_tree.RunTree method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.PptxWriter.add_single_image_slide">add_single_image_slide() (polo.utils.io_utils.PptxWriter method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.Carousel.add_slides">add_slides() (polo.widgets.slideshow_viewer.Carousel method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.PptxWriter.add_table_to_slide">add_table_to_slide() (polo.utils.io_utils.PptxWriter method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.PptxWriter.add_text_to_slide">add_text_to_slide() (polo.utils.io_utils.PptxWriter method)</a>
@@ -502,16 +511,8 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog.all_run_names">all_run_names() (polo.windows.run_importer.RunImporterDialog property)</a>
 </li>
-      <li><a href="tests.html#tests.test_run_organizer.all_runs">all_runs() (in module tests.test_run_organizer)</a>
-</li>
       <li><a href="polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog.all_specs">all_specs() (polo.windows.pptx_dialog.PptxDesignerDialog property)</a>
 </li>
-      <li><a href="tests.html#tests.test_io_utils.all_xtal_files">all_xtal_files() (in module tests.test_io_utils)</a>
-
-      <ul>
-        <li><a href="tests.html#tests.test_run_organizer.all_xtal_files">(in module tests.test_run_organizer)</a>
-</li>
-      </ul></li>
       <li><a href="polo.crystallography.html#polo.crystallography.run.HWIRun.AllOWED_PLOTS">AllOWED_PLOTS (polo.crystallography.run.HWIRun attribute)</a>
 
       <ul>
@@ -540,11 +541,9 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.main_window.MainWindow.BAR_COLORS">BAR_COLORS (polo.windows.main_window.MainWindow attribute)</a>
 </li>
-      <li><a href="polo.utils.html#polo.utils.io_utils.BarTender">BarTender (class in polo.utils.io_utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tests.html#tests.test_cocktails.bartender">bartender() (in module tests.test_cocktails)</a>
+      <li><a href="polo.utils.html#polo.utils.io_utils.BarTender">BarTender (class in polo.utils.io_utils)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.math_utils.best_aspect_ratio">best_aspect_ratio() (in module polo.utils.math_utils)</a>
 </li>
@@ -684,12 +683,12 @@
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.PptxWriter.delete_temp_images">delete_temp_images() (polo.utils.io_utils.PptxWriter method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunDeserializer.dict_to_obj">dict_to_obj() (polo.utils.io_utils.RunDeserializer static method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.file_browser.fileBrowser.DIR_ICON">DIR_ICON (polo.widgets.file_browser.fileBrowser attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.directory_validator">directory_validator() (in module polo.utils.io_utils)</a>
 
       <ul>
@@ -714,6 +713,14 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.ftp_dialog.FTPDialog.download_selected_files">download_selected_files() (polo.windows.ftp_dialog.FTPDialog method)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dragEnterEvent">dragEnterEvent() (polo.widgets.run_tree.RunTree method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dragMoveEvent">dragMoveEvent() (polo.widgets.run_tree.RunTree method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dropEvent">dropEvent() (polo.widgets.run_tree.RunTree method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dropped_links_signal">dropped_links_signal (polo.widgets.run_tree.RunTree attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -721,8 +728,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.emphasize_all_images">emphasize_all_images() (polo.widgets.plate_viewer.plateViewer method)</a>
-</li>
-      <li><a href="tests.html#tests.test_runs.empty_HWI_run">empty_HWI_run() (in module tests.test_runs)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.exceptions.EmptyDirectoryError">EmptyDirectoryError</a>
 </li>
@@ -800,8 +805,6 @@
 </li>
       <li><a href="polo.threads.html#polo.threads.thread.FTPDownloadThread">FTPDownloadThread (class in polo.threads.thread)</a>
 </li>
-      <li><a href="tests.html#tests.test_runs.full_run">full_run() (in module tests.test_runs)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -832,12 +835,14 @@
 </li>
       <li><a href="polo.crystallography.html#polo.crystallography.run.HWIRun.get_linked_alt_runs">get_linked_alt_runs() (polo.crystallography.run.HWIRun method)</a>
 </li>
-      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_date">get_linked_images_by_date() (polo.crystallography.image.Image method)</a>
+      <li><a href="polo.crystallography.html#polo.crystallography.run.HWIRun.get_linked_date_runs">get_linked_date_runs() (polo.crystallography.run.HWIRun method)</a>
 </li>
-      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_spectrum">get_linked_images_by_spectrum() (polo.crystallography.image.Image method)</a>
+      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_date">get_linked_images_by_date() (polo.crystallography.image.Image method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_spectrum">get_linked_images_by_spectrum() (polo.crystallography.image.Image method)</a>
+</li>
       <li><a href="polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_basename">get_menu_by_basename() (polo.utils.io_utils.BarTender method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_date">get_menu_by_date() (polo.utils.io_utils.BarTender method)</a>
@@ -845,8 +850,6 @@
       <li><a href="polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_path">get_menu_by_path() (polo.utils.io_utils.BarTender method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.BarTender.get_menus_by_type">get_menus_by_type() (polo.utils.io_utils.BarTender method)</a>
-</li>
-      <li><a href="tests.html#tests.get_random_unicode">get_random_unicode() (in module tests)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.spectrum_dialog.SpectrumDialog.get_selections">get_selections() (polo.windows.spectrum_dialog.SpectrumDialog method)</a>
 </li>
@@ -920,17 +923,7 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.image">image() (polo.windows.image_pop_dialog.ImagePopDialog property)</a>
 </li>
-      <li><a href="tests.html#tests.test_image.image_dir">image_dir() (in module tests.test_image)</a>
-
-      <ul>
-        <li><a href="tests.html#tests.test_runs.image_dir">(in module tests.test_runs)</a>
-</li>
-      </ul></li>
       <li><a href="polo.crystallography.html#polo.crystallography.run.Run.image_filter_query">image_filter_query() (polo.crystallography.run.Run method)</a>
-</li>
-      <li><a href="tests.html#tests.test_image.image_objects">image_objects() (in module tests.test_image)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.image_save_path">image_save_path() (in module tests.test_plate_inspector)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunCsvWriter.image_to_row">image_to_row() (polo.utils.io_utils.RunCsvWriter class method)</a>
 </li>
@@ -940,12 +933,12 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.images_per_page">images_per_page() (polo.widgets.plate_viewer.plateViewer property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunImporter.import_from_xtal_thread">import_from_xtal_thread() (polo.utils.io_utils.RunImporter static method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunImporter.import_general_run">import_general_run() (polo.utils.io_utils.RunImporter static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunImporter.import_hwi_run">import_hwi_run() (polo.utils.io_utils.RunImporter static method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.import_run_from_dialog">import_run_from_dialog() (polo.widgets.run_organizer.RunOrganizer method)</a>
@@ -963,6 +956,8 @@
       <li><a href="polo.crystallography.html#polo.crystallography.run.HWIRun.insert_into_alt_spec_chain">insert_into_alt_spec_chain() (polo.crystallography.run.HWIRun method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.exceptions.InvalidCocktailFile">InvalidCocktailFile</a>
+</li>
+      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.is_placeholder">is_placeholder() (polo.crystallography.image.Image property)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.run_importer.ImportCandidate.is_rar">is_rar() (polo.windows.run_importer.ImportCandidate property)</a>
 </li>
@@ -1017,8 +1012,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.crystallography.html#polo.crystallography.image.Image.machine_class">machine_class() (polo.crystallography.image.Image property)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.main_window">main_window() (in module tests.test_io_utils)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.main_window.MainWindow">MainWindow (class in polo.windows.main_window)</a>
 </li>
@@ -1138,24 +1131,6 @@
 </li>
         <li><a href="polo.windows.html#module-polo.windows.time_res_dialog">polo.windows.time_res_dialog</a>
 </li>
-        <li><a href="tests.html#module-tests">tests</a>
-</li>
-        <li><a href="tests.html#module-tests.test_cocktails">tests.test_cocktails</a>
-</li>
-        <li><a href="tests.html#module-tests.test_image">tests.test_image</a>
-</li>
-        <li><a href="tests.html#module-tests.test_init">tests.test_init</a>
-</li>
-        <li><a href="tests.html#module-tests.test_io_utils">tests.test_io_utils</a>
-</li>
-        <li><a href="tests.html#module-tests.test_plate_inspector">tests.test_plate_inspector</a>
-</li>
-        <li><a href="tests.html#module-tests.test_reagents">tests.test_reagents</a>
-</li>
-        <li><a href="tests.html#module-tests.test_run_organizer">tests.test_run_organizer</a>
-</li>
-        <li><a href="tests.html#module-tests.test_runs">tests.test_runs</a>
-</li>
         <li><a href="UI_helper.html#module-UI_helper">UI_helper</a>
 </li>
       </ul></li>
@@ -1243,18 +1218,6 @@
       </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer">PhotoViewer (class in polo.widgets.slideshow_viewer)</a>
 </li>
-      <li><a href="tests.html#tests.test_io_utils.plate_inspec_run">plate_inspec_run() (in module tests.test_io_utils)</a>
-
-      <ul>
-        <li><a href="tests.html#tests.test_plate_inspector.plate_inspec_run">(in module tests.test_plate_inspector)</a>
-</li>
-      </ul></li>
-      <li><a href="tests.html#tests.test_io_utils.plate_inspector">plate_inspector() (in module tests.test_io_utils)</a>
-
-      <ul>
-        <li><a href="tests.html#tests.test_plate_inspector.plate_inspector">(in module tests.test_plate_inspector)</a>
-</li>
-      </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.plate_size">plate_size (polo.widgets.plate_visualizer.PlateVisualizer attribute)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.plate_view_requested">plate_view_requested (polo.widgets.plate_visualizer.PlateVisualizer attribute)</a>
@@ -1381,8 +1344,6 @@
         <li><a href="polo.utils.html#module-polo.utils.unrar_utils">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     polo.widgets
 
@@ -1390,6 +1351,8 @@
         <li><a href="polo.widgets.html#module-polo.widgets">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     polo.widgets.file_browser
 
@@ -1575,8 +1538,6 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tests.html#tests.test_cocktails.random_cocktail">random_cocktail() (in module tests.test_cocktails)</a>
-</li>
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog.RAW_INDEX">RAW_INDEX (polo.windows.run_importer.RunImporterDialog attribute)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.CocktailMenuReader.read_menu_file">read_menu_file() (polo.utils.io_utils.CocktailMenuReader method)</a>
@@ -1603,15 +1564,9 @@
 </li>
       <li><a href="polo.crystallography.html#polo.crystallography.run.Run">Run (class in polo.crystallography.run)</a>
 </li>
-      <li><a href="tests.html#tests.test_image.run">run() (in module tests.test_image)</a>
+      <li><a href="polo.threads.html#polo.threads.thread.ClassificationThread.run">run() (polo.threads.thread.ClassificationThread method)</a>
 
       <ul>
-        <li><a href="tests.html#tests.test_io_utils.run">(in module tests.test_io_utils)</a>
-</li>
-        <li><a href="tests.html#tests.test_plate_inspector.run">(in module tests.test_plate_inspector)</a>
-</li>
-        <li><a href="polo.threads.html#polo.threads.thread.ClassificationThread.run">(polo.threads.thread.ClassificationThread method)</a>
-</li>
         <li><a href="polo.threads.html#polo.threads.thread.FTPDownloadThread.run">(polo.threads.thread.FTPDownloadThread method)</a>
 </li>
         <li><a href="polo.threads.html#polo.threads.thread.QuickThread.run">(polo.threads.thread.QuickThread method)</a>
@@ -1637,17 +1592,9 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tests.html#tests.test_io_utils.run_html_path">run_html_path() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.run_linker">run_linker() (in module tests.test_io_utils)</a>
-</li>
       <li><a href="polo.utils.html#polo.utils.io_utils.run_name_validator">run_name_validator() (in module polo.utils.io_utils)</a>
 </li>
-      <li><a href="tests.html#tests.test_run_organizer.run_org">run_org() (in module tests.test_run_organizer)</a>
-</li>
       <li><a href="polo.utils.html#polo.utils.io_utils.XtalWriter.run_to_dict">run_to_dict() (polo.utils.io_utils.XtalWriter method)</a>
-</li>
-      <li><a href="tests.html#tests.test_run_organizer.run_tree">run_tree() (in module tests.test_run_organizer)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunCsvWriter">RunCsvWriter (class in polo.utils.io_utils)</a>
 </li>
@@ -1686,8 +1633,6 @@
       <li><a href="polo.crystallography.html#polo.crystallography.cocktail.UnitValue.scale">scale() (polo.crystallography.cocktail.UnitValue method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.scalers">scalers() (polo.widgets.unit_combo.UnitComboBox property)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.scene_pixmaps">scene_pixmaps() (in module tests.test_plate_inspector)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.SceneExporter">SceneExporter (class in polo.utils.io_utils)</a>
 </li>
@@ -1731,10 +1676,10 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.set_scene_colors_from_filters">set_scene_colors_from_filters() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.set_scene_opacity_from_filters">set_scene_opacity_from_filters() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.widgets.html#polo.widgets.plate_visualizer.PlateVisualizer.set_selected_block">set_selected_block() (polo.widgets.plate_visualizer.PlateVisualizer method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.unit_combo.UnitComboBox.set_value">set_value() (polo.widgets.unit_combo.UnitComboBox method)</a>
@@ -1766,6 +1711,8 @@
       <li><a href="polo.windows.html#polo.windows.time_res_dialog.TimeResDialog.sort_available_runs_by_date">sort_available_runs_by_date() (polo.windows.time_res_dialog.TimeResDialog method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_cocktail_number">sort_images_by_cocktail_number() (polo.widgets.slideshow_inspector.slideshowInspector static method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize">sort_images_by_fastest_to_crystallize() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">sort_images_by_marco_confidence() (polo.widgets.slideshow_inspector.slideshowInspector static method)</a>
 </li>
@@ -1799,129 +1746,14 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.table_viewer.TableViewer">TableViewer (class in polo.widgets.table_viewer)</a>
 </li>
-      <li><a href="tests.html#tests.test_init.test_bartender_creation">test_bartender_creation() (in module tests.test_init)</a>
-</li>
-      <li><a href="tests.html#tests.test_run_organizer.test_classification_thread_opening">test_classification_thread_opening() (in module tests.test_run_organizer)</a>
-</li>
-      <li><a href="tests.html#tests.test_image.test_classify_images">test_classify_images() (in module tests.test_image)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_cocktail_reading">test_cocktail_reading() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_filtering">test_filtering() (in module tests.test_plate_inspector)</a>
-</li>
       <li><a href="polo.utils.html#polo.utils.unrar_utils.test_for_working_unrar">test_for_working_unrar() (in module polo.utils.unrar_utils)</a>
 </li>
-      <li><a href="tests.html#tests.test_init.test_icon_dict">test_icon_dict() (in module tests.test_init)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_image_labeling">test_image_labeling() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_images_per_plate">test_images_per_plate() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_link_run_by_date">test_link_run_by_date() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_link_run_by_spectrum">test_link_run_by_spectrum() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_loading_run">test_loading_run() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_init.test_logger">test_logger() (in module tests.test_init)</a>
-</li>
-      <li><a href="tests.html#tests.test_image.test_make_base64">test_make_base64() (in module tests.test_image)</a>
-</li>
-      <li><a href="tests.html#tests.test_image.test_make_delete_pixmaps">test_make_delete_pixmaps() (in module tests.test_image)</a>
-</li>
-      <li><a href="tests.html#tests.test_image.test_make_images">test_make_images() (in module tests.test_image)</a>
-</li>
-      <li><a href="tests.html#tests.test_runs.test_make_run_from_dir">test_make_run_from_dir() (in module tests.test_runs)</a>
-</li>
-      <li><a href="tests.html#tests.test_init.test_model_creation">test_model_creation() (in module tests.test_init)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_navigation">test_navigation() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_plate_inspector.test_reload_view">test_reload_view() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_run_organizer.test_run_addition">test_run_addition() (in module tests.test_run_organizer)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_run_deserializer">test_run_deserializer() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_run_linker_init">test_run_linker_init() (in module tests.test_io_utils)</a>
-</li>
-      <li><a href="tests.html#tests.test_run_organizer.test_run_linking">test_run_linking() (in module tests.test_run_organizer)</a>
-</li>
-      <li><a href="tests.html#tests.test_run_organizer.test_run_tree_addition">test_run_tree_addition() (in module tests.test_run_organizer)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tests.html#tests.test_plate_inspector.test_save_view">test_save_view() (in module tests.test_plate_inspector)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.test_xtal_writer">test_xtal_writer() (in module tests.test_io_utils)</a>
-</li>
-      <li>
-    tests
-
-      <ul>
-        <li><a href="tests.html#module-tests">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_cocktails
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_cocktails">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_image
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_image">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_init
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_init">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_io_utils
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_io_utils">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_plate_inspector
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_plate_inspector">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_reagents
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_reagents">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_run_organizer
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_run_organizer">module</a>
-</li>
-      </ul></li>
-      <li>
-    tests.test_runs
-
-      <ul>
-        <li><a href="tests.html#module-tests.test_runs">module</a>
-</li>
-      </ul></li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunLinker.the_big_link">the_big_link() (polo.utils.io_utils.RunLinker static method)</a>
 </li>
       <li><a href="polo.threads.html#polo.threads.thread.thread">thread (class in polo.threads.thread)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.tile_images_onto_scene">tile_images_onto_scene() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.time_res_dialog.TimeResDialog">TimeResDialog (class in polo.windows.time_res_dialog)</a>
@@ -2053,17 +1885,15 @@
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.XmlReader">XmlReader (class in polo.utils.io_utils)</a>
 </li>
-      <li><a href="polo.utils.html#polo.utils.io_utils.XtalWriter.xtal_header">xtal_header() (polo.utils.io_utils.XtalWriter property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="polo.utils.html#polo.utils.io_utils.XtalWriter.xtal_header">xtal_header() (polo.utils.io_utils.XtalWriter property)</a>
+</li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_header_reader">xtal_header_reader() (polo.utils.io_utils.RunDeserializer method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run">xtal_to_run() (polo.utils.io_utils.RunDeserializer method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">xtal_to_run_on_thread() (polo.utils.io_utils.RunDeserializer method)</a>
-</li>
-      <li><a href="tests.html#tests.test_io_utils.xtal_write_path">xtal_write_path() (in module tests.test_io_utils)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.XtalWriter">XtalWriter (class in polo.utils.io_utils)</a>
 </li>
@@ -2096,19 +1926,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2119,6 +1941,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

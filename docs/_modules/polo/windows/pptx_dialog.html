@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,6 +83,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -94,7 +94,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +132,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -205,7 +204,7 @@
 <span class="sd">        :rtype: True or None</span>
 <span class="sd">        &#39;&#39;&#39;</span> 
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">RunSerializer</span><span class="p">()</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -330,16 +329,6 @@
 <span class="sd">                 Exception otherwise.</span>
 <span class="sd">        :rtype: str or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">():</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="n">_get_save_path</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">PptxWriter</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span>
-                            <span class="n">image_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_image_classifications</span><span class="p">(),</span>
-                            <span class="n">marco</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTreeWidget</span><span class="o">.</span><span class="n">selected_run</span><span class="p">:</span>
                 <span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTreeWidget</span><span class="o">.</span><span class="n">selected_run</span>
@@ -347,6 +336,18 @@
                 <span class="n">make_message_box</span><span class="p">(</span><span class="s1">&#39;Please select a run&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
                 <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
                 <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">():</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_save_path</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">PptxWriter</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span>
+                            <span class="n">image_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_image_classifications</span><span class="p">(),</span>
+                            <span class="n">marco</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
 
         <span class="n">write_result</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">make_single_run_presentation</span><span class="p">(</span>
             <span class="n">run</span><span class="o">=</span><span class="n">run</span><span class="p">,</span>
@@ -361,9 +362,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Error writing presentation </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">write_result</span><span class="p">)</span>
 
-        <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+        <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">write_result</span></div>
 
 <div class="viewcode-block" id="PptxDesignerDialog.check_for_warnings"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog.check_for_warnings">[docs]</a>    <span class="k">def</span> <span class="nf">check_for_warnings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -380,19 +381,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -403,6 +396,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

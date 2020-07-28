@@ -6,8 +6,13 @@
 Welcome to Polo's documentation!
 ================================
 
-Polo is a python GUI build using the Qt library for
-high throughput crysta.lization screening users. 
+.. image:: images/polo.png
+    :align: center
+
+Polo is a python GUI build using the PyQt library for
+high-throughput crystallization screening users. It was created by Ethan Holleman
+for the 2020 `BioXFEL <https://github.com/EthanHolleman/Marco_Polo/issues>`_ 
+summer internship program.
 
 .. toctree::
    :maxdepth: 2

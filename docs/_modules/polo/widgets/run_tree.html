@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,6 +83,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -94,7 +94,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +132,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -185,6 +184,7 @@
     <span class="n">opening_run</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
     <span class="n">save_run_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
     <span class="n">remove_run_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">dropped_links_signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">auto_link</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classified_status</span> <span class="o">=</span> <span class="p">{}</span>
@@ -193,6 +193,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">auto_link</span> <span class="o">=</span> <span class="n">auto_link</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RunTree</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@property</span>
@@ -248,6 +249,17 @@
             <span class="c1">#     if run_node:</span>
             <span class="c1">#         run_node.setText(0, updater.run.run_name)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">updater</span><span class="o">.</span><span class="n">run</span></div>
+    
+<div class="viewcode-block" id="RunTree._sort_sample_nodes"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._sort_sample_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">_sort_sample_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_node</span><span class="p">):</span>
+        <span class="c1"># sort sample nodes by date</span>
+        <span class="n">num_run_nodes</span> <span class="o">=</span> <span class="n">sample_node</span><span class="o">.</span><span class="n">childCount</span><span class="p">()</span>
+        <span class="n">run_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample_node</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_run_nodes</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_run_nodes</span><span class="p">):</span>
+            <span class="n">sample_node</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># remove all nodes</span>
+        <span class="k">for</span> <span class="n">run_name</span> <span class="ow">in</span> <span class="n">run_names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">])</span></div>
+        <span class="c1"># sort run nodes by date</span>
+
 
 <div class="viewcode-block" id="RunTree._add_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._add_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_add_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that adds a new run node.</span>
@@ -265,7 +277,6 @@
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
         <span class="n">new_node</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
         <span class="n">new_node</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">run</span><span class="o">.</span><span class="n">get_tooltip</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">),</span> <span class="s1">&#39;at add run node in tree&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle_dup_run_import</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -355,7 +366,31 @@
         <span class="c1"># BUG: run unlinking not working for non visible images</span>
         <span class="c1"># the images within a run are unlinked but not the actual run objects</span>
         <span class="c1"># the above is a temp fix</span>
-
+    
+<div class="viewcode-block" id="RunTree.dragEnterEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="RunTree.dragMoveEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.dragMoveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragMoveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">setDropAction</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CopyAction</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="RunTree.dropEvent"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.dropEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">hasUrls</span><span class="p">():</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">setDropAction</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CopyAction</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">urls</span><span class="p">():</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">toLocalFile</span><span class="p">())))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dropped_links_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+                
 <div class="viewcode-block" id="RunTree.remove_run_from_view"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.remove_run_from_view">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run_from_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Remove a :class:`Run` instance using its :attr:`run_name` attribute.</span>
 <span class="sd">        Does not effect any other widgets. Calling this method only </span>
@@ -527,19 +562,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -550,6 +577,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

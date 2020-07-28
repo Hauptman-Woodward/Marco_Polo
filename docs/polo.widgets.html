@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -75,7 +74,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -87,6 +85,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-notes">OS Specific Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
@@ -125,7 +125,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -164,7 +163,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="polo.html">polo package</a> &raquo;</li>
         
@@ -1437,6 +1436,11 @@ the selected run.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop">
+<code class="sig-name descname">_import_runs_from_drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._import_runs_from_drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer._open_classification_thread">
 <code class="sig-name descname">_open_classification_thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._open_classification_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._open_classification_thread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method to create and run a classification thread which will run
@@ -1703,6 +1707,11 @@ has selected a run and wants to open it for analysis.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree._sort_sample_nodes">
+<code class="sig-name descname">_sort_sample_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_node</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._sort_sample_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._sort_sample_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree.add_classified_run">
 <code class="sig-name descname">add_classified_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.add_classified_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.add_classified_run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance as classified by adding it to the
@@ -1770,6 +1779,26 @@ be unique.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.dragEnterEvent">
+<code class="sig-name descname">dragEnterEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragEnterEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.dragEnterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.dragMoveEvent">
+<code class="sig-name descname">dragMoveEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDragMoveEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.dragMoveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.dragMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.dropEvent">
+<code class="sig-name descname">dropEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">QDropEvent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.dropEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_tree.RunTree.dropped_links_signal">
+<code class="sig-name descname">dropped_links_signal</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.dropped_links_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree.link_sample">
@@ -2136,6 +2165,11 @@ by this parameter.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize">
+<code class="sig-name descname">sort_images_by_fastest_to_crystallize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_fastest_to_crystallize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">
@@ -2893,19 +2927,11 @@ unit of a <cite>UnitValue</cite> instance</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2916,6 +2942,7 @@ unit of a <cite>UnitValue</cite> instance</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,6 +83,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
@@ -94,7 +94,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -133,7 +132,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -175,7 +174,7 @@
 
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">polo_version</span>
 <span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
 <span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">EmptyRunNameError</span><span class="p">,</span> <span class="n">ForbiddenImageTypeError</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>
@@ -361,7 +360,6 @@
             <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">()</span><span class="o">.</span><span class="n">find_and_read_plate_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">file_name_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">file_name_data</span><span class="p">,</span> <span class="s1">&#39;meta and filename data&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">file_name_data</span><span class="p">:</span>
                 <span class="n">date</span> <span class="o">=</span> <span class="n">file_name_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
                 <span class="n">menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
@@ -390,7 +388,6 @@
         <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">new_run</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">new_run</span>
         <span class="k">return</span> <span class="kc">False</span></div></div>
 
@@ -429,6 +426,8 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">desired_suffix</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="RunSerializer.path_validator"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.path_validator">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -497,7 +496,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
                 <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
-                <span class="p">[</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;_Image__bites&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;_bites&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
 
                 <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
@@ -509,6 +508,8 @@
                             <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
                             <span class="k">return</span> <span class="kc">True</span>
                     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">))</span>
                         <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.write_grid_screen"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_grid_screen">[docs]</a>    <span class="k">def</span> <span class="nf">write_grid_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">plate_list</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span>
@@ -632,7 +633,9 @@
                 <span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
             <span class="k">return</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="n">rows</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">e</span>  <span class="c1"># pass it along will ya</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught and re-raised </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_csv_data</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="RunCsvWriter.write_csv"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter.write_csv">[docs]</a>    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Write the :class:`Run` object referenced by the </span>
@@ -694,6 +697,8 @@
             <span class="n">painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">file_path</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="n">SceneExporter</span><span class="o">.</span><span class="n">write_image</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
     
 <div class="viewcode-block" id="SceneExporter.write"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.SceneExporter.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -828,7 +833,9 @@
                 <span class="k">return</span> <span class="n">REV_MSO_DICT</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">mso_codes</span><span class="p">)]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="n">MsoReader</span><span class="o">.</span><span class="n">read_mso_classification</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># assume no mso classification if throws an error</span></div>
 
 <div class="viewcode-block" id="MsoReader.classify_images_from_mso_file"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.MsoReader.classify_images_from_mso_file">[docs]</a>    <span class="k">def</span> <span class="nf">classify_images_from_mso_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
@@ -861,6 +868,8 @@
                             <span class="k">continue</span>
                 <span class="k">return</span> <span class="n">images</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div></div>
 
 <div class="viewcode-block" id="JsonWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.JsonWriter">[docs]</a><span class="k">class</span> <span class="nc">JsonWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
@@ -921,6 +930,8 @@
                 <span class="n">json_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_content</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div></div>
 
 
@@ -1119,7 +1130,9 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
                     <span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="n">RunDeserializer</span><span class="o">.</span><span class="n">dict_to_obj</span><span class="p">))</span>
                     <span class="k">return</span> <span class="kc">None</span>
                 <span class="n">temp_d</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1138,8 +1151,6 @@
                 <span class="n">obj</span> <span class="o">=</span> <span class="n">d</span>  <span class="c1"># just a regular dictionary to read in</span>
             <span class="k">return</span> <span class="n">obj</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s1">&#39;Attempted to serialize an empty dictionary at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dict_to_obj</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.xtal_to_run_on_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_to_run_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1200,6 +1211,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="ne">FileNotFoundError</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div></div>
 
 
@@ -1249,6 +1262,8 @@
             <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span><span class="p">]</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
     
 <div class="viewcode-block" id="PptxWriter.sort_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">sort_runs_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="p">):</span>
@@ -1371,6 +1386,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_single_run_presentation</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
                 
     
@@ -1915,7 +1932,7 @@
                                 <span class="n">concentration</span><span class="o">=</span><span class="n">con</span>
                             <span class="p">)</span>
                         <span class="p">)</span>
-                <span class="n">cocktail_menu</span><span class="p">[</span><span class="n">new_cocktail</span><span class="o">.</span><span class="n">well_assignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_cocktail</span>
+                <span class="n">cocktail_menu</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">new_cocktail</span><span class="o">.</span><span class="n">well_assignment</span><span class="p">)]</span> <span class="o">=</span> <span class="n">new_cocktail</span>
         <span class="k">return</span> <span class="n">cocktail_menu</span></div></div>
 
 
@@ -2072,6 +2089,8 @@
             <span class="k">return</span> <span class="n">d</span>
 
         <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_plate_data_xml</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XmlReader.discover_xml_files"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.discover_xml_files">[docs]</a>    <span class="k">def</span> <span class="nf">discover_xml_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
@@ -2089,6 +2108,8 @@
             <span class="n">xmls</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_paths</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.xml&#39;</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">xmls</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">PermissionError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">discover_xml_files</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XmlReader.find_and_read_plate_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.find_and_read_plate_data">[docs]</a>    <span class="k">def</span> <span class="nf">find_and_read_plate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
@@ -2320,19 +2341,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2343,6 +2356,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

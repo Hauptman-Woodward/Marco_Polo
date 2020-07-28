@@ -41,6 +41,8 @@ I Found a Bug
 --------------------------
 Thats great! If you have some GitHub knowhow you can report it on the issues
 `on the issues <https://github.com/EthanHolleman/Marco_Polo/issues>`_
-page of the Polo repository or fill out `this google form <https://forms.gle/GfMT72z7Z6AzJqS86>`_
-Thanks for your help!
+page of the Polo repository or fill out the Google form below.
 
+.. raw:: html
+
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScy-DRqQEdTdLIEw_H5Dz4DobR3xhfrvwdtXoGTHlQ3kmdtHw/viewform?embedded=true" width="640" height="693" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>

@@ -237,7 +237,6 @@ class RunOrganizer(QtWidgets.QWidget):
         self.setEnabled(True)
         QApplication.restoreOverrideCursor()
 
-    
     def _check_for_existing_backup(self, run):
         '''Check the directory specified by the `BACKUP_DIR` constant for
         a backup mso file that matches the run passed through the `run`
