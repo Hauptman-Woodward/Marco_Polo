@@ -6,7 +6,9 @@ import random
 import sys
 import time
 import webbrowser
+import requests
 from pathlib import Path
+import re
 
 from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
@@ -77,6 +79,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
 
         self._set_tab_icons()
+        self._check_for_new_version()
 
         logger.info('Created {}'.format(self))
     
@@ -151,6 +154,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QApplication.restoreOverrideCursor()
         event.accept()
     
+    def _check_for_new_version(self):
+        try:
+            tags = requests.get(RELEASES)
+            new_version = False
+            str_ver = polo_version.split('.')
+            if tags.status_code == 200:
+                version_finder = re.compile(
+                    '<a href="/EthanHolleman/Marco_Polo/releases/tag/.[0-9].[0-9].[0-9]')
+                versions = version_finder.findall(tags.text)
+                number_puller = re.compile('[0-9]')
+                for version in versions:
+                    version = version.split('/')[-1]
+                    version = number_puller.findall(version)
+                    print(version)
+                    if len(version) == 3:
+                        if (int(version[0]) > int(str_ver[0])
+                        or int(version[1]) > int(str_ver[1])
+                        or int(version[2]) > int(str_ver[2])
+                        ):
+                            new_version = True
+                            break
+                if new_version:
+                    m = make_message_box(
+                        parent=self,
+                        message='You are using Polo {}. A newer version of Polo is available. Press Ok to open the Polo releases page to download the new version.'.format(polo_version),
+                        buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel 
+                    ).exec_()
+                    if m == 1024:
+                        webbrowser.open(RELEASES)
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(e, self._check_for_new_version))
+                
+                
     def _check_current_run_for_missing_images(self):
         if isinstance(self.current_run, HWIRun):
             num_images = len([1 for i in self.current_run.images if not i.is_placeholder])

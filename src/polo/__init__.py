@@ -10,7 +10,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-__version__ = '0.0.6'
+polo_version = '0.0.6'
 dirname = Path(os.path.dirname(__file__)).parent
 
 # CONSTANT FILE PATHS
@@ -154,6 +154,7 @@ FAQS = 'https://ethanholleman.github.io/Marco_Polo/FAQS.html'
 USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
 DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
 BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
+RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
 
 
 from polo.crystallography.image import Image

@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from jinja2 import Template
 from polo import *
-from polo import __version__
+from polo import polo_version
 from polo.threads.thread import QuickThread
 from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.crystallography.cocktail import *
