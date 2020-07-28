@@ -8,6 +8,7 @@ Welcome to Polo's documentation!
 
 .. image:: images/polo.png
     :align: center
+    :alt: Polo logo
 
 Polo is a python GUI build using the PyQt library for
 high-throughput crystallization screening users. It was created by Ethan Holleman
