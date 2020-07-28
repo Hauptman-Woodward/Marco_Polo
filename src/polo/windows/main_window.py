@@ -286,13 +286,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     and self.current_run.image_spectrum == IMAGE_SPECS[0]
                     ):
                     self.current_run.insert_into_alt_spec_chain()
+                self._tab_limiter()  # set allowed tabs by run type
+                self._plot_limiter()  # set allowed polo.plots
+                
                 self.slideshowInspector.run = self.current_run
                 self.tableInspector.run = self.current_run
                 self.tableInspector.update_table_view()
-                self.optimizeWidget.run = self.current_run
-                self.plateInspector.run = self.current_run
-                self._tab_limiter()  # set allowed tabs by run type
-                self._plot_limiter()  # set allowed polo.plots
+
+                if isinstance(self.current_run, HWIRun):
+                    self.optimizeWidget.run = self.current_run
+                    self.plateInspector.run = self.current_run
                 
                 logger.info('Opened run: {}'.format(self.current_run))
         except Exception as e:

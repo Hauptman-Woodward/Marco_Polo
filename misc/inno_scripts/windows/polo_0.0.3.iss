@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Polo"
-#define MyAppVersion "0.0.3"
+#define MyAppVersion "0.0.6"
 #define MyAppPublisher "Ethan Holleman"
 #define MyAppExeName "Polo.exe"
 
