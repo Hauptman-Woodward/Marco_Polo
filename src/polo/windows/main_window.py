@@ -60,8 +60,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuExport.triggered[QAction].connect(self._handle_export)
         self.menuHelp.triggered[QAction].connect(self._handle_help_menu)
         self.menuFile.triggered[QAction].connect(self._handle_file_menu)
-        self.menuBeta_Testers.triggered[QAction].connect(
-            lambda: webbrowser.open(BETA))
+        self.actionReport_An_Issue.triggered.connect(
+            lambda: webbrowser.open(REPORTS)
+        )
         self.menuTools.triggered[QAction].connect(self._handle_tool_menu)
 
         # change tab updates control

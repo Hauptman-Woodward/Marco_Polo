@@ -153,6 +153,7 @@ USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
 DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
 BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
 RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
+REPORTS = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html#i-found-a-bug'
 
 
 from polo.crystallography.image import Image

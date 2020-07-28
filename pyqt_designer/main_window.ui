@@ -1160,18 +1160,18 @@
     <addaction name="separator"/>
     <addaction name="actionRemove_Run"/>
    </widget>
-   <widget class="QMenu" name="menuBeta_Testers">
+   <widget class="QMenu" name="menuReport_An_Issue">
     <property name="title">
-     <string>Beta Testers</string>
+     <string>Report An Issue</string>
     </property>
-    <addaction name="actionBeta_Tester_s_Guide"/>
+    <addaction name="actionReport_An_Issue"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
    <addaction name="menuTools"/>
-   <addaction name="menuBeta_Testers"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuReport_An_Issue"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuickstart_Guide">
@@ -1417,6 +1417,21 @@
   <action name="actionDelete_Classification_Backups">
    <property name="text">
     <string>Delete Classification Backups</string>
+   </property>
+  </action>
+  <action name="actionVia_GitHub">
+   <property name="text">
+    <string>Via GitHub</string>
+   </property>
+  </action>
+  <action name="actionVia_Form">
+   <property name="text">
+    <string>Via Form</string>
+   </property>
+  </action>
+  <action name="actionReport_An_Issue">
+   <property name="text">
+    <string>Report An Issue</string>
    </property>
   </action>
  </widget>
