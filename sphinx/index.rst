@@ -23,6 +23,7 @@ summer internship program.
    install
    FAQS
    user_guide
+   video_guides
    beta_testers
    polo
 
