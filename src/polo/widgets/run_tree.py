@@ -38,6 +38,7 @@ class RunTree(QtWidgets.QTreeWidget):
         super(RunTree, self).__init__(parent)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.setAcceptDrops(True)
+        self.setSortingEnabled(True)
         logger.info('Created {}'.format(self))
 
     @property

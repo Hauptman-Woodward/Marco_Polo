@@ -333,28 +333,29 @@ class HtmlWriter(RunSerializer):
         :return: Path to html report if write succeeds, Exception otherwise. 
         :rtype: str or Exception
         '''
-        if HtmlWriter.path_validator(output_path, parent=True) and self.run:
-            output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
-            if output_path:
-                if encode_images:
-                    self.run.encode_images_to_base64()
-                images = json.loads(json.dumps(
-                    self.run.images, default=XtalWriter.json_encoder))
-                [RunDeserializer.clean_base64_string(image['_bites'], str) for image in images]
+        try:
+            if HtmlWriter.path_validator(output_path, parent=True) and self.run:
+                output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
+                if output_path:
+                    if encode_images:
+                        self.run.encode_images_to_base64()
+                    run = XtalWriter.clean_run_for_save(self.run)
+                    images = json.loads(json.dumps(
+                        run.images, default=XtalWriter.json_encoder))
+                    [RunDeserializer.clean_base64_string(image['_bites'], str) for image in images]
 
-                template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
-                if template:
-                    try:
+                    template = HtmlWriter.make_template(RUN_HTML_TEMPLATE)
+                    if template:
                         html = template.render(
                             images=images, run_name=self.run.run_name,
                             annotations='No annotations')
                         with open(output_path, 'w') as html_file:
                             html_file.write(html)
                             return True
-                    except Exception as e:
-                        logger.error('Caught {} while calling {}'.format(
-                            e, self.write_complete_run))
-                        return e
+        except Exception as e:
+            logger.error('Caught {} while calling {}'.format(
+                e, self.write_complete_run))
+            return e
 
     def write_grid_screen(self, output_path, plate_list, well_number,
                           x_reagent, y_reagent, well_volume, run_name=None):
