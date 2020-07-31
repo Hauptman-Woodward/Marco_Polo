@@ -271,12 +271,14 @@ class slideshowInspector(QtWidgets.QWidget):
         :type show_all_specs: bool, optional
         '''
         if show_all_dates:
+            self.ui.checkBox_10.setChecked(False)
             self.ui.slideshowViewer.show_all_dates = True
             if self.run:
                 self._display_current_image()
         else:
             self.ui.slideshowViewer.show_all_dates = False
         if show_all_specs:
+            self.ui.checkBox_9.setChecked(False)
             self.ui.slideshowViewer.show_all_specs = True
             if self.run:
                 self._display_current_image()
