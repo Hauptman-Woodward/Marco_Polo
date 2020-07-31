@@ -90,6 +90,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#mac-and-ubuntu">Mac and Ubuntu</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#issues-others-have-encountered">Issues Others have Encountered</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Windows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-for-all-users">Installing for All Users</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mac">Mac</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#polo-downloads-as-a-txt-file">Polo Downloads as a txt File</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
@@ -203,6 +214,55 @@ exe is located in.</p>
 intuitive or you think could work better please let me know! Please
 see the <a class="reference internal" href="beta_testers.html#i-found-a-bug"><span class="std std-ref">I Found a Bug</span></a> section for more information on how to report
 issues and make suggestions.</p>
+</div>
+</div>
+<div class="section" id="issues-others-have-encountered">
+<h1>Issues Others have Encountered<a class="headerlink" href="#issues-others-have-encountered" title="Permalink to this headline">¶</a></h1>
+<p>Below is a compilation of issues others have encountered and potential
+OS specific solutions solutions. If you have an issue and are able to solve the
+problem on your own, please let me know about via either the GihHub Issues page
+of the Google form. Both of which can be found in the <a class="reference internal" href="beta_testers.html#i-found-a-bug"><span class="std std-ref">I Found a Bug</span></a>
+section.</p>
+<div class="section" id="id1">
+<h2>Windows<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-for-all-users">
+<h3>Installing for All Users<a class="headerlink" href="#installing-for-all-users" title="Permalink to this headline">¶</a></h3>
+<p><strong>The Situation</strong></p>
+<p>The windows version of Polo is the only distribution that includes an installer.
+Some testers encountered issues running Polo when installing Polo for all users instead of
+just the local user (default install)</p>
+<p><strong>The Cause</strong></p>
+<p>As part of normal operation Polo writes a log and other files in the directory the exe
+is contained in. If Polo is installed for all users, the exe will be located in
+a location that requires administrator privileges to write to and Polo will be
+unable write and open normally.</p>
+<p><strong>The Solution</strong></p>
+<p>If you do not want to re-install Polo for the local user. Left click the
+the desktop shortcut or exe file and select “Run as administrator”. Or just
+reinstall Polo for the local user.</p>
+</div>
+</div>
+<div class="section" id="mac">
+<h2>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="polo-downloads-as-a-txt-file">
+<h3>Polo Downloads as a txt File<a class="headerlink" href="#polo-downloads-as-a-txt-file" title="Permalink to this headline">¶</a></h3>
+<p><strong>The Situation</strong></p>
+<p>Some users have found that the Mac Polo exe after it is downloaded is recognized
+as a txt file and not as an exe file (which can be run on your computer). If
+this is the case for you it is fixable but will require some command line usage.</p>
+<p><strong>The cause</strong></p>
+<p>Currently, not sure about this one.</p>
+<p><strong>The Solution</strong></p>
+<p>1. Determine the filepath to your Polo (txt) exe file. The filepath can be
+copied to your clipboard by left clicking and selecting <em>Copy</em></p>
+<p>2. Open the terminal. This can be done by going to Spotlight search and searching
+for “terminal”</p>
+<p>3. Enter the command below into the terminal and press enter. Replace the
+text in [ ] with the filepath you just copied. Do <strong>not</strong> include the braces.
+If you are prompted to give your password, do so.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">[Your/Polo/Filepath]</span></code></p>
+<p>You should be able to run Polo as a program now.</p>
+</div>
 </div>
 </div>
 <div class="section" id="running-from-source">
