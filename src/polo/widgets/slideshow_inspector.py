@@ -170,7 +170,6 @@ class slideshowInspector(QtWidgets.QWidget):
             ))
             return False
         
-
     @property
     def run(self):
         return self._run

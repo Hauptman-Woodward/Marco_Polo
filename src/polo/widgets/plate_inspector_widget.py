@@ -7,8 +7,10 @@ from polo import (ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS)
 from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.image import Image
 from polo.crystallography.run import HWIRun, Run
+from polo.threads.thread import QuickThread
 from polo.designer.UI_plate_inspector_widget import Ui_PlateInspector
-from polo.utils.io_utils import write_screen_html
+from polo.utils.io_utils import write_screen_html, RunSerializer, SceneExporter
+from polo.utils.dialog_utils import make_message_box
 from polo.plots.plots import StaticCanvas
 from polo import make_default_logger
 
@@ -76,6 +78,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         )
         self.ui.plateViewer.changed_page_signal.connect(
             self.ui.plateVis.set_selected_block)
+        
+        self.ui.pushButton.clicked.connect(self.export_current_view)
 
 
         self.ui.spinBox.setRange(1, 1)
@@ -377,3 +381,37 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_time_resolved_buttons()
         self._set_alt_spectrum_buttons()
         self._set_spin_box_range()
+    
+    def export_current_view(self):
+        try:
+            save_path = QtWidgets.QFileDialog.getSaveFileName(
+                self, 'Save View'
+            )[0]
+            if save_path:
+                save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+
+                self.export_view_thread = QuickThread(
+                    SceneExporter.write_image, scene=self.ui.plateViewer._scene,
+                    file_path=save_path 
+                )
+
+                def finished_saving_image():
+                    print('finished thread')
+                    if isinstance(self.export_view_thread.result, str):
+                        message = 'View saved to {}'.format(save_path)
+                    else:
+                        message = 'Write to {} failed {}'.format(
+                            save_path, self.export_view_thread.result)
+                    make_message_box(parent=self, message=message).exec_()
+
+                self.export_view_thread.finished.connect(finished_saving_image)
+                self.export_view_thread.start()
+        except Exception as e:
+            if hasattr(self, 'export_view_thread') and self.export_view_thread.isRunning():
+                self.export_view_thread.exit()
+            logger.error('Caught {} at {}'.format(e, self.export_current_view))
+            make_message_box(
+                parent=self,
+                message='Failed to export the current view.').exec_()
+
+
