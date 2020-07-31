@@ -74,10 +74,9 @@ class RunOrganizer(QtWidgets.QWidget):
         Calls  :meth:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
         start the classification thread.
         '''
-        selected_runname = self.ui.runTree.currentItem().text(0)
-        if selected_runname in self.ui.runTree.loaded_runs:
-            selected_run = self.ui.runTree.loaded_runs[selected_runname]
-            self._open_classification_thread(selected_run)
+        selected_run = self.ui.runTree.selected_run
+        if selected_run:
+            self._open_classification_thread(self.ui.runTree.selected_run)
 
     def _handle_opening_run(self, *args):
         '''Private method that signal to other widgets that the current run should be opened
@@ -85,9 +84,8 @@ class RunOrganizer(QtWidgets.QWidget):
         the selected run.
         '''
         # get the selected item
-        selected_run_name = self.ui.runTree.currentItem().text(0)
-        if selected_run_name in self.ui.runTree.loaded_runs:
-            selected_run = self.ui.runTree.loaded_runs[selected_run_name]
+        selected_run = self.ui.runTree.selected_run
+        if selected_run:
             if (selected_run.run_name not in self._has_been_opened
                 and not hasattr(selected_run, 'save_file_path')):
                 backup = self._check_for_existing_backup(selected_run)
@@ -260,49 +258,12 @@ class RunOrganizer(QtWidgets.QWidget):
                     return each_backup
         return None
 
-    def _remove_run(self, run=None):
-        '''Private method to completely remove a run from Polo.
 
-        :param run: Run to remove from current session, defaults to None
-        :type run: Run or HWIRun, optional
-        '''
-        if not run:
-            run_name = self.ui.runTree.currentItem()
-        if run_name:
-            run_name = run_name.text(0)
-            condemned_run = self.ui.runTree.remove_run_from_view(run_name)
-            if isinstance(condemned_run, (Run, HWIRun)):
-                # need to cut any links that had this run in it
-                next_run, prev_run = None, None
-                if condemned_run.next_run:
-                    next_run = condemned_run.next_run
-                if condemned_run.previous_run:
-                    prev_run = condemned_run.previous_run
-                
-                if next_run and prev_run:  # cut condemned run out
-                    next_run.previous_run = None
-                    prev_run.next_run = None
-                    prev_run.link_to_next_date(next_run)
-                
-                elif next_run:  # condemned run was first in the list
-                    next_run.previous_run = None
-                    for image in next_run.images:
-                        image.previous_image = None
-                elif prev_run:  # condemned was last in the list
-                    prev_run.next_run = None
-                    for image in prev_run.images:
-                        image.next_image = None
-                
-                # need to go around the horn since no backwards pointer
-                if condemned_run.alt_spectrum:
-                    start = condemned_run.alt_spectrum
-                    linked_spectrums = []
-                    while start and start.run_name != condemned_run.run_name:
-                        linked_spectrums.append(start)
-                        start = start.alt_spectrum
-                    linked_spectrums[-1].alt_spectrum = None
-                    if len(linked_spectrums) > 1:
-                        linked_spectrums[0].link_to_alt_spectrum(linked_spectrums[-1])
+    def remove_run(self):
+        if (self.ui.runTree.currentItem() 
+            and self.ui.runTree.currentItem().text(0) in self.ui.runTree.formated_name_to_name):
+            self.ui.runTree.remove_run(self.ui.runTree.currentItem().text(0))
+            
 
     def backup_classifications_on_thread(self, run):
         '''Does the exact same thing as 
@@ -479,46 +440,6 @@ class RunOrganizer(QtWidgets.QWidget):
             self._add_runs_to_tree([new_run])
         return new_run
         # message box failed to import?
-   
-    def remove_run(self, run=None):
-        if not run:
-            run_name = self.ui.runTree.currentItem()
-        if run_name:
-            run_name = run_name.text(0)
-            condemned_run = self.ui.runTree.remove_run_from_view(run_name)
-            if isinstance(condemned_run, (Run, HWIRun)):
-                # need to cut any links that had this run in it
-                next_run, prev_run = None, None
-                if condemned_run.next_run:
-                    next_run = condemned_run.next_run
-                if condemned_run.previous_run:
-                    prev_run = condemned_run.previous_run
-                
-                if next_run and prev_run:  # cut condemned run out
-                    next_run.previous_run = None
-                    prev_run.next_run = None
-                    prev_run.link_to_next_date(next_run)
-                
-                elif next_run:  # condemned run was first in the list
-                    next_run.previous_run = None
-                    for image in next_run.images:
-                        image.previous_image = None
-                elif prev_run:  # condemned was last in the list
-                    prev_run.next_run = None
-                    for image in prev_run.images:
-                        image.next_image = None
-                
-                # need to go around the horn since no backwards pointer
-                if condemned_run.alt_spectrum:
-                    start = condemned_run.alt_spectrum
-                    linked_spectrums = []
-                    while start and start.run_name != condemned_run.run_name:
-                        linked_spectrums.append(start)
-                        start = start.alt_spectrum
-                    linked_spectrums[-1].alt_spectrum = None
-                    if len(linked_spectrums) > 1:
-                        linked_spectrums[0].link_to_alt_spectrum(linked_spectrums[-1])
-
 
 
                     

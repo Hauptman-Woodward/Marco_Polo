@@ -1,6 +1,7 @@
 import ftplib
 import os
 from pathlib import Path, PurePosixPath
+from datetime import datetime
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import *
@@ -13,6 +14,25 @@ from polo.crystallography.run import HWIRun, Run
 from polo.windows.run_updater_dialog import RunUpdaterDialog
 
 logger = make_default_logger(__name__)
+
+
+class RunTreeItem(QtWidgets.QTreeWidgetItem):
+
+    def __init__(self, date, parent):
+        self.date = date  # datetime
+        super(RunTreeItem, self).__init__(parent)
+    
+    def __cmp__(self, other):
+        if isinstance(self.date, datetime):
+            if self.date < other.date:
+                return -1
+            elif self.date == other.date:
+                return 0
+            else:
+                return 1
+        else:
+            return -1  # just assume less than
+    
 
 class RunTree(QtWidgets.QTreeWidget):
     '''Inherits the :class:`QTreeWidget` class and acts as the sample and
@@ -33,6 +53,7 @@ class RunTree(QtWidgets.QTreeWidget):
     def __init__(self, parent=None, auto_link=True):
         self.classified_status = {}
         self.loaded_runs = {}
+        self.formated_name_to_name = {}
         self.samples = []
         self.auto_link = auto_link
         super(RunTree, self).__init__(parent)
@@ -58,8 +79,8 @@ class RunTree(QtWidgets.QTreeWidget):
         :return: The currently selected run, if one exists, otherwise returns False
         :rtype: Run, HWIRun or False
         '''
-        if self.currentItem() and self.currentItem().text(0) in self.loaded_runs:
-            return self.loaded_runs[self.currentItem().text(0)]
+        if self.currentItem() and self.currentItem().text(0) in self.formated_name_to_name:
+            return self.loaded_runs[self.formated_name_to_name[self.currentItem().text(0)]]
         else:
             return False
 
@@ -80,12 +101,10 @@ class RunTree(QtWidgets.QTreeWidget):
         :param event: QEvent, defaults to None
         :type event: QEvent, optional
         '''
-        current_selection = self.currentItem()
+        current_selection = self.selected_run
         if current_selection:
-            run_name = current_selection.text(0)
-            run = self.loaded_runs[run_name]
             updater = RunUpdaterDialog(
-                run=run, run_names=self.current_run_names)
+                run=current_selection, run_names=self.current_run_names)
             updater.exec_()
             # if updater.run.run_name != run_name:
             #     # need to change the run name in the viewer
@@ -95,16 +114,29 @@ class RunTree(QtWidgets.QTreeWidget):
             #         run_node.setText(0, updater.run.run_name)
             self.loaded_runs[run_name] = updater.run
     
-    def _sort_sample_nodes(self, sample_node):
-        # sort sample nodes by date
-        num_run_nodes = sample_node.childCount()
-        run_names = [sample_node.child(i) for i in range(num_run_nodes)]
-        for i in range(num_run_nodes):
-            sample_node.removeChild(i)  # remove all nodes
-        for run_name in run_names:
-            self._add_run_node(self.loaded_runs[run])
-        # sort run nodes by date
+    def _display_name_setter(self, run):
+        '''Private method that creates a display name for a run that also
+        avoids collisions with existing display names. Currently the process
+        of translating a display name to a :class:`Run` object involves first
+        looking up the display name in the :attr:`formated_name_to_name`
+        dictionary to get the run name and then looking up the run name in the
+        :attr:`loaded_runs` dictionary to get the :class:`Run` object. This
+        means that currently run names and display names need to be unique
+        to avoid collisions.
 
+        :param run: Run to create a display name for
+        :type run: Run or HWIRun
+        '''
+        if run.formated_name in self.formated_name_to_name:  # collision
+            def avoid_collision(formated_name, i):
+                incremented_name = '{}-{}'.format(formated_name, i)
+                if incremented_name in self.formated_name_to_name:
+                    avoid_collision(formated_name, i+1)
+                else:
+                    return incremented_name
+            return avoid_collision(run.formated_name, 0)
+        else:
+            return run.formated_name
 
     def _add_run_node(self, run, tree=None):
         '''Private method that adds a new run node.
@@ -119,15 +151,20 @@ class RunTree(QtWidgets.QTreeWidget):
         '''
         if not tree:
             tree = self
-        new_node = QtWidgets.QTreeWidgetItem(tree)
-        new_node.setText(0, run.run_name)
-        new_node.setToolTip(0, run.get_tooltip())
+
         if run.run_name in self.loaded_runs:
-            self.handle_dup_run_import()
+            # already got one mate
+            return
         else:
+            new_node = RunTreeItem(run.date, tree)
+            formated_name = self._display_name_setter(run)
+            new_node.setText(0, formated_name)
+            new_node.setToolTip(0, run.get_tooltip())
+        
             self.loaded_runs[run.run_name] = run
+            self.formated_name_to_name[formated_name] = run.run_name
             logger.info('Added new run: {}'.format(run))
-        return new_node
+            return new_node
 
     def _get_run_node(self, run):
         '''Private helper method that returns the :class:`QTreeWidgetItem`
@@ -180,37 +217,38 @@ class RunTree(QtWidgets.QTreeWidget):
     def _remove_run_slot(self, event=None):
         '''Slot to connect to contextMenu popup to remove the selected run.
         '''
-        current_selection = self.currentItem()
-        if current_selection:
-            run_name = current_selection.text(0)
-            self._remove_run(run_name)
+        if self.currentItem():
+            display_name = self.currentItem().text(0)
+            self.remove_run(display_name)
 
-    def _remove_run(self, run_name):
+    def remove_run(self, display_name):
         '''Private method to remove a :class:`Run` completely from the
          Polo interface.
 
-        :param run_name: Run name of :class:`Run` instance to remove
+        :param display_name: Display name being shown to the user to represent
+                            the run to be removed.
         :type run_name: str
         '''
-        # get all runs in the sample and just relink everything together
-        run = self.remove_run_from_view(run_name)
-        if run_name in self.loaded_runs:
-            self.loaded_runs.pop(run_name)
-        if run_name in self.classified_status:
-            self.classified_status.pop(run_name)
+        try:
+            comdenmed_run = self.loaded_runs[self.formated_name_to_name[display_name]]
+            self.remove_run_from_view(display_name, comdenmed_run.sampleName)
+            self.formated_name_to_name.pop(display_name)  # remove display name
+            self.loaded_runs.pop(comdenmed_run.run_name)  # remove from loaded runs
+            self.link_sample(comdenmed_run.sampleName)
+            # relink all the runs in the sample
 
-        self.link_sample(run.sampleName)
-
-        for run in self.loaded_runs:
-            if (self.loaded_runs[run].alt_spectrum
-                    and self.loaded_runs[run].alt_spectrum.run_name == run_name
-                ):
-                self.loaded_runs[run].alt_spectrum = None
-        self.remove_run_signal.emit([run])
-        logger.info('Attempting to remove run: {}'.format(run))
-        # BUG: run unlinking not working for non visible images
-        # the images within a run are unlinked but not the actual run objects
-        # the above is a temp fix
+            # remove links to condemned run if an alt spectrum 
+            for run in self.loaded_runs:
+                if (self.loaded_runs[run].alt_spectrum
+                    and self.loaded_runs[run].alt_spectrum.run_name == comdenmed_run.run_name
+                    ):
+                    self.loaded_runs[run].alt_spectrum = None
+            self.remove_run_signal.emit([None])
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self.remove_run))
+            make_message_box(parent=self,
+            message='Could not remove run {}'.format(e)
+            ).exec_()
     
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -236,36 +274,34 @@ class RunTree(QtWidgets.QTreeWidget):
         else:
             event.ignore()
                 
-    def remove_run_from_view(self, run_name):
+    def remove_run_from_view(self, display_name, sample_name):
         '''Remove a :class:`Run` instance using its :attr:`run_name` attribute.
         Does not effect any other widgets. Calling this method only 
         removes the :class:`Run` instance from
         the display. If a :class:`Run` instance is removed from successfully
         it is returned.
 
+        TODO UPDATE
+
         :param run_name: Name of run to remove
         :type run_name: str
         :return: Removed run
         :rtype: Run or HWIRun
         '''
-        # remove the current selected run if one is selected
-        # only removes it from the view does not do any backend removal
-        condemned_run = self.loaded_runs[run_name]
-        condemned_run_parent = self.findItems(
-            condemned_run.sampleName, Qt.MatchExactly, column=0)
-        if condemned_run_parent:
-            condemned_run_parent = condemned_run_parent.pop()
-            # got through all children of parent
-            for i in range(condemned_run_parent.childCount()):
-                if condemned_run_parent.child(i).text(0) == run_name:
-                    condemned_run_parent.removeChild(
-                        condemned_run_parent.child(i))
-                    break
-            # check if any remaining children
-            if condemned_run_parent.childCount() == 0:
-                self.invisibleRootItem().removeChild(condemned_run_parent)
-
-            return condemned_run
+        parent_node = self.findItems(sample_name, Qt.MatchExactly, column=0)
+        if parent_node:
+            parent_node = parent_node.pop()
+            for i in range(parent_node.childCount()):  # find run node
+                if parent_node.child(i) and parent_node.child(i).text(0) == display_name:
+                    parent_node.removeChild(parent_node.child(i))
+            if parent_node.childCount() == 0:
+                # no runs left for this sample so remove it
+                for i in range(self.invisibleRootItem().childCount()):
+                    if (self.invisibleRootItem().child(i) 
+                        and self.invisibleRootItem().child(i).text(0) == sample_name
+                        ):
+                        self.invisibleRootItem().removeChild(
+                            self.invisibleRootItem().child(i))
 
     def add_classified_run(self, run):
         '''Marks a :class:`Run` instance as classified by adding it to the
@@ -361,7 +397,8 @@ class RunTree(QtWidgets.QTreeWidget):
         :param event: QEvent
         :type event: QEvent
         '''
-        if self.currentItem() and self.currentItem().text(0) in self.loaded_runs:
+        current_run = self.selected_run
+        if current_run:
             self.menu = QtWidgets.QMenu(self)
 
             # edit_data_action = QtWidgets.QAction('Edit Run Data', self)

@@ -474,7 +474,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         try:
             save_path = None
-            if self.current_run:
+            if selection == self.actionRemove_Run:
+                self.runOrganizer.remove_run()
+            elif self.current_run:
                 current_run_saver = XtalWriter(self.current_run, self)
                 if selection == self.actionSave_Run:
                     sp = self.current_run.save_file_path
@@ -491,11 +493,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         message='No suitable filepath was given.'
                         ).exec_()
         except Exception as e:
+            raise e
             logger.error('Caught {} at {}'.format(e, self._handle_file_menu))
             make_message_box(
                 parent=self,
                 message='Failed to execute {} {}'.format(selection.text(), e)
-            )
+            ).exec()
 
     def _handle_help_menu(self, action):
         '''Private method that handles user interaction with the help menu. 

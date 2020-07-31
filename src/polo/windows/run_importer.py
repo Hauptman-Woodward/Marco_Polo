@@ -335,7 +335,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             self.import_thread.finished.connect(_finish_file_import)
             self.setEnabled(False)
             self.import_thread.start()
-
+    
 
     def _open_browser(self, rar=True):
         '''Private method that opens a :class:`QFileBrowser` instance that allows the 
@@ -647,3 +647,27 @@ class RunImporterDialog(QtWidgets.QDialog):
                     self.ui.comboBox_3.currentText()
                 )
             self.selected_candidate.data.update(selection_dict)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+    
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+    
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+            paths = []
+            for url in event.mimeData().urls():
+                path = Path(str(url.toLocalFile()))
+
+        else:
+            event.ignore()

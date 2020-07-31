@@ -43,7 +43,13 @@ class Run():
         self.images = images
         self.date = date
         self.__dict__.update(kwargs)
-
+    
+    @property
+    def formated_name(self):
+        if isinstance(self.date, datetime):
+            return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
+        else:
+            return self.run_name
     def __getitem__(self, n):
         try:
             return self.images[n]
@@ -66,7 +72,7 @@ class Run():
         return 'Run Name: {}\nSpectrum: {}\nDate: {}\nNum Images: {}'.format(
             self.run_name, self.image_spectrum, str(self.date), len(self)
         )
-
+    
     def encode_images_to_base64(self):
         '''Helper method that encodes all images in the
         `class`~polo.crystallography.run.Run` to base64.
@@ -196,10 +202,16 @@ class HWIRun(Run):
             platename = self.__dict__['plateName']
         else:
             platename = self.plate_id
+        
 
-        return super().get_tooltip() + '\nCocktail Version: {}\nPlate ID: {}'.format(
+        tooltip = super().get_tooltip() 
+        tooltip += '\nCocktail Version: {}\nPlate ID: {}'.format(
             os.path.basename(str(self.cocktail_menu.path)), str(platename)
         )
+        if 'temperature' in self.__dict__:
+            tooltip += '\nTemp: {} C'.format(self.temperature)
+        return tooltip
+
 
     def link_to_next_date(self, other_run):
         '''Link this :class:`~polo.crystallography.run.HWIRun` to another 

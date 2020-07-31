@@ -311,6 +311,7 @@ class Image(QtGui.QPixmap):
         :attr:`~polo.crystallography.image.Image.previous_image`
         attributes.
         '''
+        self.delete_pixmap_data()
         for i in self.get_linked_images_by_date():
             i.delete_pixmap_data()
         for i in self.get_linked_images_by_spectrum():
@@ -405,18 +406,22 @@ class Image(QtGui.QPixmap):
                  by date
         :rtype: list
         '''
-        linked_images = [self]
-        if self.next_image:
-            start_image = self.next_image
-            while isinstance(start_image, Image) and start_image.path != self.path:
-                linked_images.append(start_image)
-                start_image = start_image.next_image
-        if self.previous_image:
-            start_image = self.previous_image
-            while isinstance(start_image, Image) and self.previous_image.path != self.path:
-                linked_images.append(start_image)
-                start_image = start_image.previous_image
-        return sorted(linked_images, key=lambda i: i.date)
+        try:
+            linked_images = [self]
+            if self.next_image:
+                start_image = self.next_image
+                while isinstance(start_image, Image) and start_image.path != self.path:
+                    linked_images.append(start_image)
+                    start_image = start_image.next_image
+            if self.previous_image:
+                start_image = self.previous_image
+                while isinstance(start_image, Image) and self.previous_image.path != self.path:
+                    linked_images.append(start_image)
+                    start_image = start_image.previous_image
+            return sorted(linked_images, key=lambda i: i.date)
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self.get_linked_images_by_date))
+            return []
 
     def get_linked_images_by_spectrum(self):
         '''Get all :class:`~polo.crystallography.image.Image`s 

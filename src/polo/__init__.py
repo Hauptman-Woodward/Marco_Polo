@@ -13,6 +13,7 @@ from tensorflow.contrib.predictor import from_saved_model
 polo_version = '0.0.7'
 dirname = Path(os.path.dirname(__file__)).parent
 
+
 # CONSTANT FILE PATHS
 # =============================================================================
 
@@ -55,6 +56,13 @@ BLANK_IMAGE = Path('data/images/default_images/blank_image.png')
 ICONS = DATA_DIR.joinpath('images/icons')
 ICON_DICT = {Path(icon).stem: ICONS.joinpath(icon)
              for icon in os.listdir(str(ICONS))}
+
+
+# Set the backup location
+
+
+
+
 
 # DATA
 # =============================================================================
