@@ -492,8 +492,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         :param import_candidate: ImportCandidate to display
         :type import_candidate: ImportCandidate
         '''
-        if issubclass(import_candidate.import_type, Run):
+        if issubclass(import_candidate.import_type, HWIRun):
             self._enable_hwi_import_tools()
+            print('enabled hwi tools')
         else:
             self._disable_hwi_import_tools()
 
@@ -668,6 +669,5 @@ class RunImporterDialog(QtWidgets.QDialog):
             paths = []
             for url in event.mimeData().urls():
                 path = Path(str(url.toLocalFile()))
-
         else:
             event.ignore()

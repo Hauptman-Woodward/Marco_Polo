@@ -11,14 +11,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ExporDialog(object):
-    def setupUi(self, ExporDialog):
-        ExporDialog.setObjectName("ExporDialog")
-        ExporDialog.resize(617, 339)
-        ExporDialog.setMaximumSize(QtCore.QSize(1000, 500))
-        self.gridLayout = QtWidgets.QGridLayout(ExporDialog)
+class Ui_PptxExporterDialog(object):
+    def setupUi(self, PptxExporterDialog):
+        PptxExporterDialog.setObjectName("PptxExporterDialog")
+        PptxExporterDialog.resize(617, 339)
+        PptxExporterDialog.setMaximumSize(QtCore.QSize(1000, 500))
+        self.gridLayout = QtWidgets.QGridLayout(PptxExporterDialog)
         self.gridLayout.setObjectName("gridLayout")
-        self.groupBox = QtWidgets.QGroupBox(ExporDialog)
+        self.groupBox = QtWidgets.QGroupBox(PptxExporterDialog)
         self.groupBox.setMaximumSize(QtCore.QSize(300, 1000))
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox)
@@ -32,7 +32,7 @@ class Ui_ExporDialog(object):
         self.comboBox.addItem("")
         self.verticalLayout.addWidget(self.comboBox)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.groupBox_3 = QtWidgets.QGroupBox(ExporDialog)
+        self.groupBox_3 = QtWidgets.QGroupBox(PptxExporterDialog)
         self.groupBox_3.setMaximumSize(QtCore.QSize(300, 1000))
         self.groupBox_3.setObjectName("groupBox_3")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_3)
@@ -44,7 +44,7 @@ class Ui_ExporDialog(object):
         self.checkBox_2.setObjectName("checkBox_2")
         self.verticalLayout_3.addWidget(self.checkBox_2)
         self.gridLayout.addWidget(self.groupBox_3, 1, 0, 1, 1)
-        self.groupBox_2 = QtWidgets.QGroupBox(ExporDialog)
+        self.groupBox_2 = QtWidgets.QGroupBox(PptxExporterDialog)
         self.groupBox_2.setObjectName("groupBox_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_2)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -52,25 +52,25 @@ class Ui_ExporDialog(object):
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout_2.addWidget(self.textBrowser)
         self.gridLayout.addWidget(self.groupBox_2, 0, 1, 3, 1)
-        self.buttonBox = QtWidgets.QDialogButtonBox(ExporDialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(PptxExporterDialog)
         self.buttonBox.setMaximumSize(QtCore.QSize(150, 50))
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 1)
 
-        self.retranslateUi(ExporDialog)
-        QtCore.QMetaObject.connectSlotsByName(ExporDialog)
+        self.retranslateUi(PptxExporterDialog)
+        QtCore.QMetaObject.connectSlotsByName(PptxExporterDialog)
 
-    def retranslateUi(self, ExporDialog):
+    def retranslateUi(self, PptxExporterDialog):
         _translate = QtCore.QCoreApplication.translate
-        ExporDialog.setWindowTitle(_translate("ExporDialog", "Run Exporter"))
-        self.groupBox.setTitle(_translate("ExporDialog", "Select Export Format"))
-        self.comboBox.setItemText(0, _translate("ExporDialog", "xtal Format"))
-        self.comboBox.setItemText(1, _translate("ExporDialog", "HTML Report"))
-        self.comboBox.setItemText(2, _translate("ExporDialog", "PDF Report"))
-        self.comboBox.setItemText(3, _translate("ExporDialog", "CSV - All Data"))
-        self.comboBox.setItemText(4, _translate("ExporDialog", "CSV - Human Classifications Only"))
-        self.groupBox_3.setTitle(_translate("ExporDialog", "Export Settings"))
-        self.checkBox.setText(_translate("ExporDialog", "Encode Images?"))
-        self.checkBox_2.setText(_translate("ExporDialog", "Something Else?"))
-        self.groupBox_2.setTitle(_translate("ExporDialog", "Format Information"))
+        PptxExporterDialog.setWindowTitle(_translate("PptxExporterDialog", "Run Exporter"))
+        self.groupBox.setTitle(_translate("PptxExporterDialog", "Select Export Format"))
+        self.comboBox.setItemText(0, _translate("PptxExporterDialog", "xtal Format"))
+        self.comboBox.setItemText(1, _translate("PptxExporterDialog", "HTML Report"))
+        self.comboBox.setItemText(2, _translate("PptxExporterDialog", "PDF Report"))
+        self.comboBox.setItemText(3, _translate("PptxExporterDialog", "CSV - All Data"))
+        self.comboBox.setItemText(4, _translate("PptxExporterDialog", "CSV - Human Classifications Only"))
+        self.groupBox_3.setTitle(_translate("PptxExporterDialog", "Export Settings"))
+        self.checkBox.setText(_translate("PptxExporterDialog", "Encode Images?"))
+        self.checkBox_2.setText(_translate("PptxExporterDialog", "Something Else?"))
+        self.groupBox_2.setTitle(_translate("PptxExporterDialog", "Format Information"))

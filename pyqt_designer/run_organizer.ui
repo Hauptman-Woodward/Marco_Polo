@@ -45,7 +45,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QPushButton" name="pushButton">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run the MARCO model on the currently selected run. &lt;/p&gt;&lt;p&gt;MARCO has been trained on visible light images and will only run on runs photographed using standard visible light imaging.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run the MARCO model on the currently selected run. &lt;/p&gt;&lt;p&gt;MARCO has been trained on visible (brightfield) images and its classifications are therefore not valid for images taken with other photographic technologies.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Classify Selected Run</string>

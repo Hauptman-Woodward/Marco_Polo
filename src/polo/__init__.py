@@ -10,7 +10,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-polo_version = '0.0.7'
+polo_version = '0.0.8'
 dirname = Path(os.path.dirname(__file__)).parent
 
 
@@ -22,7 +22,8 @@ APP_ICON = Path('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('.tmp')
-BACKUP_DIR = dirname.joinpath('.backups')
+
+BACKUP_DIR = Path(os.getcwd()).joinpath('.polo_backups')
 
 if not os.path.isdir(str(TEMP_DIR)):
     os.makedirs(str(TEMP_DIR))

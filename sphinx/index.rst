@@ -25,6 +25,7 @@ summer internship program.
    user_guide
    video_guides
    beta_testers
+   future_maintainers
    polo
 
 

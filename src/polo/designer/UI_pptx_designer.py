@@ -106,7 +106,7 @@ class Ui_PptxDialog(object):
 
     def retranslateUi(self, PptxDialog):
         _translate = QtCore.QCoreApplication.translate
-        PptxDialog.setWindowTitle(_translate("PptxDialog", "Dialog"))
+        PptxDialog.setWindowTitle(_translate("PptxDialog", "Presentation Exporter"))
         self.groupBox.setTitle(_translate("PptxDialog", "Presentation Settings"))
         self.label_3.setText(_translate("PptxDialog", "Title"))
         self.groupBox_2.setTitle(_translate("PptxDialog", "Select Included Images"))

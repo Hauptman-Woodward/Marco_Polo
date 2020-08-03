@@ -230,7 +230,12 @@ class RunImporter():
         :rtype: [type]
         '''
         if RunImporter.directory_validator(data_dir) == True:
-            new_run = Run(image_dir=data_dir, **kwargs)
+            # cover all required arguments
+            if 'run_name' not in kwargs:
+                kwargs['run_name'] = Path(data_dir).name
+            if 'image_dir' not in kwargs:
+                kwargs['image_dir'] = data_dir
+            new_run = Run(**kwargs)
             new_run.add_images_from_dir()
             return new_run
         return False

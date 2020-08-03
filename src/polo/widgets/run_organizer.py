@@ -230,7 +230,8 @@ class RunOrganizer(QtWidgets.QWidget):
                 logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
                 make_message_box(
                     parent=self,
-                    message='Could not import run from {}'.format(each_path)
+                    message='Could not import run from {} {}'.format(
+                        each_path, e)
                 ).exec_()
         self.setEnabled(True)
         QApplication.restoreOverrideCursor()

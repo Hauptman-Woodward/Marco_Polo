@@ -493,7 +493,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         message='No suitable filepath was given.'
                         ).exec_()
         except Exception as e:
-            raise e
             logger.error('Caught {} at {}'.format(e, self._handle_file_menu))
             make_message_box(
                 parent=self,
