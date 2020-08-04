@@ -381,6 +381,7 @@ class RunTree(QtWidgets.QTreeWidget):
                     self._add_run_node(new_run, orphan_runs)
 
             elif isinstance(new_run, Run):
+                print('is non hwi run', new_run.run_name)
                 non_hwi_runs = self.findItems(
                     'Non-HWI Runs', Qt.MatchExactly, column=0)
                 if non_hwi_runs:
@@ -388,7 +389,8 @@ class RunTree(QtWidgets.QTreeWidget):
                 else:
                     non_hwi_runs = QtWidgets.QTreeWidgetItem(self)
                     non_hwi_runs.setText(0, 'Non-HWI Runs')
-                    new_run.sampleName = 'Non-HWI Runs'
+
+                new_run.sampleName = 'Non-HWI Runs'
                 self._add_run_node(new_run, non_hwi_runs)
 
     def contextMenuEvent(self, event):

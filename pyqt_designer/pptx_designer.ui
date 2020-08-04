@@ -13,15 +13,26 @@
   <property name="windowTitle">
    <string>Presentation Exporter</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="RunTree" name="runTreeWidget" native="true">
+    <widget class="RunTree" name="runTreeWidget">
      <property name="minimumSize">
       <size>
        <width>200</width>
        <height>0</height>
       </size>
      </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item row="0" column="1">
@@ -193,8 +204,8 @@
  <customwidgets>
   <customwidget>
    <class>RunTree</class>
-   <extends>QWidget</extends>
-   <header>polo.widgets.run_tree.h</header>
+   <extends>QTreeWidget</extends>
+   <header>polo/widgets/run_tree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

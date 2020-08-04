@@ -6,15 +6,15 @@ from polo import make_default_logger
 logger = make_default_logger(__name__)
 
 
-def catch_ftp_errors(funct):
+def catch_ftp_errors(func):
     '''General decorator function for catching any errors thrown by other
     ftp_utils functions.
     '''
     def try_function(*args, **kwargs):
         try:
-            return funct(*args, **kwargs)
+            return func(*args, **kwargs)
         except ftplib.all_errors as e:
-            logger.error('Caught {} while calling {}'.format(funct))
+            logger.error('Caught {} while calling {}'.format(e, func))
             return e
     return try_function
 

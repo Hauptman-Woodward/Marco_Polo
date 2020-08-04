@@ -243,7 +243,7 @@ class RunImporter():
 
 class RunSerializer():
 
-    def __init__(self, run):
+    def __init__(self, run=None):
         self.run = run
 
     @classmethod

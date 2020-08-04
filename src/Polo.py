@@ -15,7 +15,6 @@ import astor
 from polo.windows.main_window import MainWindow
 from polo import LOG_PATH, APP_ICON, make_default_logger
 
-__version__ = '0.0.6'
 # set up logging
 logger = make_default_logger(__name__)
 
@@ -39,15 +38,14 @@ def main():
 
     # Run the app
     sys.excepthook = excepthook
-    logger.info('Started Polo version {}'.format(__version__))
+    app = QtWidgets.QApplication(sys.argv)
 
     if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):  # magic call to make high-res scaling work
         PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
     if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
         PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
+    
     multiprocessing.freeze_support()  # prevent threads continuing after program closed
-    app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon(str(APP_ICON)))
     main = MainWindow()
     main.show()

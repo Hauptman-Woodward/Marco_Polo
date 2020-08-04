@@ -244,10 +244,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # need to disable stuff that requires cocktails
             self.tab_10.setEnabled(False)  # optimize tab
             self.tab_2.setEnabled(False)  # plate view tab
-            make_message_box(
-                parent=self,
-                message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
-                ).exec_()
         else:
             self.tab_10.setEnabled(True)
             self.tab_2.setEnabled(True)

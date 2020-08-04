@@ -86,29 +86,35 @@ class RunOrganizer(QtWidgets.QWidget):
         # get the selected item
         selected_run = self.ui.runTree.selected_run
         if selected_run:
-            if (selected_run.run_name not in self._has_been_opened
-                and not hasattr(selected_run, 'save_file_path')):
-                backup = self._check_for_existing_backup(selected_run)
-                if backup and os.path.isfile(str(backup)):
-                    choice = make_message_box(
-                        parent=self,
-                        message='Found backed up classifications for this run.\
-                            Would you like to use them?',
-                        buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
-                        ).exec_()
-                    if choice == QtWidgets.QMessageBox.Yes:
-                        reader = MsoReader(backup)
-                        classified_images = reader.classify_images_from_mso_file(
-                            images=selected_run.images
-                        )
-                        if isinstance(classified_images, list):
-                            selected_run.images = classified_images
-                            message = 'Loaded classifications from backup.'
-                        else:
-                            message='Failed to load classifications.'
-                        make_message_box(
-                            parent=self, message=message
-                        ).exec_()
+
+            if selected_run.run_name not in self._has_been_opened:
+                if not isinstance(selected_run, HWIRun):
+                    make_message_box(
+                    parent=self,
+                    message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
+                    ).exec_()
+                if not hasattr(selected_run, 'save_file_path'):
+                    backup = self._check_for_existing_backup(selected_run)
+                    if backup and os.path.isfile(str(backup)):
+                        choice = make_message_box(
+                            parent=self,
+                            message='Found backed up classifications for this run.\
+                                Would you like to use them?',
+                            buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                            ).exec_()
+                        if choice == QtWidgets.QMessageBox.Yes:
+                            reader = MsoReader(backup)
+                            classified_images = reader.classify_images_from_mso_file(
+                                images=selected_run.images
+                            )
+                            if isinstance(classified_images, list):
+                                selected_run.images = classified_images
+                                message = 'Loaded classifications from backup.'
+                            else:
+                                message='Failed to load classifications.'
+                            make_message_box(
+                                parent=self, message=message
+                            ).exec_()
             self.opening_run.emit([selected_run])
             self._has_been_opened.add(selected_run.run_name)
 
@@ -226,6 +232,7 @@ class RunOrganizer(QtWidgets.QWidget):
                     if isinstance(xtal_result, (Run, HWIRun)):
                         self._add_runs_to_tree([xtal_result])
             except Exception as e:
+                raise e 
                 QApplication.restoreOverrideCursor()
                 logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
                 make_message_box(
