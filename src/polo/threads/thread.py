@@ -119,7 +119,6 @@ class ClassificationThread(thread):
             self.change_value.emit(0)  # reset the progress bar
             logger.error('Caught {} at {}'.format(e, self.run))
             self.exceptions = e
-            # emit signal so know to move progress par forward
 
 
 class FTPDownloadThread(thread):

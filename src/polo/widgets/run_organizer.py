@@ -58,7 +58,6 @@ class RunOrganizer(QtWidgets.QWidget):
     def __iter__(self):
         return (run for run_name, run in self.ui.runTree.loaded_runs.items())
 
-
     def _clear_current_run(self, run_list):
         '''Clear out the current run from other widgets by emiting a
         `opening_run` signal with a list that does not contain
@@ -77,7 +76,7 @@ class RunOrganizer(QtWidgets.QWidget):
         '''
         selected_run = self.ui.runTree.selected_run
         if selected_run:
-            self._open_classification_thread(self.ui.runTree.selected_run)
+            self._classify_multiple_runs([self.ui.runTree.selected_run])
 
     def _handle_opening_run(self, *args):
         '''Private method that signal to other widgets that the current run should be opened
@@ -129,7 +128,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.pushButton.setEnabled(False)
         self.ui.progressBar.setMaximum(len(run))
         self.ui.progressBar.setValue(1)  # reset the bar to 0
-        self.classification_thread = ClassificationThread(run, parent=self)
+        self.classification_thread = ClassificationThread(run)
         self.classification_thread.change_value.connect(
             self._set_progress_value)
         self.classification_thread.estimated_time.connect(
@@ -138,14 +137,13 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classification_thread.finished.connect(self._classification_cleanup)
         self.ui.runTree.setEnabled(False)
         self.ui.runTree.add_classified_run(run)
-        self.classification_thread.start()
-        logger.info('Opened classification thread: {}'.format(
-            self.classification_thread))
+        #self.classification_thread.start()
+        # logger.info('Opened classification thread: {}'.format(
+        #     self.classification_thread))
     
     def _classification_cleanup(self):
         '''"Cleanup" the UI after a classification thread has completed.
         '''
-
         self.ui.runTree.setEnabled(True)
         logger.info('Closed classification thread: {}'.format(
             self.classification_thread
@@ -192,7 +190,6 @@ class RunOrganizer(QtWidgets.QWidget):
                     ).exec_()
         
             recursive_classification_spawner()
-            
     
     def refresh_run_after_update(self, run):
         if run:

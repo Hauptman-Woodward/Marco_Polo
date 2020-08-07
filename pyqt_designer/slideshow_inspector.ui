@@ -1110,45 +1110,8 @@
          <attribute name="title">
           <string>Sort</string>
          </attribute>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="5" column="0">
-           <widget class="QRadioButton" name="radioButton_3">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images in the slideshow by their well number. This is the standard sort. If the currently loaded run is not an HWI Run well number = order the image was read into Polo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Well Number</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QRadioButton" name="radioButton_2">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort the images in the slideshow by their cocktail number, if it is available for the current run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Cocktail Number</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QRadioButton" name="radioButton">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images by their MARCO confidence. When classified the MARCO model assigns a confidence score between 0 and 1. Selecting this option will order the images in the slideshow from highest score to lowest score. &lt;span style=&quot; font-weight:600;&quot;&gt;NOTE&lt;/span&gt;: The sort ignores image classification so it is recommended to use this setting in combination with image filters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>MARCO Confidence</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
            <widget class="QLabel" name="label">
             <property name="maximumSize">
              <size>
@@ -1161,7 +1124,14 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -1176,6 +1146,46 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images by their MARCO confidence. When classified the MARCO model assigns a confidence score between 0 and 1. Selecting this option will order the images in the slideshow from highest score to lowest score. &lt;span style=&quot; font-weight:600;&quot;&gt;NOTE&lt;/span&gt;: The sort ignores image classification so it is recommended to use this setting in combination with image filters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>MARCO Confidence</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_4">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Compare each well in the current sample and sort well numbers by the earliest date you have identified a crystal. The images in the current run will be shown. Use after when you have classified multiple runs of the same sample. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; background-color:transparent;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;You have three runs: A, B and C imaged on the respective dates 10/10/20, 10/11/20 and 10/12/20. You have classified the following wells as crystals.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Run A Well 10&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Run B Well 12&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Run C Well 14&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Sorting by Earliest to Crystallize will show well number 10, 12, 14 plus all remaining images, in that order for the currently selected run.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Earliest to Crystalize</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_2">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort the images in the slideshow by their cocktail number, if it is available for the current run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Cocktail Number</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButton_3">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sort images in the slideshow by their well number. This is the standard sort. If the currently loaded run is not an HWI Run well number = order the image was read into Polo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Well Number</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

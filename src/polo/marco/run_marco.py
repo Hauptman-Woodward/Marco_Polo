@@ -5,7 +5,7 @@ from polo import make_default_logger
 
 logger = make_default_logger(__name__)
 
-def classify_image(tf_predictor, image_path):
+def run_model(tf_predictor, image_path):
     '''Given a tensorflow predictor (the MARCO model) and the path to an image, 
     runs the model on that image. Returns a tuple where the first item is the
     classification with greatest confidence and the second is a dictionary where
@@ -23,11 +23,12 @@ def classify_image(tf_predictor, image_path):
     '''
     try:
         def load_image():
-            f = open(image_path, 'rb')
-            return {'image_bytes': [f.read()]}
+            with open(image_path, 'rb') as f:
+                return {'image_bytes': [f.read()]}
 
         sys.stdout = open(os.devnull, "w")
-        results = tf_predictor(load_image())
+        data = load_image()
+        results = tf_predictor(data)
         sys.stdout = sys.__stdout__
         # suppress output
 
@@ -42,7 +43,6 @@ def classify_image(tf_predictor, image_path):
                 new_dict[key.decode('utf-8')] = dictionary[key]
             else:
                 new_dict[key] = dictionary
-
         return prediction.decode('utf-8'), new_dict
     except Exception as e:
         logger.error('Caught exception {}'.format(e))

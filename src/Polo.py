@@ -38,12 +38,13 @@ def main():
 
     # Run the app
     sys.excepthook = excepthook
-    app = QtWidgets.QApplication(sys.argv)
 
     if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):  # magic call to make high-res scaling work
         PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
     if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
         PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+    
+    app = QtWidgets.QApplication(sys.argv)
     
     multiprocessing.freeze_support()  # prevent threads continuing after program closed
     app.setWindowIcon(QtGui.QIcon(str(APP_ICON)))

@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger, BLANK_IMAGE)
-from polo.marco.run_marco import classify_image
+from polo.marco.run_marco import run_model
 
 logger = make_default_logger(__name__)
 
@@ -186,44 +186,44 @@ class Image(QtGui.QPixmap):
         else:
             self._bites = None
 
-    @property
-    def machine_class(self):
-        '''MARCO classification of the :class:`~polo.crystallography.image.Image`.
+    # @property
+    # def machine_class(self):
+    #     '''MARCO classification of the :class:`~polo.crystallography.image.Image`.
 
-        :return: Current MARCO classification of this image
-        :rtype: str
-        '''
-        return self._machine_class
+    #     :return: Current MARCO classification of this image
+    #     :rtype: str
+    #     '''
+    #     return self._machine_class
 
-    @machine_class.setter
-    def machine_class(self, new_class):
-        '''Setter method for 
-        :attr:`~polo.crystallography.image.Image.machine_class` attribute. 
-        If this image has alt images linked to it and has its 
-        :attr:`~polo.crystallography.image.Image.spectrum` attribute set as 
-        'Visible' linked alt images will share this :class:`~polo.crystallography.image.Image`'s 
-        :attr:`~polo.crystallography.image.Image.machine_class` attribute value. 
-        This is because the MARCO model has only been trained on visible light
-        images and therefore is not cabable of reliably classifying images 
-        taken in differenet spectrums. Since linked alt images 
-        should in theory be images of the exact same
-        well in the exact same plate the visible spectrum image can share
-        its MARCO classification with it's linked alt images.
+    # @machine_class.setter
+    # def machine_class(self, new_class):
+    #     '''Setter method for 
+    #     :attr:`~polo.crystallography.image.Image.machine_class` attribute. 
+    #     If this image has alt images linked to it and has its 
+    #     :attr:`~polo.crystallography.image.Image.spectrum` attribute set as 
+    #     'Visible' linked alt images will share this :class:`~polo.crystallography.image.Image`'s 
+    #     :attr:`~polo.crystallography.image.Image.machine_class` attribute value. 
+    #     This is because the MARCO model has only been trained on visible light
+    #     images and therefore is not cabable of reliably classifying images 
+    #     taken in differenet spectrums. Since linked alt images 
+    #     should in theory be images of the exact same
+    #     well in the exact same plate the visible spectrum image can share
+    #     its MARCO classification with it's linked alt images.
 
-        :param new_class: New MARCO classification for the 
-                          :class:`~polo.crystallography.image.Image`
-        :type new_class: str
-        '''
-        if new_class in IMAGE_CLASSIFICATIONS:
-            self._machine_class = new_class
-            if hasattr(self, 'alt_image') and self.alt_image and self.spectrum == 'Visible':
-                # alt images inherit their linked classifications
-                alt_image = self.alt_image
-                while alt_image.path and alt_image.path != self.path:
-                    alt_image._machine_class = new_class
-                    alt_image = alt_image.alt_image
-        else:
-            self._machine_class = None
+    #     :param new_class: New MARCO classification for the 
+    #                       :class:`~polo.crystallography.image.Image`
+    #     :type new_class: str
+    #     '''
+    #     if new_class in IMAGE_CLASSIFICATIONS:
+    #         self._machine_class = new_class
+    #         if hasattr(self, 'alt_image') and self.alt_image and self.spectrum == 'Visible':
+    #             # alt images inherit their linked classifications
+    #             alt_image = self.alt_image
+    #             while alt_image.path and alt_image.path != self.path:
+    #                 alt_image._machine_class = new_class
+    #                 alt_image = alt_image.alt_image
+    #     else:
+    #         self._machine_class = None
 
     @property
     def human_class(self):
@@ -267,6 +267,18 @@ class Image(QtGui.QPixmap):
             return True
         else:
             return False
+    
+    @property
+    def earliest_crystallization_date(self):
+        try:
+            dates = self.get_linked_images_by_date()
+            dates = sorted(dates, key=lambda i: i.date)
+            for i, each_date in enumerate(dates):
+                if dates[i].human_class == IMAGE_CLASSIFICATIONS[0]:
+                    return dates[i].date
+        except Exception as e:
+            print(e)
+            return None
 
     def setPixmap(self, scaling=None):
         '''Loads the :class:`~polo.crystallography.image.Image`'s 
@@ -350,8 +362,12 @@ class Image(QtGui.QPixmap):
                 round(float(self.prediction_dict[self.machine_class]) * 100, 1)
             )
         image_string += 'Date: {}\n'.format(self.formated_date)
-        image_string += 'Spectrum: {}'.format(self.spectrum)
-
+        image_string += 'Spectrum: {}\n'.format(self.spectrum)
+        if self.earliest_crystallization_date:
+            date = datetime.strftime(self.earliest_crystallization_date, '%m/%d/%Y')
+        else:
+            date = 'No crystals at this well'
+        image_string += "Well Earliest Crystallization Date: {}".format(date)
         return image_string
 
     def encode_base64(self):
@@ -458,8 +474,8 @@ class Image(QtGui.QPixmap):
         attributes based on the model results.
         '''
         try:
-            self.machine_class, self.prediction_dict = classify_image(MODEL,
-                                                                      self.path)
+            self.machine_class, self.prediction_dict = run_model(
+                MODEL, self.path)
         except AttributeError as e:
             logger.error('Caught {} at classify_image method'.format(e))
             return e
