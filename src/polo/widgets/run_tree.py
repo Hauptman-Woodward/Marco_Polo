@@ -11,6 +11,7 @@ from polo.utils.dialog_utils import make_message_box
 from polo import ICON_DICT, IMAGE_SPECS, SPEC_KEYS
 from polo.utils.io_utils import RunDeserializer, RunLinker, MsoReader, make_default_logger
 from polo.crystallography.run import HWIRun, Run
+from polo.threads.thread import ClassificationThread
 from polo.windows.run_updater_dialog import RunUpdaterDialog
 
 logger = make_default_logger(__name__)
@@ -49,6 +50,7 @@ class RunTree(QtWidgets.QTreeWidget):
     save_run_signal = pyqtSignal()
     remove_run_signal = pyqtSignal(list)
     dropped_links_signal = pyqtSignal(list)
+    classify_sample_signal = pyqtSignal(list)
 
     def __init__(self, parent=None, auto_link=True):
         self.classified_status = {}
@@ -391,6 +393,19 @@ class RunTree(QtWidgets.QTreeWidget):
 
                 new_run.sampleName = 'Non-HWI Runs'
                 self._add_run_node(new_run, non_hwi_runs)
+    
+    def _classify_all_runs_slot(self, sample_name):
+        '''Classify all the unclassified runs belonging to a the selected
+        sample.
+        '''
+        runs_to_classify = [run for run_name, run in self.loaded_runs.items()
+                            if (hasattr(run, 'sampleName') 
+                                and run_name not in self.classified_status
+                                and run.image_spectrum == IMAGE_SPECS[0]
+                                )
+                            ]
+        self.classify_sample_signal.emit(runs_to_classify)
+        
 
     def contextMenuEvent(self, event):
         '''Handle left click events by creating a popup context menu.
@@ -399,9 +414,8 @@ class RunTree(QtWidgets.QTreeWidget):
         :type event: QEvent
         '''
         current_run = self.selected_run
+        self.menu = QtWidgets.QMenu(self)
         if current_run:
-            self.menu = QtWidgets.QMenu(self)
-
             # edit_data_action = QtWidgets.QAction('Edit Run Data', self)
             # edit_data_action.triggered.connect(lambda: self._edit_data_slot(event))
 
@@ -425,6 +439,18 @@ class RunTree(QtWidgets.QTreeWidget):
             self.menu.addAction(classify_from_mso)
             
             self.menu.popup(QtGui.QCursor.pos())
+        else:
+            # check if left clicked on a sample
+            if self.currentItem().text(0) in self.samples:
+                classify_all_runs_action = QtWidgets.QAction('Classify All Runs', self)
+                classify_all_runs_action.triggered.connect(
+                    lambda: self._classify_all_runs_slot(self.currentItem().text(0))
+                )
+                self.menu.addAction(classify_all_runs_action)
+                self.menu.popup(QtGui.QCursor.pos())
+
+
+            
     
 
     

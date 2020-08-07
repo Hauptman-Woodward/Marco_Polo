@@ -51,6 +51,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
         self.ui.runTree.dropped_links_signal.connect(self._import_runs_from_drop)
+        self.ui.runTree.classify_sample_signal.connect(self._classify_multiple_runs)
 
         logger.info('Created {}'.format(self))
 
@@ -134,27 +135,64 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classification_thread.estimated_time.connect(
             self._set_estimated_classification_time)
 
-        def classification_cleanup():
-            self.ui.runTree.setEnabled(True)
-            self.ui.runTree.add_classified_run(run)
-            logger.info('Closed classification thread: {}'.format(
-                self.classification_thread
-            ))
-            if self.classification_thread.exceptions:
-                make_message_box(
-                    parent=self,
-                    message='Polo encountered an error while classifying your images {}'.format(
-                        self.classification_thread.exceptions
-                    )
-                ).exec_()
-
-            self.ui.pushButton.setEnabled(True)
-
-        self.classification_thread.finished.connect(classification_cleanup)
+        self.classification_thread.finished.connect(self._classification_cleanup)
         self.ui.runTree.setEnabled(False)
+        self.ui.runTree.add_classified_run(run)
         self.classification_thread.start()
         logger.info('Opened classification thread: {}'.format(
             self.classification_thread))
+    
+    def _classification_cleanup(self):
+        '''"Cleanup" the UI after a classification thread has completed.
+        '''
+
+        self.ui.runTree.setEnabled(True)
+        logger.info('Closed classification thread: {}'.format(
+            self.classification_thread
+        ))
+        if self.classification_thread.exceptions:
+            make_message_box(
+                parent=self,
+                message='Polo encountered an error while classifying your images {}'.format(
+                    self.classification_thread.exceptions
+                )
+            ).exec_()
+
+        self.ui.pushButton.setEnabled(True)
+    
+    def _classify_multiple_runs(self, runs):
+        '''Run the MARCO model on a list of runs. Recursively creates
+        :class:`ClassificationThreads` for each :class:`Run` until all
+        :class:`Run` instances have been classified.
+
+        :param runs: List of :class:`Run` instance to classify using MARCO  
+        :type runs: list
+        '''
+        if runs:
+            def recursive_classification_spawner():
+                try:
+                    if runs:
+                        current_run = runs.pop()
+                        self._open_classification_thread(current_run)
+                        self.classification_thread.finished.connect(
+                            recursive_classification_spawner)
+                        self.classification_thread.start()
+                    else:
+                        make_message_box(
+                            parent=self,
+                            message='Completed all classifications'
+                        ).exec_()
+                except Exception as e:
+                    self.ui.runTree.setEnabled(True)
+                    logger.error('Caught {} at {}'.format(
+                        e, self._classify_multiple_runs))
+                    make_message_box(
+                        parent=self,
+                        message='Classification failed {}'.format(e)
+                    ).exec_()
+        
+            recursive_classification_spawner()
+            
     
     def refresh_run_after_update(self, run):
         if run:
