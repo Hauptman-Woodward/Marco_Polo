@@ -259,18 +259,22 @@ class SlideshowViewer(PhotoViewer):
     
     @property
     def current_slide_number(self):
-        return self._carousel.current_slide.slide_number + 1
+        if self._carousel.current_slide:
+            return self._carousel.current_slide.slide_number + 1
+        else:
+            return 0
     
     @property
     def total_slides(self):
-        current_slide = self._carousel.current_slide
-        slide_numbers, i = set([]), current_slide.slide_number
-        while i not in slide_numbers:
-            slide_numbers.add(i)
-            current_slide = current_slide.next_slide
-            i = current_slide.slide_number
-        return max(slide_numbers) + 1
-
+        if self._carousel.current_slide:
+            current_slide = self._carousel.current_slide
+            slide_numbers, i = set([]), current_slide.slide_number
+            while i not in slide_numbers:
+                slide_numbers.add(i)
+                current_slide = current_slide.next_slide
+                i = current_slide.slide_number
+            return max(slide_numbers) + 1
+            
     def _set_all_dates_scene(self, image):
         '''Private method that creates a time resolved view from the :class:`~polo.crystallography.image.Image` 
         instance passed through the `image` argument.
