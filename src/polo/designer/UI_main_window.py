@@ -538,7 +538,6 @@ class Ui_MainWindow(object):
         self.menuTools.addSeparator()
         self.menuTools.addAction(self.actionView_Log_2)
         self.menuTools.addSeparator()
-        self.menuTools.addAction(self.actionEdit_Current_Run_Data)
         self.menuTools.addAction(self.actionDelete_Classification_Backups)
         self.menuFile.addAction(self.actionSave_Run)
         self.menuFile.addAction(self.actionSave_Run_As)

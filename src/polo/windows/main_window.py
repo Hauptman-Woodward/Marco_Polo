@@ -318,20 +318,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if selection == self.actionView_Log_2:
                 log_dialog = LogDialog(parent=self)
                 log_dialog.exec_()
-            elif selection == self.actionEdit_Current_Run_Data:
-                if self.current_run:
-                    updater_dialog = RunUpdaterDialog(
-                        self.current_run,
-                        self.runOrganizer.ui.runTree.current_run_names)
+            # elif selection == self.actionEdit_Current_Run_Data:
+            #     if self.current_run:
+            #         updater_dialog = RunUpdaterDialog(
+            #             self.current_run,
+            #             self.runOrganizer.ui.runTree.current_run_names)
                     
-                    updater_dialog.updated_run_signal.connect(
-                        self.runOrganizer.refresh_run_after_update
-                    )
-                    updater_dialog.exec_()
-                else:
-                    make_message_box(
-                        parent=self,
-                        message='Please load a run first.').exec_()
+            #         updater_dialog.updated_run_signal.connect(
+            #             self.runOrganizer.refresh_run_after_update
+            #         )
+            #         updater_dialog.exec_()
+            #     else:
+            #         make_message_box(
+            #             parent=self,
+            #             message='Please load a run first.').exec_()
             elif selection == self.actionDelete_Classification_Backups:
                 self._handle_delete_backups()
         except Exception as e:

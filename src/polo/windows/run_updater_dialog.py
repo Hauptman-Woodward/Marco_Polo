@@ -143,15 +143,15 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             RunLinker.the_big_link(all_linked_runs)
     
     def _update_date(self):
-
-    # TODO make this work
+        # TODO make this work. Currently need to work out issues caused with
+        # run linking when dates are changed. Since dates are used in the sample
+        # display need to remove the node corresponding to the run that has
+        # been updated and then reinsert and relink.
 
         new_date = self.ui.dateEdit.dateTime().toPyDateTime()
 
-
         # could add this functionality to setters for date instead of
         # handeling here
-
 
         if new_date != self.run.date:
             self.run.date = new_date
