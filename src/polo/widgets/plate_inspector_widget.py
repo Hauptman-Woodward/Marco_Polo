@@ -394,9 +394,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
                     SceneExporter.write_image, scene=self.ui.plateViewer._scene,
                     file_path=save_path 
                 )
-
                 def finished_saving_image():
-                    print('finished thread')
                     if isinstance(self.export_view_thread.result, str):
                         message = 'View saved to {}'.format(save_path)
                     else:

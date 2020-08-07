@@ -177,7 +177,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.tableWidget.setToolTip(_translate("Form", "<html><head/><body><p>The current optimization screen will be displayed here.</p></body></html>"))
+        self.tableWidget.setToolTip(_translate("Form", "<html><head/><body><p><span style=\" background-color:transparent;\">The current optimization screen will be displayed here. </span></p><p><span style=\" background-color:transparent;\">Normally, the content of each well is displayed as the concentration of each in the well plus the volume required to produce that concentration given its stock concentration and the well volume. </span></p><p><span style=\" background-color:transparent;\">However, HWI cocktail data sheets use a variety of units to describe reagent concentrations within a cocktail. Namely, % w/v and % v /v. </span></p><p><span style=\" background-color:transparent;\">In order to convert to morality for these units, one must know the molar mass or molar mass and density respectively. These values are unknown for a subset of reagents and therefore calculating a volume of reagent may not always be possible. </span></p><p><span style=\" background-color:transparent;\">Please note all units when reviewing a screen.</span></p></body></html>"))
         self.groupBox_17.setTitle(_translate("Form", "Plate Setup"))
         self.label_25.setText(_translate("Form", "Plate Dimensions"))
         self.label_26.setText(_translate("Form", "X"))

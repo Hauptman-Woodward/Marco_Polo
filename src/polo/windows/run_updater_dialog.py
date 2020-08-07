@@ -2,8 +2,8 @@ import json
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QAction, QGridLayout
 from polo.designer.UI_run_updater_dialog import Ui_runUpdater
 from polo.utils.dialog_utils import make_message_box
@@ -26,6 +26,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     :param parent: Parent widget, defaults to None
     :type parent: QWidget, optional
     '''
+    updated_run_signal = pyqtSignal(list)
 
     def __init__(self, run, run_names, parent=None):
         super(RunUpdaterDialog, self).__init__(parent)
@@ -40,6 +41,8 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(self._set_cocktail_menu)
         self.ui.pushButton.clicked.connect(self._update_run)
         self.ui.comboBox_2.addItems(IMAGE_SPECS)
+
+        print(self.run.formated_name)
 
 
     @property
@@ -140,7 +143,16 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             RunLinker.the_big_link(all_linked_runs)
     
     def _update_date(self):
+
+    # TODO make this work
+
         new_date = self.ui.dateEdit.dateTime().toPyDateTime()
+
+
+        # could add this functionality to setters for date instead of
+        # handeling here
+
+
         if new_date != self.run.date:
             self.run.date = new_date
             for image in self.run.images:
@@ -153,8 +165,6 @@ class RunUpdaterDialog(QtWidgets.QDialog):
                         image.previous_image = None
                     run.next_run = None
                     run.previous_run = None
-
-                RunLinker.link_runs_by_date(linked_runs)
         
 
     def _update_plate_id(self):
@@ -176,6 +186,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
             self._update_spectrum()
             self._update_plate_id()
             self._update_date()
+            self.updated_run_signal.emit([self.run])
         except Exception as e:
             logger.error('Caught {} calling {}'.format(e, self._update_run))
             make_message_box(

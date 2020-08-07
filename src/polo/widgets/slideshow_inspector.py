@@ -334,6 +334,18 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         if self.current_image:
             self.current_image.favorite = self.ui.checkBox_7.isChecked()
+    
+    def _set_slide_number_label(self):
+        try:
+            label = 'Image {} of {}'.format(
+                self.ui.slideshowViewer.current_slide_number,
+                self.ui.slideshowViewer.total_slides
+                )
+            self.ui.groupBox.setTitle(label)
+        except Exception as e:
+            raise e
+            logger.error('Caught {} at {}'.format(e, self._set_slide_number_label))
+
 
     def _classify_image(self, classification):
         '''Private method to change the human classification of the current
@@ -377,6 +389,7 @@ class slideshowInspector(QtWidgets.QWidget):
             self._set_favorite_checkbox()
             self._set_time_resolved_functions()
             self._set_alt_spectrum_buttons()
+            self._set_slide_number_label()
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, self._display_current_image))
             make_message_box(

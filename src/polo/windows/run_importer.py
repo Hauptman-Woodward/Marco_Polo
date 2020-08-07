@@ -203,6 +203,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(self._display_cocktail_files)
         self.ui.pushButton.clicked.connect(self._import_runs)
         self.ui.pushButton_2.clicked.connect(self._remove_run)
+        self.ui.pushButton_3.clicked.connect(self._restore_defaults)
         self._display_cocktail_files()
 
     @property
@@ -433,16 +434,27 @@ class RunImporterDialog(QtWidgets.QDialog):
         the user has changed them and then wants to undo those changes.
         '''
         self.selected_candidate.assign_run_type()  # reread the metadata
-        self._populate_fields()
+        self._populate_fields(self.selected_candidate)
 
     def _remove_run(self):
         '''Removes a run as an import candidate and refreshes the :class:`QlistWidget`
         to reflect the removal.
         '''
-        key = str(self.selected_candidate.path)
-        if key in self.import_candidates:
-            self.import_candidates.pop(key)
-        self._display_candidate_paths()
+        try:
+            if isinstance(self.selected_candidate, ImportCandidate): 
+                key = str(self.selected_candidate.path)
+                if key in self.import_candidates:
+                    self.import_candidates.pop(key)
+                self._display_candidate_paths()
+            else:
+                make_message_box(
+                    parent=self, message='Please import a run first'
+                ).exec_()
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._restore_defaults))
+            make_message_box(
+                parent=self, message='Could not remove import. {}'.format(e)
+                ).exec_()
 
     def _test_candidate_paths(self, file_paths):
         '''Private method that validates filepaths to ensure they could be
@@ -492,22 +504,28 @@ class RunImporterDialog(QtWidgets.QDialog):
         :param import_candidate: ImportCandidate to display
         :type import_candidate: ImportCandidate
         '''
-        if issubclass(import_candidate.import_type, HWIRun):
-            self._enable_hwi_import_tools()
-            print('enabled hwi tools')
-        else:
-            self._disable_hwi_import_tools()
+        try:
+            if issubclass(import_candidate.import_type, HWIRun):
+                self._enable_hwi_import_tools()
+            else:
+                self._disable_hwi_import_tools()
 
-        for key, value in import_candidate.data.items():
-            if key == 'cocktail_menu':
-                self._set_cocktail_menu()
-            elif key == 'image_spectrum':
-                self._set_image_spectrum(value)
-                pass
-            elif key == 'run_name':
-                self.ui.lineEdit.setText(str(value))
-            elif key == 'date':
-                self.ui.dateEdit_2.setDate(value)
+            for key, value in import_candidate.data.items():
+                if key == 'cocktail_menu':
+                    self._set_cocktail_menu()
+                elif key == 'image_spectrum':
+                    self._set_image_spectrum(value)
+                    pass
+                elif key == 'run_name':
+                    self.ui.lineEdit.setText(str(value))
+                elif key == 'date':
+                    self.ui.dateEdit_2.setDate(value)
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._populate_fields))
+            make_message_box(
+                parent=self,
+                message='Failed to refresh fields {}'.format(e)
+            ).exec_()
 
     def _set_cocktail_menu(self):
         '''Private method that sets the cocktail :class:`QComboBox` based on the

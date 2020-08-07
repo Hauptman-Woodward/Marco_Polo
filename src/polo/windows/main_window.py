@@ -323,6 +323,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     updater_dialog = RunUpdaterDialog(
                         self.current_run,
                         self.runOrganizer.ui.runTree.current_run_names)
+                    
+                    updater_dialog.updated_run_signal.connect(
+                        self.runOrganizer.refresh_run_after_update
+                    )
                     updater_dialog.exec_()
                 else:
                     make_message_box(
@@ -350,8 +354,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             
             choice = make_message_box(
                 parent=self,
-                message='You have {} Mb of backups. Would you like to delete these files?'.format(
-                    total_size * 1e-6),
+                message='You have {} Mb of backups stored at {}. Would you like to delete these files?'.format(
+                    total_size * 1e-6, BACKUP_DIR),
                 buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
                 ).exec_()
             if choice == QtWidgets.QMessageBox.Yes:

@@ -381,7 +381,6 @@ class RunTree(QtWidgets.QTreeWidget):
                     self._add_run_node(new_run, orphan_runs)
 
             elif isinstance(new_run, Run):
-                print('is non hwi run', new_run.run_name)
                 non_hwi_runs = self.findItems(
                     'Non-HWI Runs', Qt.MatchExactly, column=0)
                 if non_hwi_runs:

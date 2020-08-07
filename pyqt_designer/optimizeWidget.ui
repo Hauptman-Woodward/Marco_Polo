@@ -17,7 +17,7 @@
    <item row="0" column="0" rowspan="4">
     <widget class="QTableWidget" name="tableWidget">
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The current optimization screen will be displayed here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;The current optimization screen will be displayed here. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Normally, the content of each well is displayed as the concentration of each in the well plus the volume required to produce that concentration given its stock concentration and the well volume. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;However, HWI cocktail data sheets use a variety of units to describe reagent concentrations within a cocktail. Namely, % w/v and % v /v. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;In order to convert to morality for these units, one must know the molar mass or molar mass and density respectively. These values are unknown for a subset of reagents and therefore calculating a volume of reagent may not always be possible. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; background-color:transparent;&quot;&gt;Please note all units when reviewing a screen.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>

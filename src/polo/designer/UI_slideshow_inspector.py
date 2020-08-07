@@ -665,7 +665,7 @@ class Ui_slideshowInspector(object):
         self.groupBox_8.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Information about the image currently being displayed.</p></body></html>"))
         self.groupBox_8.setTitle(_translate("slideshowInspector", "Image Details"))
         self.textBrowser_2.setToolTip(_translate("slideshowInspector", "Displays metadata about the current image."))
-        self.groupBox.setTitle(_translate("slideshowInspector", "Current Slideshow Image"))
+        self.groupBox.setTitle(_translate("slideshowInspector", "Current Slide Number"))
         self.label_2.setText(_translate("slideshowInspector", "Image Name"))
         self.slideshowViewer.setToolTip(_translate("slideshowInspector", "Displays the current image(s)."))
         self.groupBox_5.setToolTip(_translate("slideshowInspector", "<html><head/><body><p>Control what kind of images are displayed by filtering images in the current run by classification type and / or classification method.</p></body></html>"))

@@ -59,12 +59,6 @@ ICON_DICT = {Path(icon).stem: ICONS.joinpath(icon)
              for icon in os.listdir(str(ICONS))}
 
 
-# Set the backup location
-
-
-
-
-
 # DATA
 # =============================================================================
 
@@ -172,4 +166,5 @@ from polo.crystallography.run import HWIRun, Run
 from polo.threads import thread
 
 # best bartender at Cunneen's bar in Rodger's Park
+# and in this program handles cocktail data
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))

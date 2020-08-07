@@ -155,6 +155,13 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classification_thread.start()
         logger.info('Opened classification thread: {}'.format(
             self.classification_thread))
+    
+    def refresh_run_after_update(self, run):
+        if run:
+            run = run.pop()
+            display_name = {v:k for k, v in self.ui.runTree.formated_name_to_name.items()}[run.run_name]
+            self.ui.runTree.remove_run(display_name)
+            self.ui.runTree.add_run_to_tree(run)
 
     def _set_progress_value(self, val):
         '''Private helper method to increment the classification
@@ -216,32 +223,56 @@ class RunOrganizer(QtWidgets.QWidget):
         # message box failed to import?
     
     def _import_runs_from_drop(self, paths):
-        self.setEnabled(False)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        for each_path in paths:
+        if paths:
             try:
-                if each_path.is_file() and each_path.suffix == '.rar':
-                    unrar_result = RunImporter.crack_open_a_rar_one(each_path)
-                    if isinstance(unrar_result, Path):
-                        each_path = unrar_result
-                if each_path.is_dir():
-                    self._add_run_from_directory(each_path)
-                elif each_path.is_file() and each_path.suffix == '.xtal':
-                    reader = RunDeserializer(str(each_path))
-                    xtal_result = reader.xtal_to_run()
-                    if isinstance(xtal_result, (Run, HWIRun)):
-                        self._add_runs_to_tree([xtal_result])
+                self.setEnabled(False)
+                #QApplication.setOverrideCursor(Qt.WaitCursor)
+                current_path = paths.pop()
+                self._import_thread = None
+
+                if current_path.is_file():
+                    if  current_path.suffix == '.rar':
+                        self._import_thread = RunImporter.unpack_rar_archive_thread(
+                        current_path
+                    )
+                    elif current_path.suffix == '.xtal':
+                        reader = RunDeserializer(str(current_path))
+                        self._import_thread = QuickThread(
+                            reader.xtal_to_run, 
+                        )
+                elif current_path.is_dir():
+                    self._import_thread = QuickThread(lambda: current_path)
+                
+                # gone through all import options, see if import thread is a thread
+                if self._import_thread:
+                
+                    def finished_import():
+                        import_result = self._import_thread.result
+                        
+                        # if coming from rar or dir result should be dir
+
+                        if os.path.isdir(str(import_result)):
+                            self._add_run_from_directory(import_result)
+                        elif isinstance(import_result, Run):
+                            self._add_runs_to_tree([import_result])
+                    
+                        if paths:
+                            self._import_runs_from_drop(paths)
+                        else:
+                            #QApplication.restoreOverrideCursor()
+                            self.setEnabled(True)
+                            
+                        
+                    self._import_thread.finished.connect(finished_import)
+                    self._import_thread.start()
             except Exception as e:
-                raise e 
-                QApplication.restoreOverrideCursor()
+                self.setEnabled(True)
                 logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
                 make_message_box(
                     parent=self,
-                    message='Could not import run from {} {}'.format(
-                        each_path, e)
+                    message='Import failed {}'.format(e)
                 ).exec_()
-        self.setEnabled(True)
-        QApplication.restoreOverrideCursor()
+
 
     def _check_for_existing_backup(self, run):
         '''Check the directory specified by the `BACKUP_DIR` constant for
@@ -318,8 +349,6 @@ class RunOrganizer(QtWidgets.QWidget):
         write_path = BACKUP_DIR.joinpath(run.run_name)
         writer = MsoWriter(run, write_path)
         writer.write_mso_file(use_marco_classifications=False)
-
-
         
     def import_saved_runs(self, xtal_files=[]):
         '''Import runs saved to xtal files.
