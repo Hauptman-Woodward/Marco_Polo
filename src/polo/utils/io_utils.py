@@ -883,7 +883,7 @@ class XtalWriter(RunSerializer):
         if os.path.exists(str(self.thread.result)):
             message = 'Saved current run to {}!'.format(self.thread.result)
         else:
-            message = 'Save to failed. Returned {}'.format(self.thread.result)
+            message = 'Failed to save run.{}'.format(self.thread.result)
 
         make_message_box(message=message).exec_()
 
@@ -895,22 +895,23 @@ class XtalWriter(RunSerializer):
         :return: path to xtal file
         :rtype: str
         '''
-        if XtalWriter.path_validator(output_path, parent=True):
-            # path is good to go and ready to write file into
-            self.run.encode_images_to_base64()
-            run_str = self.run_to_dict()
-            if isinstance(run_str, str):  # encoding worked, no errors caught
-                output_path = XtalWriter.path_suffix_checker(
-                    output_path, self.file_ext)  # make sure has .xtal suffix
-                try:
+        try:
+            if XtalWriter.path_validator(output_path, parent=True):
+                # path is good to go and ready to write file into
+                self.run.encode_images_to_base64()
+                run_str = self.run_to_dict()
+                if isinstance(run_str, str):  # encoding worked, no errors caught
+                    output_path = XtalWriter.path_suffix_checker(
+                        output_path, self.file_ext)  # make sure has .xtal suffix
+                
                     with open(str(output_path), 'w') as xtal_file:
                         xtal_file.write(self.xtal_header)
                         xtal_file.write(run_str)
                         return output_path
-                except PermissionError as e:
-                    logger.warning('Caught {} at {}'.format(
-                        e, self.write_xtal_file))
-                    return e
+        except Exception as e:
+            logger.warning('Caught {} at {}'.format(
+                e, self.write_xtal_file))
+            return e
 
     def run_to_dict(self):
         '''Create a json string from the run stored in the run attribute.

@@ -477,14 +477,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if selection == self.actionRemove_Run:
                 self.runOrganizer.remove_run()
             elif self.current_run:
+                save_path = None
                 current_run_saver = XtalWriter(self.current_run, self)
                 if selection == self.actionSave_Run:
-                    sp = self.current_run.save_file_path
-                    if sp and os.path.exists(sp):  # save run path already exist
-                        save_path = sp
-                elif selection == self.actionSave_Run_As or save_path == None:
+                    if hasattr(self.current_run, 'save_file_path'):
+                        save_path = self.current_run.save_file_path
+                    else:
+                        save_path = self._save_file_dialog()
+                elif selection == self.actionSave_Run_As:
                     save_path = self._save_file_dialog()
-
                 if save_path:  # double check wonky stuff happening in save dialog
                     current_run_saver.write_xtal_file_on_thread(save_path)
                 else:
