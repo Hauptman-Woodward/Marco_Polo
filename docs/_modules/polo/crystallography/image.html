@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -168,7 +169,7 @@
 
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DEFAULT_IMAGE_PATH</span><span class="p">,</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">MODEL</span><span class="p">,</span>
                   <span class="n">make_default_logger</span><span class="p">,</span> <span class="n">BLANK_IMAGE</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">classify_image</span>
+<span class="kn">from</span> <span class="nn">polo.marco.run_marco</span> <span class="kn">import</span> <span class="n">run_model</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -343,44 +344,44 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bites</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">machine_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;MARCO classification of the :class:`~polo.crystallography.image.Image`.</span>
+    <span class="c1"># @property</span>
+    <span class="c1"># def machine_class(self):</span>
+    <span class="c1">#     &#39;&#39;&#39;MARCO classification of the :class:`~polo.crystallography.image.Image`.</span>
 
-<span class="sd">        :return: Current MARCO classification of this image</span>
-<span class="sd">        :rtype: str</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_machine_class</span>
+    <span class="c1">#     :return: Current MARCO classification of this image</span>
+    <span class="c1">#     :rtype: str</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     return self._machine_class</span>
 
-    <span class="nd">@machine_class</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">machine_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Setter method for </span>
-<span class="sd">        :attr:`~polo.crystallography.image.Image.machine_class` attribute. </span>
-<span class="sd">        If this image has alt images linked to it and has its </span>
-<span class="sd">        :attr:`~polo.crystallography.image.Image.spectrum` attribute set as </span>
-<span class="sd">        &#39;Visible&#39; linked alt images will share this :class:`~polo.crystallography.image.Image`&#39;s </span>
-<span class="sd">        :attr:`~polo.crystallography.image.Image.machine_class` attribute value. </span>
-<span class="sd">        This is because the MARCO model has only been trained on visible light</span>
-<span class="sd">        images and therefore is not cabable of reliably classifying images </span>
-<span class="sd">        taken in differenet spectrums. Since linked alt images </span>
-<span class="sd">        should in theory be images of the exact same</span>
-<span class="sd">        well in the exact same plate the visible spectrum image can share</span>
-<span class="sd">        its MARCO classification with it&#39;s linked alt images.</span>
+    <span class="c1"># @machine_class.setter</span>
+    <span class="c1"># def machine_class(self, new_class):</span>
+    <span class="c1">#     &#39;&#39;&#39;Setter method for </span>
+    <span class="c1">#     :attr:`~polo.crystallography.image.Image.machine_class` attribute. </span>
+    <span class="c1">#     If this image has alt images linked to it and has its </span>
+    <span class="c1">#     :attr:`~polo.crystallography.image.Image.spectrum` attribute set as </span>
+    <span class="c1">#     &#39;Visible&#39; linked alt images will share this :class:`~polo.crystallography.image.Image`&#39;s </span>
+    <span class="c1">#     :attr:`~polo.crystallography.image.Image.machine_class` attribute value. </span>
+    <span class="c1">#     This is because the MARCO model has only been trained on visible light</span>
+    <span class="c1">#     images and therefore is not cabable of reliably classifying images </span>
+    <span class="c1">#     taken in differenet spectrums. Since linked alt images </span>
+    <span class="c1">#     should in theory be images of the exact same</span>
+    <span class="c1">#     well in the exact same plate the visible spectrum image can share</span>
+    <span class="c1">#     its MARCO classification with it&#39;s linked alt images.</span>
 
-<span class="sd">        :param new_class: New MARCO classification for the </span>
-<span class="sd">                          :class:`~polo.crystallography.image.Image`</span>
-<span class="sd">        :type new_class: str</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">new_class</span> <span class="ow">in</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_machine_class</span> <span class="o">=</span> <span class="n">new_class</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;alt_image&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span> <span class="o">==</span> <span class="s1">&#39;Visible&#39;</span><span class="p">:</span>
-                <span class="c1"># alt images inherit their linked classifications</span>
-                <span class="n">alt_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alt_image</span>
-                <span class="k">while</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="ow">and</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                    <span class="n">alt_image</span><span class="o">.</span><span class="n">_machine_class</span> <span class="o">=</span> <span class="n">new_class</span>
-                    <span class="n">alt_image</span> <span class="o">=</span> <span class="n">alt_image</span><span class="o">.</span><span class="n">alt_image</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_machine_class</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#     :param new_class: New MARCO classification for the </span>
+    <span class="c1">#                       :class:`~polo.crystallography.image.Image`</span>
+    <span class="c1">#     :type new_class: str</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     if new_class in IMAGE_CLASSIFICATIONS:</span>
+    <span class="c1">#         self._machine_class = new_class</span>
+    <span class="c1">#         if hasattr(self, &#39;alt_image&#39;) and self.alt_image and self.spectrum == &#39;Visible&#39;:</span>
+    <span class="c1">#             # alt images inherit their linked classifications</span>
+    <span class="c1">#             alt_image = self.alt_image</span>
+    <span class="c1">#             while alt_image.path and alt_image.path != self.path:</span>
+    <span class="c1">#                 alt_image._machine_class = new_class</span>
+    <span class="c1">#                 alt_image = alt_image.alt_image</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         self._machine_class = None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">human_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -424,6 +425,18 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">earliest_crystallization_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">()</span>
+            <span class="n">dates</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">each_date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dates</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">human_class</span> <span class="o">==</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">date</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Image.setPixmap"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.setPixmap">[docs]</a>    <span class="k">def</span> <span class="nf">setPixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Loads the :class:`~polo.crystallography.image.Image`&#39;s </span>
@@ -468,6 +481,7 @@
 <span class="sd">        :attr:`~polo.crystallography.image.Image.previous_image`</span>
 <span class="sd">        attributes.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">():</span>
             <span class="n">i</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">():</span>
@@ -506,8 +520,12 @@
                 <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Date: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formated_date</span><span class="p">)</span>
-        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
-
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s1">&#39;Spectrum: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">earliest_crystallization_date</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">earliest_crystallization_date</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="s1">&#39;No human classified crystals at this well&#39;</span>
+        <span class="n">image_string</span> <span class="o">+=</span> <span class="s2">&quot;Well Earliest Crystallization Date: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">image_string</span>
 
 <div class="viewcode-block" id="Image.encode_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.encode_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -562,18 +580,22 @@
 <span class="sd">                 by date</span>
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">linked_images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
-            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span>
-            <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
-                <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">next_image</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
-            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span>
-            <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
-                <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">previous_image</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">linked_images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">linked_images</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span><span class="p">:</span>
+                <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_image</span>
+                <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                    <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+                    <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">next_image</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="p">:</span>
+                <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span>
+                <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_image</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                    <span class="n">linked_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+                    <span class="n">start_image</span> <span class="o">=</span> <span class="n">start_image</span><span class="o">.</span><span class="n">previous_image</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">linked_images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="Image.get_linked_images_by_spectrum"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.image.Image.get_linked_images_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">get_linked_images_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Get all :class:`~polo.crystallography.image.Image`s </span>
@@ -610,8 +632,8 @@
 <span class="sd">        attributes based on the model results.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="o">=</span> <span class="n">classify_image</span><span class="p">(</span><span class="n">MODEL</span><span class="p">,</span>
-                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">machine_class</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_dict</span> <span class="o">=</span> <span class="n">run_model</span><span class="p">(</span>
+                <span class="n">MODEL</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at classify_image method&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>

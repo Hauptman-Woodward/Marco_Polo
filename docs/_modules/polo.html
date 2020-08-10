@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -165,8 +166,9 @@
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
 <span class="kn">from</span> <span class="nn">tensorflow.contrib.predictor</span> <span class="kn">import</span> <span class="n">from_saved_model</span>
 
-<span class="n">polo_version</span> <span class="o">=</span> <span class="s1">&#39;0.0.7&#39;</span>
+<span class="n">polo_version</span> <span class="o">=</span> <span class="s1">&#39;0.0.8&#39;</span>
 <span class="n">dirname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span>
+
 
 <span class="c1"># CONSTANT FILE PATHS</span>
 <span class="c1"># =============================================================================</span>
@@ -176,7 +178,8 @@
 <span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">UNRAR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;unrar&#39;</span><span class="p">)</span>
 <span class="n">TEMP_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.tmp&#39;</span><span class="p">)</span>
-<span class="n">BACKUP_DIR</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.backups&#39;</span><span class="p">)</span>
+
+<span class="n">BACKUP_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.polo_backups&#39;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="p">)):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">TEMP_DIR</span><span class="p">))</span>
@@ -210,6 +213,7 @@
 <span class="n">ICONS</span> <span class="o">=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;images/icons&#39;</span><span class="p">)</span>
 <span class="n">ICON_DICT</span> <span class="o">=</span> <span class="p">{</span><span class="n">Path</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span> <span class="n">ICONS</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
              <span class="k">for</span> <span class="n">icon</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ICONS</span><span class="p">))}</span>
+
 
 <span class="c1"># DATA</span>
 <span class="c1"># =============================================================================</span>
@@ -318,6 +322,7 @@
 <span class="kn">from</span> <span class="nn">polo.threads</span> <span class="kn">import</span> <span class="n">thread</span>
 
 <span class="c1"># best bartender at Cunneen&#39;s bar in Rodger&#39;s Park</span>
+<span class="c1"># and in this program handles cocktail data</span>
 <span class="n">tim</span> <span class="o">=</span> <span class="n">BarTender</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_META_DATA</span><span class="p">))</span>
 </pre></div>
 

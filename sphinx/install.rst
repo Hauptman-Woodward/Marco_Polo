@@ -73,22 +73,22 @@ Windows
 ------------------------
 
 Installing for All Users
-++++++++++++++++++++++++++
-
-**The Situation**
+****************************************************************************************
 
 The windows version of Polo is the only distribution that includes an installer.
 Some testers encountered issues running Polo when installing Polo for all users instead of
 just the local user (default install)
 
-**The Cause**
+The Cause
+..................................
 
 As part of normal operation Polo writes a log and other files in the directory the exe
 is contained in. If Polo is installed for all users, the exe will be located in
 a location that requires administrator privileges to write to and Polo will be
 unable write and open normally.
 
-**The Solution**
+The Solution
+..................................
 
 If you do not want to re-install Polo for the local user. Left click the
 the desktop shortcut or exe file and select "Run as administrator". Or just
@@ -97,20 +97,20 @@ reinstall Polo for the local user.
 Mac
 ------------
 
-Polo Downloads as a txt File
-++++++++++++++++++++++++++++++++++++
-
-**The Situation**
+Polo is recognized as a txt file, not exe
+****************************************************************************************
 
 Some users have found that the Mac Polo exe after it is downloaded is recognized
 as a txt file and not as an exe file (which can be run on your computer). If
 this is the case for you it is fixable but will require some command line usage.
 
-**The cause**
+The cause
+..................................
 
 Currently, not sure about this one.
 
-**The Solution**
+The Solution
+..................................
 
 1. Determine the filepath to your Polo (txt) exe file. The filepath can be
 copied to your clipboard by left clicking and selecting *Copy*
@@ -126,6 +126,27 @@ If you are prompted to give your password, do so.
 
 You should be able to run Polo as a program now.
 
+"Polo" can't be opened because Sandbox is not allowed to open documents in Terminal
+****************************************************************************************
+
+Some users using Mojave OS are greeted with the error message (shown below)
+when attempting to launch Polo for the first time. 
+
+.. image:: images/sandbox_error.png
+    :align: center
+
+The Cause
+..................................
+
+This issue is believed to be related to Mac security settings which are rightfully
+hesitant to run programs from outside developers.
+
+The Solution
+..................................
+
+If this occurs execute the steps desribed in the solution section of
+:ref:`Polo is recognized as a txt file, not exe`. You can also attempt control
+clicking the Polo executable and selecting **Open**. 
 
 
 Running From Source

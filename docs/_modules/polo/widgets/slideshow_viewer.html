@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -413,7 +414,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span> <span class="o">=</span> <span class="n">Carousel</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="kc">None</span>
-
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_slide_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">slide_number</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_slides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="p">:</span>
+            <span class="n">current_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">current_slide</span>
+            <span class="n">slide_numbers</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([]),</span> <span class="n">current_slide</span><span class="o">.</span><span class="n">slide_number</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">slide_numbers</span><span class="p">:</span>
+                <span class="n">slide_numbers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">current_slide</span> <span class="o">=</span> <span class="n">current_slide</span><span class="o">.</span><span class="n">next_slide</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">current_slide</span><span class="o">.</span><span class="n">slide_number</span>
+            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">slide_numbers</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            
 <div class="viewcode-block" id="SlideshowViewer._set_all_dates_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer._set_all_dates_scene">[docs]</a>    <span class="k">def</span> <span class="nf">_set_all_dates_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that creates a time resolved view from the :class:`~polo.crystallography.image.Image` </span>
 <span class="sd">        instance passed through the `image` argument.</span>

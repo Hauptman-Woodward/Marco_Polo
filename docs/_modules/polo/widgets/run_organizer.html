@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -208,12 +209,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_current_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">dropped_links_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">classify_sample_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_classify_multiple_runs</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">run</span> <span class="k">for</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">run</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-
 
 <div class="viewcode-block" id="RunOrganizer._clear_current_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._clear_current_run">[docs]</a>    <span class="k">def</span> <span class="nf">_clear_current_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_list</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Clear out the current run from other widgets by emiting a</span>
@@ -231,10 +232,9 @@
 <span class="sd">        Calls  :meth:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to</span>
 <span class="sd">        start the classification thread.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">selected_runname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">selected_runname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
-            <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_runname</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_open_classification_thread</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span></div>
+        <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span>
+        <span class="k">if</span> <span class="n">selected_run</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_classify_multiple_runs</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._handle_opening_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that signal to other widgets that the current run should be opened</span>
@@ -242,32 +242,37 @@
 <span class="sd">        the selected run.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># get the selected item</span>
-        <span class="n">selected_run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">selected_run_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
-            <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">selected_run_name</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span>
-                <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="s1">&#39;save_file_path&#39;</span><span class="p">)):</span>
-                <span class="n">backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_existing_backup</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">backup</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">backup</span><span class="p">)):</span>
-                    <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
-                        <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Found backed up classifications for this run.</span><span class="se">\</span>
-<span class="s1">                            Would you like to use them?&#39;</span><span class="p">,</span>
-                        <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
-                        <span class="n">reader</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="p">(</span><span class="n">backup</span><span class="p">)</span>
-                        <span class="n">classified_images</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">(</span>
-                            <span class="n">images</span><span class="o">=</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span>
-                        <span class="p">)</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">classified_images</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                            <span class="n">selected_run</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">classified_images</span>
-                            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Loaded classifications from backup.&#39;</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to load classifications.&#39;</span>
-                        <span class="n">make_message_box</span><span class="p">(</span>
-                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span>
+        <span class="k">if</span> <span class="n">selected_run</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+                    <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.&#39;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="s1">&#39;save_file_path&#39;</span><span class="p">):</span>
+                    <span class="n">backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_existing_backup</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">backup</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">backup</span><span class="p">)):</span>
+                        <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Found backed up classifications for this run.</span><span class="se">\</span>
+<span class="s1">                                Would you like to use them?&#39;</span><span class="p">,</span>
+                            <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                            <span class="n">reader</span> <span class="o">=</span> <span class="n">MsoReader</span><span class="p">(</span><span class="n">backup</span><span class="p">)</span>
+                            <span class="n">classified_images</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">classify_images_from_mso_file</span><span class="p">(</span>
+                                <span class="n">images</span><span class="o">=</span><span class="n">selected_run</span><span class="o">.</span><span class="n">images</span>
+                            <span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">classified_images</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                <span class="n">selected_run</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">classified_images</span>
+                                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Loaded classifications from backup.&#39;</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to load classifications.&#39;</span>
+                            <span class="n">make_message_box</span><span class="p">(</span>
+                                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="n">selected_run</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span></div>
 
@@ -281,33 +286,75 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># reset the bar to 0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span> <span class="o">=</span> <span class="n">ClassificationThread</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span> <span class="o">=</span> <span class="n">ClassificationThread</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">change_value</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_progress_value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">estimated_time</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_estimated_classification_time</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">classification_cleanup</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_classified_run</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Closed classification thread: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span>
-            <span class="p">))</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">exceptions</span><span class="p">:</span>
-                <span class="n">make_message_box</span><span class="p">(</span>
-                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Polo encountered an error while classifying your images </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">exceptions</span>
-                    <span class="p">)</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">classification_cleanup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_classification_cleanup</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Opened classification thread: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_classified_run</span><span class="p">(</span><span class="n">run</span><span class="p">)</span></div>
+        <span class="c1">#self.classification_thread.start()</span>
+        <span class="c1"># logger.info(&#39;Opened classification thread: {}&#39;.format(</span>
+        <span class="c1">#     self.classification_thread))</span>
+    
+<div class="viewcode-block" id="RunOrganizer._classification_cleanup"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classification_cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">_classification_cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;&quot;Cleanup&quot; the UI after a classification thread has completed.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Closed classification thread: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span>
+        <span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">exceptions</span><span class="p">:</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Polo encountered an error while classifying your images </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">exceptions</span>
+                <span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="RunOrganizer._classify_multiple_runs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classify_multiple_runs">[docs]</a>    <span class="k">def</span> <span class="nf">_classify_multiple_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Run the MARCO model on a list of runs. Recursively creates</span>
+<span class="sd">        :class:`ClassificationThreads` for each :class:`Run` until all</span>
+<span class="sd">        :class:`Run` instances have been classified.</span>
+
+<span class="sd">        :param runs: List of :class:`Run` instance to classify using MARCO  </span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">recursive_classification_spawner</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">runs</span><span class="p">:</span>
+                        <span class="n">current_run</span> <span class="o">=</span> <span class="n">runs</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_open_classification_thread</span><span class="p">(</span><span class="n">current_run</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                            <span class="n">recursive_classification_spawner</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Completed all classifications&#39;</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_multiple_runs</span><span class="p">))</span>
+                    <span class="n">make_message_box</span><span class="p">(</span>
+                        <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Classification failed </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        
+            <span class="n">recursive_classification_spawner</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="RunOrganizer.refresh_run_after_update"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_run_after_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">run</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">display_name</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="o">.</span><span class="n">items</span><span class="p">()}[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run</span><span class="p">(</span><span class="n">display_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_run_to_tree</span><span class="p">(</span><span class="n">run</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._set_progress_value"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._set_progress_value">[docs]</a>    <span class="k">def</span> <span class="nf">_set_progress_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private helper method to increment the classification</span>
@@ -369,30 +416,56 @@
         <span class="c1"># message box failed to import?</span>
     
 <div class="viewcode-block" id="RunOrganizer._import_runs_from_drop"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop">[docs]</a>    <span class="k">def</span> <span class="nf">_import_runs_from_drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">each_path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">paths</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">each_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">each_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
-                    <span class="n">unrar_result</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">crack_open_a_rar_one</span><span class="p">(</span><span class="n">each_path</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unrar_result</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-                        <span class="n">each_path</span> <span class="o">=</span> <span class="n">unrar_result</span>
-                <span class="k">if</span> <span class="n">each_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_from_directory</span><span class="p">(</span><span class="n">each_path</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">each_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">each_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.xtal&#39;</span><span class="p">:</span>
-                    <span class="n">reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">each_path</span><span class="p">))</span>
-                    <span class="n">xtal_result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xtal_result</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">xtal_result</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="c1">#QApplication.setOverrideCursor(Qt.WaitCursor)</span>
+                <span class="n">current_path</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="n">current_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                    <span class="k">if</span>  <span class="n">current_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">unpack_rar_archive_thread</span><span class="p">(</span>
+                        <span class="n">current_path</span>
+                    <span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">current_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.xtal&#39;</span><span class="p">:</span>
+                        <span class="n">reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">current_path</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                            <span class="n">reader</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> 
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">current_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">current_path</span><span class="p">)</span>
+                
+                <span class="c1"># gone through all import options, see if import thread is a thread</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="p">:</span>
+                
+                    <span class="k">def</span> <span class="nf">finished_import</span><span class="p">():</span>
+                        <span class="n">import_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">result</span>
+                        
+                        <span class="c1"># if coming from rar or dir result should be dir</span>
+
+                        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_result</span><span class="p">)):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_from_directory</span><span class="p">(</span><span class="n">import_result</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">import_result</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">import_result</span><span class="p">])</span>
+                    
+                        <span class="k">if</span> <span class="n">paths</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="c1">#QApplication.restoreOverrideCursor()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                            
+                        
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">finished_import</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">))</span>
                 <span class="n">make_message_box</span><span class="p">(</span>
                     <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Could not import run from </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each_path</span><span class="p">)</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Import failed </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="RunOrganizer._check_for_existing_backup"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._check_for_existing_backup">[docs]</a>    <span class="k">def</span> <span class="nf">_check_for_existing_backup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Check the directory specified by the `BACKUP_DIR` constant for</span>
@@ -417,49 +490,12 @@
                     <span class="k">return</span> <span class="n">each_backup</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="RunOrganizer._remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to completely remove a run from Polo.</span>
 
-<span class="sd">        :param run: Run to remove from current session, defaults to None</span>
-<span class="sd">        :type run: Run or HWIRun, optional</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">condemned_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_from_view</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condemned_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-                <span class="c1"># need to cut any links that had this run in it</span>
-                <span class="n">next_run</span><span class="p">,</span> <span class="n">prev_run</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span><span class="p">:</span>
-                    <span class="n">next_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">:</span>
-                    <span class="n">prev_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span>
-                
-                <span class="k">if</span> <span class="n">next_run</span> <span class="ow">and</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># cut condemned run out</span>
-                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">next_run</span><span class="p">)</span>
-                
-                <span class="k">elif</span> <span class="n">next_run</span><span class="p">:</span>  <span class="c1"># condemned run was first in the list</span>
-                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">next_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                        <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">elif</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># condemned was last in the list</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">prev_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                        <span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="kc">None</span>
-                
-                <span class="c1"># need to go around the horn since no backwards pointer</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span>
-                    <span class="n">linked_spectrums</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">while</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">start</span><span class="o">.</span><span class="n">run_name</span> <span class="o">!=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">:</span>
-                        <span class="n">linked_spectrums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-                        <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">alt_spectrum</span>
-                    <span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="n">linked_spectrums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+<div class="viewcode-block" id="RunOrganizer.remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span> 
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></div>
+            
 
 <div class="viewcode-block" id="RunOrganizer.backup_classifications_on_thread"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.backup_classifications_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">backup_classifications_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Does the exact same thing as </span>
@@ -506,8 +542,6 @@
         <span class="n">write_path</span> <span class="o">=</span> <span class="n">BACKUP_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
         <span class="n">writer</span> <span class="o">=</span> <span class="n">MsoWriter</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">write_path</span><span class="p">)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">write_mso_file</span><span class="p">(</span><span class="n">use_marco_classifications</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
-
         
 <div class="viewcode-block" id="RunOrganizer.import_saved_runs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.import_saved_runs">[docs]</a>    <span class="k">def</span> <span class="nf">import_saved_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_files</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&#39;&#39;&#39;Import runs saved to xtal files.</span>
@@ -634,48 +668,8 @@
         <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_run_from_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">new_run</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">new_run</span></div>
+        <span class="k">return</span> <span class="n">new_run</span></div></div>
         <span class="c1"># message box failed to import?</span>
-   
-<div class="viewcode-block" id="RunOrganizer.remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
-            <span class="n">run_name</span> <span class="o">=</span> <span class="n">run_name</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">condemned_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_from_view</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condemned_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-                <span class="c1"># need to cut any links that had this run in it</span>
-                <span class="n">next_run</span><span class="p">,</span> <span class="n">prev_run</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span><span class="p">:</span>
-                    <span class="n">next_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">next_run</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span><span class="p">:</span>
-                    <span class="n">prev_run</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">previous_run</span>
-                
-                <span class="k">if</span> <span class="n">next_run</span> <span class="ow">and</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># cut condemned run out</span>
-                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">link_to_next_date</span><span class="p">(</span><span class="n">next_run</span><span class="p">)</span>
-                
-                <span class="k">elif</span> <span class="n">next_run</span><span class="p">:</span>  <span class="c1"># condemned run was first in the list</span>
-                    <span class="n">next_run</span><span class="o">.</span><span class="n">previous_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">next_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                        <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">elif</span> <span class="n">prev_run</span><span class="p">:</span>  <span class="c1"># condemned was last in the list</span>
-                    <span class="n">prev_run</span><span class="o">.</span><span class="n">next_run</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">prev_run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                        <span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="o">=</span> <span class="kc">None</span>
-                
-                <span class="c1"># need to go around the horn since no backwards pointer</span>
-                <span class="k">if</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="p">:</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">alt_spectrum</span>
-                    <span class="n">linked_spectrums</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">while</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">start</span><span class="o">.</span><span class="n">run_name</span> <span class="o">!=</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">:</span>
-                        <span class="n">linked_spectrums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-                        <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">alt_spectrum</span>
-                    <span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="n">linked_spectrums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">link_to_alt_spectrum</span><span class="p">(</span><span class="n">linked_spectrums</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div></div>
-
 
 
                     

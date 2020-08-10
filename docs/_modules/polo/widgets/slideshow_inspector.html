@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -305,29 +306,27 @@
                             <span class="n">e</span><span class="p">,</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_well_number</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">False</span></div>
     
-<div class="viewcode-block" id="slideshowInspector.sort_images_by_fastest_to_crystallize"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize">[docs]</a>    <span class="k">def</span> <span class="nf">sort_images_by_fastest_to_crystallize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+<div class="viewcode-block" id="slideshowInspector.sort_images_by_fastest_to_crystalize"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">sort_images_by_fastest_to_crystalize</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
         <span class="c1"># images must have at least one other date</span>
         <span class="c1"># sort more likely to return false because of this</span>
         <span class="c1"># could add to time res buttons enabled</span>
         <span class="c1"># only sorting options that could include some filtering</span>
-
         <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
             <span class="n">dates</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">()</span>
             <span class="n">dates</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">each_date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dates</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">human_class</span> <span class="o">==</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                   <span class="k">return</span> <span class="n">i</span>
+                <span class="k">if</span> <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">human_class</span> <span class="o">==</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">i</span>
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
-        
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_images_by_fastest_to_crystallize</span>
+                <span class="n">e</span><span class="p">,</span> <span class="n">SlideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_fastest_to_crystallize</span>
             <span class="p">))</span>
             <span class="k">return</span> <span class="kc">False</span></div>
         
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run</span>
@@ -414,6 +413,8 @@
             <span class="k">return</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_cocktail_number</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_3</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_well_number</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_4</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">slideshowInspector</span><span class="o">.</span><span class="n">sort_images_by_fastest_to_crystalize</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -429,12 +430,14 @@
 <span class="sd">        :type show_all_specs: bool, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">show_all_dates</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_10</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_dates</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">show_all_specs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_9</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">show_all_specs</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">()</span>
@@ -490,6 +493,18 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">checkBox_7</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="slideshowInspector._set_slide_number_label"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._set_slide_number_label">[docs]</a>    <span class="k">def</span> <span class="nf">_set_slide_number_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Image </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">current_slide_number</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">slideshowViewer</span><span class="o">.</span><span class="n">total_slides</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">groupBox</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_slide_number_label</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="slideshowInspector._classify_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._classify_image">[docs]</a>    <span class="k">def</span> <span class="nf">_classify_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classification</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to change the human classification of the current</span>
@@ -533,6 +548,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_favorite_checkbox</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_time_resolved_functions</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_alt_spectrum_buttons</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_slide_number_label</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_current_image</span><span class="p">))</span>
             <span class="n">make_message_box</span><span class="p">(</span>

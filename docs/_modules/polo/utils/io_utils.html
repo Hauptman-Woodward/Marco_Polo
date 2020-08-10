@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -387,7 +388,12 @@
 <span class="sd">        :rtype: [type]</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="c1"># cover all required arguments</span>
+            <span class="k">if</span> <span class="s1">&#39;run_name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="s1">&#39;image_dir&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;image_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_dir</span>
+            <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">new_run</span>
         <span class="k">return</span> <span class="kc">False</span></div></div>
@@ -395,7 +401,7 @@
 
 <div class="viewcode-block" id="RunSerializer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer">[docs]</a><span class="k">class</span> <span class="nc">RunSerializer</span><span class="p">():</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
 
 <div class="viewcode-block" id="RunSerializer.make_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer.make_thread">[docs]</a>    <span class="nd">@classmethod</span>
@@ -490,28 +496,29 @@
 <span class="sd">        :return: Path to html report if write succeeds, Exception otherwise. </span>
 <span class="sd">        :rtype: str or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">encode_images</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
-                <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
-                <span class="p">[</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;_bites&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
+                <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">encode_images</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
+                    <span class="n">run</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">clean_run_for_save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+                    <span class="n">images</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                        <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">))</span>
+                    <span class="p">[</span><span class="n">RunDeserializer</span><span class="o">.</span><span class="n">clean_base64_string</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="s1">&#39;_bites&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
 
-                <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
-                    <span class="k">try</span><span class="p">:</span>
+                    <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">RUN_HTML_TEMPLATE</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
                         <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
                             <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span>
                             <span class="n">annotations</span><span class="o">=</span><span class="s1">&#39;No annotations&#39;</span><span class="p">)</span>
                         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">html_file</span><span class="p">:</span>
                             <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
                             <span class="k">return</span> <span class="kc">True</span>
-                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">))</span>
-                        <span class="k">return</span> <span class="n">e</span></div>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_complete_run</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.write_grid_screen"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_grid_screen">[docs]</a>    <span class="k">def</span> <span class="nf">write_grid_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">plate_list</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span>
                           <span class="n">x_reagent</span><span class="p">,</span> <span class="n">y_reagent</span><span class="p">,</span> <span class="n">well_volume</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

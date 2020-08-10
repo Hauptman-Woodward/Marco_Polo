@@ -92,11 +92,24 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#issues-others-have-encountered">Issues Others have Encountered</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Windows</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#installing-for-all-users">Installing for All Users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-for-all-users">Installing for All Users</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-cause">The Cause</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-solution">The Solution</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#mac">Mac</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#polo-downloads-as-a-txt-file">Polo Downloads as a txt File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polo-is-recognized-as-a-txt-file-not-exe">Polo is recognized as a txt file, not exe</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">The cause</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">The Solution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#polo-can-t-be-opened-because-sandbox-is-not-allowed-to-open-documents-in-terminal">“Polo” can’t be opened because Sandbox is not allowed to open documents in Terminal</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">The Cause</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">The Solution</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -227,32 +240,37 @@ section.</p>
 <h2>Windows<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="installing-for-all-users">
 <h3>Installing for All Users<a class="headerlink" href="#installing-for-all-users" title="Permalink to this headline">¶</a></h3>
-<p><strong>The Situation</strong></p>
 <p>The windows version of Polo is the only distribution that includes an installer.
 Some testers encountered issues running Polo when installing Polo for all users instead of
 just the local user (default install)</p>
-<p><strong>The Cause</strong></p>
+<div class="section" id="the-cause">
+<h4>The Cause<a class="headerlink" href="#the-cause" title="Permalink to this headline">¶</a></h4>
 <p>As part of normal operation Polo writes a log and other files in the directory the exe
 is contained in. If Polo is installed for all users, the exe will be located in
 a location that requires administrator privileges to write to and Polo will be
 unable write and open normally.</p>
-<p><strong>The Solution</strong></p>
+</div>
+<div class="section" id="the-solution">
+<h4>The Solution<a class="headerlink" href="#the-solution" title="Permalink to this headline">¶</a></h4>
 <p>If you do not want to re-install Polo for the local user. Left click the
 the desktop shortcut or exe file and select “Run as administrator”. Or just
 reinstall Polo for the local user.</p>
 </div>
 </div>
+</div>
 <div class="section" id="mac">
 <h2>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="polo-downloads-as-a-txt-file">
-<h3>Polo Downloads as a txt File<a class="headerlink" href="#polo-downloads-as-a-txt-file" title="Permalink to this headline">¶</a></h3>
-<p><strong>The Situation</strong></p>
+<div class="section" id="polo-is-recognized-as-a-txt-file-not-exe">
+<h3>Polo is recognized as a txt file, not exe<a class="headerlink" href="#polo-is-recognized-as-a-txt-file-not-exe" title="Permalink to this headline">¶</a></h3>
 <p>Some users have found that the Mac Polo exe after it is downloaded is recognized
 as a txt file and not as an exe file (which can be run on your computer). If
 this is the case for you it is fixable but will require some command line usage.</p>
-<p><strong>The cause</strong></p>
+<div class="section" id="id2">
+<h4>The cause<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>Currently, not sure about this one.</p>
-<p><strong>The Solution</strong></p>
+</div>
+<div class="section" id="id3">
+<h4>The Solution<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>1. Determine the filepath to your Polo (txt) exe file. The filepath can be
 copied to your clipboard by left clicking and selecting <em>Copy</em></p>
 <p>2. Open the terminal. This can be done by going to Spotlight search and searching
@@ -262,6 +280,24 @@ text in [ ] with the filepath you just copied. Do <strong>not</strong> include t
 If you are prompted to give your password, do so.</p>
 <p><code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">[Your/Polo/Filepath]</span></code></p>
 <p>You should be able to run Polo as a program now.</p>
+</div>
+</div>
+<div class="section" id="polo-can-t-be-opened-because-sandbox-is-not-allowed-to-open-documents-in-terminal">
+<h3>“Polo” can’t be opened because Sandbox is not allowed to open documents in Terminal<a class="headerlink" href="#polo-can-t-be-opened-because-sandbox-is-not-allowed-to-open-documents-in-terminal" title="Permalink to this headline">¶</a></h3>
+<p>Some users using Mojave OS are greeted with the error message (shown below)
+when attempting to launch Polo for the first time.</p>
+<img alt="_images/sandbox_error.png" class="align-center" src="_images/sandbox_error.png" />
+<div class="section" id="id4">
+<h4>The Cause<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>This issue is believed to be related to Mac security settings which are rightfully
+hesitant to run programs from outside developers.</p>
+</div>
+<div class="section" id="id5">
+<h4>The Solution<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>If this occurs execute the steps desribed in the solution section of
+<a class="reference internal" href="#polo-is-recognized-as-a-txt-file-not-exe"><span class="std std-ref">Polo is recognized as a txt file, not exe</span></a>. You can also attempt control
+clicking the Polo executable and selecting <strong>Open</strong>.</p>
+</div>
 </div>
 </div>
 </div>

@@ -19,6 +19,12 @@ skim over the :ref:`Background` section of the About page to get a better idea
 of what Polo's use cases are. The :ref:`User's Guide` goes into more detail
 about the specific functions of each tool included in Polo. 
 
+Test Data
+----------------
+
+If you do not have any screening data of your own that is not a problem.
+You can visit the `Test Data release page <https://github.com/EthanHolleman/Marco_Polo/releases/tag/test-data>`_
+at the Polo GitHub repository and download the files there.
 
 What Now?
 ---------------------------
