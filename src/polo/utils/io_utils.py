@@ -909,7 +909,7 @@ class XtalWriter(RunSerializer):
                         xtal_file.write(run_str)
                         return output_path
         except Exception as e:
-            logger.warning('Caught {} at {}'.format(
+            logger.error('Caught {} at {}'.format(
                 e, self.write_xtal_file))
             return e
 
@@ -926,7 +926,7 @@ class XtalWriter(RunSerializer):
                 return json.dumps(clean_run, ensure_ascii=True, indent=4,
                                   default=XtalWriter.json_encoder)
             except Exception as e:
-                logger.warning('Failed to encode {} to dict. Gave {}'.format(
+                logger.error('Failed to encode {} to dict. Gave {}'.format(
                     self.run, e))
                 return e
 
@@ -1525,14 +1525,15 @@ class BarTender():
         :return: datetime object
         :rtype: datetime
         '''
-        date_string = date_string.strip()
-        datetime_formats = ['%m/%d/%Y', '%m/%d/%y',
-                            '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
-        for form in datetime_formats:
-            try:
-                return datetime.strptime(date_string, form)
-            except ValueError as e:
-                continue
+        if date_string:
+            date_string = str(date_string).strip()
+            datetime_formats = ['%m/%d/%Y', '%m/%d/%y',
+                                '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
+            for form in datetime_formats:
+                try:
+                    return datetime.strptime(date_string, form)
+                except ValueError as e:
+                    continue
 
     @staticmethod
     def date_range_parser(date_range_string):
@@ -2170,7 +2171,7 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
         try:
             os.mkdir(path)
         except FileNotFoundError as e:
-            logger.warning('Could not make directory with path {}. Returned {}'.format(
+            logger.error('Could not make directory with path {}. Returned {}'.format(
                 path, e
             ))
             return e
