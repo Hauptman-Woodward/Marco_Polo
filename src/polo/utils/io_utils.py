@@ -807,7 +807,7 @@ class XtalWriter(RunSerializer):
         header += self.header_line.format(
             self.header_flag, 'SAVE TIME', datetime.now())
         header += self.header_line.format(
-            self.header_flag, 'VERSION', __version__)
+            self.header_flag, 'VERSION', polo_version)
         for key, value in self.__dict__.items():
             header += self.header_line.format(
                 self.header_flag, str(key).upper(), value)
