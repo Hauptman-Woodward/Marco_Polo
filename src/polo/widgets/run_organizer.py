@@ -53,7 +53,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.dropped_links_signal.connect(self._import_runs_from_drop)
         self.ui.runTree.classify_sample_signal.connect(self._classify_multiple_runs)
 
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
 
     def __iter__(self):
         return (run for run_name, run in self.ui.runTree.loaded_runs.items())
@@ -145,7 +145,7 @@ class RunOrganizer(QtWidgets.QWidget):
         '''"Cleanup" the UI after a classification thread has completed.
         '''
         self.ui.runTree.setEnabled(True)
-        logger.info('Closed classification thread: {}'.format(
+        logger.debug('Closed classification thread: {}'.format(
             self.classification_thread
         ))
         if self.classification_thread.exceptions:
@@ -253,7 +253,7 @@ class RunOrganizer(QtWidgets.QWidget):
         new_run = RunImporter.import_run_from_directory(str(dir_path))
         if isinstance(new_run, (Run, HWIRun)):
             self._add_runs_to_tree([new_run])
-            logger.info('Added run {} from directory'.format(new_run))
+            logger.debug('Added run {} from directory'.format(new_run))
         return new_run
         # message box failed to import?
     
@@ -465,16 +465,11 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ftp_download_status.emit(True)
             self.ftp_download_counter[1] = len(ftp_browser.download_files)
             self.ftp_download_thread.start()
-            logger.info('Started FTP download thread {}'.format(
-                self.ftp_download_thread
-            ))
+        
 
     def finished_ftp_download(self):
         self.ftp_download_status.emit(False)
         self.ftp_download_counter = [0, 0]  # reset the counter
-        logger.info('Finished FTP download thread {}'.format(
-            self.ftp_download_thread
-        ))
 
         if self.ftp_download_thread.exceptions:
             message = 'Failed to download all files from FTP server {}'.format(

@@ -62,7 +62,7 @@ class RunTree(QtWidgets.QTreeWidget):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.setAcceptDrops(True)
         self.setSortingEnabled(True)
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
 
     @property
     def current_run_names(self):
@@ -165,7 +165,7 @@ class RunTree(QtWidgets.QTreeWidget):
         
             self.loaded_runs[run.run_name] = run
             self.formated_name_to_name[formated_name] = run.run_name
-            logger.info('Added new run: {}'.format(run))
+            logger.debug('Added new run: {}'.format(run))
             return new_node
 
     def _get_run_node(self, run):
@@ -246,6 +246,7 @@ class RunTree(QtWidgets.QTreeWidget):
                     ):
                     self.loaded_runs[run].alt_spectrum = None
             self.remove_run_signal.emit([None])
+            logger.debug('Removed run {}'.format(condenmed_run))
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, self.remove_run))
             make_message_box(parent=self,
@@ -273,6 +274,7 @@ class RunTree(QtWidgets.QTreeWidget):
             for url in event.mimeData().urls():
                 paths.append(Path(str(url.toLocalFile())))
             self.dropped_links_signal.emit(paths)
+            logger.info('Dropped {} file paths'.format(len(paths)))
         else:
             event.ignore()
                 
@@ -329,7 +331,7 @@ class RunTree(QtWidgets.QTreeWidget):
         for run in args:
             if isinstance(run, (Run, HWIRun)):
                 self._add_run_node(run, parent_item)
-        logger.info('Added sample: {}'.format(sample_name))
+        logger.debug('Added sample: {}'.format(sample_name))
 
     def link_sample(self, sample_name):
         '''Links all :class:`Run` instances in a given sample together by both date

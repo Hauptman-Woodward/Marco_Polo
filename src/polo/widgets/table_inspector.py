@@ -38,7 +38,7 @@ class TableInspector(QtWidgets.QWidget):
 
         self._assign_checkboxes_to_class()
         self.ui.pushButton.clicked.connect(self.update_table_view)
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
 
     @property
     def run(self):
@@ -111,6 +111,10 @@ class TableInspector(QtWidgets.QWidget):
                     self.selected_classifications,
                     self.ui.checkBox_12.isChecked(),
                     self.ui.checkBox_11.isChecked())
+            else:
+                logger.warning('Attempted to update table with object type{}'.format(
+                    type(self.run)
+                ))
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, self.update_table_view))
             make_message_box(

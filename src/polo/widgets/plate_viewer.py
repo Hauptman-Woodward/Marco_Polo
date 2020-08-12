@@ -6,7 +6,7 @@ from PyQt5.QtGui import (QBitmap, QBrush, QColor, QFont, QIcon, QPainter,
                          QPixmap, QPixmapCache)
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
-from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
+from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.run import HWIRun, Run
 from polo.threads.thread import QuickThread
 from polo.utils.dialog_utils import make_message_box
@@ -14,6 +14,8 @@ from polo.utils.io_utils import RunSerializer, SceneExporter
 from polo.utils.math_utils import *
 from polo.widgets.slideshow_viewer import PhotoViewer
 from polo.windows.image_pop_dialog import ImagePopDialog
+
+logger = make_default_logger(__name__)
 
 
 class PlateGraphicsItem(QtWidgets.QGraphicsPixmapItem):
@@ -293,6 +295,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             self.changed_images_per_page_signal.emit(
                 self.subgrid_dict[self._images_per_page]
             )
+            logger.debug('Added {} images to scene'.format(len(images)))
             self.changed_page_signal.emit(self._current_page)
 
     def set_scene_opacity_from_filters(self, image_types, human=False,

@@ -82,7 +82,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self._set_tab_icons()
         self._check_for_new_version()
 
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
     
     @staticmethod
     def get_widget_dims(self, widget):
@@ -142,6 +142,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     for image in run.images:
                         if image.human_class:
                             self.runOrganizer.backup_classifications(run)
+                            logger.debug('Backed up {}'.format(run))
                             break
                     # only backup files for runs with human classifications
         except Exception as e:
@@ -153,6 +154,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 message='Failed to backup all runs {}'.format(e)).exec_()
         self.setEnabled(True)
         QApplication.restoreOverrideCursor()
+        logger.info('Closed Polo')
         event.accept()
     
     def _check_for_new_version(self):
@@ -178,6 +180,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         or int(version[2]) > int(str_ver[2])
                         ):
                             new_version = True
+                            logger.debug('Newer version available')
                             break
                 if new_version:
                     m = make_message_box(
@@ -276,6 +279,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.runOrganizer.backup_classifications_on_thread(
                                 self.current_run)
                             break
+                    logger.debug('Image data cleared from previous run')
 
                 self.current_run = new_run.pop()
                 self._check_current_run_for_missing_images()

@@ -68,6 +68,7 @@ class QuickThread(thread):
         self.job_func = job_func
         self.func_args = dict(kwargs)
         self.result = None
+        logger.debug('Created {} job: {}'.format(self, self.job_func))
 
     def __del__(self):
         self.exiting = True
@@ -75,6 +76,7 @@ class QuickThread(thread):
 
     def run(self):
         self.result = self.job_func(**self.func_args)
+        logger.debug('{} completed job'.format(self))
 
 
 class ClassificationThread(thread):
@@ -92,6 +94,7 @@ class ClassificationThread(thread):
         super(ClassificationThread, self).__init__(parent)
         self.classification_run = run_object
         self.exceptions = None
+        logger.debug('Created classification thread {}'.format(self))
 
     def run(self):
         '''Method that actually does the classification work. Emits the the
@@ -106,6 +109,7 @@ class ClassificationThread(thread):
         thread finishes.
         '''
         try:
+            start_time = time.time()
             for i, image in enumerate(self.classification_run.images):
                 s = time.time()
                 if image and not image.is_placeholder:
@@ -115,6 +119,11 @@ class ClassificationThread(thread):
                     e = time.time()
                     self.estimated_time.emit(
                         e-s, len(self.classification_run.images)-(i+1))
+            end_time = time.time()
+            logger.debug(
+                'Classified {} images in {} minutes'.format(
+                len(self.classification_run.images), round((end_time - start_time) / 60), 2)
+                )
         except Exception as e:
             self.change_value.emit(0)  # reset the progress bar
             logger.error('Caught {} at {}'.format(e, self.run))
@@ -140,6 +149,7 @@ class FTPDownloadThread(thread):
         self.file_paths = file_paths
         self.save_dir_path = save_dir_path
         self.exceptions = None
+        logger.debug('Created {}'.format(self))
 
     def run(self):
         try:
@@ -152,8 +162,14 @@ class FTPDownloadThread(thread):
                     with open(local_file_path, 'wb') as local_file:
                         cmd = 'RETR {}'.format(remote_file_path)
                         status = self.ftp.retrbinary(cmd, local_file.write)
-                self.file_downloaded.emit(i)
-                self.download_path.emit(local_file_path)
+                        logger.debug('{} returned exit status of {}'.format(
+                            cmd, status))
+                    self.file_downloaded.emit(i)
+                    self.download_path.emit(local_file_path)
+                else:
+                    logger.warning('Attempted FTP download with object type {}'.format(
+                        type(self.ftp)
+                    ))
         except Exception as e:
             logger.error('Caught {} calling {}'.format(e, self.run))
             self.exceptions = e

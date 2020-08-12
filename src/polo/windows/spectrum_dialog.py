@@ -40,7 +40,7 @@ class SpectrumDialog(QtWidgets.QDialog):
 
         self.populate_list_widgets()
         self.suggest_links()
-        logger.info('Opened {}'.format(self))
+        logger.debug('Opened {}'.format(self))
         self.exec_()
 
     def populate_list_widgets(self):
@@ -76,7 +76,7 @@ class SpectrumDialog(QtWidgets.QDialog):
             if run_a.date.date == run_b.date.date and run_a.image_spectrum != run_b.image_spectrum:
                 links.append((run_a, run_b))
         self.suggested_links = links
-        logger.info('Suggested run spectrum links')
+        logger.debug('Suggested run spectrum links')
         return links
 
     def display_suggestion(self):

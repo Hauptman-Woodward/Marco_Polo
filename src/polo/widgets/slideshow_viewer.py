@@ -4,8 +4,9 @@ import math
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
 
-from polo import IMAGE_CLASSIFICATIONS, make_default_logger
+from polo import IMAGE_CLASSIFICATIONS, BLANK_IMAGE, make_default_logger
 from polo.crystallography.image import Image
+from polo.utils.dialog_utils import make_message_box
 from polo.crystallography.run import HWIRun, Run
 
 logger = make_default_logger(__name__)
@@ -227,7 +228,7 @@ class SlideshowViewer(PhotoViewer):
         self.run = run
         self.current_image = current_image
         self._carousel = Carousel()
-        logger.info('Made {}'.format(self))
+        logger.debug('Made {}'.format(self))
 
     @property
     def run(self):
@@ -287,6 +288,11 @@ class SlideshowViewer(PhotoViewer):
             self.scene.clear()
             self.arrange_multi_image_scene(all_dates, render_date=True)
             self.fitInView()
+            logger.debug('Displayed multi-date view')
+        else:
+            logger.warning('Attempted to add object of type {} to scene'.format(
+                type(image)
+            ))
     
     def _set_all_spectrums_scene(self, image):
         '''Private method that creates a view that includes all alt spectrum
@@ -300,6 +306,11 @@ class SlideshowViewer(PhotoViewer):
             self.scene.clear()
             self.arrange_multi_image_scene(all_specs)
             self.fitInView()
+            logger.debug('Displayed multi-spectrum view')
+        else:
+            logger.warning('Attempted to add object of type {} to scene'.format(
+                type(image)
+            ))
             
     def _set_single_image_scene(self, image):
         '''Private method that creates a standard single image view from the 
@@ -314,6 +325,11 @@ class SlideshowViewer(PhotoViewer):
             self.scene.clear()
             self.scene.addPixmap(image)
             self.fitInView()
+            logger.debug('Displayed single image view')
+        else:
+            logger.warning('Attempted to add object of type {} to scene'.format(
+                type(image)
+            ))
             
     def _add_text_to_scene(self, text, x, y, size=40):
         '''Private method to add text on top of an image. Adds the text to
@@ -329,13 +345,16 @@ class SlideshowViewer(PhotoViewer):
         :param size: Size of text, defaults to 40
         :type size: int, optional
         '''
-        t = QtWidgets.QGraphicsTextItem()
-        t.setPlainText(text)
-        f = QFont()
-        f.setPointSize(size)
-        t.setFont(f)
-        self.scene.addItem(t)
-        t.setPos(x, y)
+        try:
+            t = QtWidgets.QGraphicsTextItem()
+            t.setPlainText(text)
+            f = QFont()
+            f.setPointSize(size)
+            t.setFont(f)
+            self.scene.addItem(t)
+            t.setPos(x, y)
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._add_text_to_scene))
 
     def set_current_image_by_well_number(self, well_number):
         '''Set the current image to the :class:`~polo.crystallography.image.Image` instance associated with a
@@ -351,7 +370,6 @@ class SlideshowViewer(PhotoViewer):
                 logger.error('Caught {} while calling {}'.format(
                             e, self.set_current_image_by_well_number))
                 return
-
 
     def carousel_controls(self, next_image=False, previous_image=False):
         '''Wrapper around the :meth:`~polo.widgets.slideshow_viewer.Carousel.controls`
@@ -392,6 +410,12 @@ class SlideshowViewer(PhotoViewer):
         if self.run:
             images = list(self.run.image_filter_query(
                 image_types, human, marco, favorite))
+            logger.debug('Filter returned {} image(s)'.format(len(images)))
+            if len(images) == 1 and images[0].path == str(BLANK_IMAGE):
+                make_message_box(
+                    parent=self,
+                    message='Filters returned no images!'
+                    ).exec_()
             self._carousel.add_slides(images, sort_function)
             self.current_image = self._carousel.current_slide.image
 
@@ -436,6 +460,11 @@ class SlideshowViewer(PhotoViewer):
                 self._set_all_spectrums_scene(cur_img)
             else:
                 self._set_single_image_scene(cur_img)
+        else:
+            logger.warning('Attempted to display object of type {}'.format(
+                type(self.current_image)
+            ))
+
 
     def get_cur_img_cocktail_str(self):
         '''Retruns the `current_image` cocktail information
@@ -445,7 +474,10 @@ class SlideshowViewer(PhotoViewer):
         :rtype: str
         '''
         if isinstance(self.current_image, Image):
-            return str(self.current_image.cocktail)
+            cocktail_string = str(self.current_image.cocktail)
+            # NOTE: User on Mac Mojave reported issue with meta data text
+            # not updating but no errors related in the log file
+            return cocktail_string
 
     def get_cur_img_meta_str(self):
         '''Returns the `current_image` metadata as a string.
@@ -454,7 +486,8 @@ class SlideshowViewer(PhotoViewer):
         :rtype: str
         '''
         if isinstance(self.current_image, Image):
-            return str(self.current_image)
+            image_string = str(self.current_image)
+            return image_string
 
     def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
         '''Sets the `current_image` attribute to a linked image specified by

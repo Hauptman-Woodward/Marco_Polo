@@ -48,7 +48,7 @@ class FTPDialog(QtWidgets.QDialog):
 
         self.ui.pushButton_2.setIcon(QIcon(self.DOWNLOAD_ICON))
 
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
         
     @property
     def host(self):
@@ -106,7 +106,7 @@ class FTPDialog(QtWidgets.QDialog):
                         # TODO
                         QApplication.restoreOverrideCursor()
                         message.close()
-                        logger.info('Connected to FTP server')
+                        logger.debug('Connected to FTP server')
                         self.set_connection_status(connected=True)
                         make_message_box(
                             message='Connected to {}! They say {}'.format(
@@ -132,7 +132,7 @@ class FTPDialog(QtWidgets.QDialog):
                     QApplication.restoreOverrideCursor()
                     m = make_message_box(message='Connection Failed: {}'.format(
                         self.ftp), buttons=QtWidgets.QMessageBox.Ok, parent=self)
-                    logger.info('FTP connection failed with code {}'.format(
+                    logger.debug('FTP connection failed with code {}'.format(
                         self.ftp
                     ))
                     self.set_connection_status(connected=False)
@@ -186,7 +186,7 @@ class FTPDialog(QtWidgets.QDialog):
             start_box = make_message_box(
                 message, buttons=QtWidgets.QMessageBox.Ok, parent=self)
             start_box.exec_()
-            logger.info('Attempting to download over FTP to {}'.format(
+            logger.debug('Attempting to download over FTP to {}'.format(
                 self.save_dir))
             self.close()
 

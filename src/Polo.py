@@ -13,7 +13,7 @@ from PyQt5.QtGui import QColor, QIcon, QPalette
 
 import astor
 from polo.windows.main_window import MainWindow
-from polo import LOG_PATH, APP_ICON, make_default_logger
+from polo import *
 
 # set up logging
 logger = make_default_logger(__name__)
@@ -34,10 +34,29 @@ def excepthook(exec_type, exec_value, exec_tb):
     m.exec_()
     QtWidgets.QApplication.quit()
 
+def preflight_checks():
+    logger.debug('Detected OS: {}'.format(platform))
+    logger.debug('Working directory: {}'.format(os.getcwd()))
+    logger.debug('Polo directory: {}'.format(dirname))
+
+    number_checks, passed = len(critical_paths), 0
+    for path in critical_paths:
+        if path.exists():
+            logger.debug('Exists: {}'.format(path))
+            passed += 1
+        else:
+            logger.critical('{} does not exist!'.format(path))
+    
+    if passed == number_checks:
+        logger.debug('All preflight checks passed {} == {}'.format(
+            passed, number_checks))
+
+
 def main():
 
     # Run the app
     sys.excepthook = excepthook
+    preflight_checks()
 
     if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):  # magic call to make high-res scaling work
         PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
@@ -47,9 +66,11 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     
     multiprocessing.freeze_support()  # prevent threads continuing after program closed
+    logger.debug('App icon location: {}'.format(APP_ICON))
     app.setWindowIcon(QtGui.QIcon(str(APP_ICON)))
     main = MainWindow()
     main.show()
+    logger.debug('Launched main window')
     sys.exit(app.exec_())
 
 
