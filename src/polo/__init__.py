@@ -18,8 +18,8 @@ dirname = Path(os.path.dirname(__file__)).parent
 # =============================================================================
 
 LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
-APP_ICON = dirname.joinpath('polo.png')
 DATA_DIR = dirname.joinpath('data')
+APP_ICON = DATA_DIR.joinpath('images/logos/polo.png')
 UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('.tmp')
 
