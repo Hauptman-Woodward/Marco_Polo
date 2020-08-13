@@ -496,6 +496,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.listWidget.clear()
         self.ui.listWidget.addItems(
             sorted(list(self.import_candidates.keys())))
+        self.ui.listWidget.repaint()  # catalina os patch
 
     def _populate_fields(self, import_candidate):
         '''Private method to display :class:`ImportCandidate` 
