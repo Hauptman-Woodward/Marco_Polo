@@ -139,7 +139,6 @@ class TableViewer(QtWidgets.QTableWidget):
             header_map = self.make_header_map(headers)
             header_labels = sorted(
                 [h for h in header_map.keys()], key=lambda k: header_map[k])
-            print(header_labels)
             self.setHorizontalHeaderLabels(header_labels)
             table_data, row_count = {}, 0
             for row in data:  # dictionary
