@@ -27,6 +27,15 @@ tensorflow_location = {
   'Windows': None
   # thanks for letting me borrow the mac Mom
 }
+
+pptx_location = {
+  'Linux': '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/pptx/',
+  'Darwin': '/Users/michelleholleman/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/pptx/',
+  'Windows': '\\Users\\User\\.conda\\envs\\polo_3.5\\lib\\site-packages\\pptx\\'
+  # thanks for letting me borrow the mac Mom
+}
+
+
 polo_locations = {  # paths to polo directory on each system 
   'Linux': '/home/ethan/Documents/github/Marco_Polo',
   'Darwin': '/Users/michelleholleman/Documents/Marco_Polo/',
@@ -57,13 +66,13 @@ if tensorflow_location:  # do only for mac and linux working without
               tensorflow_binaries.append((full_file, target))
 
 print('Collected {} tensorflow_binaries'.format(len(tensorflow_binaries)))
-
+pptx_depends = [(pptx_location[OS], 'pptx/')]
 
 a = Analysis(['src/Polo.py'],
              pathex=[polo_dir],
              binaries=[],
              datas=[('src/data', 'data/'), ('src/astor', 'astor/'),
-                    ('src/unrar', 'unrar/'), ('src/templates', 'templates/')] + tensorflow_binaries,
+                    ('src/unrar', 'unrar/'), ('src/templates', 'templates/')] + tensorflow_binaries + pptx_depends,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],

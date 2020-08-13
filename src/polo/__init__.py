@@ -18,7 +18,7 @@ dirname = Path(os.path.dirname(__file__)).parent
 # =============================================================================
 
 LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
-APP_ICON = Path('polo.png')
+APP_ICON = dirname.joinpath('polo.png')
 DATA_DIR = dirname.joinpath('data')
 UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('.tmp')
@@ -167,4 +167,24 @@ from polo.threads import thread
 
 # best bartender at Cunneen's bar in Rodger's Park
 # and in this program handles cocktail data
+
+# logger = make_default_logger(__name__)
+
+# logger.debug('Detected OS: {}'.format(platform))
+# logger.debug('Working directory: {}'.format(os.getcwd()))
+# logger.debug('Polo directory: {}'.format(dirname))
+
+critical_paths = [
+    MODEL_PATH, COCKTAIL_DATA_PATH, COCKTAIL_META_DATA, BACKUP_DIR,
+    TEMP_DIR, DATA_DIR
+]
+
+# for path in critical_paths:
+#     if path.exists():
+#         logger.debug('Critical path {} checked'.format(path))
+#     else:
+#         logger.critical('Critical path {} does not exist!'.format(path))
+
+
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
+

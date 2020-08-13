@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -200,7 +201,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">images</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">formated_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span>
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
@@ -223,7 +230,7 @@
         <span class="k">return</span> <span class="s1">&#39;Run Name: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Spectrum: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Date: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Num Images: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_spectrum</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="p">)</span></div>
-
+    
 <div class="viewcode-block" id="Run.encode_images_to_base64"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.Run.encode_images_to_base64">[docs]</a>    <span class="k">def</span> <span class="nf">encode_images_to_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Helper method that encodes all images in the</span>
 <span class="sd">        `class`~polo.crystallography.run.Run` to base64.</span>
@@ -353,10 +360,16 @@
             <span class="n">platename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;plateName&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">platename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plate_id</span>
+        
 
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_tooltip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Cocktail Version: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Plate ID: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">tooltip</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_tooltip</span><span class="p">()</span> 
+        <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Cocktail Version: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">Plate ID: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cocktail_menu</span><span class="o">.</span><span class="n">path</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">platename</span><span class="p">)</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;temperature&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Temp: </span><span class="si">{}</span><span class="s1"> C&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tooltip</span></div>
+
 
 <div class="viewcode-block" id="HWIRun.link_to_next_date"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.run.HWIRun.link_to_next_date">[docs]</a>    <span class="k">def</span> <span class="nf">link_to_next_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Link this :class:`~polo.crystallography.run.HWIRun` to another </span>

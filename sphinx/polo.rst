@@ -1,5 +1,13 @@
-polo package
-============
+Polo Code Documentation
+========================
+
+Future Maintainers
+-------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   future_maintainers
 
 Subpackages
 -----------

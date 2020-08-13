@@ -1,42 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS
+from polo import ALLOWED_IMAGE_COUNTS, COLORS, IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.crystallography.cocktail import UnitValue
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_unit_combo import Ui_unitCombo
 from polo.utils.math_utils import *
-
-# class Unit():
-
-#     scalers = {'n': 1e-9, 'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
-#     base_units = {}  # stores all established base units update for the
-#     # entire class
-#     # SI unit scalers from the bae unit
-
-#     def __init__(self, unit_string):
-#         self.unit_string = unit_string
-
-
-#     @classmethod
-#     def add_base_unit(cls, new_unit):
-#         if isinstance(new_unit, Unit):
-#             cls.base_units[new_unit.unit_string] = new_unit
-
-
-#     @property
-#     def base_unit(self):
-#         return self.__base_unit
-
-#     @base_unit.setter
-#     def base_unit(self, new_unit_string):
-#         # first character of string should be scaler if string len > 1
-#         if len(new_unit_string) > 1:
-#             base_unit = new_unit_string[1:]
-#         else:
-#             base_unit = new_unit_string
-
-#         if base_unit in self.base_units:
-#             self.__base_unit = self.base_units[base_unit]
 
 
 class UnitComboBox(QtWidgets.QWidget):
@@ -132,6 +100,7 @@ class UnitComboBox(QtWidgets.QWidget):
             scaler_text.append(str(self.base_unit))
             return scaler_text
         else:
+            logger.warning('Returned empty list at {}'.format(self))
             return []
 
     def _set_unit_combobox_text(self):
@@ -144,7 +113,7 @@ class UnitComboBox(QtWidgets.QWidget):
         items = self.unit_combobox_text
         if items:
             self.ui.comboBox.addItems(items)
-            self.ui.comboBox.setCurrentIndex(len(items)-1)  # set t base unit
+            self.ui.comboBox.setCurrentIndex(len(items)-1)  # set base unit
         return items
 
     def unit_text_parser(self, unit_text=None):
@@ -187,3 +156,4 @@ class UnitComboBox(QtWidgets.QWidget):
             self.ui.comboBox.setCurrentIndex(unit_index)
         else:
            self.set_zero()
+           logger.warning('Forced to set zero at {}'.format(self))

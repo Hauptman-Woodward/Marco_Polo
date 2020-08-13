@@ -16,7 +16,7 @@ for the 2020 `BioXFEL <https://www.bioxfel.org/>`_
 summer internship program.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    about
@@ -25,7 +25,6 @@ summer internship program.
    user_guide
    video_guides
    beta_testers
-   future_maintainers
    polo
 
 

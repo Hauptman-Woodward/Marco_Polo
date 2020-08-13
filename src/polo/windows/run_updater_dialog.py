@@ -74,7 +74,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     @run.setter
     def run(self, new_run):
         self._run = new_run
-        logger.info('Opened new run {}'.format(self._run))
+        logger.debug('Opened new run {}'.format(self._run))
     
     def _set_run_date(self):
         '''Set the :attr:`date` attribute of the :class:`Run` referenced

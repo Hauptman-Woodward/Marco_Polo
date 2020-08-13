@@ -1,0 +1,496 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Future Maintainers &mdash; Polo 0.0.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="polo.crystallography package" href="polo.crystallography.html" />
+    <link rel="prev" title="Polo Code Documentation" href="polo.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Polo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Future Maintainers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#directory-layout">Directory Layout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polo-package-notes">Polo Package Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-exes-for-distribution">Creating Exes for Distribution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
+        
+      <li>Future Maintainers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/future_maintainers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="future-maintainers">
+<h1>Future Maintainers<a class="headerlink" href="#future-maintainers" title="Permalink to this headline">¶</a></h1>
+<p>Hello, if you are reading this it should be because you are interested in
+or have been assigned to modify / maintain / improve Polo. Here, I will do my
+best to fill you in on Polo’s background and go through the problems, quirks
+and bugs that you may encounter while modifying Polo.</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Polo was created over the course of 10 weeks for the 2020 BioXFEL summer
+internship. Development focused on creating a working final product that could
+be improved on and extended in the future, which is probably why you are here.
+Polo was my first real adventure into GUI programming and the PyQt library
+so if you have significant experience with either there are definitely quirks to
+be found and many places for improvement. Enjoy.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Polo is written in Python (specifically Python 3.5) and uses the PyQt library
+as the GUI “engine”. To get going modifying Polo I would recommend taking a
+look at the <a class="reference internal" href="install.html#running-from-source"><span class="std std-ref">Running From Source</span></a> section as it goes over how to setup
+a virtual environment for Polo development. Make sure you follow these
+instructions or do something equivalent as Polo is dependent on some
+legacy versions of common python packages and mixing those in with a global
+environment could get messy.</p>
+<p>I also <strong>highly</strong>, <strong>highly</strong> recommend installing PyQt Designer for your
+development machine. PyQt Designer will allow you to open the <code class="code docutils literal notranslate"><span class="pre">.ui</span></code>
+files located in the <code class="code docutils literal notranslate"><span class="pre">pyqt_designer</span></code> directory. The <code class="code docutils literal notranslate"><span class="pre">.ui</span></code> files
+are then translated by the <code class="code docutils literal notranslate"><span class="pre">pyuic5</span></code> command line program into Python
+scripts which define the layout of the graphical interface.</p>
+<p>I used  <a class="reference external" href="https://pythonbasics.org/qt-designer-python/">This tutorial</a>
+to install PyQt Designer and other devtools like pyuic5 on Ubuntu.</p>
+<p>This will allow you to graphically modify interfaces and easily find the names of widgets so
+you can make sure buttons and other interfaces get connected to the correct
+functions. Additionally, you can modify the <code class="code docutils literal notranslate"><span class="pre">UI_helper.py</span></code> script in
+the <code class="code docutils literal notranslate"><span class="pre">src</span></code> directory with the path to your <code class="code docutils literal notranslate"><span class="pre">pyqt_designer</span></code> directory
+to automatically generate the Python files which define each interface.</p>
+</div>
+<div class="section" id="directory-layout">
+<h2>Directory Layout<a class="headerlink" href="#directory-layout" title="Permalink to this headline">¶</a></h2>
+<p>Polo directory structure just for fun.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.
+├── docs
+│   ├── _images
+│   ├── _modules
+│   │   ├── polo
+│   │   │   ├── crystallography
+│   │   │   ├── marco
+│   │   │   ├── threads
+│   │   │   ├── utils
+│   │   │   ├── widgets
+│   │   │   └── windows
+│   │   └── tests
+│   ├── _sources
+│   └── _static
+│       ├── css
+│       ├── fonts
+│       │   ├── Lato
+│       │   └── RobotoSlab
+│       └── js
+├── misc
+│   └── inno_scripts
+│       └── windows
+├── pyqt_designer
+├── sphinx
+│   ├── _build
+│   └── images
+└── src
+    ├── astor
+    ├── data
+    │   ├── cocktail_data
+    │   ├── images
+    │   │   ├── default_images
+    │   │   ├── icons
+    │   │   └── logos
+    │   ├── savedmodel
+    │   │   └── variables
+    │   └── text
+    ├── polo
+    │   ├── cockatoo
+    │   │   ├── cockatoo
+    │   │   ├── data
+    │   │   ├── docs
+    │   │   │   ├── api
+    │   │   │   ├── examples
+    │   │   │   └── images
+    │   │   ├── examples
+    │   │   ├── screens
+    │   │   │   ├── csv
+    │   │   │   │   ├── hwi
+    │   │   │   │   └── test-screens
+    │   │   │   └── json
+    │   │   │       ├── hwi
+    │   │   │       └── test-screens
+    │   │   └── tests
+    │   ├── crystallography
+    │   │
+    │   ├── designer
+    │   │
+    │   ├── marco
+    │   │
+    │   ├── plots
+    │   │
+    │   ├── threads
+    │   │
+    │   ├── utils
+    │   │
+    │   ├── widgets
+    │   │
+    │   └── windows
+    │
+    ├
+    ├── templates
+    │   └── static
+    ├── tests
+    └── unrar
+        ├── Darwin
+        └── Windows
+            ├── Win32
+            └── Win64
+</pre></div>
+</div>
+<div class="section" id="src-directory">
+<h3>src Directory<a class="headerlink" href="#src-directory" title="Permalink to this headline">¶</a></h3>
+<p>The src directory includes all Python scripts Polo needs to run plus any
+data required, such as the MARCO tensflow model. Below are short desciptions
+of what you’ll find in this directory.</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">Polo.py</span></code> : Main script. Use to launch the application.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">UI_helper.py</span></code> : Helper script to convert <code class="code docutils literal notranslate"><span class="pre">.ui</span></code> files to <code class="code docutils literal notranslate"><span class="pre">.py</span></code> files. See <a class="reference internal" href="#getting-started"><span class="std std-ref">Getting Started</span></a>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">polo</span></code> : The Polo package. Contains all scripts that define Polo behavior and interfaces.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">data</span></code> : Contains all data required for Polo to run. Such as cocktail csv files, the MARCO model and icon images</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">unrar</span></code> : Contains unrar executables for Windows and Mac</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">templates</span></code> : Jinja2 html templates for creating html file exports</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">astor</span></code> : I kept getting an error from Tensorflow that this directory could not be found so I included it and the problem was solved</p></li>
+</ul>
+</div>
+<div class="section" id="misc-directory">
+<h3>misc Directory<a class="headerlink" href="#misc-directory" title="Permalink to this headline">¶</a></h3>
+<p>Contains odds and ends notes or other files that didn’t really have a place
+anywhere else. One of the most useful may be the <code class="code docutils literal notranslate"><span class="pre">polo.iss</span></code> script. This
+is an inno setup script I used for created the Polo windows installer. Feel
+free to use it, but make sure to modify the filepaths in it before running.</p>
+</div>
+<div class="section" id="pyqt-designer-directory">
+<h3>pyqt_designer Directory<a class="headerlink" href="#pyqt-designer-directory" title="Permalink to this headline">¶</a></h3>
+<p>Holds all <code class="code docutils literal notranslate"><span class="pre">.ui</span></code> files, which are really <code class="code docutils literal notranslate"><span class="pre">.xml</span></code> files that
+PyQt Designer uses to serialize the interfaces you design in it. They are
+translated to Python files which then define the graphical interface for
+Polo. See the <a class="reference internal" href="#getting-started"><span class="std std-ref">Getting Started</span></a> section for a bit more detail on this.</p>
+</div>
+<div class="section" id="sphinx-directory">
+<h3>sphinx Directory<a class="headerlink" href="#sphinx-directory" title="Permalink to this headline">¶</a></h3>
+<p>Contains rst files and images which define Polo’s documentation. With
+sphinx installed via pip you can recreate Polo’s documentation with the
+command <code class="code docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>. For these files to be rendered on the GitHub
+pages site they need to be places into the <code class="code docutils literal notranslate"><span class="pre">docs</span></code> directory. You will
+also need to install the read the docs theme for sphinx.</p>
+</div>
+<div class="section" id="docs-directory">
+<h3>docs Directory<a class="headerlink" href="#docs-directory" title="Permalink to this headline">¶</a></h3>
+<p>Holds documentation html files. Rendered as the Polo website using GitHub
+sites.</p>
+</div>
+</div>
+<div class="section" id="polo-package-notes">
+<h2>Polo Package Notes<a class="headerlink" href="#polo-package-notes" title="Permalink to this headline">¶</a></h2>
+<p>All the scripts that make up the actual Polo program are located in
+<code class="code docutils literal notranslate"><span class="pre">src/Polo</span></code>. In this section I will go over a few important aspects of the
+program that may be helpful and are not covered explicitly in the API documentation.</p>
+<div class="section" id="notable-scripts">
+<h3>Notable Scripts<a class="headerlink" href="#notable-scripts" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="the-init-script">
+<h4>The <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> Script<a class="headerlink" href="#the-init-script" title="Permalink to this headline">¶</a></h4>
+<p>Most variables that are used across Polo scripts are defined in here and is
+worth taking a look at as the stuff in here comes up all over other scripts.
+The items below are some of the major functions of the <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> :
+file.</p>
+<ol class="arabic simple">
+<li><p>Defines filepaths to the stuff in the <code class="code docutils literal notranslate"><span class="pre">data</span></code>:</p></li>
+<li><p>Defines the version of the program via the <code class="code docutils literal notranslate"><span class="pre">polo_version</span></code>: variable</p></li>
+<li><p>Defines the image classification and image spectrum keywords</p></li>
+<li><p>Defines how MSO classification codes are translated into MARCO classifications</p></li>
+<li><p>Determines which unrar executable to use based on the OS</p></li>
+<li><p>Defines regular expressions used for parsing cocktail data</p></li>
+<li><p>Defines urls to Polo documentation site pages</p></li>
+</ol>
+</div>
+<div class="section" id="the-windows-main-window-script">
+<h4>The <code class="code docutils literal notranslate"><span class="pre">windows/main_window</span></code> Script<a class="headerlink" href="#the-windows-main-window-script" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="code docutils literal notranslate"><span class="pre">windows/main_window.py</span></code> script defines the <code class="xref py py-class docutils literal notranslate"><span class="pre">MainWindow</span></code> class
+from which all other widgets are staged within. If you are looking for how one
+widget communicates to another, how menu selections are handled or how runs
+are opened this would be the file to look in. Since the <code class="xref py py-class docutils literal notranslate"><span class="pre">MainWindow</span></code>
+class contains most other widgets in some way it is a good place to look when
+relationships between widgets are in question.</p>
+</div>
+</div>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<p>Contains scripts relating to crystallography and high-throughput imaging.
+Most of the main data containing classes are defined here.</p>
+<p>Contains all the pyqt Designer generated UI scripts. These are used to define
+the graphical interfaces (buttons, knobs, etc.) that make up the widgets and
+dialogs defined in Polo. These scripts do not provide any functionality to
+the graphical components, they just define their layout and names.</p>
+<p>Holds scripts relating to running the MARCO model for image classification.</p>
+<p>Functions related to generating plots shown in the plots tab of the main window.
+This one is kind of a todo I didn’t get around to and there is a lot of clean up
+that could be done here. Especially since plots does not have its own widget
+like the slideshow inspector or plate inspectors.</p>
+<p>A lot of the operations Polo undertakes, like running the MARCO model, are
+CPU intense and cannot be run on the same thread that the GUI is run on. The
+threads package holds the <code class="code docutils literal notranslate"><span class="pre">thread.py</span></code> script which defines QThread objects
+for running various tasks outside of the GUI thread. This prevents the freezing
+the GUI when preforming a large operation. Windows is particularly fast to recognize
+a frozen program so it is often necessary to put tasks that take more than a few
+seconds onto a thread.</p>
+</div>
+<div class="section" id="creating-exes-for-distribution">
+<h2>Creating Exes for Distribution<a class="headerlink" href="#creating-exes-for-distribution" title="Permalink to this headline">¶</a></h2>
+<p>Once you have made some modifications to your program you are going to want
+to create exe for potential users. I used Pyinstaller to create the exe files
+and then on Windows Inno setup to create an installer and will cover those
+topic in this section.</p>
+<div class="section" id="pyinstaller-overview">
+<h3>Pyinstaller Overview<a class="headerlink" href="#pyinstaller-overview" title="Permalink to this headline">¶</a></h3>
+<p>Pyinstaller is not included as a dependency in the <code class="code docutils literal notranslate"><span class="pre">requirements.txt</span></code>
+file so will need to install it using Pip.</p>
+<p>Polo includes a <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file in the outermost directory. This is the file
+I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
+the exe will be specific to the operating system you create it on. A Polo
+exe created on Windows will only work on Windows machines. Despite it’s file
+extention, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
+information along to pyinstaller.</p>
+<p>Running pyinstaller using the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is actually
+very easy and can be done with the command
+<code class="code docutils literal notranslate"><span class="pre">pyinstaller</span> <span class="pre">Polo.spec</span></code>. Additionally, I have made some changes to the
+<code class="code docutils literal notranslate"><span class="pre">.spec</span></code> which allow you to generate one file exes by appending
+<code class="code docutils literal notranslate"><span class="pre">F</span></code> onto the end of the pyinstaller command. However, you will likely
+need to make some modifications to the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> before you run it.</p>
+</div>
+<div class="section" id="spec-file-details-and-modifications">
+<h3>Spec File Details and Modifications<a class="headerlink" href="#spec-file-details-and-modifications" title="Permalink to this headline">¶</a></h3>
+<p>Before running the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file you will need to modify a couple
+file paths based on the locations on your development machine(s).</p>
+<p>First, you’ll notice the dictionary <code class="code docutils literal notranslate"><span class="pre">Tensorflow_location</span></code>. Much of the
+<code class="code docutils literal notranslate"><span class="pre">.spec</span></code> is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
+misses the binary files in the Tensorflow library that are required for the
+package to work correctly. Therefore these files need to be collected as
+passed to pyinstaller explictly to create a working exe. Stragenly, I only
+encoutered this problem on Linux and Mac.
+The <code class="code docutils literal notranslate"><span class="pre">tensorflow_location</span></code> dictionary specifies the location of the
+Tensorflow package on your machine. You will need to modify these paths to
+the Tensorflow package being used by your virtual environment.</p>
+<p>Next, you’ll need to modify the <code class="code docutils literal notranslate"><span class="pre">polo_locations</span></code> dictionary values.
+This dictionary maps operating system types to the location of the Polo
+repository on that machine. When run, the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file recognizes
+the OS it is being run on and picks the file path corresponding to that OS.</p>
+<p>After making these modifications you should be able to run the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code>
+file successfully. If something is not working correctly I recommend
+running the pyinstaller command without <code class="code docutils literal notranslate"><span class="pre">F</span></code> argument to create
+a directory instead of a single file. This will let you more easily see
+exactly what pyinstaller has included in your distribution. If it isn’t in
+the directory distribution it won’t be found in the single file distribution.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="polo.crystallography.html" class="btn btn-neutral float-right" title="polo.crystallography package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="polo.html" class="btn btn-neutral float-left" title="Polo Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

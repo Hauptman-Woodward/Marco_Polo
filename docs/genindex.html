@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -218,7 +219,13 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._check_for_overflow">_check_for_overflow() (polo.widgets.optimize_widget.OptimizeWidget method)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classification_cleanup">_classification_cleanup() (polo.widgets.run_organizer.RunOrganizer method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._classify_all_runs_slot">_classify_all_runs_slot() (polo.widgets.run_tree.RunTree method)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._classify_image">_classify_image() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classify_multiple_runs">_classify_multiple_runs() (polo.widgets.run_organizer.RunOrganizer method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._clear_current_run">_clear_current_run() (polo.widgets.run_organizer.RunOrganizer method)</a>
 </li>
@@ -231,6 +238,8 @@
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._display_cocktail_files">_display_cocktail_files() (polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._display_current_image">_display_current_image() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._display_name_setter">_display_name_setter() (polo.widgets.run_tree.RunTree method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._edit_data_slot">_edit_data_slot() (polo.widgets.run_tree.RunTree method)</a>
 </li>
@@ -312,18 +321,12 @@
 </li>
       <li><a href="polo.windows.html#polo.windows.main_window.MainWindow._plot_limiter">_plot_limiter() (polo.windows.main_window.MainWindow method)</a>
 </li>
-      <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._populate_fields">_populate_fields() (polo.windows.run_importer.RunImporterDialog method)</a>
-</li>
-      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._remove_run">_remove_run() (polo.widgets.run_organizer.RunOrganizer method)</a>
-
-      <ul>
-        <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run">(polo.widgets.run_tree.RunTree method)</a>
-</li>
-        <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._remove_run">(polo.windows.run_importer.RunImporterDialog method)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._populate_fields">_populate_fields() (polo.windows.run_importer.RunImporterDialog method)</a>
+</li>
+      <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._remove_run">_remove_run() (polo.windows.run_importer.RunImporterDialog method)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._remove_run_slot">_remove_run_slot() (polo.widgets.run_tree.RunTree method)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog._restore_defaults">_restore_defaults() (polo.windows.run_importer.RunImporterDialog method)</a>
@@ -404,6 +407,8 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer._set_single_image_scene">_set_single_image_scene() (polo.widgets.slideshow_viewer.SlideshowViewer method)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._set_slide_number_label">_set_slide_number_label() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._set_slideshow_mode">_set_slideshow_mode() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget._set_spin_box_range">_set_spin_box_range() (polo.widgets.plate_inspector_widget.PlateInspectorWidget method)</a>
@@ -421,8 +426,6 @@
       <li><a href="polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._set_up_unit_comboboxes">_set_up_unit_comboboxes() (polo.widgets.optimize_widget.OptimizeWidget method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._show_image_from_well_number">_show_image_from_well_number() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
-</li>
-      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree._sort_sample_nodes">_sort_sample_nodes() (polo.widgets.run_tree.RunTree method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector._submit_filters">_submit_filters() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
@@ -580,17 +583,17 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.classify_current_image">classify_current_image() (polo.widgets.slideshow_viewer.SlideshowViewer method)</a>
 </li>
-      <li><a href="polo.marco.html#polo.marco.run_marco.classify_image">classify_image() (in module polo.marco.run_marco)</a>
+      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.classify_image">classify_image() (polo.crystallography.image.Image method)</a>
 
       <ul>
-        <li><a href="polo.crystallography.html#polo.crystallography.image.Image.classify_image">(polo.crystallography.image.Image method)</a>
-</li>
         <li><a href="polo.windows.html#polo.windows.image_pop_dialog.ImagePopDialog.classify_image">(polo.windows.image_pop_dialog.ImagePopDialog method)</a>
 </li>
       </ul></li>
       <li><a href="polo.utils.html#polo.utils.io_utils.MsoReader.classify_images_from_mso_file">classify_images_from_mso_file() (polo.utils.io_utils.MsoReader method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.classify_run">classify_run (polo.widgets.run_organizer.RunOrganizer attribute)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.classify_sample_signal">classify_sample_signal (polo.widgets.run_tree.RunTree attribute)</a>
 </li>
       <li><a href="polo.crystallography.html#polo.crystallography.image.Image.clean_base64_string">clean_base64_string() (polo.crystallography.image.Image static method)</a>
 
@@ -650,6 +653,8 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.Carousel.current_slide">current_slide() (polo.widgets.slideshow_viewer.Carousel property)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.current_slide_number">current_slide_number() (polo.widgets.slideshow_viewer.SlideshowViewer property)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.current_sort_function">current_sort_function() (polo.widgets.slideshow_inspector.slideshowInspector property)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.map_box.MapBox.current_value">current_value() (polo.widgets.map_box.MapBox method)</a>
@@ -688,14 +693,14 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.file_browser.fileBrowser.DIR_ICON">DIR_ICON (polo.widgets.file_browser.fileBrowser attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.utils.html#polo.utils.io_utils.directory_validator">directory_validator() (in module polo.utils.io_utils)</a>
 
       <ul>
         <li><a href="polo.utils.html#polo.utils.io_utils.RunImporter.directory_validator">(polo.utils.io_utils.RunImporter static method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.windows.html#polo.windows.ftp_dialog.FTPDialog.DISCONNECTED_ICON">DISCONNECTED_ICON (polo.windows.ftp_dialog.FTPDialog attribute)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.XmlReader.discover_xml_files">discover_xml_files() (polo.utils.io_utils.XmlReader method)</a>
@@ -715,11 +720,23 @@
       <li><a href="polo.windows.html#polo.windows.ftp_dialog.FTPDialog.download_selected_files">download_selected_files() (polo.windows.ftp_dialog.FTPDialog method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dragEnterEvent">dragEnterEvent() (polo.widgets.run_tree.RunTree method)</a>
+
+      <ul>
+        <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog.dragEnterEvent">(polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
+      </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dragMoveEvent">dragMoveEvent() (polo.widgets.run_tree.RunTree method)</a>
+
+      <ul>
+        <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog.dragMoveEvent">(polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
+      </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dropEvent">dropEvent() (polo.widgets.run_tree.RunTree method)</a>
+
+      <ul>
+        <li><a href="polo.windows.html#polo.windows.run_importer.RunImporterDialog.dropEvent">(polo.windows.run_importer.RunImporterDialog method)</a>
 </li>
+      </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.dropped_links_signal">dropped_links_signal (polo.widgets.run_tree.RunTree attribute)</a>
 </li>
   </ul></td>
@@ -728,6 +745,8 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.earliest_crystallization_date">earliest_crystallization_date() (polo.crystallography.image.Image property)</a>
+</li>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.emphasize_all_images">emphasize_all_images() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.exceptions.EmptyDirectoryError">EmptyDirectoryError</a>
@@ -744,9 +763,11 @@
 </li>
       <li><a href="polo.threads.html#polo.threads.thread.ClassificationThread.estimated_time">estimated_time (polo.threads.thread.ClassificationThread attribute)</a>
 </li>
-      <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.export_current_view">export_current_view() (polo.widgets.plate_viewer.plateViewer method)</a>
+      <li><a href="polo.widgets.html#polo.widgets.plate_inspector_widget.PlateInspectorWidget.export_current_view">export_current_view() (polo.widgets.plate_inspector_widget.PlateInspectorWidget method)</a>
 
       <ul>
+        <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.export_current_view">(polo.widgets.plate_viewer.plateViewer method)</a>
+</li>
         <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.export_current_view">(polo.widgets.slideshow_inspector.slideshowInspector method)</a>
 </li>
       </ul></li>
@@ -797,6 +818,8 @@
       <li><a href="polo.utils.html#polo.utils.exceptions.ForbiddenImageTypeError">ForbiddenImageTypeError</a>
 </li>
       <li><a href="polo.crystallography.html#polo.crystallography.image.Image.formated_date">formated_date() (polo.crystallography.image.Image property)</a>
+</li>
+      <li><a href="polo.crystallography.html#polo.crystallography.run.Run.formated_name">formated_name() (polo.crystallography.run.Run property)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.CocktailMenuReader.formula_pos">formula_pos (polo.utils.io_utils.CocktailMenuReader attribute)</a>
 </li>
@@ -1012,8 +1035,6 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="polo.crystallography.html#polo.crystallography.image.Image.machine_class">machine_class() (polo.crystallography.image.Image property)</a>
-</li>
       <li><a href="polo.windows.html#polo.windows.main_window.MainWindow">MainWindow (class in polo.windows.main_window)</a>
 </li>
       <li><a href="polo.html#polo.make_default_logger">make_default_logger() (in module polo)</a>
@@ -1551,8 +1572,14 @@
 </li>
       <li><a href="polo.crystallography.html#polo.crystallography.cocktail.Reagent">Reagent (class in polo.crystallography.cocktail)</a>
 </li>
-      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">remove_run() (polo.widgets.run_organizer.RunOrganizer method)</a>
+      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update">refresh_run_after_update() (polo.widgets.run_organizer.RunOrganizer method)</a>
 </li>
+      <li><a href="polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">remove_run() (polo.widgets.run_organizer.RunOrganizer method)</a>
+
+      <ul>
+        <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.remove_run">(polo.widgets.run_tree.RunTree method)</a>
+</li>
+      </ul></li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.remove_run_from_view">remove_run_from_view() (polo.widgets.run_tree.RunTree method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree.remove_run_signal">remove_run_signal (polo.widgets.run_tree.RunTree attribute)</a>
@@ -1593,6 +1620,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="polo.marco.html#polo.marco.run_marco.run_model">run_model() (in module polo.marco.run_marco)</a>
+</li>
       <li><a href="polo.utils.html#polo.utils.io_utils.run_name_validator">run_name_validator() (in module polo.utils.io_utils)</a>
 </li>
       <li><a href="polo.utils.html#polo.utils.io_utils.XtalWriter.run_to_dict">run_to_dict() (polo.utils.io_utils.XtalWriter method)</a>
@@ -1612,6 +1641,8 @@
       <li><a href="polo.utils.html#polo.utils.io_utils.RunSerializer">RunSerializer (class in polo.utils.io_utils)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTree">RunTree (class in polo.widgets.run_tree)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.run_tree.RunTreeItem">RunTreeItem (class in polo.widgets.run_tree)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog">RunUpdaterDialog (class in polo.windows.run_updater_dialog)</a>
 </li>
@@ -1713,7 +1744,7 @@
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_cocktail_number">sort_images_by_cocktail_number() (polo.widgets.slideshow_inspector.slideshowInspector static method)</a>
 </li>
-      <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize">sort_images_by_fastest_to_crystallize() (polo.widgets.slideshow_inspector.slideshowInspector method)</a>
+      <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize">sort_images_by_fastest_to_crystalize() (polo.widgets.slideshow_inspector.slideshowInspector static method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">sort_images_by_marco_confidence() (polo.widgets.slideshow_inspector.slideshowInspector static method)</a>
 </li>
@@ -1753,10 +1784,10 @@
 </li>
       <li><a href="polo.threads.html#polo.threads.thread.thread">thread (class in polo.threads.thread)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.tile_images_onto_scene">tile_images_onto_scene() (polo.widgets.plate_viewer.plateViewer method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="polo.windows.html#polo.windows.time_res_dialog.TimeResDialog">TimeResDialog (class in polo.windows.time_res_dialog)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog.title">title() (polo.windows.pptx_dialog.PptxDesignerDialog property)</a>
@@ -1768,6 +1799,8 @@
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.PhotoViewer.toggleDragMode">toggleDragMode() (polo.widgets.slideshow_viewer.PhotoViewer method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.plate_viewer.plateViewer.total_pages">total_pages() (polo.widgets.plate_viewer.plateViewer property)</a>
+</li>
+      <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.total_slides">total_slides() (polo.widgets.slideshow_viewer.SlideshowViewer property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1809,6 +1842,8 @@
       <li><a href="polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">update_slides_from_filters() (polo.widgets.slideshow_viewer.SlideshowViewer method)</a>
 </li>
       <li><a href="polo.widgets.html#polo.widgets.table_inspector.TableInspector.update_table_view">update_table_view() (polo.widgets.table_inspector.TableInspector method)</a>
+</li>
+      <li><a href="polo.windows.html#polo.windows.run_updater_dialog.RunUpdaterDialog.updated_run_signal">updated_run_signal (polo.windows.run_updater_dialog.RunUpdaterDialog attribute)</a>
 </li>
       <li><a href="polo.windows.html#polo.windows.ftp_dialog.FTPDialog.username">username() (polo.windows.ftp_dialog.FTPDialog property)</a>
 </li>

@@ -285,7 +285,6 @@ class RunSerializer():
         Tests to ensure a path exists. Passing parent = True will check for
         the existence of the parent directory of the path.
         '''
-
         if isinstance(path, (str, Path)):
             if isinstance(path, str):
                 path = Path(path)
@@ -322,6 +321,7 @@ class HtmlWriter(RunSerializer):
 
         with open(template_path, 'r') as template:
             contents = template.read()
+            logger.debug('Read Jinja template at {}'.format(template_path))
             return Template(contents)
 
     def write_complete_run(self, output_path, encode_images=True):
@@ -356,6 +356,7 @@ class HtmlWriter(RunSerializer):
                             annotations='No annotations')
                         with open(output_path, 'w') as html_file:
                             html_file.write(html)
+                            logger.debug('Wrote HTML report to {}'.format(output_path))
                             return True
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
@@ -381,18 +382,28 @@ class HtmlWriter(RunSerializer):
         :param run_name: name of run, defaults to None
         :type run_name: str, optional
         '''
-        if HtmlWriter.path_validator(output_path, parent=True):
-            output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
-            template = HtmlWriter.make_template(SCREEN_HTML_TEMPLATE)
-            if not run_name:
-                run_name = self.run.run_name
-            html = template.render(plate_list=plate_list, run_name=run_name,
-                                   well_number=well_number, date=datetime.now(),
-                                   x_reagent_stock=x_reagent,
-                                   y_reagent_stock=y_reagent,
-                                   well_volume=str(well_volume))
-            with open(output_path, 'w') as screen_html:
-                screen_html.write(html)
+        try:
+            if HtmlWriter.path_validator(output_path, parent=True):
+                output_path = HtmlWriter.path_suffix_checker(output_path, '.html')
+                template = HtmlWriter.make_template(SCREEN_HTML_TEMPLATE)
+                if not run_name:
+                    run_name = self.run.run_name
+                html = template.render(plate_list=plate_list, run_name=run_name,
+                                    well_number=well_number, date=datetime.now(),
+                                    x_reagent_stock=x_reagent,
+                                    y_reagent_stock=y_reagent,
+                                    well_volume=str(well_volume))
+                with open(output_path, 'w') as screen_html:
+                    screen_html.write(html)
+                    logger.debug('Wrote grid screen report to {}'.format(output_path))
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(e, self.write_grid_screen))
+            make_message_box(
+                parent=None,
+                message='Failed to write screen to {}. {}'.format(
+                    output_path, e
+                )
+            ).exec_()
 
 
 class RunCsvWriter(RunSerializer):
@@ -508,6 +519,7 @@ class RunCsvWriter(RunSerializer):
                 writer.writeheader()
                 for row in rows:
                     writer.writerow(row)
+            logger.debug('Wrote csv data to {}'.format(self.output_path))
             return True
         except Exception as e:
             logger.warning(
@@ -807,7 +819,7 @@ class XtalWriter(RunSerializer):
         header += self.header_line.format(
             self.header_flag, 'SAVE TIME', datetime.now())
         header += self.header_line.format(
-            self.header_flag, 'VERSION', __version__)
+            self.header_flag, 'VERSION', polo_version)
         for key, value in self.__dict__.items():
             header += self.header_line.format(
                 self.header_flag, str(key).upper(), value)
@@ -883,7 +895,7 @@ class XtalWriter(RunSerializer):
         if os.path.exists(str(self.thread.result)):
             message = 'Saved current run to {}!'.format(self.thread.result)
         else:
-            message = 'Save to failed. Returned {}'.format(self.thread.result)
+            message = 'Failed to save run.{}'.format(self.thread.result)
 
         make_message_box(message=message).exec_()
 
@@ -895,22 +907,23 @@ class XtalWriter(RunSerializer):
         :return: path to xtal file
         :rtype: str
         '''
-        if XtalWriter.path_validator(output_path, parent=True):
-            # path is good to go and ready to write file into
-            self.run.encode_images_to_base64()
-            run_str = self.run_to_dict()
-            if isinstance(run_str, str):  # encoding worked, no errors caught
-                output_path = XtalWriter.path_suffix_checker(
-                    output_path, self.file_ext)  # make sure has .xtal suffix
-                try:
+        try:
+            if XtalWriter.path_validator(output_path, parent=True):
+                # path is good to go and ready to write file into
+                self.run.encode_images_to_base64()
+                run_str = self.run_to_dict()
+                if isinstance(run_str, str):  # encoding worked, no errors caught
+                    output_path = XtalWriter.path_suffix_checker(
+                        output_path, self.file_ext)  # make sure has .xtal suffix
+                
                     with open(str(output_path), 'w') as xtal_file:
                         xtal_file.write(self.xtal_header)
                         xtal_file.write(run_str)
                         return output_path
-                except PermissionError as e:
-                    logger.warning('Caught {} at {}'.format(
-                        e, self.write_xtal_file))
-                    return e
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(
+                e, self.write_xtal_file))
+            return e
 
     def run_to_dict(self):
         '''Create a json string from the run stored in the run attribute.
@@ -925,7 +938,7 @@ class XtalWriter(RunSerializer):
                 return json.dumps(clean_run, ensure_ascii=True, indent=4,
                                   default=XtalWriter.json_encoder)
             except Exception as e:
-                logger.warning('Failed to encode {} to dict. Gave {}'.format(
+                logger.error('Failed to encode {} to dict. Gave {}'.format(
                     self.run, e))
                 return e
 
@@ -1524,14 +1537,15 @@ class BarTender():
         :return: datetime object
         :rtype: datetime
         '''
-        date_string = date_string.strip()
-        datetime_formats = ['%m/%d/%Y', '%m/%d/%y',
-                            '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
-        for form in datetime_formats:
-            try:
-                return datetime.strptime(date_string, form)
-            except ValueError as e:
-                continue
+        if date_string:
+            date_string = str(date_string).strip()
+            datetime_formats = ['%m/%d/%Y', '%m/%d/%y',
+                                '%m-%d-%Y', '%m-%d-%y', '%Y-%m-%d %H:%M:%S']
+            for form in datetime_formats:
+                try:
+                    return datetime.strptime(date_string, form)
+                except ValueError as e:
+                    continue
 
     @staticmethod
     def date_range_parser(date_range_string):
@@ -1579,6 +1593,8 @@ class BarTender():
                     self.menus[path] = new_menu
                     # add new menu to menus dict path to csv file is the menu
                     # key
+        else:
+            logger.warning('No cocktail metadata stored in {}'.format(self))
 
     def get_menu_by_date(self, date, type_='s'):
         '''Get a :class:`Menu` instance who's usage dates include the
@@ -1792,6 +1808,19 @@ class RunLinker():
     '''
 
     @staticmethod
+    def link_visualizer(self, run):
+        '''Create a text representation of the linked list structure between
+        runs for debugging.
+
+        :param run: Run to build representation from
+        :type run: Run
+        :return: Text representation of the linked list
+        :rtype: str
+        '''
+        pass
+
+
+    @staticmethod
     def the_big_link(runs):
         '''Wrapper method to do all the linking required for a collection of
         runs. First calls :meth:`~polo.utils.io_utils.RunLinker.unlink_runs_completely`
@@ -1936,6 +1965,7 @@ class XmlReader():
             d.update(
                 XmlReader.get_data_from_xml_element(root[1])
             )
+            logger.debug('Read data from {}'.format(xml_path))
             return d
 
         except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
@@ -1956,6 +1986,9 @@ class XmlReader():
             file_paths = [parent_dir.joinpath(f)
                           for f in os.listdir(str(parent_dir))]
             xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
+            logger.debug('Found {} xml files in {}'.format(
+                len(xmls), parent_dir
+            ))
             return xmls
         except (PermissionError, FileNotFoundError) as e:
             logger.error('Caught {} while calling {}'.format(
@@ -2013,6 +2046,7 @@ class Menu():  # holds the dictionary of cocktails
         self.type_ = type_
         self.path = path
         self.cocktails = cocktails  # holds all cocktails (items on the menu)
+        logger.debug('Created Menu for path {}'.format(self.path))
 
     @property
     def cocktails(self):
@@ -2024,6 +2058,7 @@ class Menu():  # holds the dictionary of cocktails
             self._cocktails = new_cocktails
         else:
             self._cocktails = CocktailMenuReader(self.path).read_menu_file()
+            logger.debug('Added {} Cocktails'.format(len(self._cocktails)))
 
     def __len__(self):
         if self.cocktails:
@@ -2034,11 +2069,6 @@ class Menu():  # holds the dictionary of cocktails
     def __getitem__(self, key):
         return self.cocktails[key]
     
-
-
-
-    # or potentially use a file browser to do this one and put it in a wdiget
-
 
 # orphan functions that have not made it into a class yet
 # =============================================================================
@@ -2144,7 +2174,7 @@ def run_name_validator(new_run_name, current_run_names):
         new_run_name = new_run_name.encode('utf-8')
         new_run_name = new_run_name.decode('utf-8')
     except UnicodeError as e:
-        logger.info('{} failed run name validation with {}'.format(
+        logger.warning('{} failed run name validation with {}'.format(
             new_run_name, e
         ))
         return e
@@ -2169,7 +2199,7 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
         try:
             os.mkdir(path)
         except FileNotFoundError as e:
-            logger.warning('Could not make directory with path {}. Returned {}'.format(
+            logger.error('Could not make directory with path {}. Returned {}'.format(
                 path, e
             ))
             return e

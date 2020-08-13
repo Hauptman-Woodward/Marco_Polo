@@ -44,7 +44,7 @@ class ImagePopDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(
             self._change_favorite_status
         )
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
         # must set image before any other widget population
 
     @property
@@ -118,6 +118,10 @@ class ImagePopDialog(QtWidgets.QDialog):
             self._set_cocktail_details()
             self._set_image_details()
             self._set_allowed_navigation_functions()
+        else:
+            logger.warning('Attempted to show object of type {}'.format(
+                type(self.image)
+            ))
     
 
     def classify_image(self, crystals=False, clear=False,

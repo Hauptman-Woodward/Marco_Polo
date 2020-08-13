@@ -159,6 +159,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         if new_run:
             self._run = new_run
             self.ui.plateViewer.run = new_run
+            logger.info('Opened new run {}'.format(new_run))
         else:
             self._run = None
             self.ui.plateViewer.run = None
@@ -173,6 +174,8 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         '''
         self.ui.plateViewer.images_per_page = self.images_per_page[
                 self.ui.comboBox_7.currentIndex()]
+        logger.info('Set images per page to {}'.format(
+            self.ui.plateViewer.images_per_page))
     
     def _set_color_comboboxs(self):
         '''Private method that sets the label text associated with each color

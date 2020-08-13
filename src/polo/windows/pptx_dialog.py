@@ -4,9 +4,10 @@ from PyQt5.QtWidgets import QApplication
 from polo.designer.UI_pptx_designer import Ui_PptxDialog
 from polo.utils.io_utils import *
 from polo.utils.dialog_utils import *
-from polo import IMAGE_CLASSIFICATIONS
+from polo import IMAGE_CLASSIFICATIONS, make_default_logger
 from polo.widgets.run_tree import RunTree
 
+logger = make_default_logger(__name__)
 
 class PptxDesignerDialog(QtWidgets.QDialog):
 
@@ -173,43 +174,51 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                  Exception otherwise.
         :rtype: str or Exception
         ''' 
-        if not isinstance(run, (Run, HWIRun)):
-            if self.ui.runTreeWidget.selected_run:
-                run = self.ui.runTreeWidget.selected_run
+        try:
+            if not isinstance(run, (Run, HWIRun)):
+                if self.ui.runTreeWidget.selected_run:
+                    run = self.ui.runTreeWidget.selected_run
+                else:
+                    make_message_box('Please select a run').exec_()
+                    QApplication.restoreOverrideCursor()
+                    return
+
+            if not self.ui.lineEdit_3.text():
+                file_path = self._get_save_path()
             else:
-                make_message_box('Please select a run').exec_()
-                QApplication.restoreOverrideCursor()
-                return
+                file_path = self.ui.lineEdit_3.text()
 
-        if not self.ui.lineEdit_3.text():
-            file_path = self._get_save_path()
-        else:
-            file_path = self.ui.lineEdit_3.text()
+            writer = PptxWriter(file_path,
+                                image_types=self._parse_image_classifications(),
+                                marco=self.marco, human=self.human)
 
-        writer = PptxWriter(file_path,
-                            image_types=self._parse_image_classifications(),
-                            marco=self.marco, human=self.human)
+            self.setEnabled(False)
+            QApplication.setOverrideCursor(Qt.WaitCursor)
 
-        self.setEnabled(False)
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+            write_result = writer.make_single_run_presentation(
+                run=run,
+                title=self.title,
+                subtitle=self.subtitle,
+                all_specs=self.all_specs,
+                all_dates=self.all_dates
+                )
 
-        write_result = writer.make_single_run_presentation(
-            run=run,
-            title=self.title,
-            subtitle=self.subtitle,
-            all_specs=self.all_specs,
-            all_dates=self.all_dates
-            )
+            if write_result == True:
+                message = 'Wrote presentation to {}'.format(file_path)
+            else:
+                message = 'Error writing presentation {}'.format(write_result)
 
-        if write_result == True:
-            message = 'Wrote presentation to {}'.format(file_path)
-        else:
-            message = 'Error writing presentation {}'.format(write_result)
+            self.setEnabled(True)
+            QApplication.restoreOverrideCursor()
+            make_message_box(parent=self, message=message).exec_()
+            return write_result
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self._write_presentation))
+            make_message_box(
+                parent=self,
+                message='Failed to write presentation {}'.format(e)
+            ).exec_()
 
-        self.setEnabled(True)
-        QApplication.restoreOverrideCursor()
-        make_message_box(parent=self, message=message).exec_()
-        return write_result
 
     def check_for_warnings(self):
         pass

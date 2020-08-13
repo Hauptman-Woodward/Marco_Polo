@@ -35,5 +35,5 @@ def make_message_box(message,
     if connected_function:
         msg.buttonClicked.connect(connected_function)
 
-    logger.info('Made message box with message "{}"'.format(message))
+    logger.debug('Made message box with message "{}"'.format(message))
     return msg

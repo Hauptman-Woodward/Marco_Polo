@@ -84,12 +84,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
@@ -163,15 +164,15 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="catch_ftp_errors"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.ftp_utils.catch_ftp_errors">[docs]</a><span class="k">def</span> <span class="nf">catch_ftp_errors</span><span class="p">(</span><span class="n">funct</span><span class="p">):</span>
+<div class="viewcode-block" id="catch_ftp_errors"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.ftp_utils.catch_ftp_errors">[docs]</a><span class="k">def</span> <span class="nf">catch_ftp_errors</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;General decorator function for catching any errors thrown by other</span>
 <span class="sd">    ftp_utils functions.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">try_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">funct</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">all_errors</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">funct</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">func</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span>
     <span class="k">return</span> <span class="n">try_function</span></div>
 

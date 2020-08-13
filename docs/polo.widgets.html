@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
@@ -93,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="polo.html">polo package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="future_maintainers.html">Future Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
@@ -763,6 +765,11 @@ to color images in the plate viewer.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.export_current_view">
+<code class="sig-name descname">export_current_view</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/plate_inspector_widget.html#PlateInspectorWidget.export_current_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.export_current_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.plate_inspector_widget.PlateInspectorWidget.favorite">
 <em class="property">property </em><code class="sig-name descname">favorite</code><a class="headerlink" href="#polo.widgets.plate_inspector_widget.PlateInspectorWidget.favorite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Status of the <cite>favorite</cite> <code class="xref py py-class docutils literal notranslate"><span class="pre">QCheckBox</span></code> filter.</p>
@@ -1408,6 +1415,25 @@ return None</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer._classification_cleanup">
+<code class="sig-name descname">_classification_cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._classification_cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._classification_cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>“Cleanup” the UI after a classification thread has completed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer._classify_multiple_runs">
+<code class="sig-name descname">_classify_multiple_runs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">runs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._classify_multiple_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._classify_multiple_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the MARCO model on a list of runs. Recursively creates
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ClassificationThreads</span></code> for each <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> until all
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instances have been classified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>runs</strong> (<em>list</em>) – List of <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance to classify using MARCO</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer._clear_current_run">
 <code class="sig-name descname">_clear_current_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._clear_current_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._clear_current_run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear out the current run from other widgets by emiting a
@@ -1449,17 +1475,6 @@ the MARCO model on all images in the run passed to <cite>run</cite> argument.</p
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run or HWIRun instance to run MARCO on</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer._remove_run">
-<code class="sig-name descname">_remove_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._remove_run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method to completely remove a run from Polo.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a><em>, </em><em>optional</em>) – Run to remove from current session, defaults to None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1584,8 +1599,13 @@ are then taken over by the FTPDialog until it is closed.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update">
+<code class="sig-name descname">refresh_run_after_update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.refresh_run_after_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer.remove_run">
-<code class="sig-name descname">remove_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.remove_run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.remove_run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1645,6 +1665,31 @@ If None uses the root as the parent node.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree._classify_all_runs_slot">
+<code class="sig-name descname">_classify_all_runs_slot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._classify_all_runs_slot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._classify_all_runs_slot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify all the unclassified runs belonging to a the selected
+sample.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree._display_name_setter">
+<code class="sig-name descname">_display_name_setter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._display_name_setter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._display_name_setter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that creates a display name for a run that also
+avoids collisions with existing display names. Currently the process
+of translating a display name to a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> object involves first
+looking up the display name in the <code class="xref py py-attr docutils literal notranslate"><span class="pre">formated_name_to_name</span></code>
+dictionary to get the run name and then looking up the run name in the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">loaded_runs</span></code> dictionary to get the <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> object. This
+means that currently run names and display names need to be unique
+to avoid collisions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a><em> or </em><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun"><em>HWIRun</em></a>) – Run to create a display name for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree._edit_data_slot">
 <code class="sig-name descname">_edit_data_slot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._edit_data_slot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._edit_data_slot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method used to update the data in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> after it has
@@ -1688,29 +1733,10 @@ has selected a run and wants to open it for analysis.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.widgets.run_tree.RunTree._remove_run">
-<code class="sig-name descname">_remove_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._remove_run" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Private method to remove a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> completely from the</dt><dd><p>Polo interface.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run_name</strong> (<em>str</em>) – Run name of <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance to remove</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree._remove_run_slot">
 <code class="sig-name descname">_remove_run_slot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._remove_run_slot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._remove_run_slot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Slot to connect to contextMenu popup to remove the selected run.</p>
 </dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.run_tree.RunTree._sort_sample_nodes">
-<code class="sig-name descname">_sort_sample_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample_node</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree._sort_sample_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree._sort_sample_nodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree.add_classified_run">
@@ -1755,6 +1781,11 @@ be unique.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.widgets.run_tree.RunTree.classify_sample_signal">
+<code class="sig-name descname">classify_sample_signal</code><a class="headerlink" href="#polo.widgets.run_tree.RunTree.classify_sample_signal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree.contextMenuEvent">
@@ -1820,13 +1851,29 @@ method.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_tree.RunTree.remove_run">
+<code class="sig-name descname">remove_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">display_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.remove_run" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Private method to remove a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> completely from the</dt><dd><p>Polo interface.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>display_name</strong> – Display name being shown to the user to represent
+the run to be removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_tree.RunTree.remove_run_from_view">
-<code class="sig-name descname">remove_run_from_view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.remove_run_from_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.remove_run_from_view" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_run_from_view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">display_name</span></em>, <em class="sig-param"><span class="n">sample_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTree.remove_run_from_view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTree.remove_run_from_view" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance using its <code class="xref py py-attr docutils literal notranslate"><span class="pre">run_name</span></code> attribute.
 Does not effect any other widgets. Calling this method only 
 removes the <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance from
 the display. If a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> instance is removed from successfully
 it is returned.</p>
+<p>TODO UPDATE</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>run_name</strong> (<em>str</em>) – Name of run to remove</p>
@@ -1865,6 +1912,12 @@ selected returns False.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt id="polo.widgets.run_tree.RunTreeItem">
+<em class="property">class </em><code class="sig-prename descclassname">polo.widgets.run_tree.</code><code class="sig-name descname">RunTreeItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">date</span></em>, <em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_tree.html#RunTreeItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_tree.RunTreeItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QTreeWidgetItem</span></code></p>
 </dd></dl>
 
 </div>
@@ -1996,6 +2049,11 @@ the <cite>__init__</cite> method.</p>
 <dd><p>Private method that sets current image label to the
 image’s filepath basename.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector._set_slide_number_label">
+<code class="sig-name descname">_set_slide_number_label</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector._set_slide_number_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector._set_slide_number_label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.slideshow_inspector.slideshowInspector._set_slideshow_mode">
@@ -2168,8 +2226,8 @@ by this parameter.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize">
-<code class="sig-name descname">sort_images_by_fastest_to_crystallize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_fastest_to_crystallize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystallize" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize">
+<em class="property">static </em><code class="sig-name descname">sort_images_by_fastest_to_crystalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_fastest_to_crystalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2455,6 +2513,11 @@ image.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.current_slide_number">
+<em class="property">property </em><code class="sig-name descname">current_slide_number</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.current_slide_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.slideshow_viewer.SlideshowViewer.display_current_image">
 <code class="sig-name descname">display_current_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_viewer.html#SlideshowViewer.display_current_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.display_current_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Renders the Image instance currently stored in the <cite>current_image</cite>
@@ -2541,6 +2604,11 @@ specific well number.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.slideshow_viewer.SlideshowViewer.total_slides">
+<em class="property">property </em><code class="sig-name descname">total_slides</code><a class="headerlink" href="#polo.widgets.slideshow_viewer.SlideshowViewer.total_slides" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters">

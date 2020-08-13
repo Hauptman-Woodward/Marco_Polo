@@ -276,6 +276,7 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.slideshowViewer.show_all_dates = True
             if self.run:
                 self._display_current_image()
+            logger.debug('Set slideshow mode to all dates')
         else:
             self.ui.slideshowViewer.show_all_dates = False
         if show_all_specs:
@@ -283,6 +284,7 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.slideshowViewer.show_all_specs = True
             if self.run:
                 self._display_current_image()
+            logger.debug('Set slideshow mode to all spectrums')
         else:
             self.ui.slideshowViewer.show_all_specs = False
 
@@ -381,11 +383,26 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         try:
             self.ui.slideshowViewer.display_current_image()
+
+            # NOTE: User on Mac Mojave OS reported issue with meta data text
+            # not updating but no errors related in the log file
+            # comparison below is to get more info on this issue
+
+            cur_cocktail_string = self.ui.textBrowser.toPlainText()
+            cur_image_string = self.ui.textBrowser_2.toPlainText()
+
             self.ui.textBrowser_2.setText(
                 self.ui.slideshowViewer.get_cur_img_meta_str())
             self.ui.textBrowser.setText(
                 self.ui.slideshowViewer.get_cur_img_cocktail_str()
             )
+
+            if isinstance(self._run, HWIRun):
+                if self.ui.textBrowser_2.toPlainText() == cur_image_string:
+                    logger.error('Image data display did not update')
+                if self.ui.textBrowser.toPlainText() == cur_cocktail_string:
+                    logger.error('Cocktail data display did not update')
+
             self._set_image_name()
             self._set_favorite_checkbox()
             self._set_time_resolved_functions()
@@ -408,6 +425,11 @@ class slideshowInspector(QtWidgets.QWidget):
             self.selected_classifications, self.human, self.marco, self.favorites,
             self.current_sort_function
         )
+        logger.info(
+            'Submit image filters {} Marco = {} Human = {} Favorite = {} Sort = {}'.format(
+                self.selected_classifications, self.marco, self.human,
+                self.favorites, self.current_sort_function
+            ))
         self._display_current_image()
 
     def _set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
@@ -478,18 +500,25 @@ class slideshowInspector(QtWidgets.QWidget):
         '''Export the current view to a png file. Show the user a message box
         to tell them if the export succeeded or failed.
         '''
-        save_path = QtWidgets.QFileDialog.getSaveFileName(
-            self, 'Save View'
-        )[0]
-        if save_path:
-            save_path = RunSerializer.path_suffix_checker(save_path, '.png')
-        write_result = SceneExporter.write_image(
-            self.ui.slideshowViewer.scene, save_path)
+        try:
+            save_path = QtWidgets.QFileDialog.getSaveFileName(
+                self, 'Save View'
+            )[0]
+            if save_path:
+                save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+            write_result = SceneExporter.write_image(
+                self.ui.slideshowViewer.scene, save_path)
 
-        if isinstance(write_result, str):
-            message = 'View saved to {}'.format(write_result)
-        else:
-            message = 'Write to {} failed with error {}'.format(
-                save_path, write_result
-            )
-        make_message_box(parent=self, message=message).exec_()
+            if isinstance(write_result, str):
+                message = 'View saved to {}'.format(write_result)
+            else:
+                message = 'Write to {} failed with error {}'.format(
+                    save_path, write_result
+                )
+            make_message_box(parent=self, message=message).exec_()
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, self.export_current_view))
+            make_message_box(
+                parent=self,
+                message='Failed to export current view {}'.format(e)
+            ).exec_()

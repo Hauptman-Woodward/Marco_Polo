@@ -60,6 +60,95 @@ see the :ref:`I Found a Bug` section for more information on how to report
 issues and make suggestions.
 
 
+Issues Others have Encountered
+=====================================
+
+Below is a compilation of issues others have encountered and potential 
+OS specific solutions solutions. If you have an issue and are able to solve the
+problem on your own, please let me know about via either the GihHub Issues page
+of the Google form. Both of which can be found in the :ref:`I Found a Bug`
+section. 
+
+Windows
+------------------------
+
+Installing for All Users
+****************************************************************************************
+
+The windows version of Polo is the only distribution that includes an installer.
+Some testers encountered issues running Polo when installing Polo for all users instead of
+just the local user (default install)
+
+The Cause
+..................................
+
+As part of normal operation Polo writes a log and other files in the directory the exe
+is contained in. If Polo is installed for all users, the exe will be located in
+a location that requires administrator privileges to write to and Polo will be
+unable write and open normally.
+
+The Solution
+..................................
+
+If you do not want to re-install Polo for the local user. Left click the
+the desktop shortcut or exe file and select "Run as administrator". Or just
+reinstall Polo for the local user.
+
+Mac
+------------
+
+Polo is recognized as a txt file, not exe
+****************************************************************************************
+
+Some users have found that the Mac Polo exe after it is downloaded is recognized
+as a txt file and not as an exe file (which can be run on your computer). If
+this is the case for you it is fixable but will require some command line usage.
+
+The cause
+..................................
+
+Currently, not sure about this one.
+
+The Solution
+..................................
+
+1. Determine the filepath to your Polo (txt) exe file. The filepath can be
+copied to your clipboard by left clicking and selecting *Copy*
+
+2. Open the terminal. This can be done by going to Spotlight search and searching
+for "terminal"
+
+3. Enter the command below into the terminal and press enter. Replace the
+text in [ ] with the filepath you just copied. Do **not** include the braces. 
+If you are prompted to give your password, do so.
+
+:code:`sudo chmod +x [Your/Polo/Filepath]`
+
+You should be able to run Polo as a program now.
+
+"Polo" can't be opened because Sandbox is not allowed to open documents in Terminal
+****************************************************************************************
+
+Some users using Mojave OS are greeted with the error message (shown below)
+when attempting to launch Polo for the first time. 
+
+.. image:: images/sandbox_error.png
+    :align: center
+
+The Cause
+..................................
+
+This issue is believed to be related to Mac security settings which are rightfully
+hesitant to run programs from outside developers.
+
+The Solution
+..................................
+
+If this occurs execute the steps desribed in the solution section of
+:ref:`Polo is recognized as a txt file, not exe`. You can also attempt control
+clicking the Polo executable and selecting **Open**. 
+
+
 Running From Source
 =========================
 

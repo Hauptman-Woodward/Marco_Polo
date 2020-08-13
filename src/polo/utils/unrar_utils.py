@@ -28,8 +28,10 @@ def unrar_archive(rar_path, target_dir=None):
         exit_status = subprocess.call(unrar_cmd)
 
         if exit_status == 0:
+            logger.debug('Unrar completed successfully')
             return Path(str(rar_path)).with_suffix('')
         else:
+            logger.error('Unrar failed, exit status {}'.format(exit_status))
             return exit_status
     except Exception as e:
         logger.error('Caught {} while calling {}'.format(
@@ -76,6 +78,7 @@ def test_for_working_unrar(unrar_exe=UNRAR_EXE):
                             e, test_for_working_unrar))
             return False
     else:
+        logger.debug('No working unrar found')
         return False
 
 

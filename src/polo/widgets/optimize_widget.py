@@ -90,7 +90,7 @@ class OptimizeWidget(QtWidgets.QWidget):
 
         self.ui.pushButton_26.setIcon(QIcon(self.HTML_ICON))
         self.ui.pushButton_27.setIcon(QIcon(self.GRID_ICON))
-        logger.info('Created {}'.format(self))
+        logger.debug('Created {}'.format(self))
 
     @property
     def x_wells(self):
@@ -200,7 +200,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         if isinstance(new_run, (Run, HWIRun)):
             self._set_hit_well_choices()  # give use options of crystal hits
             self._update_current_reagents()
-            logger.info('Opened new run {}'.format(self._run))
+            logger.debug('Opened new run {}'.format(self._run))
     
     def _set_up_unit_comboboxes(self):
         '''Private method that sets the base unit and the scalers
@@ -517,7 +517,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             msg.setText(message)
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg.exec_()
-            logger.info(
+            logger.warning(
                 'Recorded error when making optimization screen: {}'.format(
                     message
                 ))
@@ -587,7 +587,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                 elif value.units == 'v/v':
                     total_volume += max_volume.value * (value.value/100)
         if total_volume > max_volume.value:
-            logger.info(
+            logger.debug(
                 'Recorded well overflow. Total volume: {} Max Volume: {}'.format(
                     total_volume, max_volume
                 ))
