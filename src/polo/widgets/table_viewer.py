@@ -135,14 +135,12 @@ class TableViewer(QtWidgets.QTableWidget):
         '''
         if self.run:
             self.clear()
-            self.update()
             headers, data = self.table_data
             header_map = self.make_header_map(headers)
             header_labels = sorted(
                 [h for h in header_map.keys()], key=lambda k: header_map[k])
             print(header_labels)
             self.setHorizontalHeaderLabels(header_labels)
-            self.update()
             table_data, row_count = {}, 0
             for row in data:  # dictionary
                 if TableViewer.filter(row, image_classes, human, marco):
@@ -159,3 +157,4 @@ class TableViewer(QtWidgets.QTableWidget):
             for k, v in table_data.items():
                 r, c = k
                 self.setItem(r, c, QtWidgets.QTableWidgetItem(v))
+            self.repaint()

@@ -384,6 +384,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
         self._set_time_resolved_buttons()
         self._set_alt_spectrum_buttons()
         self._set_spin_box_range()
+        self.update()
     
     def export_current_view(self):
         try:

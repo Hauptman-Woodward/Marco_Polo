@@ -298,6 +298,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             )
             logger.debug('Added {} images to scene'.format(len(images)))
             self.changed_page_signal.emit(self._current_page)
+            self.repaint()
 
     def set_scene_opacity_from_filters(self, image_types, human=False,
                                        marco=False, favorite=False,
