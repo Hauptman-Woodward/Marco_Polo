@@ -390,12 +390,16 @@ class slideshowInspector(QtWidgets.QWidget):
 
             cur_cocktail_string = self.ui.textBrowser.toPlainText()
             cur_image_string = self.ui.textBrowser_2.toPlainText()
+            print(cur_cocktail_string, cur_image_string)
 
             self.ui.textBrowser_2.setText(
                 self.ui.slideshowViewer.get_cur_img_meta_str())
             self.ui.textBrowser.setText(
                 self.ui.slideshowViewer.get_cur_img_cocktail_str()
             )
+            self.ui.textBrowser_2.repaint()
+            self.ui.textBrowser_2.repaint()
+
 
             if isinstance(self._run, HWIRun):
                 if self.ui.textBrowser_2.toPlainText() == cur_image_string:

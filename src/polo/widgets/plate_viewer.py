@@ -266,6 +266,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             images = [self.run.images[i] for i in self._get_visible_wells()]
             _, stride = self.subgrid_dict[self.images_per_page]
             self._scene.clear()
+            self.viewport().update()
 
             for i, image in enumerate(images):
                 if i % stride == 0 and i != 0:
