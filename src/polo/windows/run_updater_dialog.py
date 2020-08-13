@@ -42,8 +42,6 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         self.ui.pushButton.clicked.connect(self._update_run)
         self.ui.comboBox_2.addItems(IMAGE_SPECS)
 
-        print(self.run.formated_name)
-
 
     @property
     def current_menus(self):

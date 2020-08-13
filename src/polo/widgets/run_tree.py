@@ -232,21 +232,21 @@ class RunTree(QtWidgets.QTreeWidget):
         :type run_name: str
         '''
         try:
-            comdenmed_run = self.loaded_runs[self.formated_name_to_name[display_name]]
-            self.remove_run_from_view(display_name, comdenmed_run.sampleName)
+            condemned_run = self.loaded_runs[self.formated_name_to_name[display_name]]
+            self.remove_run_from_view(display_name, condemned_run.sampleName)
             self.formated_name_to_name.pop(display_name)  # remove display name
-            self.loaded_runs.pop(comdenmed_run.run_name)  # remove from loaded runs
-            self.link_sample(comdenmed_run.sampleName)
+            self.loaded_runs.pop(condemned_run.run_name)  # remove from loaded runs
+            self.link_sample(condemned_run.sampleName)
             # relink all the runs in the sample
 
             # remove links to condemned run if an alt spectrum 
             for run in self.loaded_runs:
                 if (self.loaded_runs[run].alt_spectrum
-                    and self.loaded_runs[run].alt_spectrum.run_name == comdenmed_run.run_name
+                    and self.loaded_runs[run].alt_spectrum.run_name == condemned_run.run_name
                     ):
                     self.loaded_runs[run].alt_spectrum = None
             self.remove_run_signal.emit([None])
-            logger.debug('Removed run {}'.format(condenmed_run))
+            logger.debug('Removed run {}'.format(condemned_run))
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, self.remove_run))
             make_message_box(parent=self,

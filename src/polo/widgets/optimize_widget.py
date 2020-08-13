@@ -238,7 +238,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             if self.selected_constant:
                 self.ui.unitComboBox_4.set_value(self.selected_constant.stock_con)
 
-    def update(self):
+    def update_interface(self):
         '''Method to update reagents and selectable wells to the user after
         they have made additional classifications that would increase or
         decrease the pool of crystal classified images.
@@ -443,6 +443,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                         break
                 if breaker:
                     break
+            self.repaint()  # repaint for Mac catalina OS
 
     def adjust_unit(self, signed_value, new_unit):
 

@@ -589,11 +589,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif i == 5:  # run data editor
                 self.current_run.annotations = self.plainTextEdit.toPlainText()
             elif i == 4:
-                self.optimizeWidget.update()
+                self.optimizeWidget.update_interface()
     
-    # other stuff
-
-
 
     # Depreciated Methods that just have too much sentimental value to delete
     # =========================================================================

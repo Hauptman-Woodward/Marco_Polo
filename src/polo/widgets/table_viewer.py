@@ -156,3 +156,4 @@ class TableViewer(QtWidgets.QTableWidget):
             for k, v in table_data.items():
                 r, c = k
                 self.setItem(r, c, QtWidgets.QTableWidgetItem(v))
+            self.repaint()

@@ -277,7 +277,6 @@ class Image(QtGui.QPixmap):
                 if dates[i].human_class == IMAGE_CLASSIFICATIONS[0]:
                     return dates[i].date
         except Exception as e:
-            print(e)
             return None
 
     def setPixmap(self, scaling=None):
