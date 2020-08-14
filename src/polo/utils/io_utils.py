@@ -1911,12 +1911,13 @@ class RunLinker():
         return runs
 
 
+
 class XmlReader():
 
-    platedef_key = 'platedef'  # keyword that is always in plate definition
+    #platedef_key = 'platedef'  # keyword that is always in plate definition
     # xml file names
 
-    def __init__(self, xml_path=None, xml_files=[]):
+    def __init__(self, xml_path=None):
         '''XmlReader class can be used to read the xml metadata files that are
         included in HWI screening run rar archives. Currently, is primarily meant
         to extract metadata about the plate and the sample in that plate.
@@ -1927,7 +1928,8 @@ class XmlReader():
         :type xml_files: list, optional
         '''
         self.xml_path = xml_path
-        self.xml_files = xml_files
+        self._tree = ET.parse(str(xml_path))
+        self._root = tree.getroot()
 
     @staticmethod
     def get_data_from_xml_element(xml_element):
@@ -1941,77 +1943,85 @@ class XmlReader():
         '''
         return {elem.tag: elem.text for elem in xml_element
                 if elem.tag and elem.text}
+    
+    def __getitem__(self, index):
+        return self.get_data_from_xml_element(self._root[index])
 
-    def read_plate_data_xml(self, xml_path=None):
-        '''Read the data stored in an xml document. HWI includes metadata
-        about samples, imaging dates and other plate information in each
-        rar archive that is distrubted. This method is used to read that
-        data so it can be incorporated into :class:`HWIRun` objects.
+    
 
-        :param xml_path: Path to xml file to read, defaults to None.
-                         If None uses the xml path stored in `xml_path` attribute.
-        :type xml_path: str or Path, optional
-        :return: Dictionary of xml data if read was successful, Exception otherwise
-        :rtype: dict or Exception
-        '''
-        if not xml_path:
-            xml_path = self.xml_file
-        xml_path = str(xml_path)
-        try:
-            tree = ET.parse(xml_path)
-            root = tree.getroot()
 
-            d = XmlReader.get_data_from_xml_element(root[0])
-            d.update(
-                XmlReader.get_data_from_xml_element(root[1])
-            )
-            logger.debug('Read data from {}'.format(xml_path))
-            return d
 
-        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-            logger.error('Caught {} while calling {}'.format(
-                            e, self.read_plate_data_xml))
-            return e
 
-    def discover_xml_files(self, parent_dir):
-        '''Look for xml files in a given directory.
+    # def read_plate_data_xml(self, xml_path=None):
+    #     '''Read the data stored in an xml document. HWI includes metadata
+    #     about samples, imaging dates and other plate information in each
+    #     rar archive that is distrubted. This method is used to read that
+    #     data so it can be incorporated into :class:`HWIRun` objects.
 
-        :param parent_dir: Directory to look for xml files in
-        :type parent_dir: str or Path
-        :return: List of xml file paths, if any exist
-        :rtype: list
-        '''
-        parent_dir = Path(str(parent_dir))
-        try:
-            file_paths = [parent_dir.joinpath(f)
-                          for f in os.listdir(str(parent_dir))]
-            xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
-            logger.debug('Found {} xml files in {}'.format(
-                len(xmls), parent_dir
-            ))
-            return xmls
-        except (PermissionError, FileNotFoundError) as e:
-            logger.error('Caught {} while calling {}'.format(
-                            e, self.discover_xml_files))
-            return e
+    #     :param xml_path: Path to xml file to read, defaults to None.
+    #                      If None uses the xml path stored in `xml_path` attribute.
+    #     :type xml_path: str or Path, optional
+    #     :return: Dictionary of xml data if read was successful, Exception otherwise
+    #     :rtype: dict or Exception
+    #     '''
+    #     if not xml_path:
+    #         xml_path = self.xml_file
+    #     xml_path = str(xml_path)
+    #     try:
+    #         tree = ET.parse(xml_path)
+    #         root = tree.getroot()
 
-    def find_and_read_plate_data(self, parent_dir):
-        '''Find xml metadata files in a given directory. Read the
-        data from xml files that contain the :const:`plate_def` key
-        string.
+    #         d = XmlReader.get_data_from_xml_element(root[0])
+    #         d.update(
+    #             XmlReader.get_data_from_xml_element(root[1])
+    #         )
+    #         logger.debug('Read data from {}'.format(xml_path))
+    #         return d
 
-        :param parent_dir: Directory to look for xml files
-        :type parent_dir: Path or str
-        :return: Dict if xml file found and read successfully, False otherwise
-        :rtype: dict or bool
-        '''
-        xml_files = self.discover_xml_files(parent_dir)
-        if isinstance(xml_files, list):
-            for xml_file in xml_files:
-                if self.platedef_key in str(xml_file):
-                    return self.read_plate_data_xml(xml_file)
-        else:
-            return None
+    #     except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+    #         logger.error('Caught {} while calling {}'.format(
+    #                         e, self.read_plate_data_xml))
+    #         return e
+
+    # def discover_xml_files(self, parent_dir):
+    #     '''Look for xml files in a given directory.
+
+    #     :param parent_dir: Directory to look for xml files in
+    #     :type parent_dir: str or Path
+    #     :return: List of xml file paths, if any exist
+    #     :rtype: list
+    #     '''
+    #     parent_dir = Path(str(parent_dir))
+    #     try:
+    #         file_paths = [parent_dir.joinpath(f)
+    #                       for f in os.listdir(str(parent_dir))]
+    #         xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
+    #         logger.debug('Found {} xml files in {}'.format(
+    #             len(xmls), parent_dir
+    #         ))
+    #         return xmls
+    #     except (PermissionError, FileNotFoundError) as e:
+    #         logger.error('Caught {} while calling {}'.format(
+    #                         e, self.discover_xml_files))
+    #         return e
+
+    # def find_and_read_plate_data(self, parent_dir):
+    #     '''Find xml metadata files in a given directory. Read the
+    #     data from xml files that contain the :const:`plate_def` key
+    #     string.
+
+    #     :param parent_dir: Directory to look for xml files
+    #     :type parent_dir: Path or str
+    #     :return: Dict if xml file found and read successfully, False otherwise
+    #     :rtype: dict or bool
+    #     '''
+    #     xml_files = self.discover_xml_files(parent_dir)
+    #     if isinstance(xml_files, list):
+    #         for xml_file in xml_files:
+    #             if self.platedef_key in str(xml_file):
+    #                 return self.read_plate_data_xml(xml_file)
+    #     else:
+    #         return None
 
 
 class Menu():  # holds the dictionary of cocktails

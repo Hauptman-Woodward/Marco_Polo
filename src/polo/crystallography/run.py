@@ -44,12 +44,21 @@ class Run():
         self.date = date
         self.__dict__.update(kwargs)
     
+    @classmethod
+    def init_from_directory(cls, dir_path, date):
+
+    
+
+
+
+    
     @property
     def formated_name(self):
         if isinstance(self.date, datetime):
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
+
     def __getitem__(self, n):
         try:
             return self.images[n]
@@ -72,6 +81,9 @@ class Run():
         return 'Run Name: {}\nSpectrum: {}\nDate: {}\nNum Images: {}'.format(
             self.run_name, self.image_spectrum, str(self.date), len(self)
         )
+    
+    def parse_metadata(self):
+        return {'run_name': str(Path(self.image_dir).with_suffix(''))}
     
     def encode_images_to_base64(self):
         '''Helper method that encodes all images in the
@@ -182,7 +194,7 @@ class HWIRun(Run):
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress',
-                     'Plate Heatmaps', 'Cocktail']
+                     'Plate Heatmaps']
     # HWI still store images in list but in order of well number
     # index = well -1
     def __init__(self, cocktail_menu, plate_id=None, num_wells=1536,
@@ -352,6 +364,48 @@ class HWIRun(Run):
                     self.link_to_alt_spectrum(n)
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
+    
+    def parse_metadata(self):
+        collected_metadata = {}
+        collected_metadata.update(self._parse_dirname_metadata())
+        collected_metadata.update(self._parse_file_metadata())
+        return collected_metadata
+    
+    def _parse_dirname_metadata(self):
+        # get data just from the directory name
+        try:
+            dir_name = str(Path(self.image_dir).with_suffix('').name)
+            image_type = dir_name.split('-')[-1].strip()
+            if image_type in SPEC_KEYS:
+                    image_spectrum = SPEC_KEYS[image_type]
+            else:
+                image_spectrum = IMAGE_SPECS[0]  # default to visible
+            plate_id = dir_name[:10]
+            date = datetime.strptime(dir_name[10:].split('-')[0],
+                                        '%Y''%m''%d''%H''%M')
+            return {
+                    'image_spectrum': image_spectrum,
+                    'plate_id': plate_id,
+                    'date': date,
+                    'run_name': dir_name
+                }
+        except Exception as e:
+            return {}
+    
+    def _parse_file_metadata(self):
+        file_identifier = 'platedef'
+        # find if xml files exist
+        try:
+            for filepath in list_dir_abs(self.image_dir):
+                if Path(filepath).suffix == '.xml' and file_identifier in filepath:
+                    reader = XmlReader(filepath)
+                    data = XmlReader[0]
+                    data.update(XmlReader[1])
+                    # first and second elements have metadata
+                    return data
+        except Exception as e:
+            return {}
+
 
     def add_images_from_dir(self):
         '''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
