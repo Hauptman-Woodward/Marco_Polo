@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 import sys
+import inspect
 import platform
 
 
@@ -161,9 +162,19 @@ REPORTS = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html#i-found-
 
 from polo.crystallography.image import Image
 from polo.crystallography.cocktail import Cocktail, Reagent, UnitValue
-from polo.utils.io_utils import BarTender, Menu
 from polo.crystallography.run import HWIRun, Run
 from polo.threads import thread
+
+RUN_TYPES = sorted(
+            [types[-1] for types in 
+            inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
+            if issubclass(types[-1], Run)],
+            key=lambda c: c.import_priority,
+            reverse=True)
+
+
+# get all classes in the Run module that are subclassed from Run this is
+# used for imports. Sort th
 
 # best bartender at Cunneen's bar in Rodger's Park
 # and in this program handles cocktail data
@@ -185,6 +196,6 @@ critical_paths = [
 #     else:
 #         logger.critical('Critical path {} does not exist!'.format(path))
 
-
+from polo.utils.io_utils import BarTender, Menu
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
 

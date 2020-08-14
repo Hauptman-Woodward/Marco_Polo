@@ -257,49 +257,56 @@ class RunOrganizer(QtWidgets.QWidget):
         return new_run
         # message box failed to import?
     
-    def _import_runs_from_drop(self, paths):
-        if paths:
+    def _import_runs_from_drop(self, file_paths):
+
+        if file_paths:
             try:
                 self.setEnabled(False)
-                #QApplication.setOverrideCursor(Qt.WaitCursor)
-                current_path = paths.pop()
-                self._import_thread = None
-
-                if current_path.is_file():
-                    if  current_path.suffix == '.rar':
-                        self._import_thread = RunImporter.unpack_rar_archive_thread(
-                        current_path
-                    )
-                    elif current_path.suffix == '.xtal':
-                        reader = RunDeserializer(str(current_path))
-                        self._import_thread = QuickThread(
-                            reader.xtal_to_run, 
-                        )
-                elif current_path.is_dir():
-                    self._import_thread = QuickThread(lambda: current_path)
+                file_path = file_paths.pop()
+                importer = RunImporter(file_path)
+                self.import_thread = importer.create_import_thread()
                 
-                # gone through all import options, see if import thread is a thread
-                if self._import_thread:
-                
-                    def finished_import():
-                        import_result = self._import_thread.result
-                        
-                        # if coming from rar or dir result should be dir
-
-                        if os.path.isdir(str(import_result)):
-                            self._add_run_from_directory(import_result)
-                        elif isinstance(import_result, Run):
-                            self._add_runs_to_tree([import_result])
+                def finished_import_thread(file_path):
+                    result = self.import_thread.result
+                    if isinstance(result, (str, Path)) and Path(result).is_dir():  # need more work
+                        for run_type in RUN_TYPES:
+                            try:
+                                result = run_type.init_from_directory(result)
+                                result.add_images_from_dir()
+                                break
+                            except Exception as e:
+                                continue
                     
-                        if paths:
-                            self._import_runs_from_drop(paths)
-                        else:
-                            #QApplication.restoreOverrideCursor()
-                            self.setEnabled(True)
-                            
-                        
-                    self._import_thread.finished.connect(finished_import)
-                    self._import_thread.start()
+                    if isinstance(result, Run):
+                        self._add_runs_to_tree([result])
+                    
+                    self.import_thread = None
+                    while not self.import_thread and file_paths:
+                        file_path = file_paths.pop()
+                        importer = RunImporter(file_path)
+                        self.import_thread = importer.create_import_thread()
+                    
+                    if self.import_thread:
+                        self.import_thread.finished.connect(
+                            lambda: finished_import_thread(file_path))
+                        self.import_thread.start()
+                    else:
+                        QApplication.restoreOverrideCursor()
+                        self.setEnabled(True)
+
+                if self.import_thread:
+                    self.import_thread.finished.connect(
+                        lambda: finished_import_thread(file_path))
+                    self.import_thread.start()
+                else:
+                    make_message_box(
+                        parent=self,
+                        message='Could not import {}'.format(file_path)
+                    ).exec_()
+                    QApplication.restoreOverrideCursor()
+                    self.setEnabled(True)
+
+
             except Exception as e:
                 self.setEnabled(True)
                 logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
@@ -422,9 +429,9 @@ class RunOrganizer(QtWidgets.QWidget):
             current_run_names=self.ui.runTree.current_run_names,
             parent=self)
         run_importer_dialog.exec_()
-        self._add_runs_to_tree(run_importer_dialog.imported_runs.values())
+        self._add_runs_to_tree(run_importer_dialog.import_candidates.values())
         logger.info('Added {} runs from file dialog'.format(
-            run_importer_dialog.imported_runs.values()
+            run_importer_dialog.import_candidates.values()
         ))
         # for run_name, run in run_importer_dialog.imported_runs.items():
         #     self._add_run_to_tree(run)

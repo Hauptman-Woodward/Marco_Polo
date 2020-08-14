@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import sys
+import inspect
 import time
 from datetime import datetime
 from pathlib import Path
@@ -29,119 +30,16 @@ from polo.utils.math_utils import *
 
 logger = make_default_logger(__name__)
 
+
 class RunImporter():
-    '''Class to hold general use methods for importing runs into Polo.
-    '''
 
-    @staticmethod
-    def directory_validator(dir_path):
-        '''Check if a directory should proceed further down the import
-        pipeline. Includes checks to make sure the directory exists,
-        is a directory and that the directory contains images of
-        filetypes that can be imported.
+    allowed_filetypes = set(['.xtal', '.rar'])
 
-        :param dir_path: Path to a directory
-        :type dir_path: str or Path
-        :return: True, if directory can be imported, an Exception otherwise
-        :rtype: bool or Exception
-        '''
-        dir_path = str(dir_path)
-        if os.path.exists(dir_path):
-            if os.path.isdir(dir_path):
-                files = list_dir_abs(dir_path, allowed=True)
-                if files:
-                    return True
-                else:
-                    e = ForbiddenImageTypeError
-                    logger.warning('Directory validation failed with {}'.format(e))
-                    return e
-            else:
-                e = NotADirectoryError
-                logger.warning('Directory validation failed with {}'.format(e))
-                return e
-        else:
-            e = FileNotFoundError
-            logger.warning('Directory validation failed with {}'.format(e))
-            return FileNotFoundError
-    
-    @staticmethod
-    def parse_hwi_dir_metadata(dir_name):
-        '''Parse the directory name of an :class:`HWIRun` directory to pull out
-        metadata. If the directory name conforms to HWI naming conventions
-        the function should be able to return the image spectrum, the plate id,
-        the date and the run name. If the directory does not conform to HWI
-        naming standards this will cause an exception which is caught and the
-        function will return None.
-
-        If the parse is successful will return a dictionary with the following
-        format.
-
-         .. code-block:: text
-
-            {'image_spectrum': String describing the image spectrum,
-            'plate_id': String representing the plate id,
-            'date': Datetime instance of imaging date,
-            'run_name': String holding the run name
-            }
-
-        :param dir_name: Name of directory to check for metadata
-        :type dir_name: str or Path
-        :return: Dictionary of extracted metadata or None if parse fails
-        :rtype: dict or None
-        '''
-        try:
-            dir_name = str(Path(dir_name).with_suffix('').name)
-            image_type = dir_name.split('-')[-1].strip()
-            if image_type in SPEC_KEYS:
-                image_spectrum = SPEC_KEYS[image_type]
-            else:
-                image_spectrum = IMAGE_SPECS[0]  # default to visible
-            plate_id = dir_name[:10]
-            date = datetime.strptime(dir_name[10:].split('-')[0],
-                                    '%Y''%m''%d''%H''%M')
-            
-            #return image_type, plate_id, date, run_name  # last is suggeseted run name
-            return {
-                'image_spectrum': image_spectrum,
-                'plate_id': plate_id,
-                'date': date,
-                'run_name': dir_name
-                }
-
-        except Exception as e:
-            logger.error('Caught {} at {} attempting to parse {}'.format(
-                e, RunImporter.parse_hwi_dir_metadata, dir_name
-            ))
-            return False
-    
-    @staticmethod
-    def crack_open_a_rar_one(rar_path):
-        '''Method to open a compressed rar archive.
-
-        :param rar_path: Path to rar archive.
-        :type rar_path: str or Path
-        :return: Path to uncompressed archive if successful
-        :rtype: Path
-        '''
-        if not isinstance(rar_path, Path):
-            rar_path = Path(rar_path)
-        parent_path = rar_path.parent
-        return unrar_archive(rar_path, parent_path)
-    
-    @staticmethod
-    def import_from_xtal_thread(xtal_path):
-        '''Given the path to an xtal file returns a :class:`QuickThread`
-        which can be run to load the run serialized in the
-        xtal file.
-
-        :param xtal_path: File path to xtal file.
-        :type xtal_path: str
-        :return: QuickThread for deserializing the given xtal file.
-        :rtype: QuickThread
-        '''
-        reader = RunDeserializer(xtal_path)
-        if os.path.isfile(xtal_path):
-            return reader.make_read_xtal_thread()
+    def __init__(self, target_path):
+        self.target_path = Path(target_path)
+        self.imported_run = None
+        self.is_running = False
+        logger.debug('Created {} for {}'.format(self, self.target_path))
     
     @staticmethod
     def make_xtal_file_dialog(parent=None):
@@ -159,86 +57,248 @@ class RunImporter():
         return file_dlg
     
     @staticmethod
-    def unpack_rar_archive_thread(archive_path):
-        '''Create a :class:`QuickThread` that is setup to de-compress
-        a rar archive file.
+    def crack_open_a_rar_one(rar_path):
+        print('cracking open')
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    def _target_is_valid(self):
+        if self.target_path.exists():
+            if self.target_path.is_file() and self.target_path.suffix in RunImporter.allowed_filetypes:
+                return True
+            elif self.target_path.is_dir() and list_dir_abs(str(self.target_path), allowed=True):
+                return True
+        return False
+    
+    def _handle_finished_import_thread(self):
+        self.is_running = False
+        result = self._import_thread.result
+        if isinstance(result, Run):
+            self.imported_run = result  # done import completed
+        elif isinstance(result, (str, Path) and Path(result).is_dir()):  # need more work
+            for run_type in RUN_TYPES:
+                try:
+                    self.imported_run =  run_type.init_from_directory(result)
+                except Exception as e:
+                    continue
 
-        :param archive_path: Path to rar archive.
-        :type archive_path: str or Path
-        :return: QuickThread that can be run to de-compress the given archive path.
-        :rtype: QuickThread
-        '''
-        archive_path = str(archive_path)
-        if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
-            return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
-
-    @staticmethod
-    def import_run_from_directory(data_dir, **kwargs):
-        '''Imports a run from a local directory. First attempts to import
-        the run as an :class:`HWIRun` and if this fails attempts an import as
-        a general :class:`Run` object.
-
-        :param data_dir: Directory to build the Run from
-        :type data_dir: str or Path
-        :return: Run, HWIRun or False depending on directory content
-                 and if import succeeds.
-        :rtype: Run, HWIRun, bool
-        '''
-        hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
-        if isinstance(hwi_import_attempt, HWIRun):
-            return hwi_import_attempt
-        else:
-            return RunImporter.import_general_run(data_dir, **kwargs)
-
-    @staticmethod
-    def import_hwi_run(data_dir, **kwargs):
-        '''Attempt to create a :class:`HWIRun` from a directory of
-        images.
-
-        :param data_dir: Directory to import from.
-        :type data_dir: str or Path
-        :return: HWIRun if import is successful, False otherwise
-        :rtype: HWIRun, bool
-        '''
-        if RunImporter.directory_validator(data_dir) == True:
-            from polo import tim
-            metadata = XmlReader().find_and_read_plate_data(data_dir)
-            file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-            if metadata and file_name_data:
-                date = file_name_data['date']
-                menu = tim.get_menu_by_date(date, 's')
-                # assuming soluble need to change based on metadata parse
-                new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
-                new_run.__dict__.update(metadata)  # from xml data
-                new_run.__dict__.update(kwargs)  # for user supplied data
-                # that could overwrite what is in metadata
-                new_run.add_images_from_dir()
-                return new_run
-            else:
-                pass
-            # TODO try importing as non hwi run and show error message
+    def create_import_thread(self):
+        if self._target_is_valid():
+            # check if needs unrar
             
-        return False
+            if self.target_path.suffix == '.rar':
+                import_thread = QuickThread(
+                    RunImporter.crack_open_a_rar_one, rar_path=self.target_path)
+            elif self.target_path.suffix == '.xtal':
+                self._xtal_reader = RunDeserializer(str(self.target_path))
+                import_thread = QuickThread(
+                    self._xtal_reader.xtal_to_run
+                )
+            else:
+                # is a directory create a dummy thread
+                import_thread = QuickThread(
+                    lambda: self.target_path
+                )
+            return import_thread
+            
 
-    @staticmethod
-    def import_general_run(data_dir, **kwargs):
-        '''Attempt to import a :class:`Run` from a directory of images. 
 
-        :param data_dir: [description]
-        :type data_dir: [type]
-        :return: [description]
-        :rtype: [type]
-        '''
-        if RunImporter.directory_validator(data_dir) == True:
-            # cover all required arguments
-            if 'run_name' not in kwargs:
-                kwargs['run_name'] = Path(data_dir).name
-            if 'image_dir' not in kwargs:
-                kwargs['image_dir'] = data_dir
-            new_run = Run(**kwargs)
-            new_run.add_images_from_dir()
-            return new_run
-        return False
+# class RunImporter():
+#     '''Class to hold general use methods for importing runs into Polo.
+#     '''
+
+#     @staticmethod
+#     def directory_validator(dir_path):
+#         '''Check if a directory should proceed further down the import
+#         pipeline. Includes checks to make sure the directory exists,
+#         is a directory and that the directory contains images of
+#         filetypes that can be imported.
+
+#         :param dir_path: Path to a directory
+#         :type dir_path: str or Path
+#         :return: True, if directory can be imported, an Exception otherwise
+#         :rtype: bool or Exception
+#         '''
+#         dir_path = str(dir_path)
+#         if os.path.exists(dir_path):
+#             if os.path.isdir(dir_path):
+#                 files = list_dir_abs(dir_path, allowed=True)
+#                 if files:
+#                     return True
+#                 else:
+#                     e = ForbiddenImageTypeError
+#                     logger.warning('Directory validation failed with {}'.format(e))
+#                     return e
+#             else:
+#                 e = NotADirectoryError
+#                 logger.warning('Directory validation failed with {}'.format(e))
+#                 return e
+#         else:
+#             e = FileNotFoundError
+#             logger.warning('Directory validation failed with {}'.format(e))
+#             return FileNotFoundError
+    
+#     @staticmethod
+#     def parse_hwi_dir_metadata(dir_name):
+#         '''Parse the directory name of an :class:`HWIRun` directory to pull out
+#         metadata. If the directory name conforms to HWI naming conventions
+#         the function should be able to return the image spectrum, the plate id,
+#         the date and the run name. If the directory does not conform to HWI
+#         naming standards this will cause an exception which is caught and the
+#         function will return None.
+
+#         If the parse is successful will return a dictionary with the following
+#         format.
+
+#          .. code-block:: text
+
+#             {'image_spectrum': String describing the image spectrum,
+#             'plate_id': String representing the plate id,
+#             'date': Datetime instance of imaging date,
+#             'run_name': String holding the run name
+#             }
+
+#         :param dir_name: Name of directory to check for metadata
+#         :type dir_name: str or Path
+#         :return: Dictionary of extracted metadata or None if parse fails
+#         :rtype: dict or None
+#         '''
+#         try:
+#             dir_name = str(Path(dir_name).with_suffix('').name)
+#             image_type = dir_name.split('-')[-1].strip()
+#             if image_type in SPEC_KEYS:
+#                 image_spectrum = SPEC_KEYS[image_type]
+#             else:
+#                 image_spectrum = IMAGE_SPECS[0]  # default to visible
+#             plate_id = dir_name[:10]
+#             date = datetime.strptime(dir_name[10:].split('-')[0],
+#                                     '%Y''%m''%d''%H''%M')
+            
+#             #return image_type, plate_id, date, run_name  # last is suggeseted run name
+#             return {
+#                 'image_spectrum': image_spectrum,
+#                 'plate_id': plate_id,
+#                 'date': date,
+#                 'run_name': dir_name
+#                 }
+
+#         except Exception as e:
+#             logger.error('Caught {} at {} attempting to parse {}'.format(
+#                 e, RunImporter.parse_hwi_dir_metadata, dir_name
+#             ))
+#             return False
+    
+#     @staticmethod
+#     def crack_open_a_rar_one(rar_path):
+#         '''Method to open a compressed rar archive.
+
+#         :param rar_path: Path to rar archive.
+#         :type rar_path: str or Path
+#         :return: Path to uncompressed archive if successful
+#         :rtype: Path
+#         '''
+#         if not isinstance(rar_path, Path):
+#             rar_path = Path(rar_path)
+#         parent_path = rar_path.parent
+#         return unrar_archive(rar_path, parent_path)
+    
+#     @staticmethod
+#     def import_from_xtal_thread(xtal_path):
+#         '''Given the path to an xtal file returns a :class:`QuickThread`
+#         which can be run to load the run serialized in the
+#         xtal file.
+
+#         :param xtal_path: File path to xtal file.
+#         :type xtal_path: str
+#         :return: QuickThread for deserializing the given xtal file.
+#         :rtype: QuickThread
+#         '''
+#         reader = RunDeserializer(xtal_path)
+#         if os.path.isfile(xtal_path):
+#             return reader.make_read_xtal_thread()
+    
+    
+#     @staticmethod
+#     def unpack_rar_archive_thread(archive_path):
+#         '''Create a :class:`QuickThread` that is setup to de-compress
+#         a rar archive file.
+
+#         :param archive_path: Path to rar archive.
+#         :type archive_path: str or Path
+#         :return: QuickThread that can be run to de-compress the given archive path.
+#         :rtype: QuickThread
+#         '''
+#         archive_path = str(archive_path)
+#         if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
+#             return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
+
+#     @staticmethod
+#     def import_run_from_directory(data_dir, **kwargs):
+#         '''Imports a run from a local directory. First attempts to import
+#         the run as an :class:`HWIRun` and if this fails attempts an import as
+#         a general :class:`Run` object.
+
+#         :param data_dir: Directory to build the Run from
+#         :type data_dir: str or Path
+#         :return: Run, HWIRun or False depending on directory content
+#                  and if import succeeds.
+#         :rtype: Run, HWIRun, bool
+#         '''
+#         hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
+#         if isinstance(hwi_import_attempt, HWIRun):
+#             return hwi_import_attempt
+#         else:
+#             return RunImporter.import_general_run(data_dir, **kwargs)
+
+#     @staticmethod
+#     def import_hwi_run(data_dir, **kwargs):
+#         '''Attempt to create a :class:`HWIRun` from a directory of
+#         images.
+
+#         :param data_dir: Directory to import from.
+#         :type data_dir: str or Path
+#         :return: HWIRun if import is successful, False otherwise
+#         :rtype: HWIRun, bool
+#         '''
+#         if RunImporter.directory_validator(data_dir) == True:
+#             from polo import tim
+#             metadata = XmlReader().find_and_read_plate_data(data_dir)
+#             file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
+#             if metadata and file_name_data:
+#                 date = file_name_data['date']
+#                 menu = tim.get_menu_by_date(date, 's')
+#                 # assuming soluble need to change based on metadata parse
+#                 new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
+#                 new_run.__dict__.update(metadata)  # from xml data
+#                 new_run.__dict__.update(kwargs)  # for user supplied data
+#                 # that could overwrite what is in metadata
+#                 new_run.add_images_from_dir()
+#                 return new_run
+#             else:
+#                 pass
+#             # TODO try importing as non hwi run and show error message
+            
+#         return False
+
+#     @staticmethod
+#     def import_general_run(data_dir, **kwargs):
+#         '''Attempt to import a :class:`Run` from a directory of images. 
+
+#         :param data_dir: [description]
+#         :type data_dir: [type]
+#         :return: [description]
+#         :rtype: [type]
+#         '''
+#         if RunImporter.directory_validator(data_dir) == True:
+#             # cover all required arguments
+#             if 'run_name' not in kwargs:
+#                 kwargs['run_name'] = Path(data_dir).name
+#             if 'image_dir' not in kwargs:
+#                 kwargs['image_dir'] = data_dir
+#             new_run = Run(**kwargs)
+#             new_run.add_images_from_dir()
+#             return new_run
+#         return False
 
 
 class RunSerializer():
@@ -1016,18 +1076,18 @@ class RunDeserializer():  # convert saved file into a run
         else:
             return None
 
-    def xtal_to_run_on_thread(self):
-        '''Wrapper method around `xtal_to_run` method. Does the exact same thing
-        except creates a `QuickThread` instance and runs `xtal_to_run` on the
-        thread. When finished adds the newly created run to the main window's
-        loaded_run dictionary to signify that the run has been loaded and is
-        ready for further operations.
-        '''
-        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
+    # def xtal_to_run_on_thread(self):
+    #     '''Wrapper method around `xtal_to_run` method. Does the exact same thing
+    #     except creates a `QuickThread` instance and runs `xtal_to_run` on the
+    #     thread. When finished adds the newly created run to the main window's
+    #     loaded_run dictionary to signify that the run has been loaded and is
+    #     ready for further operations.
+    #     '''
+    #     return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
 
-    def make_read_xtal_thread(self):
-        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
+    # def make_read_xtal_thread(self):
+    #     return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -1911,7 +1971,6 @@ class RunLinker():
         return runs
 
 
-
 class XmlReader():
 
     #platedef_key = 'platedef'  # keyword that is always in plate definition
@@ -1929,7 +1988,9 @@ class XmlReader():
         '''
         self.xml_path = xml_path
         self._tree = ET.parse(str(xml_path))
-        self._root = tree.getroot()
+        self._root = self._tree.getroot()
+        logger.debug('Made {} for {}'.format(self, str(self.xml_path)))
+
 
     @staticmethod
     def get_data_from_xml_element(xml_element):
@@ -1947,81 +2008,6 @@ class XmlReader():
     def __getitem__(self, index):
         return self.get_data_from_xml_element(self._root[index])
 
-    
-
-
-
-
-    # def read_plate_data_xml(self, xml_path=None):
-    #     '''Read the data stored in an xml document. HWI includes metadata
-    #     about samples, imaging dates and other plate information in each
-    #     rar archive that is distrubted. This method is used to read that
-    #     data so it can be incorporated into :class:`HWIRun` objects.
-
-    #     :param xml_path: Path to xml file to read, defaults to None.
-    #                      If None uses the xml path stored in `xml_path` attribute.
-    #     :type xml_path: str or Path, optional
-    #     :return: Dictionary of xml data if read was successful, Exception otherwise
-    #     :rtype: dict or Exception
-    #     '''
-    #     if not xml_path:
-    #         xml_path = self.xml_file
-    #     xml_path = str(xml_path)
-    #     try:
-    #         tree = ET.parse(xml_path)
-    #         root = tree.getroot()
-
-    #         d = XmlReader.get_data_from_xml_element(root[0])
-    #         d.update(
-    #             XmlReader.get_data_from_xml_element(root[1])
-    #         )
-    #         logger.debug('Read data from {}'.format(xml_path))
-    #         return d
-
-    #     except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-    #         logger.error('Caught {} while calling {}'.format(
-    #                         e, self.read_plate_data_xml))
-    #         return e
-
-    # def discover_xml_files(self, parent_dir):
-    #     '''Look for xml files in a given directory.
-
-    #     :param parent_dir: Directory to look for xml files in
-    #     :type parent_dir: str or Path
-    #     :return: List of xml file paths, if any exist
-    #     :rtype: list
-    #     '''
-    #     parent_dir = Path(str(parent_dir))
-    #     try:
-    #         file_paths = [parent_dir.joinpath(f)
-    #                       for f in os.listdir(str(parent_dir))]
-    #         xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
-    #         logger.debug('Found {} xml files in {}'.format(
-    #             len(xmls), parent_dir
-    #         ))
-    #         return xmls
-    #     except (PermissionError, FileNotFoundError) as e:
-    #         logger.error('Caught {} while calling {}'.format(
-    #                         e, self.discover_xml_files))
-    #         return e
-
-    # def find_and_read_plate_data(self, parent_dir):
-    #     '''Find xml metadata files in a given directory. Read the
-    #     data from xml files that contain the :const:`plate_def` key
-    #     string.
-
-    #     :param parent_dir: Directory to look for xml files
-    #     :type parent_dir: Path or str
-    #     :return: Dict if xml file found and read successfully, False otherwise
-    #     :rtype: dict or bool
-    #     '''
-    #     xml_files = self.discover_xml_files(parent_dir)
-    #     if isinstance(xml_files, list):
-    #         for xml_file in xml_files:
-    #             if self.platedef_key in str(xml_file):
-    #                 return self.read_plate_data_xml(xml_file)
-    #     else:
-    #         return None
 
 
 class Menu():  # holds the dictionary of cocktails
@@ -2218,4 +2204,13 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
 
 from polo.crystallography.image import Image
 from polo.crystallography.run import *
+
+RUN_TYPES = sorted(
+        [types[-1] for types in 
+        inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
+        if issubclass(types[-1], Run)],
+        key=lambda c: c.import_priority,
+        reverse=True)
+print(RUN_TYPES)
+
 
