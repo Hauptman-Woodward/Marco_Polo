@@ -6,50 +6,83 @@ from polo import *
 from polo.crystallography.image import Image
 # from polo.utils.io_utils import list_dir_abs, parse_HWI_filename_meta
 from polo.utils.io_utils import (if_dir_not_exists_make,
-                                list_dir_abs, parse_HWI_filename_meta)
+                                list_dir_abs, parse_HWI_filename_meta, XmlReader)
+
 logger = make_default_logger(__name__)
 
 
 class Run():
+    '''Run objects represent one particular imaging run of a sample. They
+    store :class:`~polo.crystallography.image.Image`
+    objects that hold the actual imaging data as well as
+    metadata associated with the imaging run and the sample.
+
+    Any objects holding image data should ultimately inherit from :class:`Run`.
+
+    If you wish to create a :class:`Run` object specific to your own
+    experimental and data protocols note the following information. In almost
+    all cases when Polo attempts to import a :class:`Run` from some data source
+    besides xtal files (rar archives and directories) the classmethod
+    :func:`init_from_directory` will be called. Your subclass should override
+    this method and include all code required to read / parse any metadata
+    associated with the run. Additionally, you will probably want to override
+    the value of the :attr:`import_priority` class variable. Since before a
+    run is imported its type is unknown, Polo needs to run through all available
+    :class:`Run` subclasses and attempt to import the data as that subclass. If
+    the order of this procedure was random Polo could attempt to import data as
+    the base :class:`Run` first instead of a more specific child-class resulting
+    in a loss of metadata. Setting a higher :attr:`import_priority` value
+    tells Polo (see :class:`polo.utils.io_utils.RunImporter`) to attempt
+    import of the child class before the base :class:`Run` class.
+
+    
+    :param image_dir: Directory that contains the screening images
+    :type image_dir: str of Path
+    :param run_name: Name of this run. Should be unique as it is used to
+    uniquely identify each Run instance
+    :type run_name: str
+    :param image_spectrum: Imaging technology used to capture
+                            the images in this run, defaults to None
+    :type image_spectrum: str, optional
+    :param date: Date the images in this Run were taken, defaults to None
+    :type date: datetime, optional
+    :param images: List of all
+                    :class:`~polo.crystallography.image.Image`
+                    instances in this run, defaults to []
+    :type images: list, optional
+    '''
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress']
+    import_priority = 0
 
     def __init__(self, image_dir, run_name, image_spectrum=None, date=None, 
                  images=[], **kwargs):
-        '''Run objects represent one particular imaging run of a sample. They
-        store :class:`~polo.crystallography.image.Image`
-        objects that hold the actual imaging data as well as
-        metadata associated with the imaging run and the sample.
-
-        :param image_dir: Directory that contains the screening images
-        :type image_dir: str of Path
-        :param run_name: Name of this run. Should be unique as it is used to
-        uniquely identify each Run instance
-        :type run_name: str
-        :param image_spectrum: Imaging technology used to capture
-                               the images in this run, defaults to None
-        :type image_spectrum: str, optional
-        :param date: Date the images in this Run were taken, defaults to None
-        :type date: datetime, optional
-        :param images: List of all
-                       :class:`~polo.crystallography.image.Image`
-                       instances in this run, defaults to []
-        :type images: list, optional
-        '''
         self.image_dir = str(image_dir)
         self.run_name = run_name
         self.image_spectrum = image_spectrum
         self.images = images
         self.date = date
         self.__dict__.update(kwargs)
+
+
+    @classmethod
+    def init_from_directory(cls, dir_path, **kwargs):
+        run_name = str(Path(dir_path).with_suffix('').name)
+        return Run(dir_path, run_name, **kwargs)
     
+    @classmethod
+    def init_from_xtal(cls, xtal_path, **kwargs):
+        reader = RunDeserializer(xtal_path)
+        return reader.xtal_to_run(xtal_path, **kwargs)
+
     @property
     def formated_name(self):
         if isinstance(self.date, datetime):
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
+
     def __getitem__(self, n):
         try:
             return self.images[n]
@@ -73,6 +106,7 @@ class Run():
             self.run_name, self.image_spectrum, str(self.date), len(self)
         )
     
+    
     def encode_images_to_base64(self):
         '''Helper method that encodes all images in the
         `class`~polo.crystallography.run.Run` to base64.
@@ -92,7 +126,6 @@ class Run():
             if isinstance(new_image, Image):
                 self.images.append(new_image)
             
-
     def unload_all_pixmaps(self, start=None, end=None, a=False):  # reduce memory usage
         '''Delete the pixmap data of all 
         :class:`~polo.crystallography.image.Image` instances referenced by the
@@ -182,7 +215,8 @@ class HWIRun(Run):
 
     AllOWED_PLOTS = ['Classification Counts',
                      'MARCO Accuracy', 'Classification Progress',
-                     'Plate Heatmaps', 'Cocktail']
+                     'Plate Heatmaps']
+    import_priority = 1
     # HWI still store images in list but in order of well number
     # index = well -1
     def __init__(self, cocktail_menu, plate_id=None, num_wells=1536,
@@ -195,6 +229,58 @@ class HWIRun(Run):
         self.alt_spectrum = alt_spectrum
         super(HWIRun, self).__init__(**kwargs)
 
+    @staticmethod
+    def parse_dirname_metadata(image_dir):
+        # get data just from the directory name
+        try:
+            dir_name = str(Path(image_dir).with_suffix('').name)
+            image_type = dir_name.split('-')[-1].strip()
+            if image_type in SPEC_KEYS:
+                    image_spectrum = SPEC_KEYS[image_type]
+            else:
+                image_spectrum = IMAGE_SPECS[0]  # default to visible
+            plate_id = dir_name[:10]
+            date = datetime.strptime(dir_name[10:].split('-')[0],
+                                        '%Y''%m''%d''%H''%M')
+            return {
+                    'image_spectrum': image_spectrum,
+                    'plate_id': plate_id,
+                    'date': date,
+                    'run_name': dir_name
+                }
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, HWIRun.parse_dirname_metadata))
+            return {}
+    
+    @staticmethod
+    def parse_file_metadata(image_dir):
+        file_identifier = 'platedef'
+        # find if xml files exist
+        try:
+            for filepath in list_dir_abs(str(image_dir)):
+                if Path(filepath).suffix == '.xml' and file_identifier in str(filepath):
+                    reader = XmlReader(filepath)
+                    data = reader[0]
+                    data.update(reader[1])
+                    # first and second elements have metadata
+                    return data
+        except Exception as e:
+            logger.error('Caught {} at {}'.format(e, HWIRun.parse_file_metadata))
+            return {}
+    
+    @classmethod
+    def init_from_directory(cls, image_dir, **kwargs):
+        from polo import tim
+        run_name = str((Path(image_dir).with_suffix('').name))
+        metadata = {}
+        metadata.update(HWIRun.parse_dirname_metadata(image_dir))
+        metadata.update(HWIRun.parse_file_metadata(image_dir))
+        metadata.update(kwargs)
+
+        cocktail_menu = tim.get_menu_by_date(metadata['date'])
+
+        return cls(image_dir=image_dir, cocktail_menu=cocktail_menu, **metadata)
+    
     def get_tooltip(self):
         '''The same as :meth:`~polo.crystallography.Run.get_tooltip`.
         '''
@@ -352,6 +438,7 @@ class HWIRun(Run):
                     self.link_to_alt_spectrum(n)
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
+    
 
     def add_images_from_dir(self):
         '''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
