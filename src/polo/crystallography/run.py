@@ -259,12 +259,10 @@ class HWIRun(Run):
         try:
             for filepath in list_dir_abs(str(image_dir)):
                 if Path(filepath).suffix == '.xml' and file_identifier in str(filepath):
-                    print('making reader')
                     reader = XmlReader(filepath)
                     data = reader[0]
                     data.update(reader[1])
                     # first and second elements have metadata
-                    print('meta file data', data)
                     return data
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, HWIRun.parse_file_metadata))

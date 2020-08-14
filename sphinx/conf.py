@@ -24,7 +24,7 @@ copyright = '2020, Ethan Holleman'
 author = 'Ethan Holleman'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.5'
+release = '0.0.8'
 
 
 # -- General configuration ---------------------------------------------------

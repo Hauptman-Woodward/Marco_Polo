@@ -35,14 +35,6 @@ class RunImporterDialog(QtWidgets.QDialog):
                                 current Polo session (Run names should be unique)
     :type current_run_names: list or set
     '''
-    HWI_INDEX, NON_HWI_INDEX, RAW_INDEX = 0, 1, 2
-
-    # data_to_widgets = {
-    #     'cocktail_menu': self.ui.comboBox_3,
-    #     'date': self.ui.dateEdit_2,
-    #     'image_spectrum': self.ui.comboBox_2,
-    #     'run_name': self.ui.lineEdit
-    # }
 
     def __init__(self, current_run_names, parent=None):
         super(RunImporterDialog, self).__init__(parent)
@@ -141,14 +133,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         )
     
     def _import_files(self, rar=True):
-        '''Private method that attempts to import a collection of file paths
-        specified by the user. If importing a rar archive the method 
-        creates a :class:`polo.threads.thread.QuickThread` 
-        instance and runs all rar operations on that 
-        thread to avoid freezing the GUI on slower machines. 
-        Imported runs are added to the :attr:`import_candidates` attribute
-        dictionary and then displayed to the user by calling
-        :meth:`~polo.widgets.run_importer.RunImporterDialog._display_candidate_paths`.
+        '''
 
         :param rar: If True opens the filebrowser for rar archives and filters
                     out all other import types, defaults to True
@@ -188,7 +173,6 @@ class RunImporterDialog(QtWidgets.QDialog):
                 else:
                     self._display_candidate_paths()
                     QApplication.restoreOverrideCursor()
-                    print('finished imports')
             
             if self.import_thread:
                 self.import_thread.finished.connect(
@@ -268,8 +252,8 @@ class RunImporterDialog(QtWidgets.QDialog):
         pass
 
     def _remove_run(self):
-        '''Removes a run as an import candidate and refreshes the :class:`QlistWidget`
-        to reflect the removal.
+        '''Removes a run as an import candidate and refreshes the 
+        :class:`QlistWidget` to reflect the removal.
         '''
         try:
             current_item = self.ui.listWidget.currentItem()
@@ -287,38 +271,6 @@ class RunImporterDialog(QtWidgets.QDialog):
             make_message_box(
                 parent=self, message='Could not remove import. {}'.format(e)
                 ).exec_()
-
-    # def _test_candidate_paths(self, file_paths):
-    #     '''Private method that validates filepaths to ensure they could be
-    #     imported into Polo.
-
-    #     :param file_paths: List of filepaths to be imported
-    #     :type file_paths: list
-    #     :return: Tuple with first item being verified paths and second being
-    #              list of paths that failed verification tests.
-    #     :rtype: tuple
-    #     ''' 
-    #     verified_paths, bad_paths = [], []
-    #     for path in file_paths:
-    #         path.verify_path()
-    #         if path.is_verified:
-    #             verified_paths.append(path)
-    #             continue
-    #         bad_paths.append(path)
-
-    #     return verified_paths, bad_paths
-    
-    # def _add_import_candidates(self, new_candidates):
-    #     '''Adds :class:`ImportCandidate` instances to the 
-    #     :attr:`import_candidates` attribute.
-
-    #     :param new_candidates: List of `ImportCandidates`
-    #     :type new_candidates: list
-    #     '''
-
-    #     self.import_candidates.update(
-    #         {str(can.path): can for can in new_candidates}
-    #     )
 
     def _display_candidate_paths(self):
         '''Private method that updates the dialog's :class:`QListWidget` with the
@@ -424,41 +376,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         i = self.ui.comboBox_2.findText(spectrum)
         if i >= 0:
             self.ui.comboBox_2.setCurrentIndex(i)
-
-    # def _import_run_images(self):
-    #     '''Private method that attempts to create run objects from all available
-    #     :class:`ImportCandidate` instances.
-    #     '''
-    #     self._update_selected_candidate()  # normally called when candidate
-    #     # selection is changed but if only importing one candidate and data
-    #     # is updated would have never been called if not added here
-    #     self.setEnabled(False)
-    #     QApplication.setOverrideCursor(Qt.WaitCursor)
-    #     for run_name, candidate in self.import_candidates.items():
-            
-            
-    #     QApplication.restoreOverrideCursor()
-    #     self.close()
-
-    # # def _import_run(self, import_candidate):
-    # #     '''Private helper method that is called by
-    # #     :meth:`~polo.windows.run_importer.RunImporterDialog._import_runs` that
-    # #     attempts to import a run from an :class:`ImportCandidate. 
-
-    # #     :param import_candidate: :class:`ImportCandidate` to create run from    
-    # #     :type import_candidate: ImportCandidate
-    # #     :return: Run or HWIRun if successful
-    # #     :rtype: Run or HWIRun
-    # #     '''
-    # #     new_run = None
-    # #     import_type = import_candidate.import_type
-    # #     if issubclass(import_type, HWIRun):
-    # #         new_run = RunImporter.import_hwi_run(str(import_candidate.path),
-    # #                                              **import_candidate.data)
-    # #     elif issubclass(import_type, Run):
-    # #         new_run = RunImporter.import_general_run(str(import_candidate.path),
-    # #                                                  **import_candidate.data)
-    # #     return new_run
 
     def _display_cocktail_files(self, menu_type=None):
         '''Private method that displays the available cocktail files to the
