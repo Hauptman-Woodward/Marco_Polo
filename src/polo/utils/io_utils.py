@@ -58,30 +58,40 @@ class RunImporter():
     
     @staticmethod
     def crack_open_a_rar_one(rar_path):
+        '''Unrar a directory of images
+
+        :param rar_path: Path to rar archive file
+        :type rar_path: str or Path
+        :return: Unrar result
+        :rtype: str, exception or int
+        '''
+
         parent_path = rar_path.parent
         return unrar_archive(rar_path, parent_path)
     
     def _target_is_valid(self):
+        '''Private method to chech if a the file or directory referenced by
+        :attr:`target_path` is valid for import.
+
+        :return: True if could be imported, False otherwise
+        :rtype: bool
+        '''
         if self.target_path.exists():
-            if self.target_path.is_file() and self.target_path.suffix in RunImporter.allowed_filetypes:
+            if (self.target_path.is_file()
+                and self.target_path.suffix in RunImporter.allowed_filetypes):
                 return True
-            elif self.target_path.is_dir() and list_dir_abs(str(self.target_path), allowed=True):
+            elif (self.target_path.is_dir() 
+                 and list_dir_abs(str(self.target_path), allowed=True)):
                 return True
         return False
     
-    def _handle_finished_import_thread(self):
-        self.is_running = False
-        result = self._import_thread.result
-        if isinstance(result, Run):
-            self.imported_run = result  # done import completed
-        elif isinstance(result, (str, Path) and Path(result).is_dir()):  # need more work
-            for run_type in RUN_TYPES:
-                try:
-                    self.imported_run =  run_type.init_from_directory(result)
-                except Exception as e:
-                    continue
-
     def create_import_thread(self):
+        '''Creates a :class:`polo.threads.thread.QuickThread` with function
+        based on the type of file that is to be imported.
+
+        :return: QuickThread
+        :rtype: QuickThread
+        '''
         if self._target_is_valid():
             # check if needs unrar
             

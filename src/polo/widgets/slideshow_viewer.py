@@ -302,7 +302,7 @@ class SlideshowViewer(PhotoViewer):
         :type image: Image
         '''
         if isinstance(image, Image):
-            all_specs = image.get_linked_images_by_spectrum()
+            all_specs = sorted(image.get_linked_images_by_spectrum(), key=lambda i: len(i.spectrum))
             self.scene.clear()
             self.arrange_multi_image_scene(all_specs)
             self.fitInView()

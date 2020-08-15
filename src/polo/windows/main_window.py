@@ -46,7 +46,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     '''
     BAR_COLORS = [Qt.darkBlue, Qt.darkRed, Qt.darkGreen, Qt.darkGray]
     # cocktails sorted from earliest to latest (most recent last)
-    CRYSTAL_ICON = str(ICON_DICT['crystal'])
 
     def __init__(self):
 

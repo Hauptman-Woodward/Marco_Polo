@@ -39,7 +39,7 @@ class Run():
     :param image_dir: Directory that contains the screening images
     :type image_dir: str of Path
     :param run_name: Name of this run. Should be unique as it is used to
-    uniquely identify each Run instance
+                     uniquely identify each Run instance
     :type run_name: str
     :param image_spectrum: Imaging technology used to capture
                             the images in this run, defaults to None
@@ -71,11 +71,6 @@ class Run():
         run_name = str(Path(dir_path).with_suffix('').name)
         return Run(dir_path, run_name, **kwargs)
     
-    @classmethod
-    def init_from_xtal(cls, xtal_path, **kwargs):
-        reader = RunDeserializer(xtal_path)
-        return reader.xtal_to_run(xtal_path, **kwargs)
-
     @property
     def formated_name(self):
         if isinstance(self.date, datetime):

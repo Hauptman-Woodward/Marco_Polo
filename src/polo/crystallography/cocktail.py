@@ -70,7 +70,7 @@ class Cocktail():
 
     def add_reagent(self, new_reagent):
         '''Adds a reagent to the existing list of reagents referenced by the
-        :attr:`~polo.crystallography.cocktail.Cocktail.reagents attribute.
+        :attr:`~polo.crystallography.cocktail.Cocktail.reagents` attribute.
 
         :param new_reagent: Reagent to add to this cocktail
         :type new_reagent: Reagent

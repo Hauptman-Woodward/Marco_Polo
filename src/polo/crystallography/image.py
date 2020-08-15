@@ -362,11 +362,6 @@ class Image(QtGui.QPixmap):
             )
         image_string += 'Date: {}\n'.format(self.formated_date)
         image_string += 'Spectrum: {}\n'.format(self.spectrum)
-        if self.earliest_crystallization_date:
-            date = datetime.strftime(self.earliest_crystallization_date, '%m/%d/%Y')
-        else:
-            date = 'No human classified crystals at this well'
-        image_string += "Well Earliest Crystallization Date: {}".format(date)
         return image_string
 
     def encode_base64(self):
