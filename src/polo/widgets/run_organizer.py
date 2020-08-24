@@ -46,6 +46,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.shown_unrar_message = False
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
         self._has_been_opened = set([])
+        self._recent_files = []
         self.ui.pushButton.clicked.connect(self._handle_classification_request)
         self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
@@ -54,6 +55,23 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.classify_sample_signal.connect(self._classify_multiple_runs)
 
         logger.debug('Created {}'.format(self))
+    
+    @property
+    def recent_files(self):
+        return self._recent_files
+    
+    @recent_files.setter
+    def recent_files(self, new_file):
+        if str(new_file) not in self._recent_files:
+            if len(self._recent_files) > 4:
+                self._recent_files.pop()
+            self._recent_files.append(str(new_file))
+    
+    def save_recent_import_paths(self):
+        if self.recent_files:
+            with open(str(RECENT_FILES), 'w') as recent_files:
+                for f in self.recent_files:
+                    recent_files.write(f + '\n')
 
     def __iter__(self):
         return (run for run_name, run in self.ui.runTree.loaded_runs.items())
@@ -235,6 +253,11 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ui.runTree.add_run_to_tree(run)
             sample_names.add(
                 self.ui.runTree.loaded_runs[run.run_name].sampleName)
+            if hasattr(run, 'save_file_path') and os.path.exists(str(run.save_file_path)):
+                self.recent_files = run.save_file_path
+                # imported from an xtal file
+            else:
+                self.recent_files = run.image_dir
             # pulling run from runTree ensures it has a sample name if it
             # was added to the tree
         # link the runs together by sample
@@ -305,8 +328,6 @@ class RunOrganizer(QtWidgets.QWidget):
                     ).exec_()
                     QApplication.restoreOverrideCursor()
                     self.setEnabled(True)
-
-
             except Exception as e:
                 self.setEnabled(True)
                 logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))

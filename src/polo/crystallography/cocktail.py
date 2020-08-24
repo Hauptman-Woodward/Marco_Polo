@@ -1,7 +1,8 @@
 # from cockatoo.screen import _parse_cocktail_csv
 # from cockatoo.metric import distance
-from molmass import Formula
 import re
+
+from molmass import Formula
 from polo import *
 
 logger = make_default_logger(__name__)

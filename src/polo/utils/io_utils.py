@@ -1001,77 +1001,27 @@ class PptxWriter():
                 other.append(run)
         return visible, other
            
-    # def make_sample_presentation(self, sample_name, runs, title,
-    #                              subtitle, cocktail_data=True):
-    #     '''Create a pptx presentation from a collection of runs intended to
-    #     be all of the same sample. This allows for time resolved comparisons
-    #     and comparisons between spectrums. Should generally not include all
-    #     images in the presentation or with runs who's images do not exist
-    #     on the local machine. Doing so creates huge presentation files and
-    #     long write times.
+    def make_presentation(self, run, title, subtitle=None,
+                                    cocktail_data=True, all_specs=False,
+                                    all_dates=False):
+        '''Create a pptx presentation file from a screening run instance.
 
-    #     :param sample_name: Name of the sample
-    #     :type sample_name: str
-    #     :param runs: List of runs to include in the presentation
-    #     :type runs: list
-    #     :param title: Title of the presentation
-    #     :type title: str
-    #     :param subtitle: Subtitle of the presentation
-    #     :type subtitle: str
-    #     :param cocktail_data: Include cocktail data if True, defaults to True
-    #     :type cocktail_data: bool, optional
-    #     :return: Path to presentation file if write is successful, False otherwise
-    #     :rtype: str or bool
-    #     '''
-    #     visible, other = self.sort_runs_by_spectrum(runs)
-    #     title_slide = self.add_new_slide(0)
-    #     title_slide.shapes.title.text = title
-    #     if subtitle:
-    #         title_slide.placeholders[1].text = subtitle
+        :param run: Run to create the presentation from
+        :type run: Run
+        :param title: Title for the presentation
+        :type title: str
+        :param subtitle: Subtitle for the presentation, defaults to None
+        :type subtitle: str, optional
+        :param cocktail_data: If True include cocktail data on slide, defaults to True
+        :type cocktail_data: bool, optional
+        :param all_specs: If True include all spectrum image slide, defaults to False
+        :type all_specs: bool, optional
+        :param all_dates: If True include all dates slide, defaults to False
+        :type all_dates: bool, optional
+        :return: True if presentation was created successfully, Exception otherwise
+        :rtype: bool or Exception
+        '''
 
-    #     try:
-    #         if visible or other:
-    #             show_all_dates, show_single_image, show_alt_specs = False, False, False
-    #             if visible:
-    #                 if len(visible) > 1:
-    #                     show_all_dates = True
-    #                 else:
-    #                     show_single_image = True
-    #             if other:
-    #                 show_alt_specs = True
-
-    #             if show_all_dates or show_single_image:
-    #                 rep_run = visible[0]
-    #             else:
-    #                 rep_run = other[0]
-                
-    #             for i in range(10):
-    #                 if show_all_dates:
-    #                     self.add_timeline_slide([r.images[i] for r in visible], i+1)
-    #                 elif show_single_image:
-    #                     metadata = str(rep_run.images[i])
-    #                     if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
-    #                         metadata += '\n\n' + str(rep_run.images[i].cocktail)
-    #                     title = 'Well Number {}'.format(rep_run.images[i].well_number)
-    #                     self.add_single_image_slide(rep_run.images[i], title, metadata)
-                    
-    #                 if show_alt_specs:
-    #                     well_number = i + 1
-    #                     self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
-                
-    #             self._presentation.save(str(self.output_path))
-    #             self.delete_temp_images()
-    #             return True
-                    
-    #         else:
-    #             return False
-    #     except Exception as e:
-    #         return e
-        
-
-    def make_single_run_presentation(self, run, title, subtitle=None,
-                                     cocktail_data=True, all_specs=False,
-                                     all_dates=False):
         try:
             title_slide = self.add_new_slide(0)
             title_slide.shapes.title.text = title
@@ -1096,8 +1046,6 @@ class PptxWriter():
                             image.get_linked_images_by_spectrum(), image.well_number)
                     if all_dates and (image.next_image or image.previous_image):
                         self.add_timeline_slide(image.get_linked_images_by_date(), image.well_number)
-
-
             
             self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
             self._presentation.save(str(self.output_path))
@@ -1105,7 +1053,7 @@ class PptxWriter():
             return True
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
-                            e, self.make_single_run_presentation))
+                            e, self.make_presentation))
             return e
                 
     
@@ -1132,6 +1080,16 @@ class PptxWriter():
         # do for most recent human classification image if it exits
 
     def add_new_slide(self, template=5):
+        '''Add a new slide to the presentation referenced by the
+        :attr:`_presentation` attribute.
+
+        :param template: Slide template integer identifier, defaults to 5.
+                         See the python-pptx package for more details on 
+                         template integers
+        :type template: int, optional
+        :return: Presentation with the new slide added 
+        :rtype: Presentation
+        '''
         return self._presentation.slides.add_slide(
             self._presentation.slide_layouts[template])
     
@@ -1434,7 +1392,7 @@ class BarTender():
         return s, e
 
     def add_menus_from_metadata(self):
-        '''Adds :class:`Menu` objects to the :attr:polo.utils.io_utils.BarTender.menus`
+        '''Adds :class:`Menu` objects to the :attr:`polo.utils.io_utils.BarTender.menus`
         attribute by reading the cocktail csv files included
         in the :const:`COCKTAIL_DATA_PATH` directory.'''
         if self.cocktail_meta:
@@ -1886,8 +1844,7 @@ def write_screen_html(plate_list, well_number, run_name, x_reagent,
 
 
 def parse_HWI_filename_meta(HWI_image_file):
-    '''
-    HWI images have a standard file nameing schema that gives info about when
+    '''HWI images have a standard file nameing schema that gives info about when
     they are taken and well number and that kind of thing. This function returns
     that data
     '''

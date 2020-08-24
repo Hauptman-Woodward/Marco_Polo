@@ -1359,7 +1359,7 @@
     <span class="c1">#         return e</span>
         
 
-<div class="viewcode-block" id="PptxWriter.make_single_run_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_single_run_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_single_run_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="PptxWriter.make_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                      <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                      <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1395,7 +1395,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_single_run_presentation</span><span class="p">))</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
                 
     

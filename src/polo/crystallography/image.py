@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger, BLANK_IMAGE)
+from polo.utils.io_utils import BarTender
 from polo.marco.run_marco import run_model
 
 logger = make_default_logger(__name__)
@@ -522,4 +523,3 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
-from polo.utils.io_utils import BarTender

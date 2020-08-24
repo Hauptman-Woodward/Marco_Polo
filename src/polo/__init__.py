@@ -19,6 +19,7 @@ dirname = Path(os.path.dirname(__file__)).parent
 # =============================================================================
 
 LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
+RECENT_FILES = Path('recents.txt')
 DATA_DIR = dirname.joinpath('data')
 APP_ICON = DATA_DIR.joinpath('images/logos/polo.png')
 UNRAR = dirname.joinpath('unrar')
@@ -26,11 +27,16 @@ TEMP_DIR = dirname.joinpath('.tmp')
 
 BACKUP_DIR = Path(os.getcwd()).joinpath('.polo_backups')
 
-if not os.path.isdir(str(TEMP_DIR)):
+if not TEMP_DIR.is_dir():
     os.makedirs(str(TEMP_DIR))
 
-if not os.path.isdir(str(BACKUP_DIR)):
+if not BACKUP_DIR.is_dir():
     os.makedirs(str(BACKUP_DIR))
+
+if not RECENT_FILES.is_file():
+    f = open(str(RECENT_FILES), 'w')
+    f.close()
+    
 
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')
@@ -140,7 +146,7 @@ def make_default_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
-        '%(levelname)s:%(asctime)s:%(name)s:%(lineno)d:%(message)s')
+        '%(levelname)s\t%(asctime)s\t%(name)s\t%(lineno)d\t%(message)s')
     file_handler = logging.FileHandler(str(LOG_PATH))
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)

@@ -195,7 +195,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
             self.setEnabled(False)
             QApplication.setOverrideCursor(Qt.WaitCursor)
 
-            write_result = writer.make_single_run_presentation(
+            write_result = writer.make_presentation(
                 run=run,
                 title=self.title,
                 subtitle=self.subtitle,

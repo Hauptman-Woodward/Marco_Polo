@@ -68,6 +68,13 @@ class Run():
 
     @classmethod
     def init_from_directory(cls, dir_path, **kwargs):
+        '''Create a :class:`Run` instance from a directory of images.
+
+        :param dir_path: Path to directory
+        :type dir_path: str, Path
+        :return: Run instance
+        :rtype: Run
+        '''
         run_name = str(Path(dir_path).with_suffix('').name)
         return Run(dir_path, run_name, **kwargs)
     

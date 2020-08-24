@@ -85,8 +85,8 @@ def test_pptx_init(writer):
 def test_run_init(run):
     assert isinstance(run, (Run, HWIRun))
 
-def test_make_single_run_presentation(writer, run, dead_run, dummy_dead_pptx_path):
-    writer.make_single_run_presentation(
+def test_make_presentation(writer, run, dead_run, dummy_dead_pptx_path):
+    writer.make_presentation(
         run, 'Test Title', subtitle='Test Subtitle')
     assert os.path.isfile(writer.output_path)
 
@@ -96,7 +96,7 @@ def test_make_single_run_presentation(writer, run, dead_run, dummy_dead_pptx_pat
     writer.delete_presentation()
     writer.marco, writer.human = False, True
 
-    writer.make_single_run_presentation(
+    writer.make_presentation(
         dead_run, 'Test Dead Paths', subtitle='Dead paths'
     )
     assert os.path.isfile(writer.output_path)

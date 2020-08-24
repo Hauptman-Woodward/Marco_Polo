@@ -1117,7 +1117,14 @@
      <addaction name="actionFrom_Saved_Run_3"/>
      <addaction name="actionFrom_Directory"/>
     </widget>
+    <widget class="QMenu" name="menuRecent">
+     <property name="title">
+      <string>Recent</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="menuImages"/>
+    <addaction name="menuRecent"/>
    </widget>
    <widget class="QMenu" name="menuExport">
     <property name="title">
@@ -1431,6 +1438,11 @@
   <action name="actionReport_An_Issue">
    <property name="text">
     <string>Report An Issue</string>
+   </property>
+  </action>
+  <action name="actiontest">
+   <property name="text">
+    <string>test</string>
    </property>
   </action>
  </widget>
