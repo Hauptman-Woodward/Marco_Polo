@@ -150,14 +150,18 @@ def make_default_logger(name):
 
 # URLS
 # =============================================================================
-ABOUT = 'https://ethanholleman.github.io/Marco_Polo/about.html'
-QUICKSTART = 'https://ethanholleman.github.io/Marco_Polo/Quickstart.html'
-FAQS = 'https://ethanholleman.github.io/Marco_Polo/FAQS.html'
-USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
-DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
-BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
+
+HOST_PREFIX = 'https://ethanholleman.github.io/'
+
+ABOUT = HOST_PREFIX + 'Marco_Polo/about.html'
+QUICKSTART = HOST_PREFIX + 'Marco_Polo/Quickstart.html'
+FAQS = HOST_PREFIX + 'Marco_Polo/FAQS.html'
+USER_GUIDE = HOST_PREFIX + 'Marco_Polo/user_guide.html'
+DOCS = HOST_PREFIX + 'Marco_Polo/polo.html'
+BETA = HOST_PREFIX + 'Marco_Polo/beta_testers.html'
+REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
+
 RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
-REPORTS = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html#i-found-a-bug'
 
 
 # RUN_TYPES = sorted(
