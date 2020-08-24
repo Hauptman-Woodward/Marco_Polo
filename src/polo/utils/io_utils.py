@@ -1,32 +1,28 @@
 import base64
 import csv
+import inspect
 import json
 import os
 import sys
-import inspect
 import time
+import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
-import xml.etree.ElementTree as ET
 
+from jinja2 import Template
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QBrush, QColor, QIcon, QImage, QPainter, QPixmap
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 from pptx import Presentation
 from pptx.util import Inches, Pt
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
-from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
-
-from jinja2 import Template
 from polo import *
-from polo import polo_version
 from polo.threads.thread import QuickThread
-from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
-from polo.crystallography.cocktail import *
 from polo.utils.dialog_utils import *
-from polo.utils.unrar_utils import *
+from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import *
-
+from polo.utils.unrar_utils import *
 
 logger = make_default_logger(__name__)
 
@@ -862,6 +858,8 @@ class RunDeserializer():  # convert saved file into a run
                 class_name, mod_name = d.pop('__class__'), d.pop('__module__')
                 try:
                     module = __import__(mod_name)
+                    # BUG module is polo from init so if currently if classes are
+                    # not imported into init file they will not be found here
                     class_ = getattr(module, class_name)
                 except AttributeError as e:
                     logger.error('Caught {} while calling {}'.format(
@@ -869,7 +867,7 @@ class RunDeserializer():  # convert saved file into a run
                     return None
                 temp_d = {}
                 for key, item in d.items():
-                    if '__' in key:  # deal with object properties
+                    if '__' in key:  # deal with private object properties
                         key = key.split('__')[-1]
                     elif '_' == key[0]:
                         key = key[1:]
@@ -885,19 +883,6 @@ class RunDeserializer():  # convert saved file into a run
             return obj
         else:
             return None
-
-    # def xtal_to_run_on_thread(self):
-    #     '''Wrapper method around `xtal_to_run` method. Does the exact same thing
-    #     except creates a `QuickThread` instance and runs `xtal_to_run` on the
-    #     thread. When finished adds the newly created run to the main window's
-    #     loaded_run dictionary to signify that the run has been loaded and is
-    #     ready for further operations.
-    #     '''
-    #     return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
-
-
-    # def make_read_xtal_thread(self):
-    #     return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -1495,7 +1480,6 @@ class BarTender():
                     return self.menus[each_key]
         return self.menus[menus_keys_by_date[-1]]
 
-
     def get_menus_by_type(self, type_='s'):
         '''Returns all :class:`Menu` instances of a given screen type.
 
@@ -2012,14 +1996,18 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
 
     return path
 
+# NOTE imports moved to end as quick fix. Files imported here import classes
+# and functions from io_utils so entire io_utils script must be run before
+# other scripts are run to avoid import errors
+# RUN_TYPES is also here because until those scripts are run they are not
+# included in sys.modules dictionary
+
+from polo.crystallography.cocktail import *
 from polo.crystallography.image import Image
 from polo.crystallography.run import *
-
 RUN_TYPES = sorted(
         [types[-1] for types in 
         inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
         if issubclass(types[-1], Run)],
         key=lambda c: c.import_priority,
         reverse=True)
-
-

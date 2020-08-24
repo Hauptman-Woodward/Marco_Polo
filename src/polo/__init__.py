@@ -160,24 +160,17 @@ RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
 REPORTS = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html#i-found-a-bug'
 
 
-from polo.crystallography.image import Image
-from polo.crystallography.cocktail import Cocktail, Reagent, UnitValue
-from polo.crystallography.run import HWIRun, Run
-from polo.threads import thread
-
-RUN_TYPES = sorted(
-            [types[-1] for types in 
-            inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
-            if issubclass(types[-1], Run)],
-            key=lambda c: c.import_priority,
-            reverse=True)
+# RUN_TYPES = sorted(
+#             [types[-1] for types in 
+#             inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
+#             if issubclass(types[-1], Run)],
+#             key=lambda c: c.import_priority,
+#             reverse=True)
 
 
 # get all classes in the Run module that are subclassed from Run this is
 # used for imports. Sort th
 
-# best bartender at Cunneen's bar in Rodger's Park
-# and in this program handles cocktail data
 
 # logger = make_default_logger(__name__)
 
@@ -198,4 +191,12 @@ critical_paths = [
 
 from polo.utils.io_utils import BarTender, Menu
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
+
+# best bartender at Cunneen's bar in Rodger's Park
+# and in this program handles cocktail data
+
+from polo.crystallography.image import *
+from polo.crystallography.cocktail import *
+from polo.crystallography.run import *
+from polo.threads import *
 
