@@ -174,7 +174,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             ))
     
     def _handle_recent_import(self, action):
-        self.runOrganizer._import_runs_from_drop([action.text()])
+        self.runOrganizer._import_runs([action.text()])
  
     def _check_for_new_version(self):
         '''Use requests to check the Polo GitHub page for a newer release

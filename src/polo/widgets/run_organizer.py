@@ -51,7 +51,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
         self.ui.runTree.remove_run_signal.connect(self._clear_current_run)
-        self.ui.runTree.dropped_links_signal.connect(self._import_runs_from_drop)
+        self.ui.runTree.dropped_links_signal.connect(self._import_runs)
         self.ui.runTree.classify_sample_signal.connect(self._classify_multiple_runs)
 
         logger.debug('Created {}'.format(self))
@@ -155,9 +155,6 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classification_thread.finished.connect(self._classification_cleanup)
         self.ui.runTree.setEnabled(False)
         self.ui.runTree.add_classified_run(run)
-        #self.classification_thread.start()
-        # logger.info('Opened classification thread: {}'.format(
-        #     self.classification_thread))
     
     def _classification_cleanup(self):
         '''"Cleanup" the UI after a classification thread has completed.
@@ -263,25 +260,8 @@ class RunOrganizer(QtWidgets.QWidget):
         # link the runs together by sample
         for sample in sample_names:
             self.ui.runTree.link_sample(sample)
-
-    def _add_run_from_directory(self, dir_path):
-        '''Private method to add a run to the runTree from a directory path.
-
-        :param dir_path: Path to directory to import
-        :type dir_path: str or Path
-        :return: Run or HWIRun created from directory if successful
-        :rtype: Run or HWIRun
-        '''
-        # use run importer class to make the run
-        new_run = RunImporter.import_run_from_directory(str(dir_path))
-        if isinstance(new_run, (Run, HWIRun)):
-            self._add_runs_to_tree([new_run])
-            logger.debug('Added run {} from directory'.format(new_run))
-        return new_run
-        # message box failed to import?
     
-    def _import_runs_from_drop(self, file_paths):
-
+    def _import_runs(self, file_paths):
         if file_paths:
             try:
                 self.setEnabled(False)
@@ -291,7 +271,7 @@ class RunOrganizer(QtWidgets.QWidget):
                 
                 def finished_import_thread(file_path):
                     result = self.import_thread.result
-                    if isinstance(result, (str, Path)) and Path(result).is_dir():  # need more work
+                    if isinstance(result, (str, Path)) and Path(result).is_dir(): 
                         for run_type in RUN_TYPES:
                             try:
                                 result = run_type.init_from_directory(result)
@@ -330,7 +310,7 @@ class RunOrganizer(QtWidgets.QWidget):
                     self.setEnabled(True)
             except Exception as e:
                 self.setEnabled(True)
-                logger.error('Caught {} at {}'.format(e, self._import_runs_from_drop))
+                logger.error('Caught {} at {}'.format(e, self._import_runs))
                 make_message_box(
                     parent=self,
                     message='Import failed {}'.format(e)
@@ -360,12 +340,10 @@ class RunOrganizer(QtWidgets.QWidget):
                     return each_backup
         return None
 
-
     def remove_run(self):
         if (self.ui.runTree.currentItem() 
             and self.ui.runTree.currentItem().text(0) in self.ui.runTree.formated_name_to_name):
             self.ui.runTree.remove_run(self.ui.runTree.currentItem().text(0))
-            
 
     def backup_classifications_on_thread(self, run):
         '''Does the exact same thing as 
@@ -424,24 +402,7 @@ class RunOrganizer(QtWidgets.QWidget):
             xtal_dialog.exec_()
             xtal_files = xtal_dialog.selectedFiles()
         if xtal_files:  # returned as a list
-            runs_to_add = []
-            for xtal in xtal_files:
-                QApplication.setOverrideCursor(Qt.WaitCursor)
-                if os.path.isfile(xtal):
-                    deserializer = RunDeserializer(xtal)
-                    new_run = deserializer.xtal_to_run()
-                    if isinstance(new_run, (HWIRun, Run)):
-                        runs_to_add.append(new_run)
-                    else:
-                        QApplication.restoreOverrideCursor()
-                        make_message_box(
-                            parent=self,
-                            message='Could not load run from {}. {}'.format(
-                                xtal, new_run)
-                        ).exec_()
-            self._add_runs_to_tree(runs_to_add)
-            logger.info('Added {} runs from saved files'.format(runs_to_add))
-        QApplication.restoreOverrideCursor()
+            self._import_runs(xtal_files)
 
     def import_run_from_dialog(self):
         '''Import a run from a file dialog.
@@ -470,6 +431,7 @@ class RunOrganizer(QtWidgets.QWidget):
             msg.exec_()
 
         if hasattr(self, 'ftp_download_thread') and self.ftp_download_thread.isRunning():
+            # handle if download is already in progress
             msg = make_message_box(
                 message='FTP download already in progress. {} of {} files downloaded.'.format(
                     self.ftp_download_counter[0], self.ftp_download_counter[1]
@@ -493,7 +455,6 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ftp_download_status.emit(True)
             self.ftp_download_counter[1] = len(ftp_browser.download_files)
             self.ftp_download_thread.start()
-        
 
     def finished_ftp_download(self):
         self.ftp_download_status.emit(False)
@@ -511,30 +472,8 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def handle_ftp_download(self, file_path):
         if test_for_working_unrar():
-            unpacker = RunImporter.unpack_rar_archive_thread(file_path)
-            if unpacker:
-                unpacker.finished.connect(lambda: self._add_run_from_directory(
-                    str(Path(file_path).with_suffix(''))  # remove rar suffix
-                ))
-                unpacker.start()
-        else:
-            pass
-
-        # connect the downloaded file to classification thread if it
-        # is in the visible spectrum and another run is not already
-        # going can create a kind of que for classification here
-
+            self._import_runs([file_path])
         self.ftp_download_counter[0] += 1
-        # do something to tell the user that they need to unpack their files
-        # message box failed to import?
-
-    def add_run_from_directory(self, dir_path):
-        # use run importer class to make the run
-        new_run = RunImporter.import_run_from_directory(str(dir_path))
-        if isinstance(new_run, (Run, HWIRun)):
-            self._add_runs_to_tree([new_run])
-        return new_run
-        # message box failed to import?
 
 
                     
