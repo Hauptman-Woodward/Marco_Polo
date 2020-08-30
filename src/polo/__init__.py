@@ -11,7 +11,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-polo_version = '0.1.0'
+polo_version = '0.1.0'  # should be int.int.int format
 dirname = Path(os.path.dirname(__file__)).parent
 
 
@@ -167,7 +167,7 @@ DOCS = HOST_PREFIX + 'Marco_Polo/polo.html'
 BETA = HOST_PREFIX + 'Marco_Polo/beta_testers.html'
 REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
 
-RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
+RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
 
 # RUN_TYPES = sorted(

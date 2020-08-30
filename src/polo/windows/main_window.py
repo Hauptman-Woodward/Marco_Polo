@@ -189,20 +189,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             str_ver = polo_version.split('.')
             if tags.status_code == 200:
                 version_finder = re.compile(
-                    '<a href="/EthanHolleman/Marco_Polo/releases/tag/.[0-9].[0-9].[0-9]')
+                    '<a href="/Hauptman-Woodward/Marco_Polo/releases/tag/v[0-9].[0-9].[0-9]')
                 versions = version_finder.findall(tags.text)
                 number_puller = re.compile('[0-9]')
+
+                def version_value(version_list):
+                    value = 0
+                    for i in range(len(version_list)):
+                        scaler = 10 ** (len(version_list) - i)
+                        value += (scaler * int(version_list[i]))
+                    return value
+                
+                current_version_value = version_value(str_ver)
                 for version in versions:
-                    version = version.split('/')[-1]
-                    version = number_puller.findall(version)
-                    if len(version) == 3:
-                        if (int(version[0]) > int(str_ver[0])
-                        or int(version[1]) > int(str_ver[1])
-                        or int(version[2]) > int(str_ver[2])
-                        ):
-                            new_version = True
-                            logger.debug('Newer version available')
-                            break
+                    version = list(number_puller.findall(version))
+                    if version_value(version) > current_version_value:
+                        new_version = True
+                        break
+                   
                 if new_version:
                     m = make_message_box(
                         parent=self,
