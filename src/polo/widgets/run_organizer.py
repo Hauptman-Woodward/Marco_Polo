@@ -68,13 +68,15 @@ class RunOrganizer(QtWidgets.QWidget):
             self._recent_files.append(str(new_file))
     
     def save_recent_import_paths(self):
+        '''Save the recently used import paths to the path specified by the
+        :const:`~polo.RECENT_FILES` path. Polo will attempt to open and read
+        this file the next time the program is run in order to allow users
+        to open recently opened runs.
+        '''
         if self.recent_files:
             with open(str(RECENT_FILES), 'w') as recent_files:
                 for f in self.recent_files:
                     recent_files.write(f + '\n')
-
-    def __iter__(self):
-        return (run for run_name, run in self.ui.runTree.loaded_runs.items())
 
     def _clear_current_run(self, run_list):
         '''Clear out the current run from other widgets by emiting a
@@ -262,6 +264,13 @@ class RunOrganizer(QtWidgets.QWidget):
             self.ui.runTree.link_sample(sample)
     
     def _import_runs(self, file_paths):
+        '''Import :class:`Run` objects from a list of file and directory paths.
+        Runs that are imported successfully will be added to the sample browser.
+
+        :param file_paths: List of paths to files and directories to be imported
+                            as runs
+        :type file_paths: list
+        '''
         if file_paths:
             try:
                 self.setEnabled(False)
