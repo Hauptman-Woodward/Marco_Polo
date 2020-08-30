@@ -57,6 +57,10 @@ class RunOrganizer(QtWidgets.QWidget):
         logger.debug('Created {}'.format(self))
     
     @property
+    def all_runs(self):
+        return list(self.ui.runTree.loaded_runs.values())
+    
+    @property
     def recent_files(self):
         return self._recent_files
     

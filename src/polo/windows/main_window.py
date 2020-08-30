@@ -134,7 +134,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setEnabled(False)
         try:
-            for run in self.runOrganizer:
+            for run in self.runOrganizer.all_runs:
                 if run:
                     for image in run.images:
                         if image.human_class:
