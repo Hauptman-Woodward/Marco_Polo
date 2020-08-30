@@ -58,10 +58,20 @@ class RunOrganizer(QtWidgets.QWidget):
     
     @property
     def all_runs(self):
+        '''Get all runs currently listed in the RunTree.
+
+        :return: List of :class:`Run` objects
+        :rtype: list
+        '''
         return list(self.ui.runTree.loaded_runs.values())
     
     @property
     def recent_files(self):
+        '''Return recently accessed imports
+
+        :return: List of recently accessed imports
+        :rtype: list
+        '''
         return self._recent_files
     
     @recent_files.setter
@@ -461,15 +471,32 @@ class RunOrganizer(QtWidgets.QWidget):
                 ftp_browser.ftp, ftp_browser.download_files, ftp_browser.save_dir
             )
             self.ftp_download_thread.download_path.connect(
-                self.handle_ftp_download)
+                self._handle_ftp_download)
             self.ftp_download_thread.finished.connect(
-                self.finished_ftp_download
+                self._finished_ftp_download
             )
             self.ftp_download_status.emit(True)
             self.ftp_download_counter[1] = len(ftp_browser.download_files)
             self.ftp_download_thread.start()
 
-    def finished_ftp_download(self):
+    def _handle_ftp_download(self, file_path):
+        '''Private method that handles when an individual file in the FTP
+        download queue has finished downloading. Attempts to import the run
+        by calling :meth:`import_runs` and then increments the FTP
+        download counter by one.
+
+        :param file_path: Path to file that was just downloaded
+        :type file_path: str or Path
+        '''
+        self._import_runs([file_path])
+        self.ftp_download_counter[0] += 1
+
+    def _finished_ftp_download(self):
+        '''Private method that cleans up after all queued FTP downloads have
+        been completed and shows a message box to the user to inform them of the
+        status of their downloads.
+        '''
+
         self.ftp_download_status.emit(False)
         self.ftp_download_counter = [0, 0]  # reset the counter
 
@@ -482,12 +509,6 @@ class RunOrganizer(QtWidgets.QWidget):
         make_message_box(
             message=message, parent=self
         ).exec_()
-
-    def handle_ftp_download(self, file_path):
-        if test_for_working_unrar():
-            self._import_runs([file_path])
-        self.ftp_download_counter[0] += 1
-
 
                     
 

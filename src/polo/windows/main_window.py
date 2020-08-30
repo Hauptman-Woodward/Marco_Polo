@@ -158,6 +158,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         event.accept()
     
     def _read_recent_imports(self):
+        '''Read recent import filepaths from the filepath specified by the
+        :const:`RECENT_FILES` constant. If paths in this file exist then
+        creates a menu item under the "Recents" import menu for that
+        filepath. 
+        '''
         try:
             with open(str(RECENT_FILES)) as recents:
                 recent_imports = recents.readlines()
@@ -172,10 +177,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             logger.error('Caught {} calling {}'.format(
                 e, self._read_recent_imports
             ))
-    
-    def _handle_recent_import(self, action):
-        self.runOrganizer._import_runs([action.text()])
- 
+     
     def _check_for_new_version(self):
         '''Use requests to check the Polo GitHub page for a newer release
         version. If a newer version exists open a message box that the user
@@ -327,6 +329,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Menu handling methods
     # ======================================================================
+
+    def _handle_recent_import(self, action):
+        '''Private method that handles when recent import filepath menu items
+        are selected. Attempts to open the run specified by the filepath.
+
+        :param action: QAction associated with recent import
+        :type action: QAction
+        '''
+        self.runOrganizer._import_runs([action.text()])
 
 
     def _handle_tool_menu(self, selection):
