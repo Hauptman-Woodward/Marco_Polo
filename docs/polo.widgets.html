@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets package &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.widgets package &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,9 +54,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -74,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,9 +99,9 @@
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="polo.html">polo package</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="future_maintainers.html">Future Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
@@ -128,6 +135,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,9 +174,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="polo.html">polo package</a> &raquo;</li>
+          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
       <li>polo.widgets package</li>
     
@@ -568,8 +576,8 @@ None otherwise</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.widgets.optimize_widget.OptimizeWidget.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.update" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.widgets.optimize_widget.OptimizeWidget.update_interface">
+<code class="sig-name descname">update_interface</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/optimize_widget.html#OptimizeWidget.update_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.optimize_widget.OptimizeWidget.update_interface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to update reagents and selectable wells to the user after
 they have made additional classifications that would increase or
 decrease the pool of crystal classified images.</p>
@@ -1363,23 +1371,6 @@ linked as they are loaded in, defaults to True</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer._add_run_from_directory">
-<code class="sig-name descname">_add_run_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._add_run_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._add_run_from_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method to add a run to the runTree from a directory path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to directory to import</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Run or HWIRun created from directory if successful</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a> or <a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun">HWIRun</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer._add_runs_to_tree">
 <code class="sig-name descname">_add_runs_to_tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">runs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._add_runs_to_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._add_runs_to_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method to add a set of runs to the runTree.</p>
@@ -1447,11 +1438,33 @@ a Run or HWIRun object.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer._finished_ftp_download">
+<code class="sig-name descname">_finished_ftp_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._finished_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._finished_ftp_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that cleans up after all queued FTP downloads have
+been completed and shows a message box to the user to inform them of the
+status of their downloads.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer._handle_classification_request">
 <code class="sig-name descname">_handle_classification_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._handle_classification_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._handle_classification_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method to open a classification thread of the currently selected run.
 Calls  <a class="reference internal" href="#polo.widgets.run_organizer.RunOrganizer._open_classification_thread" title="polo.widgets.run_organizer.RunOrganizer._open_classification_thread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_open_classification_thread()</span></code></a> to
 start the classification thread.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer._handle_ftp_download">
+<code class="sig-name descname">_handle_ftp_download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._handle_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._handle_ftp_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method that handles when an individual file in the FTP
+download queue has finished downloading. Attempts to import the run
+by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">import_runs()</span></code> and then increments the FTP
+download counter by one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to file that was just downloaded</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1463,9 +1476,17 @@ the selected run.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop">
-<code class="sig-name descname">_import_runs_from_drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._import_runs_from_drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="polo.widgets.run_organizer.RunOrganizer._import_runs">
+<code class="sig-name descname">_import_runs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer._import_runs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer._import_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> objects from a list of file and directory paths.
+Runs that are imported successfully will be added to the sample browser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_paths</strong> (<em>list</em>) – List of paths to files and directories to be imported
+as runs</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer._open_classification_thread">
@@ -1508,9 +1529,18 @@ progress bar.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer.add_run_from_directory">
-<code class="sig-name descname">add_run_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.add_run_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.add_run_from_directory" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="polo.widgets.run_organizer.RunOrganizer.all_runs">
+<em class="property">property </em><code class="sig-name descname">all_runs</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.all_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all runs currently listed in the RunTree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer.backup_classifications">
@@ -1553,19 +1583,9 @@ especially prevelant on Windows machines.</p>
 <code class="sig-name descname">classify_run</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.classify_run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer.finished_ftp_download">
-<code class="sig-name descname">finished_ftp_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.finished_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.finished_ftp_download" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py attribute">
 <dt id="polo.widgets.run_organizer.RunOrganizer.ftp_download_status">
 <code class="sig-name descname">ftp_download_status</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.ftp_download_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.run_organizer.RunOrganizer.handle_ftp_download">
-<code class="sig-name descname">handle_ftp_download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.handle_ftp_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.handle_ftp_download" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1599,6 +1619,20 @@ are then taken over by the FTPDialog until it is closed.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.recent_files">
+<em class="property">property </em><code class="sig-name descname">recent_files</code><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.recent_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return recently accessed imports</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of recently accessed imports</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update">
 <code class="sig-name descname">refresh_run_after_update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.refresh_run_after_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.refresh_run_after_update" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1607,6 +1641,15 @@ are then taken over by the FTPDialog until it is closed.</p>
 <dt id="polo.widgets.run_organizer.RunOrganizer.remove_run">
 <code class="sig-name descname">remove_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.remove_run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.widgets.run_organizer.RunOrganizer.save_recent_import_paths">
+<code class="sig-name descname">save_recent_import_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/run_organizer.html#RunOrganizer.save_recent_import_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.run_organizer.RunOrganizer.save_recent_import_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the recently used import paths to the path specified by the
+<code class="xref py py-const docutils literal notranslate"><span class="pre">RECENT_FILES</span></code> path. Polo will attempt to open and read
+this file the next time the program is run in order to allow users
+to open recently opened runs.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2224,11 +2267,6 @@ by this parameter.</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py method">
-<dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize">
-<em class="property">static </em><code class="sig-name descname">sort_images_by_fastest_to_crystalize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/widgets/slideshow_inspector.html#slideshowInspector.sort_images_by_fastest_to_crystalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_fastest_to_crystalize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.widgets.slideshow_inspector.slideshowInspector.sort_images_by_marco_confidence">
@@ -2996,11 +3034,19 @@ unit of a <cite>UnitValue</cite> instance</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -3011,7 +3057,6 @@ unit of a <cite>UnitValue</cite> instance</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

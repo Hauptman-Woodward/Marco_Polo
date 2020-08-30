@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.crystallography package &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.crystallography package &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,9 +54,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -74,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,9 +99,9 @@
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="polo.html">polo package</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="future_maintainers.html">Future Maintainers</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">polo.crystallography package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-polo.crystallography.cocktail">polo.crystallography.cocktail module</a></li>
@@ -118,6 +125,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -156,9 +164,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="polo.html">polo package</a> &raquo;</li>
+          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
       <li>polo.crystallography package</li>
     
@@ -213,7 +221,7 @@ of the cocktail, defaults to None</p></li>
 <dt id="polo.crystallography.cocktail.Cocktail.add_reagent">
 <code class="sig-name descname">add_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_reagent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Cocktail.add_reagent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.add_reagent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a reagent to the existing list of reagents referenced by the
-:attr:<a href="#id1"><span class="problematic" id="id2">`</span></a>~polo.crystallography.cocktail.Cocktail.reagents attribute.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">reagents</span></code> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_reagent</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a>) – Reagent to add to this cocktail</p>
@@ -890,7 +898,7 @@ pixmap</p>
 <dd><p>Bases: <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.crystallography.run.Run</span></code></a></p>
 <dl class="py attribute">
 <dt id="polo.crystallography.run.HWIRun.AllOWED_PLOTS">
-<code class="sig-name descname">AllOWED_PLOTS</code><em class="property"> = ['Classification Counts', 'MARCO Accuracy', 'Classification Progress', 'Plate Heatmaps', 'Cocktail']</em><a class="headerlink" href="#polo.crystallography.run.HWIRun.AllOWED_PLOTS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">AllOWED_PLOTS</code><em class="property"> = ['Classification Counts', 'MARCO Accuracy', 'Classification Progress', 'Plate Heatmaps']</em><a class="headerlink" href="#polo.crystallography.run.HWIRun.AllOWED_PLOTS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -927,6 +935,28 @@ dependent on having a cocktail Menu available.</p>
 <dt id="polo.crystallography.run.HWIRun.get_tooltip">
 <code class="sig-name descname">get_tooltip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.get_tooltip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.get_tooltip" title="Permalink to this definition">¶</a></dt>
 <dd><p>The same as <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_tooltip()</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.crystallography.run.HWIRun.import_priority">
+<code class="sig-name descname">import_priority</code><em class="property"> = 1</em><a class="headerlink" href="#polo.crystallography.run.HWIRun.import_priority" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.init_from_directory">
+<em class="property">classmethod </em><code class="sig-name descname">init_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.init_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.init_from_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> instance from a directory of images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em><em>, </em><em>Path</em>) – Path to directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Run instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -999,12 +1029,57 @@ instance representing the next imaging run</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.parse_dirname_metadata">
+<em class="property">static </em><code class="sig-name descname">parse_dirname_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.parse_dirname_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.parse_dirname_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.HWIRun.parse_file_metadata">
+<em class="property">static </em><code class="sig-name descname">parse_file_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#HWIRun.parse_file_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.HWIRun.parse_file_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt id="polo.crystallography.run.Run">
 <em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.run.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_dir</span></em>, <em class="sig-param"><span class="n">run_name</span></em>, <em class="sig-param"><span class="n">image_spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">images</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Run objects represent one particular imaging run of a sample. They
+store <a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>
+objects that hold the actual imaging data as well as
+metadata associated with the imaging run and the sample.</p>
+<p>Any objects holding image data should ultimately inherit from <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a>.</p>
+<p>If you wish to create a <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> object specific to your own
+experimental and data protocols note the following information. In almost
+all cases when Polo attempts to import a <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> from some data source
+besides xtal files (rar archives and directories) the classmethod
+<a class="reference internal" href="#polo.crystallography.run.Run.init_from_directory" title="polo.crystallography.run.Run.init_from_directory"><code class="xref py py-func docutils literal notranslate"><span class="pre">init_from_directory()</span></code></a> will be called. Your subclass should override
+this method and include all code required to read / parse any metadata
+associated with the run. Additionally, you will probably want to override
+the value of the <a class="reference internal" href="#polo.crystallography.run.Run.import_priority" title="polo.crystallography.run.Run.import_priority"><code class="xref py py-attr docutils literal notranslate"><span class="pre">import_priority</span></code></a> class variable. Since before a
+run is imported its type is unknown, Polo needs to run through all available
+<a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> subclasses and attempt to import the data as that subclass. If
+the order of this procedure was random Polo could attempt to import data as
+the base <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> first instead of a more specific child-class resulting
+in a loss of metadata. Setting a higher <a class="reference internal" href="#polo.crystallography.run.Run.import_priority" title="polo.crystallography.run.Run.import_priority"><code class="xref py py-attr docutils literal notranslate"><span class="pre">import_priority</span></code></a> value
+tells Polo (see <a class="reference internal" href="polo.utils.html#polo.utils.io_utils.RunImporter" title="polo.utils.io_utils.RunImporter"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.utils.io_utils.RunImporter</span></code></a>) to attempt
+import of the child class before the base <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_dir</strong> (<em>str of Path</em>) – Directory that contains the screening images</p></li>
+<li><p><strong>run_name</strong> (<em>str</em>) – Name of this run. Should be unique as it is used to
+uniquely identify each Run instance</p></li>
+<li><p><strong>image_spectrum</strong> (<em>str</em><em>, </em><em>optional</em>) – Imaging technology used to capture
+the images in this run, defaults to None</p></li>
+<li><p><strong>date</strong> (<em>datetime</em><em>, </em><em>optional</em>) – Date the images in this Run were taken, defaults to None</p></li>
+<li><p><strong>images</strong> (<em>list</em><em>, </em><em>optional</em>) – List of all
+<a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>
+instances in this run, defaults to []</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="polo.crystallography.run.Run.AllOWED_PLOTS">
 <code class="sig-name descname">AllOWED_PLOTS</code><em class="property"> = ['Classification Counts', 'MARCO Accuracy', 'Classification Progress']</em><a class="headerlink" href="#polo.crystallography.run.Run.AllOWED_PLOTS" title="Permalink to this definition">¶</a></dt>
@@ -1055,9 +1130,9 @@ as the classifier and False sets MARCO as the classifier.</p>
 <dl class="py method">
 <dt id="polo.crystallography.run.Run.image_filter_query">
 <code class="sig-name descname">image_filter_query</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_types</span></em>, <em class="sig-param"><span class="n">human</span></em>, <em class="sig-param"><span class="n">marco</span></em>, <em class="sig-param"><span class="n">favorite</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.image_filter_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.image_filter_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>General use method for returning :class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~polo.crystallography.image.Image`s
+<dd><p>General use method for returning :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~polo.crystallography.image.Image`s
 based on a set of filters. Used whereever a user is allowed to narrow the set
-of :class:<a href="#id5"><span class="problematic" id="id6">`</span></a>~polo.crystallography.image.Image`s available for view.</p>
+of :class:<a href="#id3"><span class="problematic" id="id4">`</span></a>~polo.crystallography.image.Image`s available for view.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1075,6 +1150,28 @@ a MARCO classifier.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="polo.crystallography.run.Run.import_priority">
+<code class="sig-name descname">import_priority</code><em class="property"> = 0</em><a class="headerlink" href="#polo.crystallography.run.Run.import_priority" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.run.Run.init_from_directory">
+<em class="property">classmethod </em><code class="sig-name descname">init_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.init_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.init_from_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code></a> instance from a directory of images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em><em>, </em><em>Path</em>) – Path to directory</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Run instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="polo.crystallography.run.Run.unload_all_pixmaps">
 <code class="sig-name descname">unload_all_pixmaps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/run.html#Run.unload_all_pixmaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.run.Run.unload_all_pixmaps" title="Permalink to this definition">¶</a></dt>
@@ -1082,7 +1179,7 @@ a MARCO classifier.</p></li>
 <a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a> instances referenced by the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">images</span></code> attribute. 
 This method should be used to free up memory after the 
-:class:<a href="#id7"><span class="problematic" id="id8">`</span></a>~polo.crystallography.run.Run`is no longer being
+:class:<a href="#id5"><span class="problematic" id="id6">`</span></a>~polo.crystallography.run.Run`is no longer being
 viewed by the user.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1125,11 +1222,19 @@ to</p></li>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1140,7 +1245,6 @@ to</p></li>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

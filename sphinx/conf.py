@@ -12,19 +12,21 @@
 #
 import os
 import sys
-sys.path.insert(0, '/home/ethan/Documents/github/Marco_Polo/src/')
+from pathlib import Path
+path = Path('../src/').resolve()
+print(path)
+sys.path.insert(0, str(path))
 # sys.path.insert(0, os.path.abspath('.'))
-print(sys.path)
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'Polo'
 copyright = '2020, Ethan Holleman'
-author = 'Ethan Holleman'
+author = 'Ethan T. Holleman'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.8'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -60,3 +62,10 @@ html_theme = "sphinx_rtd_theme"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+latex_logo = html_logo = str(Path('../src/data/images/logos/polo.png').resolve())
+html_favicon = str(Path('../src/data/images/icons/polo.ico').resolve())
+
+
+

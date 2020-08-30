@@ -43,7 +43,7 @@ result in an incomplete download.
 
 
 Importing Images from a Directory
------------------------
+------------------------------------
 
 Once you have your images on your local machine you can import them into
 Polo by using the Run Importer tool. It can be opened by navigating to the
@@ -125,7 +125,8 @@ your own classifications or both.
 
 
 Basic Navigation
----------------
+-------------------
+
 Once you have images loaded in you can cycle through them by
 pressing the **Next** or **Previous** image buttons under the navigation
 panel. You can also use the right or left arrowkeys respectively. If you are
@@ -135,6 +136,7 @@ well number by entering the well number into the **By Well Number** box.
 
 Classification
 -----------------
+
 Arguably the most important Polo feature is the ability to easily
 label your screening images. To label the currently displayed image
 press the button in the **Classification** panel with your desired label.

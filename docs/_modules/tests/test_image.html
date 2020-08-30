@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests.test_image &mdash; Polo 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/polo.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+          
+
+          
+            
+            <img src="../../_static/polo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html#running-from-source">Running From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQS.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../video_guides.html">Video Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../polo.html">Polo Code Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Polo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../tests.html">tests</a> &raquo;</li>
+        
+      <li>tests.test_image</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tests.test_image</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../tests.html#tests.test_image.run">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="n">test_run</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;test_files/xtals/test_vis.xtal&#39;</span><span class="p">))</span>
+    <span class="n">test_run</span> <span class="o">=</span> <span class="n">test_run</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">test_run</span></div>
+
+
+<div class="viewcode-block" id="image_dir"><a class="viewcode-back" href="../../tests.html#tests.test_image.image_dir">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">image_dir</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s1">&#39;test_files/X000015804202004011136-jpg&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="image_objects"><a class="viewcode-back" href="../../tests.html#tests.test_image.image_objects">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">image_objects</span><span class="p">(</span><span class="n">image_dir</span><span class="p">):</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Image</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span></div>
+    <span class="c1"># return abs paths to only images</span>
+
+
+<div class="viewcode-block" id="test_make_images"><a class="viewcode-back" href="../../tests.html#tests.test_image.test_make_images">[docs]</a><span class="k">def</span> <span class="nf">test_make_images</span><span class="p">(</span><span class="n">image_objects</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="n">rand_img</span> <span class="o">=</span> <span class="n">image_objects</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_objects</span><span class="p">))]</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rand_img</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_classify_images"><a class="viewcode-back" href="../../tests.html#tests.test_image.test_classify_images">[docs]</a><span class="k">def</span> <span class="nf">test_classify_images</span><span class="p">(</span><span class="n">image_objects</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="n">rand_img</span> <span class="o">=</span> <span class="n">image_objects</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_objects</span><span class="p">))]</span>
+        <span class="n">rand_img</span><span class="o">.</span><span class="n">classify_image</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">prediction_dict</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rand_img</span><span class="o">.</span><span class="n">prediction_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">machine_class</span>
+        <span class="k">assert</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">machine_class</span> <span class="ow">in</span> <span class="n">IMAGE_CLASSIFICATIONS</span></div>
+
+<div class="viewcode-block" id="test_make_delete_pixmaps"><a class="viewcode-back" href="../../tests.html#tests.test_image.test_make_delete_pixmaps">[docs]</a><span class="k">def</span> <span class="nf">test_make_delete_pixmaps</span><span class="p">(</span><span class="n">image_objects</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="n">rand_img</span> <span class="o">=</span> <span class="n">image_objects</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_objects</span><span class="p">))]</span>
+        <span class="n">rand_img</span><span class="o">.</span><span class="n">classify_image</span><span class="p">()</span>
+        <span class="n">rand_img</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">isNull</span><span class="p">()</span>
+        <span class="n">rand_img</span><span class="o">.</span><span class="n">delete_pixmap_data</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">isNull</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_make_base64"><a class="viewcode-back" href="../../tests.html#tests.test_image.test_make_base64">[docs]</a><span class="k">def</span> <span class="nf">test_make_base64</span><span class="p">(</span><span class="n">image_objects</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+        <span class="n">rand_img</span> <span class="o">=</span> <span class="n">image_objects</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_objects</span><span class="p">))]</span>
+        <span class="k">assert</span> <span class="n">rand_img</span><span class="o">.</span><span class="n">bites</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rand_img</span><span class="o">.</span><span class="n">bites</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span></div>
+        <span class="c1"># all paths should exist</span>
+
+
+        
+
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Ethan Holleman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets.slideshow_viewer &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.widgets.slideshow_viewer &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,9 +52,12 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="../../../_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -72,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +103,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +142,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -162,8 +170,9 @@
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QFont</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">make_default_logger</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">BLANK_IMAGE</span><span class="p">,</span> <span class="n">make_default_logger</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -385,7 +394,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="n">current_image</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span> <span class="o">=</span> <span class="n">Carousel</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Made </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Made </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -444,7 +453,12 @@
             <span class="n">all_dates</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_dates</span><span class="p">,</span> <span class="n">render_date</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Displayed multi-date view&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Attempted to add object of type </span><span class="si">{}</span><span class="s1"> to scene&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="p">))</span></div>
     
 <div class="viewcode-block" id="SlideshowViewer._set_all_spectrums_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer._set_all_spectrums_scene">[docs]</a>    <span class="k">def</span> <span class="nf">_set_all_spectrums_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that creates a view that includes all alt spectrum</span>
@@ -454,10 +468,15 @@
 <span class="sd">        :type image: Image</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="n">all_specs</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">()</span>
+            <span class="n">all_specs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">spectrum</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">arrange_multi_image_scene</span><span class="p">(</span><span class="n">all_specs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Displayed multi-spectrum view&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Attempted to add object of type </span><span class="si">{}</span><span class="s1"> to scene&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="p">))</span></div>
             
 <div class="viewcode-block" id="SlideshowViewer._set_single_image_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer._set_single_image_scene">[docs]</a>    <span class="k">def</span> <span class="nf">_set_single_image_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that creates a standard single image view from the </span>
@@ -471,7 +490,12 @@
                 <span class="n">image</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addPixmap</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitInView</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Displayed single image view&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Attempted to add object of type </span><span class="si">{}</span><span class="s1"> to scene&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="p">))</span></div>
             
 <div class="viewcode-block" id="SlideshowViewer._add_text_to_scene"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer._add_text_to_scene">[docs]</a>    <span class="k">def</span> <span class="nf">_add_text_to_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to add text on top of an image. Adds the text to</span>
@@ -487,13 +511,16 @@
 <span class="sd">        :param size: Size of text, defaults to 40</span>
 <span class="sd">        :type size: int, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsTextItem</span><span class="p">()</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QGraphicsTextItem</span><span class="p">()</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_text_to_scene</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.set_current_image_by_well_number"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_current_image_by_well_number">[docs]</a>    <span class="k">def</span> <span class="nf">set_current_image_by_well_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Set the current image to the :class:`~polo.crystallography.image.Image` instance associated with a</span>
@@ -509,7 +536,6 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_current_image_by_well_number</span><span class="p">))</span>
                 <span class="k">return</span></div>
-
 
 <div class="viewcode-block" id="SlideshowViewer.carousel_controls"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.carousel_controls">[docs]</a>    <span class="k">def</span> <span class="nf">carousel_controls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">previous_image</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Wrapper around the :meth:`~polo.widgets.slideshow_viewer.Carousel.controls`</span>
@@ -550,6 +576,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="n">images</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span>
                 <span class="n">image_types</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">marco</span><span class="p">,</span> <span class="n">favorite</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Filter returned </span><span class="si">{}</span><span class="s1"> image(s)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">BLANK_IMAGE</span><span class="p">):</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Filters returned no images!&#39;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">add_slides</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">sort_function</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carousel</span><span class="o">.</span><span class="n">current_slide</span><span class="o">.</span><span class="n">image</span></div>
 
@@ -593,7 +625,12 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_all_specs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_set_all_spectrums_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_set_single_image_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_single_image_scene</span><span class="p">(</span><span class="n">cur_img</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Attempted to display object of type </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">)</span>
+            <span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="SlideshowViewer.get_cur_img_cocktail_str"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_cocktail_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_cur_img_cocktail_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Retruns the `current_image` cocktail information</span>
@@ -603,7 +640,10 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span></div>
+            <span class="n">cocktail_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+            <span class="c1"># NOTE: User on Mac Mojave reported issue with meta data text</span>
+            <span class="c1"># not updating but no errors related in the log file</span>
+            <span class="k">return</span> <span class="n">cocktail_string</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.get_cur_img_meta_str"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.get_cur_img_meta_str">[docs]</a>    <span class="k">def</span> <span class="nf">get_cur_img_meta_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns the `current_image` metadata as a string.</span>
@@ -612,7 +652,8 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">)</span></div>
+            <span class="n">image_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">image_string</span></div>
 
 <div class="viewcode-block" id="SlideshowViewer.set_alt_image"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.slideshow_viewer.SlideshowViewer.set_alt_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_alt_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">next_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prev_date</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_spec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Sets the `current_image` attribute to a linked image specified by</span>
@@ -652,11 +693,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -667,7 +716,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

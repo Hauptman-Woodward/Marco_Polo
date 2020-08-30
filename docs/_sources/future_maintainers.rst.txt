@@ -216,35 +216,37 @@ relationships between widgets are in question.
 Subpackages
 #######################################
 
-crystallography
-++++++++++++++++++++
+Crystallography Subpackage
+----------------------------
 
 Contains scripts relating to crystallography and high-throughput imaging.
 Most of the main data containing classes are defined here.
 
-designer
-++++++++++++++++++
+Designer Subpackage
+----------------------------
 
 Contains all the pyqt Designer generated UI scripts. These are used to define
 the graphical interfaces (buttons, knobs, etc.) that make up the widgets and
 dialogs defined in Polo. These scripts do not provide any functionality to
 the graphical components, they just define their layout and names. 
 
-marco
-++++++++++++++
+Marco Subpackage
+----------------------------
 
 Holds scripts relating to running the MARCO model for image classification.
+There is really only one important function in here which classifies an image
+passed to it.
 
-plots
-++++++++++
+Plots Subpackage
+----------------------------
 
 Functions related to generating plots shown in the plots tab of the main window.
 This one is kind of a todo I didn't get around to and there is a lot of clean up
 that could be done here. Especially since plots does not have its own widget
 like the slideshow inspector or plate inspectors.
 
-threads
-+++++++++++
+Threads Subpackage
+----------------------------
 
 A lot of the operations Polo undertakes, like running the MARCO model, are
 CPU intense and cannot be run on the same thread that the GUI is run on. The
@@ -254,14 +256,20 @@ the GUI when preforming a large operation. Windows is particularly fast to recog
 a frozen program so it is often necessary to put tasks that take more than a few
 seconds onto a thread.
 
-utils
-+++++++++
+Utils Subpackage
+----------------------------
 
-widgets
-+++++++++++
+TODO
 
-windows
-++++++++++++
+Widgets Subpackage
+----------------------
+
+TODO
+
+Windows Subpackage
+-----------------------
+
+TODO
 
 
 Creating Exes for Distribution
@@ -272,8 +280,8 @@ to create exe for potential users. I used Pyinstaller to create the exe files
 and then on Windows Inno setup to create an installer and will cover those
 topic in this section.
 
-Pyinstaller Overview
-------------------
+Pyinstaller Overview and Usage Guide
+----------------------------------------
 
 Pyinstaller is not included as a dependency in the :code:`requirements.txt`
 file so will need to install it using Pip.
@@ -319,6 +327,58 @@ running the pyinstaller command without :code:`F` argument to create
 a directory instead of a single file. This will let you more easily see
 exactly what pyinstaller has included in your distribution. If it isn't in
 the directory distribution it won't be found in the single file distribution.
+
+Editing and Extending this Documentation
+###########################################
+
+Documentation Background
+------------------------------
+
+All Polo documentation is written using the RST (restructured text) markdown
+language. I find myself going back to this `cheat sheet <https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html>`_ 
+when I have syntax questions but overall it is very similar to GitHub markdown. 
+The code (API) documentation and html is generated using Sphinx Python package which you
+can read more about at the `Sphinx website <https://www.sphinx-doc.org/en/master/index.html>`_.
+
+.. note::
+
+    Everything below has been done on Ubuntu (Linux) OS. Results may vary on Windows or Mac.
+
+
+Editing the Docs
+-----------------------------
+
+You can edit the documentation in two main ways. First, directly editing the rst files located in the
+:code:`sphinx` directory of the Polo repository. This is the best way to edit pages like the :ref:`User Guide`
+or :ref:`Installation Guide` that are not generated automatically. The second way is through the docstrings
+of Polo functions. Sphinx collects these docstrings and creates the code documentation from them.
+Either way, you will need to render your rst / Python files to HTML which actually forms the documentation
+website. To learn how, read on.
+
+Creating HTML Files
+-------------------------------
+
+1. If you have not done so already, install the Sphinx package and the Read the Docs theme. Follow the instructions
+in the `Sphinx Installation Guide <https://www.sphinx-doc.org/en/master/usage/installation.html>`_ to install
+Sphinx and use the command :code:`pip install sphinx_rtd_theme` to install the RTD theme. You should use whatever
+virtual environment you are using while working on Polo as all the dependencies required to run Polo will be
+required to run Sphinx.
+
+2. Navigate to the :code:`sphinx` directory of the Polo repository. Run the command :code:`make html`. This should
+collect docstrings and render your RST files to html. They will be places in the :code:`sphinx/_build/html`
+directory of the Polo repository.
+
+3. Checkout the changes you made by opening the HTML files. If everything looks good move all files to the
+:code:`docs` folder of the repository and commit your changes. If GitHub pages is still being used to host
+the documentation website, the changes should come online in a few minutes. If some other hosting solution is
+in use, I can guide you no further.
+
+Debugging
+---------------------------
+
+A good place to start if things go weird in creating the documentation is the :code:`conf.py` file
+located in the :code:`sphinx` directory of the Polo repository. It defines filepaths and assets that
+are used when rendering so it is a good place to start looking for issues.
 
 
 

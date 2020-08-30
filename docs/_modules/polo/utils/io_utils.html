@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.utils.io_utils &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.utils.io_utils &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,9 +52,12 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="../../../_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -72,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +103,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +142,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -158,148 +166,42 @@
   <h1>Source code for polo.utils.io_utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QImage</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QGridLayout</span>
 <span class="kn">from</span> <span class="nn">pptx</span> <span class="kn">import</span> <span class="n">Presentation</span>
 <span class="kn">from</span> <span class="nn">pptx.util</span> <span class="kn">import</span> <span class="n">Inches</span><span class="p">,</span> <span class="n">Pt</span>
 
-<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtWidgets</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QImage</span><span class="p">,</span> <span class="n">QPainter</span>
-<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QGridLayout</span>
-
-<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">polo_version</span>
 <span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
-<span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">EmptyRunNameError</span><span class="p">,</span> <span class="n">ForbiddenImageTypeError</span>
-<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">polo.utils.unrar_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">polo.utils.exceptions</span> <span class="kn">import</span> <span class="n">EmptyRunNameError</span><span class="p">,</span> <span class="n">ForbiddenImageTypeError</span>
 <span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span class="kn">from</span> <span class="nn">polo.utils.unrar_utils</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+
 <div class="viewcode-block" id="RunImporter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter">[docs]</a><span class="k">class</span> <span class="nc">RunImporter</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;Class to hold general use methods for importing runs into Polo.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="RunImporter.directory_validator"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.directory_validator">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">directory_validator</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Check if a directory should proceed further down the import</span>
-<span class="sd">        pipeline. Includes checks to make sure the directory exists,</span>
-<span class="sd">        is a directory and that the directory contains images of</span>
-<span class="sd">        filetypes that can be imported.</span>
+    <span class="n">allowed_filetypes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;.xtal&#39;</span><span class="p">,</span> <span class="s1">&#39;.rar&#39;</span><span class="p">])</span>
 
-<span class="sd">        :param dir_path: Path to a directory</span>
-<span class="sd">        :type dir_path: str or Path</span>
-<span class="sd">        :return: True, if directory can be imported, an Exception otherwise</span>
-<span class="sd">        :rtype: bool or Exception</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">dir_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">):</span>
-                <span class="n">files</span> <span class="o">=</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="kc">True</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">e</span> <span class="o">=</span> <span class="n">ForbiddenImageTypeError</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                    <span class="k">return</span> <span class="n">e</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">e</span> <span class="o">=</span> <span class="ne">NotADirectoryError</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="k">return</span> <span class="n">e</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">e</span> <span class="o">=</span> <span class="ne">FileNotFoundError</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Directory validation failed with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-            <span class="k">return</span> <span class="ne">FileNotFoundError</span></div>
-    
-<div class="viewcode-block" id="RunImporter.parse_hwi_dir_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Parse the directory name of an :class:`HWIRun` directory to pull out</span>
-<span class="sd">        metadata. If the directory name conforms to HWI naming conventions</span>
-<span class="sd">        the function should be able to return the image spectrum, the plate id,</span>
-<span class="sd">        the date and the run name. If the directory does not conform to HWI</span>
-<span class="sd">        naming standards this will cause an exception which is caught and the</span>
-<span class="sd">        function will return None.</span>
-
-<span class="sd">        If the parse is successful will return a dictionary with the following</span>
-<span class="sd">        format.</span>
-
-<span class="sd">         .. code-block:: text</span>
-
-<span class="sd">            {&#39;image_spectrum&#39;: String describing the image spectrum,</span>
-<span class="sd">            &#39;plate_id&#39;: String representing the plate id,</span>
-<span class="sd">            &#39;date&#39;: Datetime instance of imaging date,</span>
-<span class="sd">            &#39;run_name&#39;: String holding the run name</span>
-<span class="sd">            }</span>
-
-<span class="sd">        :param dir_name: Name of directory to check for metadata</span>
-<span class="sd">        :type dir_name: str or Path</span>
-<span class="sd">        :return: Dictionary of extracted metadata or None if parse fails</span>
-<span class="sd">        :rtype: dict or None</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">dir_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">image_type</span> <span class="o">=</span> <span class="n">dir_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">image_type</span> <span class="ow">in</span> <span class="n">SPEC_KEYS</span><span class="p">:</span>
-                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">SPEC_KEYS</span><span class="p">[</span><span class="n">image_type</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">image_spectrum</span> <span class="o">=</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># default to visible</span>
-            <span class="n">plate_id</span> <span class="o">=</span> <span class="n">dir_name</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dir_name</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-                                    <span class="s1">&#39;%Y&#39;&#39;%m&#39;&#39;</span><span class="si">%d</span><span class="s1">&#39;&#39;%H&#39;&#39;%M&#39;</span><span class="p">)</span>
-            
-            <span class="c1">#return image_type, plate_id, date, run_name  # last is suggeseted run name</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="n">image_spectrum</span><span class="p">,</span>
-                <span class="s1">&#39;plate_id&#39;</span><span class="p">:</span> <span class="n">plate_id</span><span class="p">,</span>
-                <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
-                <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="n">dir_name</span>
-                <span class="p">}</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1"> attempting to parse </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">e</span><span class="p">,</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">,</span> <span class="n">dir_name</span>
-            <span class="p">))</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
-    
-<div class="viewcode-block" id="RunImporter.crack_open_a_rar_one"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.crack_open_a_rar_one">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">crack_open_a_rar_one</span><span class="p">(</span><span class="n">rar_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Method to open a compressed rar archive.</span>
-
-<span class="sd">        :param rar_path: Path to rar archive.</span>
-<span class="sd">        :type rar_path: str or Path</span>
-<span class="sd">        :return: Path to uncompressed archive if successful</span>
-<span class="sd">        :rtype: Path</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-            <span class="n">rar_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">rar_path</span><span class="p">)</span>
-        <span class="n">parent_path</span> <span class="o">=</span> <span class="n">rar_path</span><span class="o">.</span><span class="n">parent</span>
-        <span class="k">return</span> <span class="n">unrar_archive</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
-    
-<div class="viewcode-block" id="RunImporter.import_from_xtal_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_from_xtal_thread">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">import_from_xtal_thread</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Given the path to an xtal file returns a :class:`QuickThread`</span>
-<span class="sd">        which can be run to load the run serialized in the</span>
-<span class="sd">        xtal file.</span>
-
-<span class="sd">        :param xtal_path: File path to xtal file.</span>
-<span class="sd">        :type xtal_path: str</span>
-<span class="sd">        :return: QuickThread for deserializing the given xtal file.</span>
-<span class="sd">        :rtype: QuickThread</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtal_path</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">reader</span><span class="o">.</span><span class="n">make_read_xtal_thread</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imported_run</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1"> for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">))</span>
     
 <div class="viewcode-block" id="RunImporter.make_xtal_file_dialog"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.make_xtal_file_dialog">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_xtal_file_dialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -316,87 +218,59 @@
         <span class="n">file_dlg</span><span class="o">.</span><span class="n">setNameFilter</span><span class="p">(</span><span class="s1">&#39;xtal or xtals (*.xtal *.xtals)&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">file_dlg</span></div>
     
-<div class="viewcode-block" id="RunImporter.unpack_rar_archive_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.unpack_rar_archive_thread">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">unpack_rar_archive_thread</span><span class="p">(</span><span class="n">archive_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a :class:`QuickThread` that is setup to de-compress</span>
-<span class="sd">        a rar archive file.</span>
+<div class="viewcode-block" id="RunImporter.crack_open_a_rar_one"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.crack_open_a_rar_one">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">crack_open_a_rar_one</span><span class="p">(</span><span class="n">rar_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Unrar a directory of images</span>
 
-<span class="sd">        :param archive_path: Path to rar archive.</span>
-<span class="sd">        :type archive_path: str or Path</span>
-<span class="sd">        :return: QuickThread that can be run to de-compress the given archive path.</span>
+<span class="sd">        :param rar_path: Path to rar archive file</span>
+<span class="sd">        :type rar_path: str or Path</span>
+<span class="sd">        :return: Unrar result</span>
+<span class="sd">        :rtype: str, exception or int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">parent_path</span> <span class="o">=</span> <span class="n">rar_path</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">return</span> <span class="n">unrar_archive</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="RunImporter._target_is_valid"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter._target_is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">_target_is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to chech if a the file or directory referenced by</span>
+<span class="sd">        :attr:`target_path` is valid for import.</span>
+
+<span class="sd">        :return: True if could be imported, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">allowed_filetypes</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> 
+                 <span class="ow">and</span> <span class="n">list_dir_abs</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">),</span> <span class="n">allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+    
+<div class="viewcode-block" id="RunImporter.create_import_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.create_import_thread">[docs]</a>    <span class="k">def</span> <span class="nf">create_import_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Creates a :class:`polo.threads.thread.QuickThread` with function</span>
+<span class="sd">        based on the type of file that is to be imported.</span>
+
+<span class="sd">        :return: QuickThread</span>
 <span class="sd">        :rtype: QuickThread</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">archive_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">archive_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="n">job_func</span><span class="o">=</span><span class="n">RunImporter</span><span class="o">.</span><span class="n">crack_open_a_rar_one</span><span class="p">,</span> <span class="n">rar_path</span><span class="o">=</span><span class="n">archive_path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="RunImporter.import_run_from_directory"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_run_from_directory">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">import_run_from_directory</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Imports a run from a local directory. First attempts to import</span>
-<span class="sd">        the run as an :class:`HWIRun` and if this fails attempts an import as</span>
-<span class="sd">        a general :class:`Run` object.</span>
-
-<span class="sd">        :param data_dir: Directory to build the Run from</span>
-<span class="sd">        :type data_dir: str or Path</span>
-<span class="sd">        :return: Run, HWIRun or False depending on directory content</span>
-<span class="sd">                 and if import succeeds.</span>
-<span class="sd">        :rtype: Run, HWIRun, bool</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">hwi_import_attempt</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_hwi_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hwi_import_attempt</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">hwi_import_attempt</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_general_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="RunImporter.import_hwi_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_hwi_run">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">import_hwi_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Attempt to create a :class:`HWIRun` from a directory of</span>
-<span class="sd">        images.</span>
-
-<span class="sd">        :param data_dir: Directory to import from.</span>
-<span class="sd">        :type data_dir: str or Path</span>
-<span class="sd">        :return: HWIRun if import is successful, False otherwise</span>
-<span class="sd">        :rtype: HWIRun, bool</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span>
-            <span class="n">metadata</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="p">()</span><span class="o">.</span><span class="n">find_and_read_plate_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-            <span class="n">file_name_data</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">parse_hwi_dir_metadata</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="n">file_name_data</span><span class="p">:</span>
-                <span class="n">date</span> <span class="o">=</span> <span class="n">file_name_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
-                <span class="n">menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_date</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
-                <span class="c1"># assuming soluble need to change based on metadata parse</span>
-                <span class="n">new_run</span> <span class="o">=</span> <span class="n">HWIRun</span><span class="p">(</span><span class="n">image_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">cocktail_menu</span><span class="o">=</span><span class="n">menu</span><span class="p">,</span> <span class="o">**</span><span class="n">file_name_data</span><span class="p">)</span>
-                <span class="n">new_run</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>  <span class="c1"># from xml data</span>
-                <span class="n">new_run</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># for user supplied data</span>
-                <span class="c1"># that could overwrite what is in metadata</span>
-                <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">new_run</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">pass</span>
-            <span class="c1"># TODO try importing as non hwi run and show error message</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_is_valid</span><span class="p">():</span>
+            <span class="c1"># check if needs unrar</span>
             
-        <span class="k">return</span> <span class="kc">False</span></div>
-
-<div class="viewcode-block" id="RunImporter.import_general_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter.import_general_run">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">import_general_run</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Attempt to import a :class:`Run` from a directory of images. </span>
-
-<span class="sd">        :param data_dir: [description]</span>
-<span class="sd">        :type data_dir: [type]</span>
-<span class="sd">        :return: [description]</span>
-<span class="sd">        :rtype: [type]</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">directory_validator</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="c1"># cover all required arguments</span>
-            <span class="k">if</span> <span class="s1">&#39;run_name&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;run_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
-            <span class="k">if</span> <span class="s1">&#39;image_dir&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;image_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_dir</span>
-            <span class="n">new_run</span> <span class="o">=</span> <span class="n">Run</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">new_run</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">new_run</span>
-        <span class="k">return</span> <span class="kc">False</span></div></div>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
+                <span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                    <span class="n">RunImporter</span><span class="o">.</span><span class="n">crack_open_a_rar_one</span><span class="p">,</span> <span class="n">rar_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.xtal&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_xtal_reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_path</span><span class="p">))</span>
+                <span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_xtal_reader</span><span class="o">.</span><span class="n">xtal_to_run</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># is a directory create a dummy thread</span>
+                <span class="n">import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
+                    <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_path</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">import_thread</span></div></div>
 
 
 <div class="viewcode-block" id="RunSerializer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunSerializer">[docs]</a><span class="k">class</span> <span class="nc">RunSerializer</span><span class="p">():</span>
@@ -443,7 +317,6 @@
 <span class="sd">        Tests to ensure a path exists. Passing parent = True will check for</span>
 <span class="sd">        the existence of the parent directory of the path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -480,6 +353,7 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">template</span><span class="p">:</span>
             <span class="n">contents</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Read Jinja template at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">template_path</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HtmlWriter.write_complete_run"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.HtmlWriter.write_complete_run">[docs]</a>    <span class="k">def</span> <span class="nf">write_complete_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">encode_images</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -514,6 +388,7 @@
                             <span class="n">annotations</span><span class="o">=</span><span class="s1">&#39;No annotations&#39;</span><span class="p">)</span>
                         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">html_file</span><span class="p">:</span>
                             <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Wrote HTML report to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
                             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -539,18 +414,28 @@
 <span class="sd">        :param run_name: name of run, defaults to None</span>
 <span class="sd">        :type run_name: str, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">SCREEN_HTML_TEMPLATE</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">run_name</span><span class="p">:</span>
-                <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
-            <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">plate_list</span><span class="o">=</span><span class="n">plate_list</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
-                                   <span class="n">well_number</span><span class="o">=</span><span class="n">well_number</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-                                   <span class="n">x_reagent_stock</span><span class="o">=</span><span class="n">x_reagent</span><span class="p">,</span>
-                                   <span class="n">y_reagent_stock</span><span class="o">=</span><span class="n">y_reagent</span><span class="p">,</span>
-                                   <span class="n">well_volume</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">well_volume</span><span class="p">))</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">screen_html</span><span class="p">:</span>
-                <span class="n">screen_html</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span></div></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">output_path</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="n">HtmlWriter</span><span class="o">.</span><span class="n">make_template</span><span class="p">(</span><span class="n">SCREEN_HTML_TEMPLATE</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">run_name</span><span class="p">:</span>
+                    <span class="n">run_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
+                <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">plate_list</span><span class="o">=</span><span class="n">plate_list</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
+                                    <span class="n">well_number</span><span class="o">=</span><span class="n">well_number</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+                                    <span class="n">x_reagent_stock</span><span class="o">=</span><span class="n">x_reagent</span><span class="p">,</span>
+                                    <span class="n">y_reagent_stock</span><span class="o">=</span><span class="n">y_reagent</span><span class="p">,</span>
+                                    <span class="n">well_volume</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">well_volume</span><span class="p">))</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">screen_html</span><span class="p">:</span>
+                    <span class="n">screen_html</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Wrote grid screen report to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_path</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_grid_screen</span><span class="p">))</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to write screen to </span><span class="si">{}</span><span class="s1">. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">output_path</span><span class="p">,</span> <span class="n">e</span>
+                <span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="RunCsvWriter"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunCsvWriter">[docs]</a><span class="k">class</span> <span class="nc">RunCsvWriter</span><span class="p">(</span><span class="n">RunSerializer</span><span class="p">):</span>
@@ -666,6 +551,7 @@
                 <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
                     <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Wrote csv data to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -965,7 +851,7 @@
         <span class="n">header</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_line</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">header_flag</span><span class="p">,</span> <span class="s1">&#39;SAVE TIME&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
         <span class="n">header</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_line</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">header_flag</span><span class="p">,</span> <span class="s1">&#39;VERSION&#39;</span><span class="p">,</span> <span class="n">__version__</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">header_flag</span><span class="p">,</span> <span class="s1">&#39;VERSION&#39;</span><span class="p">,</span> <span class="n">polo_version</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">header</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_line</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">header_flag</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">value</span><span class="p">)</span>
@@ -1041,7 +927,7 @@
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)):</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Saved current run to </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Save to failed. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failed to save run.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
         <span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
@@ -1053,22 +939,23 @@
 <span class="sd">        :return: path to xtal file</span>
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="c1"># path is good to go and ready to write file into</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
-            <span class="n">run_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_to_dict</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># encoding worked, no errors caught</span>
-                <span class="n">output_path</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span>
-                    <span class="n">output_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_ext</span><span class="p">)</span>  <span class="c1"># make sure has .xtal suffix</span>
-                <span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">path_validator</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="c1"># path is good to go and ready to write file into</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">encode_images_to_base64</span><span class="p">()</span>
+                <span class="n">run_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_to_dict</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># encoding worked, no errors caught</span>
+                    <span class="n">output_path</span> <span class="o">=</span> <span class="n">XtalWriter</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span>
+                        <span class="n">output_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_ext</span><span class="p">)</span>  <span class="c1"># make sure has .xtal suffix</span>
+                
                     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">xtal_file</span><span class="p">:</span>
                         <span class="n">xtal_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_header</span><span class="p">)</span>
                         <span class="n">xtal_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">run_str</span><span class="p">)</span>
                         <span class="k">return</span> <span class="n">output_path</span>
-                <span class="k">except</span> <span class="ne">PermissionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
-                    <span class="k">return</span> <span class="n">e</span></div>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_xtal_file</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="XtalWriter.run_to_dict"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalWriter.run_to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">run_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a json string from the run stored in the run attribute.</span>
@@ -1083,7 +970,7 @@
                 <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clean_run</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                                   <span class="n">default</span><span class="o">=</span><span class="n">XtalWriter</span><span class="o">.</span><span class="n">json_encoder</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to encode </span><span class="si">{}</span><span class="s1"> to dict. Gave </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to encode </span><span class="si">{}</span><span class="s1"> to dict. Gave </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">e</span></div></div>
 
@@ -1137,6 +1024,8 @@
                 <span class="n">class_name</span><span class="p">,</span> <span class="n">mod_name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;__class__&#39;</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;__module__&#39;</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">mod_name</span><span class="p">)</span>
+                    <span class="c1"># BUG module is polo from init so if currently if classes are</span>
+                    <span class="c1"># not imported into init file they will not be found here</span>
                     <span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -1144,7 +1033,7 @@
                     <span class="k">return</span> <span class="kc">None</span>
                 <span class="n">temp_d</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># deal with object properties</span>
+                    <span class="k">if</span> <span class="s1">&#39;__&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>  <span class="c1"># deal with private object properties</span>
                         <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">elif</span> <span class="s1">&#39;_&#39;</span> <span class="o">==</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                         <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -1160,19 +1049,6 @@
             <span class="k">return</span> <span class="n">obj</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="RunDeserializer.xtal_to_run_on_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_to_run_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Wrapper method around `xtal_to_run` method. Does the exact same thing</span>
-<span class="sd">        except creates a `QuickThread` instance and runs `xtal_to_run` on the</span>
-<span class="sd">        thread. When finished adds the newly created run to the main window&#39;s</span>
-<span class="sd">        loaded_run dictionary to signify that the run has been loaded and is</span>
-<span class="sd">        ready for further operations.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="RunDeserializer.make_read_xtal_thread"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.make_read_xtal_thread">[docs]</a>    <span class="k">def</span> <span class="nf">make_read_xtal_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">QuickThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> <span class="n">xtal_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xtal_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunDeserializer.xtal_header_reader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer.xtal_header_reader">[docs]</a>    <span class="k">def</span> <span class="nf">xtal_header_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtal_file_io</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Reads the header section of an open xtal file. Should always be</span>
@@ -1291,77 +1167,27 @@
                 <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">visible</span><span class="p">,</span> <span class="n">other</span></div>
            
-    <span class="c1"># def make_sample_presentation(self, sample_name, runs, title,</span>
-    <span class="c1">#                              subtitle, cocktail_data=True):</span>
-    <span class="c1">#     &#39;&#39;&#39;Create a pptx presentation from a collection of runs intended to</span>
-    <span class="c1">#     be all of the same sample. This allows for time resolved comparisons</span>
-    <span class="c1">#     and comparisons between spectrums. Should generally not include all</span>
-    <span class="c1">#     images in the presentation or with runs who&#39;s images do not exist</span>
-    <span class="c1">#     on the local machine. Doing so creates huge presentation files and</span>
-    <span class="c1">#     long write times.</span>
-
-    <span class="c1">#     :param sample_name: Name of the sample</span>
-    <span class="c1">#     :type sample_name: str</span>
-    <span class="c1">#     :param runs: List of runs to include in the presentation</span>
-    <span class="c1">#     :type runs: list</span>
-    <span class="c1">#     :param title: Title of the presentation</span>
-    <span class="c1">#     :type title: str</span>
-    <span class="c1">#     :param subtitle: Subtitle of the presentation</span>
-    <span class="c1">#     :type subtitle: str</span>
-    <span class="c1">#     :param cocktail_data: Include cocktail data if True, defaults to True</span>
-    <span class="c1">#     :type cocktail_data: bool, optional</span>
-    <span class="c1">#     :return: Path to presentation file if write is successful, False otherwise</span>
-    <span class="c1">#     :rtype: str or bool</span>
-    <span class="c1">#     &#39;&#39;&#39;</span>
-    <span class="c1">#     visible, other = self.sort_runs_by_spectrum(runs)</span>
-    <span class="c1">#     title_slide = self.add_new_slide(0)</span>
-    <span class="c1">#     title_slide.shapes.title.text = title</span>
-    <span class="c1">#     if subtitle:</span>
-    <span class="c1">#         title_slide.placeholders[1].text = subtitle</span>
-
-    <span class="c1">#     try:</span>
-    <span class="c1">#         if visible or other:</span>
-    <span class="c1">#             show_all_dates, show_single_image, show_alt_specs = False, False, False</span>
-    <span class="c1">#             if visible:</span>
-    <span class="c1">#                 if len(visible) &gt; 1:</span>
-    <span class="c1">#                     show_all_dates = True</span>
-    <span class="c1">#                 else:</span>
-    <span class="c1">#                     show_single_image = True</span>
-    <span class="c1">#             if other:</span>
-    <span class="c1">#                 show_alt_specs = True</span>
-
-    <span class="c1">#             if show_all_dates or show_single_image:</span>
-    <span class="c1">#                 rep_run = visible[0]</span>
-    <span class="c1">#             else:</span>
-    <span class="c1">#                 rep_run = other[0]</span>
-                
-    <span class="c1">#             for i in range(10):</span>
-    <span class="c1">#                 if show_all_dates:</span>
-    <span class="c1">#                     self.add_timeline_slide([r.images[i] for r in visible], i+1)</span>
-    <span class="c1">#                 elif show_single_image:</span>
-    <span class="c1">#                     metadata = str(rep_run.images[i])</span>
-    <span class="c1">#                     if hasattr(rep_run.images[i], &#39;cocktail&#39;) and cocktail_data:</span>
-    <span class="c1">#                         metadata += &#39;\n\n&#39; + str(rep_run.images[i].cocktail)</span>
-    <span class="c1">#                     title = &#39;Well Number {}&#39;.format(rep_run.images[i].well_number)</span>
-    <span class="c1">#                     self.add_single_image_slide(rep_run.images[i], title, metadata)</span>
-                    
-    <span class="c1">#                 if show_alt_specs:</span>
-    <span class="c1">#                     well_number = i + 1</span>
-    <span class="c1">#                     self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)</span>
-                
-    <span class="c1">#             self._presentation.save(str(self.output_path))</span>
-    <span class="c1">#             self.delete_temp_images()</span>
-    <span class="c1">#             return True</span>
-                    
-    <span class="c1">#         else:</span>
-    <span class="c1">#             return False</span>
-    <span class="c1">#     except Exception as e:</span>
-    <span class="c1">#         return e</span>
-        
-
 <div class="viewcode-block" id="PptxWriter.make_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                     <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                     <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                                    <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                    <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a pptx presentation file from a screening run instance.</span>
+
+<span class="sd">        :param run: Run to create the presentation from</span>
+<span class="sd">        :type run: Run</span>
+<span class="sd">        :param title: Title for the presentation</span>
+<span class="sd">        :type title: str</span>
+<span class="sd">        :param subtitle: Subtitle for the presentation, defaults to None</span>
+<span class="sd">        :type subtitle: str, optional</span>
+<span class="sd">        :param cocktail_data: If True include cocktail data on slide, defaults to True</span>
+<span class="sd">        :type cocktail_data: bool, optional</span>
+<span class="sd">        :param all_specs: If True include all spectrum image slide, defaults to False</span>
+<span class="sd">        :type all_specs: bool, optional</span>
+<span class="sd">        :param all_dates: If True include all dates slide, defaults to False</span>
+<span class="sd">        :type all_dates: bool, optional</span>
+<span class="sd">        :return: True if presentation was created successfully, Exception otherwise</span>
+<span class="sd">        :rtype: bool or Exception</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
@@ -1386,8 +1212,6 @@
                             <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">all_dates</span> <span class="ow">and</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="ow">or</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
-
-
             
             <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
@@ -1422,6 +1246,16 @@
         <span class="c1"># do for most recent human classification image if it exits</span>
 
 <div class="viewcode-block" id="PptxWriter.add_new_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_new_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add a new slide to the presentation referenced by the</span>
+<span class="sd">        :attr:`_presentation` attribute.</span>
+
+<span class="sd">        :param template: Slide template integer identifier, defaults to 5.</span>
+<span class="sd">                         See the python-pptx package for more details on </span>
+<span class="sd">                         template integers</span>
+<span class="sd">        :type template: int, optional</span>
+<span class="sd">        :return: Presentation with the new slide added </span>
+<span class="sd">        :rtype: Presentation</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
     
@@ -1682,14 +1516,15 @@
 <span class="sd">        :return: datetime object</span>
 <span class="sd">        :rtype: datetime</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">date_string</span> <span class="o">=</span> <span class="n">date_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">datetime_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%y&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">datetime_formats</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">continue</span></div>
+        <span class="k">if</span> <span class="n">date_string</span><span class="p">:</span>
+            <span class="n">date_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">date_string</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">datetime_formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%y&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y&#39;</span><span class="p">,</span> <span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%y&#39;</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">datetime_formats</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">continue</span></div>
 
 <div class="viewcode-block" id="BarTender.date_range_parser"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.date_range_parser">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">date_range_parser</span><span class="p">(</span><span class="n">date_range_string</span><span class="p">):</span>
@@ -1723,7 +1558,7 @@
         <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span></div>
 
 <div class="viewcode-block" id="BarTender.add_menus_from_metadata"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.add_menus_from_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_menus_from_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds :class:`Menu` objects to the :attr:polo.utils.io_utils.BarTender.menus`</span>
+        <span class="sd">&#39;&#39;&#39;Adds :class:`Menu` objects to the :attr:`polo.utils.io_utils.BarTender.menus`</span>
 <span class="sd">        attribute by reading the cocktail csv files included</span>
 <span class="sd">        in the :const:`COCKTAIL_DATA_PATH` directory.&#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktail_meta</span><span class="p">:</span>
@@ -1734,9 +1569,11 @@
                         <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;File Name&#39;</span><span class="p">])</span>
                     <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">BarTender</span><span class="o">.</span><span class="n">date_range_parser</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Dates Used&#39;</span><span class="p">])</span>
                     <span class="n">new_menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Screen Type&#39;</span><span class="p">])</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_menu</span></div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_menu</span>
                     <span class="c1"># add new menu to menus dict path to csv file is the menu</span>
                     <span class="c1"># key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No cocktail metadata stored in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="BarTender.get_menu_by_date"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menu_by_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_menu_by_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Get a :class:`Menu` instance who&#39;s usage dates include the</span>
@@ -1766,7 +1603,6 @@
                 <span class="k">if</span> <span class="n">date</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">each_key</span><span class="p">]</span><span class="o">.</span><span class="n">start_date</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">each_key</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">menus</span><span class="p">[</span><span class="n">menus_keys_by_date</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span></div>
-
 
 <div class="viewcode-block" id="BarTender.get_menus_by_type"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender.get_menus_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_menus_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns all :class:`Menu` instances of a given screen type.</span>
@@ -1949,6 +1785,19 @@
 <span class="sd">    date or by spectrum.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
+<div class="viewcode-block" id="RunLinker.link_visualizer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.link_visualizer">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">link_visualizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a text representation of the linked list structure between</span>
+<span class="sd">        runs for debugging.</span>
+
+<span class="sd">        :param run: Run to build representation from</span>
+<span class="sd">        :type run: Run</span>
+<span class="sd">        :return: Text representation of the linked list</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="RunLinker.the_big_link"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunLinker.the_big_link">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">the_big_link</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Wrapper method to do all the linking required for a collection of</span>
@@ -2042,10 +1891,10 @@
 
 <div class="viewcode-block" id="XmlReader"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader">[docs]</a><span class="k">class</span> <span class="nc">XmlReader</span><span class="p">():</span>
 
-    <span class="n">platedef_key</span> <span class="o">=</span> <span class="s1">&#39;platedef&#39;</span>  <span class="c1"># keyword that is always in plate definition</span>
+    <span class="c1">#platedef_key = &#39;platedef&#39;  # keyword that is always in plate definition</span>
     <span class="c1"># xml file names</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xml_files</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;XmlReader class can be used to read the xml metadata files that are</span>
 <span class="sd">        included in HWI screening run rar archives. Currently, is primarily meant</span>
 <span class="sd">        to extract metadata about the plate and the sample in that plate.</span>
@@ -2056,7 +1905,10 @@
 <span class="sd">        :type xml_files: list, optional</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xml_path</span> <span class="o">=</span> <span class="n">xml_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xml_files</span> <span class="o">=</span> <span class="n">xml_files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xml_path</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Made </span><span class="si">{}</span><span class="s1"> for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml_path</span><span class="p">)))</span>
+
 
 <div class="viewcode-block" id="XmlReader.get_data_from_xml_element"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.get_data_from_xml_element">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_data_from_xml_element</span><span class="p">(</span><span class="n">xml_element</span><span class="p">):</span>
@@ -2070,73 +1922,10 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">elem</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">xml_element</span>
                 <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="ow">and</span> <span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="p">}</span></div>
+    
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">[</span><span class="n">index</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="XmlReader.read_plate_data_xml"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.read_plate_data_xml">[docs]</a>    <span class="k">def</span> <span class="nf">read_plate_data_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Read the data stored in an xml document. HWI includes metadata</span>
-<span class="sd">        about samples, imaging dates and other plate information in each</span>
-<span class="sd">        rar archive that is distrubted. This method is used to read that</span>
-<span class="sd">        data so it can be incorporated into :class:`HWIRun` objects.</span>
-
-<span class="sd">        :param xml_path: Path to xml file to read, defaults to None.</span>
-<span class="sd">                         If None uses the xml path stored in `xml_path` attribute.</span>
-<span class="sd">        :type xml_path: str or Path, optional</span>
-<span class="sd">        :return: Dictionary of xml data if read was successful, Exception otherwise</span>
-<span class="sd">        :rtype: dict or Exception</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">xml_path</span><span class="p">:</span>
-            <span class="n">xml_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_file</span>
-        <span class="n">xml_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml_path</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_path</span><span class="p">)</span>
-            <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
-
-            <span class="n">d</span> <span class="o">=</span> <span class="n">XmlReader</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">XmlReader</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="n">root</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">d</span>
-
-        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_plate_data_xml</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">e</span></div>
-
-<div class="viewcode-block" id="XmlReader.discover_xml_files"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.discover_xml_files">[docs]</a>    <span class="k">def</span> <span class="nf">discover_xml_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Look for xml files in a given directory.</span>
-
-<span class="sd">        :param parent_dir: Directory to look for xml files in</span>
-<span class="sd">        :type parent_dir: str or Path</span>
-<span class="sd">        :return: List of xml file paths, if any exist</span>
-<span class="sd">        :rtype: list</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">))</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                          <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">))]</span>
-            <span class="n">xmls</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_paths</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.xml&#39;</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">xmls</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">PermissionError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">discover_xml_files</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">e</span></div>
-
-<div class="viewcode-block" id="XmlReader.find_and_read_plate_data"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XmlReader.find_and_read_plate_data">[docs]</a>    <span class="k">def</span> <span class="nf">find_and_read_plate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Find xml metadata files in a given directory. Read the</span>
-<span class="sd">        data from xml files that contain the :const:`plate_def` key</span>
-<span class="sd">        string.</span>
-
-<span class="sd">        :param parent_dir: Directory to look for xml files</span>
-<span class="sd">        :type parent_dir: Path or str</span>
-<span class="sd">        :return: Dict if xml file found and read successfully, False otherwise</span>
-<span class="sd">        :rtype: dict or bool</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">xml_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">discover_xml_files</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xml_files</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">xml_file</span> <span class="ow">in</span> <span class="n">xml_files</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">platedef_key</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml_file</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_plate_data_xml</span><span class="p">(</span><span class="n">xml_file</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">():</span>  <span class="c1"># holds the dictionary of cocktails</span>
@@ -2171,6 +1960,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span> <span class="o">=</span> <span class="n">cocktails</span>  <span class="c1"># holds all cocktails (items on the menu)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Created Menu for path </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cocktails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2182,6 +1972,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span> <span class="o">=</span> <span class="n">new_cocktails</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added </span><span class="si">{}</span><span class="s1"> Cocktails&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cocktails</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">:</span>
@@ -2192,11 +1983,6 @@
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cocktails</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
     
-
-
-
-    <span class="c1"># or potentially use a file browser to do this one and put it in a wdiget</span>
-
 
 <span class="c1"># orphan functions that have not made it into a class yet</span>
 <span class="c1"># =============================================================================</span>
@@ -2224,8 +2010,7 @@
 
 
 <div class="viewcode-block" id="parse_HWI_filename_meta"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.parse_HWI_filename_meta">[docs]</a><span class="k">def</span> <span class="nf">parse_HWI_filename_meta</span><span class="p">(</span><span class="n">HWI_image_file</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    HWI images have a standard file nameing schema that gives info about when</span>
+    <span class="sd">&#39;&#39;&#39;HWI images have a standard file nameing schema that gives info about when</span>
 <span class="sd">    they are taken and well number and that kind of thing. This function returns</span>
 <span class="sd">    that data</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -2302,7 +2087,7 @@
         <span class="n">new_run_name</span> <span class="o">=</span> <span class="n">new_run_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">new_run_name</span> <span class="o">=</span> <span class="n">new_run_name</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">UnicodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> failed run name validation with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> failed run name validation with </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">new_run_name</span><span class="p">,</span> <span class="n">e</span>
         <span class="p">))</span>
         <span class="k">return</span> <span class="n">e</span>
@@ -2327,16 +2112,28 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not make directory with path </span><span class="si">{}</span><span class="s1">. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not make directory with path </span><span class="si">{}</span><span class="s1">. Returned </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">path</span><span class="p">,</span> <span class="n">e</span>
             <span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span>
 
     <span class="k">return</span> <span class="n">path</span></div>
 
+<span class="c1"># NOTE imports moved to end as quick fix. Files imported here import classes</span>
+<span class="c1"># and functions from io_utils so entire io_utils script must be run before</span>
+<span class="c1"># other scripts are run to avoid import errors</span>
+<span class="c1"># RUN_TYPES is also here because until those scripts are run they are not</span>
+<span class="c1"># included in sys.modules dictionary</span>
+
+<span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.run</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span class="n">RUN_TYPES</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">types</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">types</span> <span class="ow">in</span> 
+        <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;polo.crystallography.run&#39;</span><span class="p">],</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Run</span><span class="p">)],</span>
+        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">import_priority</span><span class="p">,</span>
+        <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -2349,11 +2146,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2364,7 +2169,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

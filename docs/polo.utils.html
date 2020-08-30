@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.utils package &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.utils package &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,9 +54,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -74,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -92,9 +99,9 @@
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="polo.html">polo package</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="future_maintainers.html">Future Maintainers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
@@ -121,6 +128,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -159,9 +167,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="polo.html">polo package</a> &raquo;</li>
+          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
       <li>polo.utils package</li>
     
@@ -320,7 +328,7 @@ Screen Type: &#39;m&#39; for membrane screens, &#39;s&#39; for soluble screens
 <dl class="py method">
 <dt id="polo.utils.io_utils.BarTender.add_menus_from_metadata">
 <code class="sig-name descname">add_menus_from_metadata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#BarTender.add_menus_from_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.BarTender.add_menus_from_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds <a class="reference internal" href="#polo.utils.io_utils.Menu" title="polo.utils.io_utils.Menu"><code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></a> objects to the :attr:polo.utils.io_utils.BarTender.menus`
+<dd><p>Adds <a class="reference internal" href="#polo.utils.io_utils.Menu" title="polo.utils.io_utils.Menu"><code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code></a> objects to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">polo.utils.io_utils.BarTender.menus</span></code>
 attribute by reading the cocktail csv files included
 in the <code class="xref py py-const docutils literal notranslate"><span class="pre">COCKTAIL_DATA_PATH</span></code> directory.</p>
 </dd></dl>
@@ -963,7 +971,22 @@ imaged in.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_new_slide">
 <code class="sig-name descname">add_new_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_new_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_new_slide" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add a new slide to the presentation referenced by the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">_presentation</span></code> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>template</strong> (<em>int</em><em>, </em><em>optional</em>) – Slide template integer identifier, defaults to 5.
+See the python-pptx package for more details on 
+template integers</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Presentation with the new slide added</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Presentation</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_single_image_slide">
@@ -1081,7 +1104,26 @@ well.</p>
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.make_presentation">
 <code class="sig-name descname">make_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">all_specs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">all_dates</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_presentation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a pptx presentation file from a screening run instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a>) – Run to create the presentation from</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title for the presentation</p></li>
+<li><p><strong>subtitle</strong> (<em>str</em><em>, </em><em>optional</em>) – Subtitle for the presentation, defaults to None</p></li>
+<li><p><strong>cocktail_data</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True include cocktail data on slide, defaults to True</p></li>
+<li><p><strong>all_specs</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True include all spectrum image slide, defaults to False</p></li>
+<li><p><strong>all_dates</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True include all dates slide, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if presentation was created successfully, Exception otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool or Exception</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">
@@ -1245,11 +1287,6 @@ attempts to convert it back into an object instance. Used as the
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.RunDeserializer.make_read_xtal_thread">
-<code class="sig-name descname">make_read_xtal_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunDeserializer.make_read_xtal_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunDeserializer.make_read_xtal_thread" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt id="polo.utils.io_utils.RunDeserializer.xtal_header_reader">
 <code class="sig-name descname">xtal_header_reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xtal_file_io</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunDeserializer.xtal_header_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunDeserializer.xtal_header_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads the header section of an open xtal file. Should always be
@@ -1287,130 +1324,60 @@ attribute to a <code class="xref py py-class docutils literal notranslate"><span
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread">
-<code class="sig-name descname">xtal_to_run_on_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunDeserializer.xtal_to_run_on_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunDeserializer.xtal_to_run_on_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper method around <cite>xtal_to_run</cite> method. Does the exact same thing
-except creates a <cite>QuickThread</cite> instance and runs <cite>xtal_to_run</cite> on the
-thread. When finished adds the newly created run to the main window’s
-loaded_run dictionary to signify that the run has been loaded and is
-ready for further operations.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt id="polo.utils.io_utils.RunImporter">
-<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">RunImporter</code><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">RunImporter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to hold general use methods for importing runs into Polo.</p>
+<dl class="py method">
+<dt id="polo.utils.io_utils.RunImporter._target_is_valid">
+<code class="sig-name descname">_target_is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter._target_is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter._target_is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to chech if a the file or directory referenced by
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">target_path</span></code> is valid for import.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if could be imported, False otherwise</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.utils.io_utils.RunImporter.allowed_filetypes">
+<code class="sig-name descname">allowed_filetypes</code><em class="property"> = {'.rar', '.xtal'}</em><a class="headerlink" href="#polo.utils.io_utils.RunImporter.allowed_filetypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunImporter.crack_open_a_rar_one">
 <em class="property">static </em><code class="sig-name descname">crack_open_a_rar_one</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rar_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.crack_open_a_rar_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.crack_open_a_rar_one" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to open a compressed rar archive.</p>
+<dd><p>Unrar a directory of images</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rar_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to rar archive.</p>
+<dd class="field-odd"><p><strong>rar_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to rar archive file</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Path to uncompressed archive if successful</p>
+<dd class="field-even"><p>Unrar result</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Path</p>
+<dd class="field-odd"><p>str, exception or int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.directory_validator">
-<em class="property">static </em><code class="sig-name descname">directory_validator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.directory_validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.directory_validator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if a directory should proceed further down the import
-pipeline. Includes checks to make sure the directory exists,
-is a directory and that the directory contains images of
-filetypes that can be imported.</p>
+<dt id="polo.utils.io_utils.RunImporter.create_import_thread">
+<code class="sig-name descname">create_import_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.create_import_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.create_import_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <a class="reference internal" href="polo.threads.html#polo.threads.thread.QuickThread" title="polo.threads.thread.QuickThread"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.threads.thread.QuickThread</span></code></a> with function
+based on the type of file that is to be imported.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to a directory</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>QuickThread</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True, if directory can be imported, an Exception otherwise</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool or Exception</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.import_from_xtal_thread">
-<em class="property">static </em><code class="sig-name descname">import_from_xtal_thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xtal_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.import_from_xtal_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.import_from_xtal_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given the path to an xtal file returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">QuickThread</span></code>
-which can be run to load the run serialized in the
-xtal file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>xtal_path</strong> (<em>str</em>) – File path to xtal file.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>QuickThread for deserializing the given xtal file.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.threads.html#polo.threads.thread.QuickThread" title="polo.threads.thread.QuickThread">QuickThread</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.import_general_run">
-<em class="property">static </em><code class="sig-name descname">import_general_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dir</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.import_general_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.import_general_run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to import a <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> from a directory of images.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data_dir</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.import_hwi_run">
-<em class="property">static </em><code class="sig-name descname">import_hwi_run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dir</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.import_hwi_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.import_hwi_run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to create a <code class="xref py py-class docutils literal notranslate"><span class="pre">HWIRun</span></code> from a directory of
-images.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Directory to import from.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>HWIRun if import is successful, False otherwise</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun">HWIRun</a>, bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.import_run_from_directory">
-<em class="property">static </em><code class="sig-name descname">import_run_from_directory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dir</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.import_run_from_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.import_run_from_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Imports a run from a local directory. First attempts to import
-the run as an <code class="xref py py-class docutils literal notranslate"><span class="pre">HWIRun</span></code> and if this fails attempts an import as
-a general <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code> object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Directory to build the Run from</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Run, HWIRun or False depending on directory content
-and if import succeeds.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run">Run</a>, <a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.HWIRun" title="polo.crystallography.run.HWIRun">HWIRun</a>, bool</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="polo.threads.html#polo.threads.thread.QuickThread" title="polo.threads.thread.QuickThread">QuickThread</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1429,57 +1396,6 @@ xtal files.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>QFileDialog</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata">
-<em class="property">static </em><code class="sig-name descname">parse_hwi_dir_metadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.parse_hwi_dir_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.parse_hwi_dir_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the directory name of an <code class="xref py py-class docutils literal notranslate"><span class="pre">HWIRun</span></code> directory to pull out
-metadata. If the directory name conforms to HWI naming conventions
-the function should be able to return the image spectrum, the plate id,
-the date and the run name. If the directory does not conform to HWI
-naming standards this will cause an exception which is caught and the
-function will return None.</p>
-<p>If the parse is successful will return a dictionary with the following
-format.</p>
-<blockquote>
-<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{&#39;image_spectrum&#39;: String describing the image spectrum,
-&#39;plate_id&#39;: String representing the plate id,
-&#39;date&#39;: Datetime instance of imaging date,
-&#39;run_name&#39;: String holding the run name
-}
-</pre></div>
-</div>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dir_name</strong> (<em>str</em><em> or </em><em>Path</em>) – Name of directory to check for metadata</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of extracted metadata or None if parse fails</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.RunImporter.unpack_rar_archive_thread">
-<em class="property">static </em><code class="sig-name descname">unpack_rar_archive_thread</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">archive_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter.unpack_rar_archive_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter.unpack_rar_archive_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">QuickThread</span></code> that is setup to de-compress
-a rar archive file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>archive_path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to rar archive.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>QuickThread that can be run to de-compress the given archive path.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="polo.threads.html#polo.threads.thread.QuickThread" title="polo.threads.thread.QuickThread">QuickThread</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1518,6 +1434,24 @@ linked list.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.RunLinker.link_visualizer">
+<em class="property">static </em><code class="sig-name descname">link_visualizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunLinker.link_visualizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunLinker.link_visualizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a text representation of the linked list structure between
+runs for debugging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.run.Run" title="polo.crystallography.run.Run"><em>Run</em></a>) – Run to build representation from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Text representation of the linked list</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1635,44 +1569,8 @@ to a png file.</p>
 
 <dl class="py class">
 <dt id="polo.utils.io_utils.XmlReader">
-<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">XmlReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xml_files</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">XmlReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt id="polo.utils.io_utils.XmlReader.discover_xml_files">
-<code class="sig-name descname">discover_xml_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader.discover_xml_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader.discover_xml_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look for xml files in a given directory.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parent_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Directory to look for xml files in</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of xml file paths, if any exist</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.XmlReader.find_and_read_plate_data">
-<code class="sig-name descname">find_and_read_plate_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader.find_and_read_plate_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader.find_and_read_plate_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find xml metadata files in a given directory. Read the
-data from xml files that contain the <code class="xref py py-const docutils literal notranslate"><span class="pre">plate_def</span></code> key
-string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parent_dir</strong> (<em>Path</em><em> or </em><em>str</em>) – Directory to look for xml files</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dict if xml file found and read successfully, False otherwise</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt id="polo.utils.io_utils.XmlReader.get_data_from_xml_element">
 <em class="property">static </em><code class="sig-name descname">get_data_from_xml_element</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_element</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader.get_data_from_xml_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader.get_data_from_xml_element" title="Permalink to this definition">¶</a></dt>
@@ -1687,32 +1585,6 @@ for reading xml files.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polo.utils.io_utils.XmlReader.platedef_key">
-<code class="sig-name descname">platedef_key</code><em class="property"> = 'platedef'</em><a class="headerlink" href="#polo.utils.io_utils.XmlReader.platedef_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.XmlReader.read_plate_data_xml">
-<code class="sig-name descname">read_plate_data_xml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XmlReader.read_plate_data_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XmlReader.read_plate_data_xml" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read the data stored in an xml document. HWI includes metadata
-about samples, imaging dates and other plate information in each
-rar archive that is distrubted. This method is used to read that
-data so it can be incorporated into <code class="xref py py-class docutils literal notranslate"><span class="pre">HWIRun</span></code> objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>xml_path</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to xml file to read, defaults to None.
-If None uses the xml path stored in <cite>xml_path</cite> attribute.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary of xml data if read was successful, Exception otherwise</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or Exception</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1971,11 +1843,19 @@ operating systems but not for Linux.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1986,7 +1866,6 @@ operating systems but not for Linux.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

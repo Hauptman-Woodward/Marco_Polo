@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets.run_tree &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.widgets.run_tree &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,9 +52,12 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="../../../_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -72,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +103,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +142,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -220,7 +228,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOn</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_run_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -323,7 +331,7 @@
         
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="p">[</span><span class="n">formated_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">run_name</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added new run: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added new run: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">new_node</span></div>
 
 <div class="viewcode-block" id="RunTree._get_run_node"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree._get_run_node">[docs]</a>    <span class="k">def</span> <span class="nf">_get_run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
@@ -390,20 +398,21 @@
 <span class="sd">        :type run_name: str</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">comdenmed_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="p">[</span><span class="n">display_name</span><span class="p">]]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remove_run_from_view</span><span class="p">(</span><span class="n">display_name</span><span class="p">,</span> <span class="n">comdenmed_run</span><span class="o">.</span><span class="n">sampleName</span><span class="p">)</span>
+            <span class="n">condemned_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="p">[</span><span class="n">display_name</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_run_from_view</span><span class="p">(</span><span class="n">display_name</span><span class="p">,</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">sampleName</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">display_name</span><span class="p">)</span>  <span class="c1"># remove display name</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">comdenmed_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>  <span class="c1"># remove from loaded runs</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">link_sample</span><span class="p">(</span><span class="n">comdenmed_run</span><span class="o">.</span><span class="n">sampleName</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">condemned_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>  <span class="c1"># remove from loaded runs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">link_sample</span><span class="p">(</span><span class="n">condemned_run</span><span class="o">.</span><span class="n">sampleName</span><span class="p">)</span>
             <span class="c1"># relink all the runs in the sample</span>
 
             <span class="c1"># remove links to condemned run if an alt spectrum </span>
             <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span>
-                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="o">.</span><span class="n">run_name</span> <span class="o">==</span> <span class="n">comdenmed_run</span><span class="o">.</span><span class="n">run_name</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span><span class="o">.</span><span class="n">run_name</span> <span class="o">==</span> <span class="n">condemned_run</span><span class="o">.</span><span class="n">run_name</span>
                     <span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">alt_spectrum</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_run_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="kc">None</span><span class="p">])</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Removed run </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">condemned_run</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_run</span><span class="p">))</span>
             <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -431,6 +440,7 @@
             <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">urls</span><span class="p">():</span>
                 <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">toLocalFile</span><span class="p">())))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dropped_links_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Dropped </span><span class="si">{}</span><span class="s1"> file paths&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
                 
@@ -487,7 +497,7 @@
         <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_node</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">parent_item</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added sample: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_name</span><span class="p">))</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Added sample: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_name</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="RunTree.link_sample"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_tree.RunTree.link_sample">[docs]</a>    <span class="k">def</span> <span class="nf">link_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Links all :class:`Run` instances in a given sample together by both date</span>
@@ -629,11 +639,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -644,7 +662,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
