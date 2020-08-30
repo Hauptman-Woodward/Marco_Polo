@@ -148,26 +148,26 @@ class slideshowInspector(QtWidgets.QWidget):
                             e, slideshowInspector.sort_images_by_well_number))
             return False
     
-    @staticmethod
-    def sort_images_by_fastest_to_crystalize(images):
-        # images must have at least one other date
-        # sort more likely to return false because of this
-        # could add to time res buttons enabled
-        # only sorting options that could include some filtering
-        def key(image):
-            dates = image.get_linked_images_by_date()
-            dates = sorted(dates, key=lambda i: i.date)
-            for i, each_date in enumerate(dates):
-                if dates[i].human_class == IMAGE_CLASSIFICATIONS[0]:
-                    return i
-            return len(dates)
-        try:
-            return sorted(images, key=key)
-        except Exception as e:
-            logger.error('Caught {} while calling {}'.format(
-                e, SlideshowInspector.sort_images_by_fastest_to_crystallize
-            ))
-            return False
+    # @staticmethod
+    # def sort_images_by_fastest_to_crystalize(images):
+    #     # images must have at least one other date
+    #     # sort more likely to return false because of this
+    #     # could add to time res buttons enabled
+    #     # only sorting options that could include some filtering
+    #     def key(image):
+    #         dates = image.get_linked_images_by_date()
+    #         dates = sorted(dates, key=lambda i: i.date)
+    #         for i, each_date in enumerate(dates):
+    #             if dates[i].human_class == IMAGE_CLASSIFICATIONS[0]:
+    #                 return i
+    #         return len(dates)
+    #     try:
+    #         return sorted(images, key=key)
+    #     except Exception as e:
+    #         logger.error('Caught {} while calling {}'.format(
+    #             e, SlideshowInspector.sort_images_by_fastest_to_crystallize
+    #         ))
+    #         return False
         
     @property
     def run(self):
@@ -255,8 +255,8 @@ class slideshowInspector(QtWidgets.QWidget):
             return slideshowInspector.sort_images_by_cocktail_number
         elif self.ui.radioButton_3.isChecked():
             return slideshowInspector.sort_images_by_well_number
-        elif self.ui.radioButton_4.isChecked():
-            return slideshowInspector.sort_images_by_fastest_to_crystalize
+        # elif self.ui.radioButton_4.isChecked():
+        #     return slideshowInspector.sort_images_by_fastest_to_crystalize
         else:
             return None
 
