@@ -13,10 +13,10 @@ logger = make_default_logger(__name__)
 
 
 class PlateVisualizer(QtWidgets.QGraphicsView):
-    '''The PlateVisualizer is a small widget to assist users understand
+    '''The :class:`PlateVisualizer` is a small widget to assist users understand
     what part of the screening plate they are currently viewing. It renders
     a grid of rectangles (blocks) that each represent one view (page) in the
-    `PlateInspector` widget. The page that is currently being viewed is 
+    :class:`PlateInspector` widget. The page that is currently being viewed is 
     highlighted to show the user what part of the plate they are looking at. 
 
     :param parent: Parent widget, defaults to None

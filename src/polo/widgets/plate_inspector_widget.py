@@ -22,7 +22,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
 
 
     def __init__(self, parent, run=None):
-        '''The PlateInspectorWidget is a primary run interface widget and is
+        '''The :class:`PlateInspectorWidget` is a primary run interface widget and is
         designed to emulate the MarcoScopeJ image viewer with extended
         functionality. It allows users to view their screening images in grids
         of pre-set numbers of images from 24 to 96 images at a time.
@@ -135,7 +135,7 @@ class PlateInspectorWidget(QtWidgets.QWidget):
     def color_mapping(self):
         '''Creates a color mapping dictionary that reflects the currently selected
         color selector :class:`QComboBox` instances. The dictionary maps each image
-        classifications to a :class:`QColor` instance that can then be used
+        classification to a :class:`QColor` instance that can then be used
         to color images in the plate viewer.
         '''
         mapping = {}

@@ -58,7 +58,7 @@ class RunOrganizer(QtWidgets.QWidget):
     
     @property
     def all_runs(self):
-        '''Get all runs currently listed in the RunTree.
+        '''Get all runs currently listed in the :attr:`~ui.runTree`.
 
         :return: List of :class:`Run` objects
         :rtype: list
@@ -67,7 +67,7 @@ class RunOrganizer(QtWidgets.QWidget):
     
     @property
     def recent_files(self):
-        '''Return recently accessed imports
+        '''Return recently accessed imports.
 
         :return: List of recently accessed imports
         :rtype: list
@@ -94,7 +94,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def _clear_current_run(self, run_list):
         '''Clear out the current run from other widgets by emiting a
-        `opening_run` signal with a list that does not contain
+        :attr:`opening_run` signal with a list that does not contain
         a Run or HWIRun object.
 
         :param run_list: List of runs
@@ -114,7 +114,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
     def _handle_opening_run(self, *args):
         '''Private method that signal to other widgets that the current run should be opened
-        for analysis and viewing by emiting the `opening_run` signal containing
+        for analysis and viewing by emiting the :attr:`opening_run` signal containing
         the selected run.
         '''
         # get the selected item

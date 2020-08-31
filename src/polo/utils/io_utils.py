@@ -241,7 +241,7 @@ class HtmlWriter(RunSerializer):
         :type well_number: int or str
         :param x_reagent: reagent varied in x direction
         :type x_reagent: Reagent
-        :param y_reagent: reagent varied in y direction
+        :param y_reagent: Reagent varied in y direction
         :type y_reagent: Reagent
         :param well_volume: Volume of well used in screen
         :type well_volume: int or str
