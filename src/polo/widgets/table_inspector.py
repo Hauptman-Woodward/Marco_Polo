@@ -93,6 +93,7 @@ class TableInspector(QtWidgets.QWidget):
         TODO: formating for private attributes to make them prettier
         '''
         if self.run:
+            self.ui.listWidget.clear()
             for fieldname in self.ui.tableViewer.fieldnames:
                 item = QtWidgets.QListWidgetItem(self.ui.listWidget)
                 item.setText(fieldname)

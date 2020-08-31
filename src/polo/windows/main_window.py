@@ -3,39 +3,36 @@ import json
 import logging
 import os
 import random
+import re
 import sys
 import time
 import webbrowser
-import requests
 from pathlib import Path
-import re
 
+import requests
 from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
-from PyQt5.QtWidgets import QAction, QGridLayout, QApplication
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from polo import *
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_main_window import Ui_MainWindow
 from polo.plots.plots import MplCanvas, MplWidget, StaticCanvas
+from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import *
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
-from polo.utils.dialog_utils import make_message_box
 from polo.widgets.plate_viewer import plateViewer
 from polo.widgets.slideshow_viewer import SlideshowViewer
-
 from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
-from polo.windows.run_updater_dialog import RunUpdaterDialog
 from polo.windows.pptx_dialog import PptxDesignerDialog
-
+from polo.windows.run_updater_dialog import RunUpdaterDialog
 from polo.windows.spectrum_dialog import SpectrumDialog
 from polo.windows.time_res_dialog import TimeResDialog
-
 
 logger = make_default_logger(__name__)
 
@@ -46,7 +43,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     '''
     BAR_COLORS = [Qt.darkBlue, Qt.darkRed, Qt.darkGreen, Qt.darkGray]
     # cocktails sorted from earliest to latest (most recent last)
-    CRYSTAL_ICON = str(ICON_DICT['crystal'])
 
     def __init__(self):
 
@@ -64,6 +60,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             lambda: webbrowser.open(REPORTS)
         )
         self.menuTools.triggered[QAction].connect(self._handle_tool_menu)
+        self.menuRecent.triggered[QAction].connect(self._handle_recent_import)
 
         # change tab updates control
         self.run_interface.currentChanged.connect(self._on_changed_tab)
@@ -78,9 +75,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.listWidget_3.currentTextChanged.connect(
             self._handle_plot_selection)
         
-
         self._set_tab_icons()
         self._check_for_new_version()
+        self._read_recent_imports()
 
         logger.debug('Created {}'.format(self))
     
@@ -137,7 +134,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setEnabled(False)
         try:
-            for run in self.runOrganizer:
+            for run in self.runOrganizer.all_runs:
                 if run:
                     for image in run.images:
                         if image.human_class:
@@ -145,6 +142,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             logger.debug('Backed up {}'.format(run))
                             break
                     # only backup files for runs with human classifications
+            self.runOrganizer.save_recent_import_paths()
+            # backup recent file imports
+
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, self.closeEvent))
@@ -157,6 +157,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         logger.info('Closed Polo')
         event.accept()
     
+    def _read_recent_imports(self):
+        '''Read recent import filepaths from the filepath specified by the
+        :const:`RECENT_FILES` constant. If paths in this file exist then
+        creates a menu item under the "Recents" import menu for that
+        filepath. 
+        '''
+        try:
+            with open(str(RECENT_FILES)) as recents:
+                recent_imports = recents.readlines()
+                for recent_import in recent_imports:
+                    recent_import = recent_import.strip()
+                    if os.path.exists(recent_import):
+                        action = QtWidgets.QAction(self)
+                        action.setObjectName(recent_import)
+                        action.setText(recent_import)
+                        self.menuRecent.addAction(action)
+        except Exception as e:
+            logger.error('Caught {} calling {}'.format(
+                e, self._read_recent_imports
+            ))
+     
     def _check_for_new_version(self):
         '''Use requests to check the Polo GitHub page for a newer release
         version. If a newer version exists open a message box that the user
@@ -168,20 +189,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             str_ver = polo_version.split('.')
             if tags.status_code == 200:
                 version_finder = re.compile(
-                    '<a href="/EthanHolleman/Marco_Polo/releases/tag/.[0-9].[0-9].[0-9]')
+                    '<a href="/Hauptman-Woodward/Marco_Polo/releases/tag/v[0-9].[0-9].[0-9]')
                 versions = version_finder.findall(tags.text)
                 number_puller = re.compile('[0-9]')
+
+                def version_value(version_list):
+                    value = 0
+                    for i in range(len(version_list)):
+                        scaler = 10 ** (len(version_list) - i)
+                        value += (scaler * int(version_list[i]))
+                    return value
+                
+                current_version_value = version_value(str_ver)
                 for version in versions:
-                    version = version.split('/')[-1]
-                    version = number_puller.findall(version)
-                    if len(version) == 3:
-                        if (int(version[0]) > int(str_ver[0])
-                        or int(version[1]) > int(str_ver[1])
-                        or int(version[2]) > int(str_ver[2])
-                        ):
-                            new_version = True
-                            logger.debug('Newer version available')
-                            break
+                    version = list(number_puller.findall(version))
+                    if version_value(version) > current_version_value:
+                        new_version = True
+                        break
+                   
                 if new_version:
                     m = make_message_box(
                         parent=self,
@@ -308,6 +333,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     # Menu handling methods
     # ======================================================================
+
+    def _handle_recent_import(self, action):
+        '''Private method that handles when recent import filepath menu items
+        are selected. Attempts to open the run specified by the filepath.
+
+        :param action: QAction associated with recent import
+        :type action: QAction
+        '''
+        self.runOrganizer._import_runs([action.text()])
 
 
     def _handle_tool_menu(self, selection):
@@ -589,11 +623,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif i == 5:  # run data editor
                 self.current_run.annotations = self.plainTextEdit.toPlainText()
             elif i == 4:
-                self.optimizeWidget.update()
+                self.optimizeWidget.update_interface()
     
-    # other stuff
-
-
 
     # Depreciated Methods that just have too much sentimental value to delete
     # =========================================================================

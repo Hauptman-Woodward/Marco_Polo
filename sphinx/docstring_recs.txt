@@ -1,0 +1,3944 @@
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/tests/test_io_utils.py | def test_run_deserializer(run):
+'''Slightly more extensive test for creating runs
+
+    :param run: Hwi run instance
+    :type run: HWIRun
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/threads/thread.py | def run(self):
+'''Method that actually does the classification work. Emits the the
+        :const:`change_value` signal everytime an image is classified. This is primary
+        to update the progress bar widget in the `RunOrganizer` widget to
+        notify the user how many images have been classified. Additionally,
+        every five images classified the :const:`estimated_time` signal is emitted
+        which includes a tuple that contains as the first item the time in
+        seconds it took to classify the last five images and the number
+        of images that remain to be classified as the second item. This allows
+        for making an estimate on about how much time remains in until the
+        thread finishes.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/plots/plot_utils.py | def make_labeled_heatmap(steps, rounded_nums, cats):
+'''
+    Creates a list of list representing the pixels of a heatmap from categorical x numerical
+    data.
+
+    :param steps: List. "Ticks" for the numerical data axis. See get_pH_steps or get_concentration_steps.
+    :param rounded_nums: List. Processed numerical axis data. Each datapoint should be an integer \
+        scaled from a float. Each point corresponds to a value for the cats list for each index.
+    :param cats: List. Categorical data axis. The value for each datapoint is determined by the \
+        rounded_nums list. The string at index 10 of cats correpsonds to the int stored at index \
+        10 of rounded_nums
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/plots/plots.py | def single_image_confidence(self, image):
+'''
+        Makes a plot of MARCO confidence values for one image.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def well_index_to_subgrid(i, c_r, c_c, p_r, p_c):
+'''Find the linear index of the subgrid that a particular index belongs to
+        within a larger grid. For example, ou are given a list of length 16.
+        The list is reshaped into a 4 x 4
+        2D list. We divide the new grid into 4 quadrants each 2 X 2 and label them
+        with an index (0, 1, 2, 3). Given an index of the original list we want to
+        find the subgrid it belongs to. 
+
+        :param i: Index of point to locate in the 1D list
+        :type i: int
+        :param c_r: Number of rows in each subgrid
+        :type c_r: int
+        :param c_c: Number of columns in each subgrid
+        :type c_c: int
+        :param p_r: Number or rows in the entire grid
+        :type p_r: int
+        :param p_c: Number of columns in the entire grid
+        :type p_c: int
+        :return: Index of the subgrid the index `i` belongs to
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def images_per_page(self):
+'''Number of images in the current page.
+
+        :return: Number of images
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def total_pages(self):
+'''Total number of pages based on the number of images per page
+        and the number of images in the current run.
+
+        :return: Number of pages
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def view_dims(self):
+'''Current view dimensions in pixels.
+
+        :return: Width and height of the view
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def aspect_ratio(self):
+'''Current "best" aspect ratio for the view given the size of the
+        view and the number of images that need to be fit into the view.
+
+        :return: Dimensions of the image grid, in images
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def current_page(self):
+'''Current page
+
+        :return: Current page
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def run(self):
+'''The current run being displayed.
+
+        :return: The current run
+        :rtype: HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def _get_visible_wells(self, page=None):
+'''Return indices of images that should be shown in the
+        current page. A page is equivalent to a subsection of a
+        larger screening plate.
+
+        :param page: Page number to find images for, defaults to None
+        :type page: int, optional
+        :yield: image index
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def _make_image_label(self, image, label_dict, font_size=35):
+'''Private helper method for creating label strings to overlay onto
+        each image in the view.
+
+        :param image: Image to create label from
+        :type image: Image
+        :param label_dict: Dictionary of image attributes to include in the label
+        :type label_dict: dict
+        :param font_size: Font size for the label, defaults to 35
+        :type font_size: int, optional
+        :return: QGraphicsTextItem with label text set
+        :rtype: QGraphicsTextItem
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def _set_prerender_info(self, item, image):
+'''Private helper method that sets flags and the tooltip for
+        GraphicsItems before they are added to the GraphicsScene.
+
+        :param item: GraphicsItem that is to be added to the scene
+        :type item: QGraphicsItem
+        :param image: Image who's data will be used to label the GraphicsItem
+        :type image: Image
+        :return: QGraphicsItem
+        :rtype: QGraphicsItem
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def tile_images_onto_scene(self, label_dict={}):
+'''Calculates images that should be shown based on the current page
+        and the number of images per page. Then tiles these images into a grid,
+        adding them to `_scene` attribute. 
+
+        :param label_dict: Dictionary of Image attributes to pass along to
+                           :meth:`~polo.widgets.plate_viewer.plateViewer._make_image_label`
+                           to create image labels, defaults to {}
+        :type label_dict: dict, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def set_scene_colors_from_filters(self, color_mapping, strength=0.5, human=False):
+'''Set the color of images based on their current classifications. Very similar
+        to :meth:`~polo.widgets.plate_viewer.plateViewer.set_opacity_from_filters`.
+        Images can be colored by their MARCO or human classification.
+
+        :param color_mapping: Dictionary that maps image classifications to QColors
+        :type color_mapping: dict
+        :param strength: Image color strength, defaults to 0.5
+        :type strength: float, optional
+        :param human: If True, use the human classification to color images,
+                      defaults to False
+        :type human: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def fitInView(self, scene, preserve_aspect=False):
+'''Fit items added to `_scene` attribute into the available
+        display space.
+
+        :param scene: QGraphicsScene to fit
+        :type scene: QGraphicsScene
+        :param preserve_aspect: If True, preserves the aspect ratio of
+                                item is the scene, defaults to False
+        :type preserve_aspect: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def wheelEvent(self, event):
+'''Handle Qt wheelEvents by setting the `_zoom` attribute. Allows users
+        to zoom in and out of the current view.
+
+        :param event: event
+        :type event: QEvent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def pop_out_selected_well(self):
+'''Helper method to handle image selection and open an ImagePopDialog
+        that displays the selected image in a pop out view.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def emphasize_all_images(self):
+'''Returns the opacity of all images in the `_scene` attribute
+        to 1, or fully opaque.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def decolor_all_images(self):
+'''Removes all coloring from images in the `_scene` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_viewer.py | def export_current_view(self, save_path=None):
+'''Exports the current content of the QGraphicsScene `_scene` attribute
+        to a png file.
+
+        :param save_path: Path to save the image to, defaults to None. If kept 
+                          as None opens a QFileDialog to get a save file path.
+        :type save_path: str or Path, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def add_slides(self, ordered_images, sort_function=None):
+'''Sets up linked list consisting of nodes of Slide instances. The list
+        is circular and bi-directional. Sets self.current_slide to the first
+        slide in the linked list. The order of the slides in the linked list
+        will reflect the order of the images in the `ordered_images` argument.
+
+        :param ordered_images: a list of Image objects to create the linked list\
+            from. The order of the images will be reflected by the linked list.
+        :returns: First slide in linked list
+        :rtype: Slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def current_slide(self):
+'''Current slide, the slide that should be displayed to the user.
+
+        :return: The current slide
+        :rtype: Slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def current_slide(self, new_slide):
+'''Setter function for the current_slide property. 
+
+        :param new_slide: New current slide.
+        :type new_slide: Slide 
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def controls(self, next_slide=False, prev_slide=False):
+'''Controls the navigation through the slides
+        in the carousel. Does not control access to alternative
+        images that may be available to the user.
+
+        :param next_slide: If set to True, tells the carousel to
+             advance one Slide
+        :type next_slide: bool
+        :param prev_slide: If set to True, tells the carousel to
+             retreat by one Slide
+        :type prev_slide: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def add_pixmap(self, pixmap):
+'''Adds a `Pixmap` instances to the current sene.
+
+        :param pixmap: Pixmap to add to the sene
+        :type pixmap: Pixmap
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def wheelEvent(self, event):
+'''Handles mouse wheel events to allow for scaling for zooming in and
+        out of the currently displayed image.
+
+        :param event: Mouse scroll wheel event
+        :type event: QEvent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def toggleDragMode(self):
+'''Turns drag mode on and off.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def mousePressEvent(self, event):
+'''Handles mouse press events.
+
+        :param event: Mouse press event
+        :type event: QEvent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def run(self, new_run):
+'''Setter function for the run attribute. Updates the current slides
+        by calling :meth:`~polo.widgets.slideshow_viewer.SlideshowViewer.update_slides_from_filters
+        with arguments that ensure all images in the run are included. 
+        Effectively resets the images in the slideshow to reflect the new run.
+
+        :param new_run: The run to replace the current run.
+        :type new_run: Run
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def _set_all_dates_scene(self, image):
+'''Private method that creates a time resolved view from the :class:`~polo.crystallography.image.Image` 
+        instance passed through the `image` argument.
+    
+        :param image: Image to create time resolved view from
+        :type image: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def _set_all_spectrums_scene(self, image):
+'''Private method that creates a view that includes all alt spectrum
+        images the :class:`~polo.crystallography.image.Image` instance is linked to.
+
+        :param image: Image to create the view from
+        :type image: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def _set_single_image_scene(self, image):
+'''Private method that creates a standard single image view from the 
+        :class:`~polo.crystallography.image.Image` instance passed to the `image` argument.
+
+        :param image: Image to display
+        :type image: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def _add_text_to_scene(self, text, x, y, size=40):
+'''Private method to add text on top of an image. Adds the text to
+        the current scene at the position specified by the `x` and `y`
+        arguments.
+
+        :param text: Text to add to image
+        :type text: str
+        :param x: X cordinate of text
+        :type x: int
+        :param y: Y cordinate of text
+        :type y: int
+        :param size: Size of text, defaults to 40
+        :type size: int, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def set_current_image_by_well_number(self, well_number):
+'''Set the current image to the :class:`~polo.crystallography.image.Image` instance associated with a
+        specific well number.
+
+        :param well_number: Well number to display
+        :type well_number: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def carousel_controls(self, next_image=False, previous_image=False):
+'''Wrapper around the :meth:`~polo.widgets.slideshow_viewer.Carousel.controls`
+        method that allows image navigation. Does not actually display the
+        image.
+
+        :param next_image: If True, tells carousel to advance by one slide.
+        :type next_image: bool
+        :param previous_image: If True, tells carousel to retreat by one slide.
+        :type previous_image: bool
+
+        :returns The current image.
+        :rtype Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def update_slides_from_filters(self, image_types, human, marco, favorite=False, sort_function=None):
+'''Creates new `Carousel` slides based on selected image filters.
+        Sets the `current_image` attribute to the :class:`~polo.crystallography.image.Image` instance at the 
+        the `current slide` attribute of `_carousel` attribute.
+
+        :param image_types: Set of image classifications to include in results.
+        :type image_types: set or list
+        :param human: If True, `image_types` refers to human classification 
+                      of the image.
+        :type human: bool
+        :param marco: If True, `image_types` refers to the machine 
+                      (MARCO) classification of the image.
+        :type marco: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def arrange_multi_image_scene(self, image_list, render_date=False):
+'''Helper method to arrange multiple images into the same
+        view.
+
+        :param image_list: List of images to add to the view
+        :type image_list: list
+        :param render_date: If True adds a date label to each image, defaults to False
+        :type render_date: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def display_current_image(self):
+'''Renders the Image instance currently stored in the `current_image`
+        attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def get_cur_img_cocktail_str(self):
+'''Retruns the `current_image` cocktail information
+        as a string.
+
+        :return: Cocktail information string
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def get_cur_img_meta_str(self):
+'''Returns the `current_image` metadata as a string.
+
+        :return: Metadata string
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
+'''Sets the `current_image` attribute to a linked image specified by
+        one of the three boolean flags.
+
+        :param next_date: If True, sets the `current_image`
+                          to the next image by date
+        :param prev_date: If True, sets the `current_image`
+                          to the previous image by date
+        :param alt_spec: If True, sets the `current_image`
+                         to an alt spectrum image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_viewer.py | def classify_current_image(self, classification):
+'''Changes the human classification of the current image.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/file_browser.py | def __init__(self, parent=None):
+'''Extension of the :class:`QTreeWidget` specifically designed as the file
+        interface for the FTP Dialog. Allows the user to browse files stored
+        on an FTP server and select files for download.
+
+        :param parent: Parent Widget, defaults to None
+        :type parent: QWidget, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/file_browser.py | def grow_tree_using_mlsd(self, ftp, home_dir, set_checkable=True):
+'''Rescursively add child nodes to the tree by traversing
+        a user's home directory at a remote ftp server. Filepaths
+        are read using mlsd formating.  
+
+        :param ftp: FTP object with valid connection
+        :type ftp: FTP
+        :param home_dir: Path to the user's home directory
+        :type home_dir: str or Path
+        :param set_checkable: Set files and dirs to checkable, defaults to True
+        :type set_checkable: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/file_browser.py | def get_checked_files(self, home_dir):
+'''Traverse the file tree and return the full paths to files that have
+        been selected by the user. 
+
+        :param home_dir: User's home directory. This path is the parent of all
+                         returned files.
+        :type home_dir: str or Path
+        :return: List of checked Paths
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def sort_images_by_marco_confidence(images):
+'''Helper method to sort a collection of images by their MARCO
+        classification confidence. Does not descriminate based on
+        image classification.
+
+        :param images: List of images to sort
+        :type images: list
+        :return: List of images sorted by prediction confidence
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def sort_images_by_cocktail_number(images):
+'''Helper method that sorts a collection of images by their
+        cocktail number. Returns False if the images cannot be sorted
+        by this parameter.
+
+        :param images: List of images to be sorted
+        :type images: list
+        :return: List of images sorted by cocktail number, False if cannot be sorted
+        :rtype: list, bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def sort_images_by_well_number(images):
+'''Helper method to sort a collection of images by their well number.
+        If images cannot be sorted by well number (which in theory shouldn't happen)
+        returns False
+
+        :param images: List of images to be sorted
+        :type images: list
+        :return: List os images sorted by well number
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def run(self, new_run):
+'''Setter method for `_run` attribute. Sets `_run` to `new run` and
+        sets up the interface for displaying images.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def selected_classifications(self):
+'''Returns image classification keywords for any image classification
+        :class:`QCheckBox` instances that are checked.
+
+        :return: List of selected images classifications
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def human(self):
+'''State of the human classifier :class:`QCheckBox`. If True, assume the user
+        wants their selected image classifications to be in reference to image's
+        human classification.
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def favorites(self):
+'''Returns the state of the favorite :class:`QCheckBox`.
+
+        :return: Favorite :class:`QCheckBox` state
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def marco(self):
+'''State of the MARCO classifier :class:`QCheckBox`. If True, assume the user
+        wants their selected image classifications to be in reference to image's
+        MARCO classification.
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def current_image(self):
+'''Current :class:`~polo.crystallography.image.Image` object being displayed in the `slideshowViewer`
+        widget.
+
+        :return: The current image 
+        :rtype: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def current_sort_function(self):
+'''Return a function to use for image sorting based on current user
+        radiobutton sort selections.
+
+        :return: Sort function
+        :rtype: func
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_slideshow_mode(self, show_all_dates=False, show_all_specs=False):
+'''Private method to set the slideshowViewer mode. Either to display
+        a single image, all dates or all spectrums.
+
+        :param show_all_dates: If True sets slideshowViewer to show all
+                               dates, defaults to False
+        :type show_all_dates: bool, optional
+        :param show_all_specs: If True sets slideshowViewer to show all
+                               spectrums, defaults to False
+        :type show_all_specs: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_classification_button_labels(self):
+'''Private method that sets the labels of image classification
+        buttons based on the :const:`IMAGE_CLASSIFICATIONS` constant. Should be called
+        in the `__init__` method.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_image_class_checkbox_labels(self):
+'''Private method to the :class:`QCheckBox` labels for imaging filtering
+        from the `IMAGE_CLASSIFICATIONS` constant. Should be called in
+        the `__init__` method.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _show_image_from_well_number(self, well_number):
+'''Private method to display an image by well number.
+
+        :param well_number: Well number of image to display
+        :type well_number: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_favorite_checkbox(self):
+'''Private method that sets the value of the favorite :class:`QCheckBox` based
+        on whether the current image is marked as a favorite or not.
+        Should be used when loading an image into the view.
+
+        An image is considered a favorite if it's `favorite` attribute ==
+        True.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _mark_current_image_as_favorite(self):
+'''Private method that sets the favorite label on the current
+        image to the current value of the favorite :class:`QCheckBox`.
+
+        :param favorite_status: Whether this image is a favorite or not
+        :type favorite_status: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _classify_image(self, classification):
+'''Private method to change the human classification of the current
+        image.
+
+        :param classification: Image classification
+        :type classification: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _navigate_carousel(self, next_image=False, prev_image=False):
+'''Private method to control the carousel using boolean flags. Calls 
+        :meth:`~polo.widgets.slideshow_inspector.SlideshowViewer.carousel_controls`.
+
+        :param next_image: If True navigates to next image in carousel, 
+                           defaults to False
+        :type next_image: bool, optional
+        :param prev_image: If True navigates to previous image in carousel,
+                           defaults to False
+        :type prev_image: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _display_current_image(self):
+'''Private method that displays the current image as 
+        determined by the `current_image` attribute of the `slideshowViewer`
+        widget and populates any widgets that display current image metadata.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _submit_filters(self):
+'''Private method that passes the current user selected
+        image filters to the slideshowViewer so the current
+        slideshow contents can be adjusted to reflect the
+        new filters. Displays the current image after filtering.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_alt_image(self, next_date=False, prev_date=False, alt_spec=False):
+'''Display an image linked to the current image based on
+        boolean flags.
+
+        :param next_date: If True show the current image's next
+                          image by date, defaults to False
+        :type next_date: bool, optional
+        :param prev_date: If True, show the current image's previous
+                          image by date, defaults to False
+        :type prev_date: bool, optional
+        :param alt_spec: If True, show the current image's alt
+                         spectrum image, defaults to False
+        :type alt_spec: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_image_name(self):
+'''Private method that sets current image label to the
+        image's filepath basename.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_time_resolved_functions(self):
+'''Private method that turns time resolved functions on or off 
+        depending on contents of the `Run` instance referenced by 
+        the `run` attribute. Time resolved functions are enabled 
+        when the `run` is part of a time resolved linked list. 
+        This means another `Run` instance is referenced by 
+        it's `next_run` and / or `previous_run` attributes.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def _set_alt_spectrum_buttons(self):
+'''Turns alt spectrum functions on or off depending on contents
+        of the `Run` instance referenced by the `run` attribute.
+        Alt spectrum buttons will be enabled if the `run` is a part
+        of an alt spectrum linked list. This means another `Run`
+        instance is referenced by it's `alt_spectrum` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/slideshow_inspector.py | def export_current_view(self):
+'''Export the current view to a png file. Show the user a message box
+        to tell them if the export succeeded or failed.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def scalers(self):
+'''The current scalers.
+
+        :return: List of scaler values
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def sorted_scalers(self):
+'''Scalers sorted by their magnitude.
+
+        :return: List of scalers
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def unit_combobox_text(self):
+'''The text in unit comboBox which corresponds to a specific scaler.
+
+        :return: List of all scalers in the unit comboBox
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def _set_unit_combobox_text(self):
+'''Private method to add units to the unit comboBox based
+        on the `base_unit` and the `scalers` attributes.
+
+        :return: Items added to the comboBox
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def get_value(self):
+'''Return a UnitValue constructed from the value of the
+        spinBox value and unit from the comboBox.
+
+        :return: UnitValue constructed from current spinBox 
+                 value and comboBox unit
+        :rtype: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def set_zero(self):
+'''Set the spinbox value to 0
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/unit_combo.py | def set_value(self, value, *args):
+'''Set the spinBox value and the comboBox unit based on the value and
+        unit of a `UnitValue` instance
+
+        :param value: UnitValue
+        :type value: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def x_wells(self):
+'''Returns spinBox value that representing the number 
+        wells on the x axis of the screen.'''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def y_wells(self):
+'''Returns spinBox value representing the number of
+        wells on the y axis of the screen.'''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def x_reagent(self):
+'''Used to retrieve the :class:`Reagent` object that is to be varied along
+        the x axis of the screen.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def y_reagent(self):
+'''Used to retreive the :class:`Reagent` object that is to be varied along
+        the y axis of the optimization plate
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def constant_reagents(self):
+'''Retrieve a set of :class:`Reagents` that are not included as either the
+        x reagent or the y reagent but are still part of the crystallization
+        cocktail and therefore need to be included in the screen. Unlike
+        either the x or y reagents, constant reagents do not change their
+        concentration across the screening plate.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def selected_constant(self):
+'''Return the constant :class:`Reagent` that is currently
+        selected by the user.
+
+        :return: Currently selected constant reagent if exists and selected, 
+                None otherwise
+        :rtype: Reagent or None
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def well_volume(self):
+'''Returns the well volume set by the user modifed by whatever well
+        volume unit is currently selected.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def hit_images(self):
+'''Retrieves a list of :class:`~polo.crystallography.image.Image`
+        object instances that have human
+        classification (`human_class` attribute) == 'Crystals'. Used to
+        determine what wells to allow the user to optimize. Currently, only
+        allow the user to optimize wells they have marked as crystal.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def x_step(self):
+'''The percent variance between x reagent wells.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def y_step(self):
+'''The percent variance between y reagent wells.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_up_unit_comboboxes(self):
+'''Private method that sets the base unit and the scalers
+        of all :class:`unitComboBox` instances that are apart of the UI.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _handle_reagent_change(self, x=False, y=False, const=False):
+'''Private method that handles when a reagent is changed. The arguments
+        indicate which reagent has been changed.
+
+        :param x: If True update the x reagent, defaults to False
+        :type x: bool, optional
+        :param y: If True update the y reagent, defaults to False
+        :type y: bool, optional
+        :param const: If True update the constant reagents, defaults to False
+        :type const: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def update_interface(self):
+'''Method to update reagents and selectable wells to the user after
+        they have made additional classifications that would increase or
+        decrease the pool of crystal classified images.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_hit_well_choices(self):
+'''Private method that sets the hit well comboBox widget choices 
+        based on the images in the :attr:`~OptimizeWidget.run` attribute that 
+        are human classified as crystal.
+        Wells are identified in the comboBox by their well number.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _update_current_reagents(self, image_index=None):
+'''Private method that updates x and y reagent comboBox widgets to 
+        reflect what :class:`Reagent` instances are contained in the
+        currently selected well.
+
+        :param image_index: Index of the :class:`Image` to set :class:`Reagent` choices from,
+                            defaults to None.
+        :type image_index: int, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_constant_reagents(self):
+'''Private method that populates the listWidget with constant 
+        reagents to display to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_reagent_choices(self):
+'''Private method that sets :class:`Reagent` choices for the x and y reagents
+        based on the currently selected well. :class:`Reagents` must come from the
+        class:`Cocktail` instance associated with the selected well.
+
+        TODO: Add the option to vary pH instead of a reagent along either
+        axis. This would also mean that the constant reagents would need to
+        be updated.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_reagent_stock_con(self):
+'''Private method. If a :class:`Reagent` has already been assigned a 
+        stock concentration this method displays that concentration to the user 
+        through the appropriate :class:`UnitCombobBox` instance.
+        Only displays concentrations for the x and y reagents.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _set_reagent_stock_con_values(self, x=False, y=False, const=False):
+'''Private method to update the stock concentations of current
+        reagents through their :attr:`~polo.crystallography.cocktail.Reagent.stock_con`
+        attribute. The :class:`Reagent` to update
+        is indicated by the flag set to True at the time the method is
+        called. The stock concentration value is pulled from each reagent's
+        respective `unitComboBox` instance.
+
+        :param x: If True, set x reagent stock con, defaults to False
+        :type x: bool, optional
+        :param y: If True, set the y reagent stock con, defaults to False
+        :type y: bool, optional
+        :param const: If True, sets the constant reagents stock con,
+                      defaults to False
+        :type const: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _gradient(self, reagent, num_wells, step, stock=False):
+'''Private method for calculating a concentration gradient for a
+        given :class:`Reagent` using a given step size as a proportion of the
+        :class:`Reagent` instance's :attr:`~polo.crystallography.cocktail.Reagent.concentration`
+        attribute.
+
+        :param reagent: Reagent to vary concentration
+        :type reagent: Reagent
+        :param num_wells: Number of wells to vary concentration across
+        :type num_wells: int
+        :param step: Proportion of hit concentration to vary each well by
+        :type step: float < 1
+        :param stock: If True, vary the stock volume not the hit
+            concentration unit, defaults to False
+        :type stock: bool, optional
+        :return: List of UnitValues that make up the _gradient
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _write_optimization_screen(self):
+'''Private method to write the current optimization screen
+        to the :class:`tableWidget` UI for display to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
+'''Private method to format the information that describes the
+        contents of an individual well into prettier html that can be displayed
+        to the user in a :class:`textBrowser` widget.
+
+        :param x_con: Concentration of x reagent in this well
+        :type x_con: UnitValue
+        :param x_stock: Volume of x reagent stock in this well
+        :type x_stock: UnitValue
+        :param y_con: Concentration of y reagent in this well
+        :type y_con: UnitValue
+        :param y_stock: Volume of y reagent stock in this well
+        :type y_stock: UnitValue
+        :param constants: Tuples of constant reagents to be included in each well
+        :type constants: list of tuples
+        :param water: Volume of water to be added to this well
+        :type water: Signed Value
+        :return: Html string to be rendered to the user
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _error_checker(self):
+'''Private method to check if all widgets and attributes have allowed 
+        values before calculating the actual grid screen. 
+        Show error message if there is a conflict.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _make_plate_list(self):
+'''Private method that converts the concents of the 
+        :class:`tableWidget` UI (assuming that a optimization screen has been
+        already rendered to the user) to a list of lists that
+        is easier to write to html using the jinja2 template.
+
+        :return: tableWidget contents converted to list
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _export_screen(self):
+'''Private method to write the current optimization screen to a
+        html file.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/optimize_widget.py | def _check_for_overflow(self, volume_list):
+'''Private method to check if the volume of :class:`Reagent`
+        instancess in a given well exceeds the total well volume. 
+        If an overflow is detected, return False otherwise return the volume 
+        of H20 that should be added 
+        to the well as a :class:`~polo.crystallography.cocktail.UnitValue`
+        instance.
+
+        :param volume_list: List of `UnitValues` that consitute the contents of a
+                            well in the optimization plate
+        :type volume_list: list
+        :return: `UnitValue` describing the volume of water that should be
+                 added to the well if it does not overflow in liters, 
+                 False otherwise
+        :rtype: UnitValue or False
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_inspector.py | def selected_headers(self):
+'''Return the headers that have been selected by the user.
+
+        :return: Names of column headers that are currently selected
+        :rtype: set
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_inspector.py | def selected_classifications(self):
+'''Return image classifications that are currently selected.
+
+        :return: List of selected image classifications
+        :rtype: set
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_inspector.py | def _assign_checkboxes_to_class(self):
+'''Private method that assigns filtering checkboxs to an
+        image classification from the `IMAGE_CLASSIFICATION` constant.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_inspector.py | def _set_column_options(self):
+'''Private method that sets the availabe columns to display
+        based on the attributes of the run stored in the `run` attribute.
+        Adds a :class:`QCheckBox` widget for each attribute.
+
+        TODO: formating for private attributes to make them prettier
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_inspector.py | def update_table_view(self):
+'''Private method that updates the data being displayed
+        in the tableViewer.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def run(self):
+'''Return the run object
+
+        :return: Run object
+        :rtype: Run
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def run(self, new_run):
+'''Setter function for run attribute   . 
+
+        :param new_run: New run to set as run attribute
+        :type new_run: Run
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def table_data(self):
+'''Property to retrieve the current table fieldnames and table data
+        using `get_csv_data` function of the `RunCsvWriter` class.
+
+        :return: fieldnames, table data
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def fieldnames(self):
+'''Return the fieldnames for the current run. Should only be
+        used when setting the values for the listWidget in a `tableInspector`
+        instance as is expensive to call.
+
+        :return: list of fieldnames
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def filter(row, image_classes, human, marco):
+'''Helper method to determine if a row should be included based on
+        the image filters the user has selected
+
+        :param row: row data
+        :type row: dict
+        :param image_classes: types of images to include, i.e Crystals, Clear
+        :type image_classes: set or list
+        :param human: If image_classes should be in reference to human classifier
+        :type human: Bool
+        :param marco: If image_classes should be in reference to machine classifier
+        :type marco: Bool
+        :return: If image should be filtered, False means do not filter image
+        :rtype: Bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def make_header_map(self, headers):
+'''Helper method to map header keywords to their index (order). 
+        This method is required as headers are delivered as a set and 
+        we want them to be presented in a consistent order to the user.
+
+        :param headers: Set of headers strings
+        :type headers: set
+        :return: Dictionary of header strings mapped to indices
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/table_viewer.py | def populate_table(self, image_classes, human, marco):
+'''Populates the table and displays data to the user based on their
+        header and image filtering selections.
+
+        :param image_classes: types of images to include, i.e Crystals, Clear
+        :type image_classes: set or list
+        :param human: If image_classes should be in reference to human classifier
+        :type human: Bool
+        :param marco: If image_classes should be in reference to machine classifier
+        :type marco: Bool
+        :return: If image should be filtered, False means do not filter image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def current_run_names(self):
+'''List of all currently loaded :class:`Run` names.
+
+        :return: List of :class:Run` names
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def selected_run(self):
+'''The: class:`Run` that is currently selected. If no :class:`Run` is
+        selected returns False.
+
+        :return: The currently selected run, if one exists, otherwise returns False
+        :rtype: Run, HWIRun or False
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _open_run_slot(self, event=None):
+'''Private method that emits the :attr:`opening_run` signal when called. This
+        signal can be connected to other widgets to communicate that the user
+        has selected a run and wants to open it for analysis.   
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _edit_data_slot(self, event=None):
+'''Private method used to update the data in a :class:`Run` after it has
+        been modified by the user through the :class:`RunUpdater` dialog.
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _display_name_setter(self, run):
+'''Private method that creates a display name for a run that also
+        avoids collisions with existing display names. Currently the process
+        of translating a display name to a :class:`Run` object involves first
+        looking up the display name in the :attr:`formated_name_to_name`
+        dictionary to get the run name and then looking up the run name in the
+        :attr:`loaded_runs` dictionary to get the :class:`Run` object. This
+        means that currently run names and display names need to be unique
+        to avoid collisions.
+
+        :param run: Run to create a display name for
+        :type run: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _add_run_node(self, run, tree=None):
+'''Private method that adds a new run node.
+
+        :param run: Run to add to the tree
+        :type run: Run or HWIRun
+        :param tree: `QTreeWidgetItem` to act as parent node, defaults to None.
+                     If None uses the root as the parent node.
+        :type tree: QTreeWidgetItem, optional
+        :return: Node added to the tree
+        :rtype: QTreeWidgetItem
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _get_run_node(self, run):
+'''Private helper method that returns the :class:`QTreeWidgetItem`
+        corresponding to a given :class:`Run`. Returns None if a node cannot be found.
+
+        :param run: Run to search for
+        :type run: Run or HWIRun
+        :return: Given run's corresponding :class:`QTreeWidgetItem` if it exists
+        :rtype: QTreeWidgetItem
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _add_classifications_from_mso_slot(self, event=None):
+'''Add classifications to an existing :class:`Run` from the contents of an
+        MSO file. Intended to be connected to the `classify_from_mso`
+        QAction that is defined in the :
+        :meth:`~polo.widgets.run_tree.RunTree.contextMenuEvent`
+        method.
+
+        :param event: QEvent, defaults to None
+        :type event: QEvent, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _remove_run_slot(self, event=None):
+'''Slot to connect to contextMenu popup to remove the selected run.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def remove_run(self, display_name):
+'''Private method to remove a :class:`Run` completely from the
+         Polo interface.
+
+        :param display_name: Display name being shown to the user to represent
+                            the run to be removed.
+        :type run_name: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def remove_run_from_view(self, display_name, sample_name):
+'''Remove a :class:`Run` instance using its :attr:`run_name` attribute.
+        Does not effect any other widgets. Calling this method only 
+        removes the :class:`Run` instance from
+        the display. If a :class:`Run` instance is removed from successfully
+        it is returned.
+
+        TODO UPDATE
+
+        :param run_name: Name of run to remove
+        :type run_name: str
+        :return: Removed run
+        :rtype: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def add_classified_run(self, run):
+'''Marks a :class:`Run` instance as classified by adding it to the
+        :attr:`classified_status` dictionary.
+
+        :param run: Run to mark as classified
+        :type run: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def add_sample(self, sample_name, *args):
+'''Adds a new sample to the tree. Samples are the
+        highest level node in the `RunTree`.
+
+        :param sample_name: Name of sample to add, acts as key so should 
+                            be unique.
+        :type sample_name: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def link_sample(self, sample_name):
+'''Links all :class:`Run` instances in a given sample together by both date
+        and spectrum using the :meth:`~polo.utils.io_utils.RunLinker.the_big_link`
+        method.
+
+        :param sample_name: Name of the sample who's runs should be linked
+        :type sample_name: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def add_run_to_tree(self, new_run):
+'''Add a new :class:`Run` instance to the tree. Uses the :class:`Run` instance's 
+        :attr:`sampleName` attribute to determine what sample node 
+        the :class:`Run` instance should be added
+        to. If the sample name does not exist in the tree a new sample node is added.
+        If the :class:`Run` instance lacks the :attr:`sampleName` attribute as is the case for 
+        non-HWIRuns the :attr:`sampleName` attribute is set to "Non-HWI Runs". 
+        If the :class:`Run` instance is an :class:`HWIRun` and lacks the 
+        :attr:`sampleName` attribute :attr:`sampleName` is
+        set to "Sampleless Runs".
+
+        :param new_run: Run to add to the tree
+        :type new_run: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def _classify_all_runs_slot(self, sample_name):
+'''Classify all the unclassified runs belonging to a the selected
+        sample.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_tree.py | def contextMenuEvent(self, event):
+'''Handle left click events by creating a popup context menu.
+
+        :param event: QEvent
+        :type event: QEvent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def block_dims(plate_x, plate_y, grid_x, grid_y):
+'''Helper method to calculate the size of plate section
+        blocks
+
+        :param plate_x: Number of wells plate has on its x axis
+        :type plate_x: int
+        :param plate_y: Number of wells plate has on it s y axis
+        :type plate_y: int
+        :param grid_x: Number of wells in the subgrid on its x axis
+        :type grid_x: int
+        :param grid_y: Number of wells in the subgrid on its y axis
+        :type grid_y: int
+        :return: tuple, first item being length of x axis in
+                 blocks and second being length of y axis in blocks
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def _block_size(self, x, y):
+'''Private method to calculate the size of individual blocks
+        to render in the QGraphicsView. 
+
+        :param x: Length of x-axis in blocks
+        :type x: int
+        :param y: Length of y-axis in blocks
+        :type y: int
+        :return: tuple, length of block x-axis in pixels,
+                 length of block y-axis in pixels
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def _handle_block_selection(self):
+'''Private helper method to handle when a user selects a block.
+        In theory should open the view that the selected block corresponds
+        to but currently having some issues with this causing segmentation
+        faults so it is disabled for now.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def set_selected_block(self, block_id):
+'''Sets the currently selected block based on its ID.
+
+        :param block_id: Block ID
+        :type block_id: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def _highlight_block(self, block):
+'''Private method that highlights a block in the
+        QGraphicsScene.
+
+        :param block: Block to highlight
+        :type block: QGraphicsRectItem
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_visualizer.py | def setup_view(self, grid_cords, plate_size=None):
+'''set up the intail view based on the current plate
+        size (normally 32 * 48 wells for 1536 well plate) and
+        the subgrid size in wells.
+
+        :param grid_cords: Subgrid size tuple (x, y) in wells
+        :type grid_cords: tuple
+        :param plate_size: Size of entire plate (x, y) in wells, defaults to None.
+                            If None used the default 1536 well plate size of
+                            32 * 48.
+        :type plate_size: tuple, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def all_runs(self):
+'''Get all runs currently listed in the RunTree.
+
+        :return: List of :class:`Run` objects
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def recent_files(self):
+'''Return recently accessed imports
+
+        :return: List of recently accessed imports
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def save_recent_import_paths(self):
+'''Save the recently used import paths to the path specified by the
+        :const:`~polo.RECENT_FILES` path. Polo will attempt to open and read
+        this file the next time the program is run in order to allow users
+        to open recently opened runs.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _clear_current_run(self, run_list):
+'''Clear out the current run from other widgets by emiting a
+        `opening_run` signal with a list that does not contain
+        a Run or HWIRun object.
+
+        :param run_list: List of runs
+        :type run_list: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _handle_classification_request(self):
+'''Private method to open a classification thread of the currently selected run.
+        Calls  :meth:`~polo.widgets.run_organizer.RunOrganizer._open_classification_thread` to
+        start the classification thread.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _handle_opening_run(self, *args):
+'''Private method that signal to other widgets that the current run should be opened
+        for analysis and viewing by emiting the `opening_run` signal containing
+        the selected run.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _open_classification_thread(self, run):
+'''Private method to create and run a classification thread which will run
+        the MARCO model on all images in the run passed to `run` argument.
+
+        :param run: Run or HWIRun instance to run MARCO on
+        :type run: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _classification_cleanup(self):
+'''"Cleanup" the UI after a classification thread has completed.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _classify_multiple_runs(self, runs):
+'''Run the MARCO model on a list of runs. Recursively creates
+        :class:`ClassificationThreads` for each :class:`Run` until all
+        :class:`Run` instances have been classified.
+
+        :param runs: List of :class:`Run` instance to classify using MARCO  
+        :type runs: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _set_progress_value(self, val):
+'''Private helper method to increment the classification
+        progress bar.
+
+        :param val: Value to set progress bar to
+        :type val: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _set_estimated_classification_time(self, time, num_images_remain):
+'''Display the estimated classification time to the user. Time remaining
+        is calculated by multiplying the time it took to classify a representative
+        image by the number of images that remain to be classified.
+
+        :param time: Time to classify latest image
+        :type time: int
+        :param num_images_remain: Number of images that still require classification
+        :type num_images_remain: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _add_runs_to_tree(self, runs):
+'''Private method to add a set of runs to the runTree.
+
+        :param runs: List of runs to add to the runTree
+        :type runs: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _import_runs(self, file_paths):
+'''Import :class:`Run` objects from a list of file and directory paths.
+        Runs that are imported successfully will be added to the sample browser.
+
+        :param file_paths: List of paths to files and directories to be imported
+                            as runs
+        :type file_paths: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _check_for_existing_backup(self, run):
+'''Check the directory specified by the `BACKUP_DIR` constant for
+        a backup mso file that matches the run passed through the `run`
+        argument. Run's are matched to mso backups by their run name so it
+        the user has renamed their run after the backup is saved it will not
+        be found.
+
+        See :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications`
+        for details on how the mso files are written.
+
+        :param run: Run to search for mso backup with
+        :type run: HWIRun
+        :return: Path to mso backup if one exists that matches the `run`, else
+                return None
+        :rtype: str or None
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def backup_classifications_on_thread(self, run):
+'''Does the exact same thing as 
+        :meth:`~polo.widgets.run_organizer.RunOrganizer.backup_classifications` 
+        except excutes the job on a `QuickThread` instance to avoid slow
+        computers complaining about the GUI being frozen. This has been
+        especially prevelant on Windows machines.
+
+        :param run: Run to save as mso file
+        :type run: HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def backup_classifications(self, run):
+'''Write the human classifications of the images in the `run` argument
+        to an mso file and store it in the directory specified by the
+        :const:`BACKUP_DIR` constant. Does not store MARCO classifications because
+        these can be much more easily recreated than human classifications.
+        Additionally, when a run is loaded back in and a backup mso exists
+        for it Polo assumes the classifications in that mso file are human
+        classifications.
+
+        Currently only :class:`HWIRun` instances can be written as mso files because of mso's
+        integration with cocktail data and well assignments. Need a different
+        format for non-HWI runs that would map filenames to classifications
+        and ignore cocktail data / well assignments.
+
+        :param run: :class:`HWIRun` to backup human classifications
+        :type run: HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def import_saved_runs(self, xtal_files=[]):
+'''Import runs saved to xtal files.
+
+        :param xtal_files: List of xtal files to import runs from, defaults to []
+        :type xtal_files: list, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def import_run_from_dialog(self):
+'''Import a run from a file dialog.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def import_run_from_ftp(self):
+'''Import runs from an FTP server. If an FTP download thread is not already
+        running creates an FTPDialog instances and opens it to the user. FTP functions
+        are then taken over by the FTPDialog until it is closed.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _handle_ftp_download(self, file_path):
+'''Private method that handles when an individual file in the FTP
+        download queue has finished downloading. Attempts to import the run
+        by calling :meth:`import_runs` and then increments the FTP
+        download counter by one.
+
+        :param file_path: Path to file that was just downloaded
+        :type file_path: str or Path
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/run_organizer.py | def _finished_ftp_download(self):
+'''Private method that cleans up after all queued FTP downloads have
+        been completed and shows a message box to the user to inform them of the
+        status of their downloads.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def __init__(self, parent, run=None):
+'''The PlateInspectorWidget is a primary run interface widget and is
+        designed to emulate the MarcoScopeJ image viewer with extended
+        functionality. It allows users to view their screening images in grids
+        of pre-set numbers of images from 24 to 96 images at a time.
+
+        :param parent: Parent widget
+        :type parent: QWidget
+        :param run: Run to display, defaults to None
+        :type run: Run, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def selected_classifications(self):
+'''Image classifications that are
+        selected via the image filtering :class:`QCheckBox` instances. Also see the
+        :attr:`~PlateInspectorWidget.image_type_checkboxes` property.
+
+        :return: List of currently selected image classifications. Images
+                who's classification is in this list should be shown / 
+                emphasized to the user.
+        :rtype: list
+
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def human(self):
+'''Status of human image classification :class:`QCheckBox`.
+        
+        :return: State of the human filter :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def marco(self):
+'''Status of marco image classification :class:`QCheckBox`.
+
+        :return: State of the marco filter :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def favorite(self):
+'''Status of the `favorite` :class:`QCheckBox` filter.
+
+        :return: State of the favorite :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def color_mapping(self):
+'''Creates a color mapping dictionary that reflects the currently selected
+        color selector :class:`QComboBox` instances. The dictionary maps each image
+        classifications to a :class:`QColor` instance that can then be used
+        to color images in the plate viewer.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def run(self, new_run):
+'''Sets run attribute to the given run. Setting the run also sets the
+        run for the `plateViewer` widget and checks if time resolved and
+        spectrum navigation should be enabled by calling 
+        :meth:`~polo.widgets.plate_inspector_widget.PlateInspector._set_time_resolved_buttons`
+        and :meth:`~polo.widgets.plate_inspector_widget.PlateInspector._set_alt_spectrum_buttons`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_images_per_page(self):
+'''Private method that tells the :class:`plateViewer` UI widget to set 
+        its :attr:`images_per_page` atttribute to the value specified in the 
+        images per page :class:`QComboBox`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_color_comboboxs(self):
+'''Private method that sets the label text associated with each color
+        selector :class:`QComboBox`. Should be called in the `__init__` method before
+        the widget is shown to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_image_count_options(self):
+'''Private method to be called in the `__init__` method that sets
+        the allowed number of images per page.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_color_options(self):
+'''Private methods that uses the :const:`COLORS` constant to set the color options 
+        for each color selector :class:`QComboBox` instance in the image coloring tab.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _parse_label_checkboxes(self):
+'''Private method that reads values from :class:`QCheckBox`
+        instances related to image filtering.
+        Returns a dictionary where keys are the labels of the :class:`QCheckBox` instances
+        which should also be the possible image classifications and values
+        are the state of the :class:`QCheckBox` (True or False).
+
+        Returned dictionary will have following structure.
+
+        .. code-block:: python
+
+            {
+            'Crystals': True,
+            'Clear': False,
+            'Precipitate': True,
+            'Other': False
+            }
+
+        :return: Dict of :class:`QCheckBox` states.
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_plate_label(self):
+'''Private method to change the plate label to tell the user what view or 
+        "page" they are currently looking at.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _apply_color_mapping(self):
+'''Applies the current color mapping to displayed images. Images
+        are colored based on either their human or marco classification.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _apply_image_filters(self):
+'''Wrapper function around `plateViewer`
+        :meth:`~polo.widgets.plate_viewer.plateViewer.deemphasize_filtered_images`
+        which changes the opacity of currently displayed images based on
+        their classifications.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_time_resolved_buttons(self):
+'''Private helper function that determines if navigation buttons 
+        that display alt spectrum images, previous and next date images 
+        can be used.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_alt_spectrum_buttons(self):
+'''Private helper function similar to 
+        :meth:`~polo.widgets.plate_viewer.plateViewer._set_time_resolved_buttons`
+        that determines if the navigation button that allows users to view 
+        alt spectrum images should be enabled. If conditions are not met then 
+        the button is disabled.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_spin_box_range(self):
+'''Set the allowed range for the page navigation spinbox.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def _set_current_page(self, page_number):
+'''Set the current page number and show the view for that page by
+        calling :meth:`~polo.widgets.plate_inspector_widget.PlateInspector.show_current_page`
+
+        :param page_number: The new page number
+        :type page_number: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def set_aspect_ratio_mode(self):
+'''Sets the `preserve_aspect` attribute based on the status of
+        the preserve aspect ratio :class:`QCheckBox`. Preserving the 
+        aspect ratio results in displaying undistorted crystallization images 
+        but utilizes available display space less efficiently.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def reset_all(self):
+'''Method to un-check all user selected settings.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/widgets/plate_inspector_widget.py | def apply_plate_settings(self):
+'''Parses :class:`QCheckBox` instances in the Plate View tab
+        to determine what behavior of the :class:`plateViewer` 
+        widget is requested by the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def all_run_names(self):
+'''All run names of all current :class:ImportCandidate
+        instances.
+
+        :return: Set of all run names
+        :rtype: set
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def selected_candidate(self):
+'''The currently selected :class:`ImportCandidate` if one exists, otherwise
+        returns None.
+
+        :return: Currently selected candidate
+        :rtype: ImportCandidate
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def selection_dict(self):
+'''Returns a dictionary who's keys are :class:`Run` attributes and values
+        are the values of :class:`RunImporterDialog` widgets that correspond to
+        these attributes.
+
+        Example of the dictionary returned below.
+
+        .. code-block:: python
+        
+            {
+                'cocktail_menu': Menu,
+                'date': datetime,
+                'run_name': str,
+                'image_spectrum': str
+            }
+
+        :return: dict
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _could_not_import_message(self, prefix, paths):
+'''Private method that creates a message box popup for when imports fail.
+
+        :param prefix: First part of the error message. Something
+                       like "Could not import the following files:"
+        :type prefix: str
+        :param paths: List of filepaths that could not be imported
+        :type paths: list
+        :return: QMessageBox
+        :rtype: QMessageBox
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _import_files(self, rar=True):
+'''
+
+        :param rar: If True opens the filebrowser for rar archives and filters
+                    out all other import types, defaults to True
+        :type rar: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _open_browser(self, rar=True):
+'''Private method that opens a :class:`QFileBrowser` instance that allows the 
+        user to select files for import. 
+        The allowed filetype is set using the `rar` flag.
+
+        :param rar: If True, allow user to only import Rar archive files 
+                            defaults to True. If False
+                            only allows the user to import directories.
+        :type rar: bool, optional
+        :return: List of files the user has selected for import 
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _handle_candidate_change(self):
+'''Private method that calls 
+        :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
+        and then  :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. 
+        This updates the data of the previously selected 
+        :class:`ImportCandidate` if it has been changed and then
+        updates data display widgets with the information from the currently selected
+        :class:`ImportCandidate` instance.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _verify_run_name(self):
+'''Private method to verify a run name. If run name fails verification
+        clears the runname :class:`QLineEdit` widget and shows an error message to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _restore_defaults(self):
+'''Restore suggested import settings for an :class:`ImportCandidate` in case
+        the user has changed them and then wants to undo those changes.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _remove_run(self):
+'''Removes a run as an import candidate and refreshes the 
+        :class:`QlistWidget` to reflect the removal.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _display_candidate_paths(self):
+'''Private method that updates the dialog's :class:`QListWidget` with the
+        file paths of the current :class:`ImportCandidate` instances referenced
+        by the  :attr:`import_candidates` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _populate_fields(self, import_candidate):
+'''Private method to display :class:`ImportCandidate` 
+        data to the user.
+
+        :param import_candidate: ImportCandidate to display
+        :type import_candidate: ImportCandidate
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _set_cocktail_menu(self, import_candidate):
+'''Private method that sets the cocktail :class:`QComboBox` based on the
+        :class:`~polo.utils.io_utils.Menu` instance referenced by the 
+        :attr:`selected_candidate`attribute. This method is used to convey to
+        the user which
+        :class:`~polo.utils.io_utils.Menu` has been selected for a given
+        :class:`ImportCandidate`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _set_cocktail_menu_type_radiobuttons(self, type_):
+'''Private method that sets the :class:`~polo.utils.io_utils.Menu` 
+        type :class:`QRadioButtons`
+        given a :class:`~polo.utils.io_utils.Menu` type key.
+
+        :param type_: Menu type key. If `type_` == 's' then soluble
+                      menu radioButton state is set to True. If 'type_` == 'm' then
+                      membrane radiobutton state is set to True
+        :type type_: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _enable_hwi_import_tools(self):
+'''Private method to enable widgets that should only be used
+        for :class:`HWIRun` imports. 
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _disable_hwi_import_tools(self):
+'''Private method to disable widgets that should only be used for
+        :class:`HWIRun` imports.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _set_image_spectrum(self, spectrum):
+'''Private method that sets the image spectrum comboBox
+        based on the `spectrum` argument. Should be used to display
+        the inferred spectrum of an import candidate to the user when
+        that candidate is selected. 
+
+        :param spectrum: Spectrum key
+        :type spectrum: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _display_cocktail_files(self, menu_type=None):
+'''Private method that displays the available cocktail files to the
+        user via the :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` widget.
+
+        :param menu_type: Key for which kind of cocktail screens to display, defaults to None. 
+                          "m" for membrane screens and "s" for soluble screens.
+        :type menu_type: str, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_importer.py | def _update_candidate_run_data(self, import_candidate_path):
+'''Private method that allows the user to update an :class:`ImportCandidate`
+        instance's data from the widgets in the `RunImporterDialog` by updating
+        the dictionary referenced by an :class:`ImportCandidate` instacnes's 
+        :attr:`~ImportCandidate.data` attribute with user entered values.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/log_dialog.py | def display_log_text(self):
+'''Opens the log file and writes the contents to textBrowser widget
+        for display to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/log_dialog.py | def save_log_file(self):
+'''Saves the current log file contents to a new location.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/log_dialog.py | def clear_log(self):
+'''Deletes the contents of the log file.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def current_menus(self):
+'''The :class:`polo.utils.io_utils.Menu` instances that are currently being displayed
+        to the user via the :class:`~polo.utils.io_utils.Menu` ::class:`QComboBox` widget.
+
+        :return: List of :class:`polo.utils.io_utils.Menu` instances 
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def run(self):
+'''The run being updated.
+
+        :return: The run being updated
+        :rtype: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _set_run_date(self):
+'''Set the :attr:`date` attribute of the :class:`Run` referenced
+        by the :attr:`run` attribute from 
+        the value in the :class:`QDateEdit` widget.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _set_cocktail_menu(self):
+'''Private method that display cocktails in the 
+        :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` based on
+        the current menu type selection. Either displays
+        soluble or membrane cocktail menus.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _select_run_menu(self):
+'''Private method that sets the current index of the  :class:`QComboBox`
+        based on the current :attr:`cocktail_menu` attribute of the :class:`Run`
+        instance  referenced by the :attr:`run` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _update_run_cocktail_menu(self):
+'''Private method that updates the `cocktail_menu` attribute of the 
+        `Run` instance referenced by the :attr:`run` attribute based on the current 
+        :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` selection.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _update_spectrum(self):
+'''Private method that update the spectrum of the :attr:`run` attribute 
+        and the images in that run based on the current selection of the 
+        spectrum  :class:`QComboBox`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _update_plate_id(self):
+'''Private method that updates the `plate_id` attribute of the 
+        Run instance references by the :attr:`run` attribute based on the contents
+        of the plate ID :class:`QLineEdit` widget.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/run_updater_dialog.py | def _update_run(self):
+'''Private wrapper method that calls all other `_update` methods
+        and then closes the dialog.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def get_widget_dims(self, widget):
+'''Returns the width and height of a :class:`QWidget`
+        as a tuple.
+
+        :param widget: QWidget
+        :type widget: QWidget
+        :return: width and height of the widget
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def layout_widget_lister(self, layout):
+'''List all widgets in a given layout.
+
+        :param layout: QLayout that contains widgets    
+        :type layout: QLayout
+        :return: Tuple of widgets in the given layout
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def closeEvent(self, event):
+'''Handle main window close events. Writes mso backup files of
+        all loaded runs that have human classifications so they can be
+        restored later.
+
+        :param event: QEvent
+        :type event: QEvent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _read_recent_imports(self):
+'''Read recent import filepaths from the filepath specified by the
+        :const:`RECENT_FILES` constant. If paths in this file exist then
+        creates a menu item under the "Recents" import menu for that
+        filepath. 
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _check_for_new_version(self):
+'''Use requests to check the Polo GitHub page for a newer release
+        version. If a newer version exists open a message box that the user
+        can click to take them to the releases page.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _set_tab_icons(self):
+'''Private method that assigns icons to each of the main run 
+        interface tabs. Should be called in the `__init__` method before
+        the main window is shown to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _tab_limiter(self):
+'''Private method that limits the interfaces that a user is allowed
+        to interact with based on the type of :class:`Run` they have loaded and
+        selected. Currently, :class:`Run` functionality is limited due to the fact
+        cocktails cannot be mapped to images.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_opening_run(self, new_run):
+'''Private method that handles opening a run. For the most part,
+        this means setting the :attr:`run` attribute of other widgets to the
+        `new_run` argument. The setter methods of these widgets should then handle
+        updating their interfaces to reflect the new run being
+        opened. Also calls :meth:`~polo.windows.main_window.MainWindow._tab_limiter`
+        and :meth:`~polo.windows.main_window.MainWindow._plot_limiter` to set 
+        allowed functions for the user based on the type of run they open.
+
+        Additionally, if this is not the first run to be opened, before
+        the `new_run` is set as the :attr:`current_run` the pixmaps of the 
+        :attr:`current_run` are unloaded to free up memory.
+
+        :param q: List containing the run to be opened. Likely originating from
+                  the :class:`RunOrganizer` widget.
+        :type q: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_recent_import(self, action):
+'''Private method that handles when recent import filepath menu items
+        are selected. Attempts to open the run specified by the filepath.
+
+        :param action: QAction associated with recent import
+        :type action: QAction
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_tool_menu(self, selection):
+'''Private method that handles selection of 
+        all options available to the user in 
+        the `Tools` section of the main window menu.
+
+        :param selection: User's menu selection
+        :type selection: QAction
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_delete_backups(self):
+'''Private method that handles a user request to delete all backup 
+        mso files. If backups cannot be deleted shows a message box indicating
+        failure to delete.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_image_import(self, selection):
+'''Private method that handles when the user attempts to import images into Polo. 
+        Effectively a wrapper around other methods that provide the functionality to
+        each option in the import menu.
+
+        :param selection: QAction. QAction from user menu selection.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_export(self, action, export_path=None):
+'''Private method to handle when a user requests to export a run
+        to a non-xtal file format.
+
+        :param action: QAction that describes the export type the user has requested
+        :type action: QAction
+        :param export_path: Path to export file to, defaults to None
+        :type export_path: str or Path, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_file_menu(self, selection):
+'''Private method that handles user interaction with the file menu;
+        this usually means saving a run as an xtal file.
+
+        :param selection: QAction that describes user selection
+        :type selection: QAction
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_help_menu(self, action):
+'''Private method that handles user interaction with the help menu. 
+        All selections open links to various pages of the documentation website.
+
+        :param action: QAction that describes the user's selection
+        :type action: QAction
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _handle_plot_selection(self):
+'''Private method to handle user plot selections.
+
+        TODO: Move all plot methods into their own widget
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _plot_limiter(self):
+'''Private method to limit the types of plots that can be shown
+        based on the type of the `current_run`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _save_file_dialog(self):
+'''Private method to open a QFileDialog to get a location
+        to save a run to.
+
+        :return: Path to save file to
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/main_window.py | def _on_changed_tab(self, i):
+'''Private method that handles GUI behavior when a user
+        switches from one tab to another.
+
+        :param i: Int. The index of the current tab, after user has changed tabs.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def image(self):
+'''The :class:`~polo.crystallography.image.Image`
+         being displayed.
+
+        :return: The :class:`~polo.crystallography.image.Image` instance to be displayed
+        :rtype: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def show(self):
+'''Shows the dialog window.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def _set_groupbox_title(self):
+'''Private method that set the the title of main groupbox to the 
+        basename of the :attr:`~polo.crystallography.image.Image.path`
+        attribute of the :class:`~polo.crystallography.image.Image` instance
+        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def _set_cocktail_details(self):
+'''Private method that shows the 
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute metadata in the text display widgets.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def _change_favorite_status(self):
+'''Private method that updates the favorite status of the current 
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute to the state of the favorite :class:`QRadioButton`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def _set_image_details(self):
+'''Private method that displays the 
+        :class:`~polo.crystallography.image.Image` instance referenced
+        by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def show_image(self):
+'''Show the :class:`~polo.crystallography.image.Image`
+        instance referenced by the
+        :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def show_alt_image(self, next_date=False, prev_date=False, alt=False):
+'''Show a linked image based on boolean flags. 
+
+        :param next_date: If True, set
+                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image` 
+                          attribute to next the available imaging date, defaults to False
+        :type next_date: bool, optional
+        :param prev_date: If True, set 
+                          :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+                          attribute to previous 
+                          imaging date, defaults to False
+        :type prev_date: bool, optional
+        :param alt: If True, set 
+                    :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+                    attribute to an alt spectrum
+                    image, defaults to False
+        :type alt: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/image_pop_dialog.py | def _set_allowed_navigation_functions(self):
+'''Private method to enable or disable navigation by date or spectrum buttons
+        based on the content of the current image. 
+        Tests the :class:`~polo.crystallography.image.Image` instance
+        referenced by the :attr:`~polo.windows.image_pop_dialog.ImagePopDialog.image`
+        attribute to determine if it is linked to
+        a future date, previous date or alt spectrum image through it's
+        :attr:`~polo.crystallography.image.Image.next_image`
+        , :attr:`~polo.crystallography.image.Image.next_image.previous_image`     
+        and :attr:`~polo.crystallography.image.Image.next_image.alt_image` attributes
+        respectively. If an attribute == None, then the button that
+        requires that attribute will be disabled.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def host(self):
+'''Get user entered FTP host.
+
+        :return: host address
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def password(self):
+'''Return user entered password.
+
+        :return: password
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def username(self):
+'''Return username.
+
+        :return: username
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def connect_ftp(self):
+'''Attempt to establish a connection to an ftp server. If the connection is
+        successful then recursively walk through the user's home directory
+        and display available directories and files via the
+        `fileBrowser` widget. If the user has an extremely large number of
+        files this can take a while. If the connection fails show the user
+        the error code thrown by ftplib.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def set_connection_status(self, connected=False):
+'''Change the Qlabel that displays the current connection status
+        to the user.
+
+        :param connected: If FTP connection is successful, defaults to False
+        :type connected: bool, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/ftp_dialog.py | def download_selected_files(self):
+'''Signals to the `fileBrowser` widget to download all files / dirs the
+        user has selected. Downloading occurs in the background and the FTP
+        browser dialog is closed after a download has successfully begun.
+        Another download should not be initiated while one is
+        already in progress.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _set_up_image_classification_checkboxes(self):
+'''Private method that sets up the labels for the image classifications
+        :class:`QCheckBox` instances. Should be called in the `__init__` function before
+        displaying the dialog to the user.
+
+        :return: Dictionary of image classifications which map to the :class:`QCheckBox` 
+                 that corresponds to that image classification
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _validate_typed_path(self):
+'''Private method that validates that a filepath in the filepath
+        :class:`QLineEdit` widget is actually a valid path that a pptx file could be
+        saved there.
+
+        :return: True if the path is valid, otherwise returns None and shows
+                 a message box to the user.
+        :rtype: True or None
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def human(self):
+'''State of the human classifier :class:`QCheckBox`.
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def marco(self):
+'''State of the MARCO classifier :class:`QCheckBox`. 
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def title(self):
+'''Title the user has entered for the presentation via the title
+        :class:`QLineEdit` widget. If no string has been entered will return the empty
+        string.
+
+        :return: The presentation title
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def subtitle(self):
+'''Subtitle the user has entered for the presentation via the subtitle
+        :class:`QLineEdit` widget. If no string has been entered will return the empty
+        string.
+
+        :return: The presentation subtitle
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def all_dates(self):
+'''The state of the "Include all Dates" :class:`QCheckBox`. If it is checked this
+        indicates that a time resolved slide should be included in the
+        presentation.
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def all_specs(self):
+'''The state of the "Include all Spectrums" :class:`QCheckBox`. If it is checked this
+        indicates that a multi-spectrum slide should be included in the
+        presentation.
+
+        :return: State of the :class:`QCheckBox`
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _browse_and_update_line_edit(self):
+'''Private method that calls 
+        :meth:`~polo.windows.pptx_dialog.PptxDialog._get_save_path`
+        to open a file browser. If the user selects a save path using the file
+        browser then displays this path in the filepath :class:`QLineEdit` widget.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _get_save_path(self):
+'''Private method that opens a file browser and returns the selected
+        save filepath.
+
+        :return: Filepath if one is specified by the user, empty string otherwise
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _parse_image_classifications(self):
+'''Private method to get all currently selected image classifications
+        by reading the state of all image classification 
+        :class:`QCheckBox` instances. 
+
+        :return: Set of all selected image classifications
+        :rtype: set
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/pptx_dialog.py | def _write_presentation(self, run=None):
+'''Private method that actually does the work of generating a
+        presentation from a :class:`Run` or :class:`HWIRun` instance.
+
+        :param run: Run to create a presentation from, defaults to None
+        :type run: Run or HWIRun, optional
+        :return: Path to the pptx presentation is write is successful, 
+                 Exception otherwise.
+        :rtype: str or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def populate_list_widgets(self):
+'''Adds items to each image spectrum type list widget based on the
+        Run objects stored in the `loaded_runs` attribute. 
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def suggest_links(self):
+'''Suggest runs to link together based on their imaging dates. A link
+        suggestion will be made if the images were taken on the same day but the
+        runs are labeled as different image types.
+
+        :return: Suggested links as list of tuples, each tuple containing two
+                 runs that are suggested for linking.
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def display_suggestion(self):
+'''Show the link suggestion to the user by selecting suggested links.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def link_current_selection(self):
+'''Link the currently selected runs together. Creates a circular
+        linked list structure.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def show_error_message(self, message=':('):
+'''
+        Helper method for showing a QErrorMessage dialog to the user.
+
+        :param message: String. The message text to show to the user.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def get_selections(self):
+'''Retrieve the runs that have been selected by the user or by
+        suggestion.
+
+        :return: list of selected run names
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/windows/spectrum_dialog.py | def get_spectrum_list(self, run):
+'''Returns the listwidget that a run should be assigned to based
+        on the run's image type.
+
+        :param run: Run object to assign to a listWidget
+        :type run: Run
+        :return: QListWidget to place that run into
+        :rtype: QListWidget
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def clean_base64_string(string):
+'''Image instances may contain byte strings that store their actual
+        crystallization image encoded as base64. Previously, these byte strings
+        were written directly into the json file as strings causing the `b`
+        byte string identifier to be written along with the actual base64 data.
+        This method removes those artifacts if they are present and returns a
+        clean byte string with only the actual base64 data.
+
+        :param string: A string to interrogate for base64 compliance
+        :type string: str
+        :return: byte string with non-data artifacts removed
+        :rtype: bytes
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def to_graphics_scene(cls, image):
+'''Convert an Image object to a `QGraphicsScene` with
+        the Image added as a pixmap to the `QGraphicsScene`.
+
+        :param image: Image instance
+        :type image: Image
+        :return: QGraphicsScene
+        :rtype: QGraphicsScene
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def no_image(cls):
+'''Return an :class:`~polo.crystallography.image.Image` 
+        instance using the image data referenced by the
+        :const:`polo.DEFAULT_IMAGE_PATH` constant.
+        The default image is used to fill in for missing 
+        data and when filters cannot find any matching results.
+
+        :return: Default :class:`~polo.crystallography.image.Image`
+        :rtype: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def date(self):
+'''The date associated with this 
+        :class:`~polo.crystallography.image.Image`.
+        Presumably should be the date the image was taken.
+
+        :return: Datetime object representation of
+                 the :class:`~polo.crystallography.image.Image`'s
+                 imaging date
+        :rtype: datetime
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def path(self):
+'''Filepath for the image. Note that if this path is loaded
+        from an xtal file, this path may not exists because the xtal
+        file may have been created on a different machine.
+
+        :return: Path to image file
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def human_class(self):
+'''Return the :attr:`~polo.crystallography.image.Image.human_class`
+        attribute which specifies the current human classification of the
+        :class:`~polo.crystallography.image.Image`.
+
+        :return: Current human classification of the
+                 :class:`~polo.crystallography.image.Image`
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def formated_date(self):
+'''Get the image's :attr:`~polo.crystallography.image.Image.marco_date`
+        attribute formated in the month/date/year format. If the 
+        :class:`~polo.crystallography.image.Image` 
+        has no :attr:`~polo.crystallography.image.Image.date` returns
+        an empty string.
+
+        :return: Date
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def setPixmap(self, scaling=None):
+'''Loads the :class:`~polo.crystallography.image.Image`'s 
+        pixmap into memory which then allows for displaying
+        the :class:`~polo.crystallography.image.Image` to the user. 
+        :class:`~polo.crystallography.image.Image`s 
+        that are displayed before loading will not appear.
+        It is recommended to only load the 
+        :class:`~polo.crystallography.image.Image` pixmap when
+        the :class:`~polo.crystallography.image.Image` actually
+        needs to be shown to the user as it is expensive
+        to hold in memory.
+
+        :param scaling: Scaler for the pixmap; between 0 and 1, defaults to None
+        :type scaling: float, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def delete_pixmap_data(self):
+'''Replaces the :class:`~polo.crystallography.image.Image`'s
+        pixmap data with a null pixmap which
+        effectively deletes the existing pixmap data. Used to free up
+        memory after a pixmap is no longer needed.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def delete_all_pixmap_data(self):
+'''Deletes the pixmap data for the
+        :class:`~polo.crystallography.image.Image` instance this method is
+        called on and for any other 
+        :class:`~polo.crystallography.image.Image`s
+        that this :class:`~polo.crystallography.image.Image` is linked to.
+        This includes images referenced by the 
+        :attr:`~polo.crystallography.image.Image.alt_image`
+        , :attr:`~polo.crystallography.image.Image.next_image` and
+        :attr:`~polo.crystallography.image.Image.previous_image`
+        attributes.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def height(self):
+'''Get the height of the 
+        :class:`~polo.crystallography.image.Image`'s pixmap. 
+        The pixmap must be set for this function to 
+        return an actual size.
+
+        :return: Height of the :class:`~polo.crystallography.image.Image`'s pixmap
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def width(self):
+'''Get the height of the 
+        :class:`~polo.crystallography.image.Image`'s pixmap. 
+        The pixmap must be set for this function to return 
+        an actual size.
+
+        :return: Width of the 
+                 :class:`~polo.crystallography.image.Image`'s
+                 pixmap
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def encode_bytes(self):
+'''If the :attr:`~polo.crystallography.image.Image.path`
+        attribute exists and is an image file then encodes
+        that file as a base64 string and returns the encoded
+        image data.
+
+        :return: base64 encoded image
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def get_tool_tip(self):
+'''Create a string to use as the tooltip for this
+        :class:`~polo.crystallography.image.Image`.
+
+        :return: Tooltip string
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def get_linked_images_by_date(self):
+'''Get all :class:`~polo.crystallography.image.Image`s
+        that are linked to this :class:`~polo.crystallography.image.Image`
+        instance by date. Image linking by date is accomplished 
+        by creating a bi-directional linked list between 
+        :class:`~polo.crystallography.image.Image` instances, 
+        where each :class:`~polo.crystallography.image.Image` acts as a node
+        and the :attr:`~polo.crystallography.image.Image.next_image` and 
+        :attr:`~polo.crystallography.image.Image.previous_images` 
+        act as the forwards and backwards pointers respectively.
+
+        :return: All :class:`~polo.crystallography.image.Image`s
+                 connected to this :class:`~polo.crystallography.image.Image`
+                 by date
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def get_linked_images_by_spectrum(self):
+'''Get all :class:`~polo.crystallography.image.Image`s 
+        that are linked to this :class:`~polo.crystallography.image.Image` instance by
+        spectrum. Linking images by spectrum is accomplished by
+        creating a mono-directional circular linked list where
+        :class:`~polo.crystallography.image.Image` instances serve as nodes and their 
+        :attr:`~polo.crystallography.image.Image.alt_image` attribute
+        acts as the pointer to the next node.
+
+        :return: List of all `Images` linked to this
+                 :class:`~polo.crystallography.image.Image` by spectrum
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def classify_image(self):
+'''Classify the :class:`~polo.crystallography.image.Image`
+        using the MARCO CNN model. Sets the 
+        :attr:`~polo.crystallography.image.Image.machine class` and 
+        :attr:`~polo.crystallography.image.Image.prediction_dict` 
+        attributes based on the model results.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/image.py | def standard_filter(self, image_types, human, marco, favorite):
+'''Method that determines if this 
+        :class:`~polo.crystallography.image.Image` should be
+        included in a set of filtered :class:`~polo.crystallography.image.Image`s
+        based on given image classifications and a classifier: human,
+        marco or both. Returns True if the 
+        :class:`~polo.crystallography.image.Image` meets the
+        filtering requirements specified by the method's arguments,
+        otherwise returns False.
+
+        :param image_types: Collection of image classifications.
+                            The :class:`~polo.crystallography.image.Image`'s
+                            classification must in included in this collection 
+                            for the method to return True.
+        :type image_types: list or set
+        :param human: If True, use the 
+                      :class:`~polo.crystallography.image.Image`'s
+                      human classification as the
+                      overall image classification.
+        :type human: bool
+        :param marco: If True, use the
+                      :class:`~polo.crystallography.image.Image`'s
+                      MARCO classification as the
+                      overall image classification.
+        :type marco: bool
+        :return: True if the
+                 :class:`~polo.crystallography.image.Image`
+                 meets the filter requirements, False otherwise 
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def cocktail_index(self):
+'''Attempt to pull out the cocktail number as an integer
+        from the :attr:`~polo.crystallography.cocktail.Cocktail.number` attribute.
+        This property is dependent on consistent formating 
+        between cocktail menus that has not checked at this time.
+
+        :return: Cocktail number
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def well_assignment(self):
+'''Return the current well assignment for this Cocktail.
+
+        :return: well assignment
+        :rtype: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def add_reagent(self, new_reagent):
+'''Adds a reagent to the existing list of reagents referenced by the
+        :attr:`~polo.crystallography.cocktail.Cocktail.reagents` attribute.
+
+        :param new_reagent: Reagent to add to this cocktail
+        :type new_reagent: Reagent
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def chemical_formula(self):
+'''The chemical formula for of this Reagent. Not all
+        Reagents have available chemical formulas as cocktail csv files do not
+        include formulas for all reagents. See the setter method for more details
+        on how chemical formulas are converted from strings to `Formula` objects.
+
+        :return: Chemical formula
+        :rtype: Formula
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def chemical_formula(self, new_formula):
+'''Setter function for the chemical formula attribute. Assumes that
+        a string will be passed in and attempts to convert that string to a
+        Formula instance. The HWI formating for associated water molecules is
+        not understood by Formula objects so this method uses regex to extract
+        the number of water molecules are rewrite the formula to an equivalent
+        one that Formula object can understand.
+
+        :param new_formula: chemical formula
+        :type new_formula: str
+        :raises TypeError: Raised when attemping to set chemical_formula to\
+            something other than a string
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def concentration(self):
+'''The current concentration of this Reagent. Concentration
+        ultimately refers back to a condition in a specific screening well.
+
+        :return: Chemical concentration
+        :rtype: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def concentration(self, new_con):
+'''Setter function for the concentration attribute.
+
+        :param new_con: New value for concentration
+        :type new_con: UnitValue
+        :raises TypeError: Raised when attempt to pass object that is not an\
+            instance of UnitValue as the new_con
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def molarity(self):
+'''Attempt to calculate the molarity of this reagent at its current
+        concentration. This calculation is not certain to return a value
+        as HWI cocktail menu files use a variety of units to describe
+        chemical concentrations, including %w/v or %v/v.
+
+        %w/v is defined as grams of colute per 100 ml of solution * 100. This can
+        be converted to molarity when the molar mass of the reagent is known.
+
+        %v/v is defined as the volume of solute over the total volume of solution
+        * 100. The density of the reagent is required to convert %w/v to molarity
+        which is not included in HWI cocktail menu files. This makes conversion
+        from %w/v out of reach for now.
+        
+        If the reagent concentration cannot be converted to molarity then
+        this function will return False.
+
+        :return: molarity or False
+        :rtype: UnitValue or Bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def molar_mass(self):
+'''Attempt to calculate the molar mass of this reagent. Closely related
+        to the molarity property. The molar mass of the reagent cannot be
+        calculated for all HWI reagents. 
+      
+        :return: Molar mass of the Reagent if it is calculable, False otherwise.
+        :rtype: UnitValue or bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def peg_parser(self, peg_string):
+'''Attempts to pull out a molar mass from a PEG species since the
+        molar mass is often included in the name of PEG species. A string is
+        considered to be a potential PEG species if it contains 'PEG' or
+        'Polyethylene glycol' in it.
+
+        :param peg_string: String to look for PEG species in
+        :type peg_string: str
+        :return: molar mass if found to be valid PEG species, False otherwise.
+        :rtype: float or Bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def make_from_string(cls, string):
+'''Create a `UnitValue` from a string containing a value and a unit.
+        Utilizes the :const:`polo.unit_regex` expression 
+        to pull out the units. 
+
+        .. highlight:: python
+        .. code-block:: python
+
+            unit_string = '10.0 M'  # concentration of 10 molar
+            sv = UnitValue.make_from_string(unit_string)
+            # sv.value = 10 sv.units = 'M'
+
+
+        :param string: The string to extract the UnitValue from
+        :type string: str
+        :return: UnitValue instance
+        :rtype: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def scale(self, scale_key):
+'''Scale the :attr:`~polo.crystallography.cocktail.UnitValue.value`
+        using a key character that exists in the 
+        :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`
+        dictionary. First converts the value to its
+        base unit and then divides by the `scale_key` argument value. 
+        The `scale_key` can be thought of as a SI prefix for a base unit.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            # self.saved_scalers = {'u': 1e-6, 'm': 1e-3, 'c': 1e-2}
+            v_one = UnitValue(10, 'L')  # value of 10 liters
+            v_one = v_one.scale('u')  # get v_one in microliters
+
+        :param scale_key: Character in :const:`~polo.crystallography.cocktail.UnitValue.saved_scalers`
+                          to convert value to.
+        :type scale_key: str
+        :return: UnitValue converted to scale_key unit prefix
+        :rtype: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/cocktail.py | def to_base(self):
+'''Converts the :attr:`~polo.crystallography.cocktail.UnitValue.value`
+        to the base unit, if it is not already in the base unit.
+
+        :return: UnitValue converted to base unit
+        :rtype: UnitValue
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def init_from_directory(cls, dir_path, **kwargs):
+'''Create a :class:`Run` instance from a directory of images.
+
+        :param dir_path: Path to directory
+        :type dir_path: str, Path
+        :return: Run instance
+        :rtype: Run
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def __len__(self):
+'''Returns the length of the
+        :attr:`~polo.crystallography.run.Run.images` attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def encode_images_to_base64(self):
+'''Helper method that encodes all images in the
+        `class`~polo.crystallography.run.Run` to base64.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def add_images_from_dir(self):
+'''Adds the contents of a directory to 
+        :attr:`~polo.crystallography.run.Run.images`
+        attribute.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def get_images_by_classification(self, human=True):
+'''Create a dictionary of image classifications. Keys are
+        each type of classification and values are lists of
+        :class:`~polo.crystallography.image.Image` s 
+        with classification equal to the key value. The `human`
+        boolean determines what classifier should be used to
+        determine the image type. Human = True sets the human
+        as the classifier and False sets MARCO as the classifier.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def image_filter_query(self, image_types, human, marco, favorite):
+'''General use method for returning :class:`~polo.crystallography.image.Image`s
+        based on a set of filters. Used whereever a user is allowed to narrow the set
+        of :class:`~polo.crystallography.image.Image`s available for view.
+
+        :param image_types: Returned images must have a
+                            classification that is included in 
+                            this variable
+        :type image_types: list or set
+        :param human: Qualify the classification type
+                      with a human classifier. 
+        :type human: bool
+        :param marco: Qualify the classification type with
+                      a MARCO classifier.
+        :type marco: bool
+        :param favorite: Returned images must be marked as 
+                         `favorite` if set to True
+        :type favorite: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def get_tooltip(self):
+'''The same as :meth:`~polo.crystallography.Run.get_tooltip`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def link_to_next_date(self, other_run):
+'''Link this :class:`~polo.crystallography.run.HWIRun` to another 
+        :class:`~polo.crystallography.run.HWIRun` instance that is of the same
+        sample but photographed at a later date. This creates a
+        bi-directional linked list structure between the two 
+        :class:`~polo.crystallography.run.HWIRun`s.
+        This :class:`~polo.crystallography.run.HWIRun` instance will point to the 
+        `other_run` through the 
+        :attr:`~polo.crystallography.run.HWIRun.next_run` attribute and
+        `other_run` will point back to this :class:`~polo.crystallography.run.HWIRun` through
+        its :attr:`~polo.crystallography.run.HWIRun.previous_run`
+        attribute. This method does not attempt to recognize
+        which run was imaged first so this should be determined before calling,
+        likely by sorting a list of `HWIRun instances by their 
+        :attr:`~polo.crystallography.run.Run.date` attribute.
+
+        Example:
+
+        .. code-block:: python
+
+            # Starting with a collection of Run objects in a list
+            runs = [run_b, run_a, run_d, run_c]
+            # sort them by date
+            runs = sorted(runs, lambda r: r.date)
+            # link them together by date
+            [r[i].link_to_next_date(r[i+1]) for i in range(len(runs)-2)]
+        
+        This would create a linked list with a structure link the representation
+        below.
+
+        .. code-block:: text
+
+            run_a <-> run_b <-> run_c <-> run_d
+
+
+        :param other_run: :class:`~polo.crystallography.run.HWIRun`
+                          instance representing the next imaging run
+        :type other_run: HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def link_to_alt_spectrum(self, other_run):
+'''Similar to :meth:`~polo.crystallography.HWIRun.link_to_next_date`
+        except instead of creating a linked list through the 
+        :attr:`~polo.crystallography.run.HWIRun.next_run` and
+        :attr:`~polo.crystallography.run.HWIRun.previous_run`
+        attributes this method does so through the 
+        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum`
+        attribute. The linked list created is mono-directional so if a
+        series of :class:`~polo.crystallography.run.HWIRun`'s 
+        are being linked the last run should be linked to the
+        first run to circularize the linked list.
+
+        :param other_run: :class:`~polo.crystallography.run.HWIRun` to 
+                          link to this :class:`~polo.crystallography.run.HWIRun` by spectrum 
+        :type other_run: HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def get_linked_alt_runs(self):
+'''Return all :class:`~polo.crystallography.run.HWIRun`s that this 
+        :class:`~polo.crystallography.run.HWIRun` is linked to by spectrum. See
+        :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
+
+        :return: List of runs linked to this run by spectrum
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def insert_into_alt_spec_chain(self):
+'''When runs are first loaded into Polo they are automatically linked together.
+        Normally, `HWIRuns` that are linked by date should contain only 
+        visible spectrum images and :class:`~polo.crystallography.run.HWIRun`s 
+        linked by spectrum should contain only all
+        non-visible spectrum images. The visible spectrum HWIRun will then point to 
+        one non-visible spectrum run via their
+        :attr:`~polo.crystallography.run.HWIRun.alt_spectrum` attribute.
+        This means that one could navigate from a visible
+        spectrum :class:`~polo.crystallography.run.HWIRun` to all alt spectrum 
+        :class:`~polo.crystallography.run.HWIRun`s but not be abe to 
+        get back to the visible spectrum
+        HWIRun. Therefore, before a HWIRun is set to be viewed by the user this method
+        temporary inserts it into the alt spectrum circular linked list. 
+        Also see :meth:`~polo.crystallography.HWIRun.link_to_alt_spectrum`.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/crystallography/run.py | def add_images_from_dir(self):
+'''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
+        attribute with a list of `Images` instances
+        read from the :attr:`~polo.crystallography.run.HWIRun.image_dir`
+        attribute filepath. Currently is 
+        dependent on having a cocktail Menu available.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/marco/run_marco.py | def run_model(tf_predictor, image_path):
+'''Given a tensorflow predictor (the MARCO model) and the path to an image, 
+    runs the model on that image. Returns a tuple where the first item is the
+    classification with greatest confidence and the second is a dictionary where
+    keys are image classification types and values are model confidence for that
+    classification. The image classifications of this dictionary are used
+    universally throughout the program and are accessible through the
+    :const:`IMAGE_CLASSIFICATIONS` constant.
+
+    :param tf_predictor: Loaded MARCO model
+    :type tf_predictor: tensorflow model
+    :param image_path: Path to the image to be classified by the model
+    :type image_path: str
+    :return: tuple
+    :rtype: tuple
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/unrar_utils.py | def unrar_archive(rar_path, target_dir=None):
+'''De-compress a rar archive and return the path to the
+    uncompressed archive if it exists. All unrar functions
+    including this one are dependent of their being a working 
+    unrar installation. Unrar is included for both Windows and Mac
+    operating systems but not for Linux.
+
+    :param rar_path: Path to rar archive file
+    :type rar_path: Path or str
+    :param target_dir: Location to place the unrared file, defaults to None
+    :type target_dir: Path or str, optional
+    :return: Path if unrar is successful, error code if unrar fails or Exception if
+    exception is raised in the unrar process.
+    :rtype: Path, str or Exception
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/unrar_utils.py | def test_for_working_unrar(unrar_exe=UNRAR_EXE):
+'''Tests if a working unrar installation exists on the machine.
+
+    :param unrar_exe: Path to unrar executable file, defaults to UNRAR_EXE
+    :type unrar_exe: Path or str, optional
+    :return: True if working installation exists, False otherwise
+    :rtype: bool
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def make_xtal_file_dialog(parent=None):
+'''Create a file dialog specifically for browsing for
+        xtal files.
+
+        :param parent: Parent for the file dialog, defaults to None
+        :type parent: QDialog, optional
+        :return: QFileDialog
+        :rtype: QFileDialog
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def crack_open_a_rar_one(rar_path):
+'''Unrar a directory of images
+
+        :param rar_path: Path to rar archive file
+        :type rar_path: str or Path
+        :return: Unrar result
+        :rtype: str, exception or int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def _target_is_valid(self):
+'''Private method to chech if a the file or directory referenced by
+        :attr:`target_path` is valid for import.
+
+        :return: True if could be imported, False otherwise
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def create_import_thread(self):
+'''Creates a :class:`polo.threads.thread.QuickThread` with function
+        based on the type of file that is to be imported.
+
+        :return: QuickThread
+        :rtype: QuickThread
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def make_thread(cls, job_function, **kwargs):
+'''
+        Creates a new :class:`QuickThread` object. The job function is the
+        function the thread will execute and and arguments that the job
+        function requires should be passed has keyword arguments. These are
+        stored as a dictionary in the new thread object until the thread is
+        activated and they are passed as arguments.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def path_suffix_checker(path, desired_suffix):
+'''
+        Check is a file path has a desired suffix, if not then replace the
+        current suffix with the desired suffix. Useful for checking filenames
+        that are taken from user input.
+
+        :param desired_suffix: File extension for given file path.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def path_validator(path, parent=False):
+'''
+        Tests to ensure a path exists. Passing parent = True will check for
+        the existence of the parent directory of the path.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def make_template(template_path):
+'''Given a path to an html file to serve as a jinja2 template, read the
+        file and create a new template object.
+
+        :param template_path: Path to the jinja2 template file.
+        :type temlate_path: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_complete_run(self, output_path, encode_images=True):
+'''Create an HTML report from a :class:`Run` or :class:`HWIRun`
+        instance.
+
+        :param output_path: Path to write html file to.
+        :type output_path: str or Path
+        :param encode_images: Write images as base64 directly to the html file,
+                              defaults to True. Greatly increases the file size
+                              but means that report will still contain images
+                              even if the originals are deleted or removed.
+        :type encode_images: bool, optional
+        :return: Path to html report if write succeeds, Exception otherwise. 
+        :rtype: str or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def image_to_row(cls, image):
+'''Given an :class:`Image` object, convert it into a list that could be
+        easily written to a csv file.
+
+        :param image: :class:`Image` object to convert to list
+        :type image: Image
+        :return: List
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def output_path(self):
+'''Get the hidden attribute `_output_path`.
+
+        :return: Output path
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_csv_data(self):
+'''Convert the  :attr:`~polo.utils.io_utils.RunCsvWriter.run`
+        attribute to csv style data. Returns a tuple of
+        headers and a list of dictionaries with each dictionary representing
+        one row of csv data.
+
+        :return: Tuple, list of headers and list of dicts
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_csv(self):
+'''Write the :class:`Run` object referenced by the 
+        :attr:`~polo.utils.io_utils.RunCsvWriter.run` 
+        attribute as a csv file to the location specified
+        by the  :attr:`~polo.utils.io_utils.RunCsvWriter.output_path`
+        attribute. 
+
+        :return: True, if csv file content was written successfully,
+                 return error thrown otherwise.
+        :rtype: Bool or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_image(scene, file_path):
+'''Write the contents of a :class:`QGraphicsScene`
+        to a png file.
+
+        :param scene: :class:`QGraphicsScene` to convert to image file.
+        :type scene: QGraphicsScene
+        :param file_path: Path to save image to.
+        :type file_path: str
+        :return: File path to saved image if successful, Exception otherwise.
+        :rtype: str or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def row_formater(cocktail_row):
+'''Format a cocktail row as read from a cocktail csv
+        file to an mso file row. Main change is appending empty
+        strings to the cocktail row so list ends up always having
+        a length of 17. This is important because the image
+        classification code always occurs at the 18th item in
+        an mso file row.
+
+        :param cocktail_row: Cocktail row as read from cocktail csv file.
+        :type cocktail_row: list
+        :return: Cocktail row reformated for mso writing.
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def first_line(self):
+'''Create the first line of the mso file.
+
+        :return: List to write as the first line of the mso file.
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_cocktail_csv_data(self):
+'''Reads and returns the cocktail csv data assigned
+        to the  :attr:`~polo.utils.io_utils.MsoWriter.cocktail_menu`
+        attribute of the MsoWriter's
+        :attr:`~polo.utils.io_utils.MsoWriter.run` attribute.
+
+        :return: List of lists containing cocktail csv data.
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_mso_file(self, use_marco_classifications=False):
+'''Writes an mso formated file for use with MarcoScopeJ based on
+        the images and classifications of the :class:`Run` instance
+        referenced by the MsoWriter's :attr:`~polo.utils.io_utils.MsoWriter.run`
+        attribute.
+
+        :param use_marco_classifications: Include the MARCO classification
+                                          in the mso file instead of human
+                                          classifications, defaults to False
+        :type use_marco_classifications: bool, optional
+        :return: True if file is written successfully, False otherwise.
+        :rtype: bool
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def read_mso_classification(mso_classification):
+'''Helper method to read and convert image classifications in a mso
+        file to MARCO image classifications. The exact conversion scheme is
+        layed out in the :const:`REV_MSO_DICT` constant.
+        Additionally, MarcoscopeJ will allow
+        images to have multiple classifications by assigning multiple
+        image codes seperated by "-". If this is the case Polo takes the
+        classification corresponding to the mso code with the highest value.
+
+        :param mso_classification: Mso image classification code
+        :type mso_classification: str
+        :return: MARCO classification if code can be decoded, None otherwise
+        :rtype: str or None
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def classify_images_from_mso_file(self, images):
+'''Applies the image classifications stored in an mso file to a
+        collection of :class:`~polo.crystallography.image.Image` objects.
+        Allows for some degree of compatability
+        with MarcoscopeJ and for users who have stored their image classifications
+        in the mso format. Additionally, human classification backups are
+        saved as mso files when Polo is closed as they take up much less
+        space than xtal files.
+
+        :param images: List of images to apply classifications to
+        :type images: list
+        :return: List of images with mso classifications applied,
+                 or Exception if this fails
+        :rtype: list or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def json_encoder(obj):
+'''General purpose json encoder for encoding python objects. Very
+        similar to the encoder function 
+        :meth:`~polo.utils.io_utils.XtalWriter.json_encoder` except does not
+        include class and module information in the returned dictionary. If
+        the object cannot be converted to a dictionary it is returned as a
+        string.   
+
+        :param obj: Object to convert to dictionary
+        :type obj: obj
+        :return: dict or str
+        :rtype: dict or str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_json(self):
+'''Write the :class:`Run` instance referenced by the :attr:`~polo.utils.io_utils.JsonWriter.run`
+        attribute to a json file at
+        the location specified by the
+        :attr:`~polo.utils.io_utils.JsonWriter.output_path` attribute.
+        If the file is written successfully returns True
+        otherwise returns an Exception.
+
+        :return: True or Exception
+        :rtype: bool, Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def xtal_header(self):
+'''Creates the header for an xtal file when called. Header lines are
+        indicated as such by the string in the header_line constant,
+        which should be '<>'. The last line of the header will be a row
+        of equal signs and then the actual json content begins on the
+        next line.
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def json_encoder(obj):
+'''Use instead of the default json encoder when writing an xtal file. 
+        If the encoded object is from a module within Polo will include a 
+        module and class identifier so it can be more easily deserialized 
+        when loaded back into the program.
+
+        :param: obj: An object to serialize to json.
+
+        :returns: A dictionary or string version of the passed object
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def clean_run_for_save(run):
+'''Remove circular references from the run passed through the `run`
+        argument to avoid issues when writing to json files.
+
+        :param run: Run to clean (remove circular references)
+        :type run: Run or HWIRun
+        :return: Run, free from circular references
+        :rtype: Run or HWIRun
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def write_xtal_file(self, output_path=None):
+'''Method to serialize run object to xtal file format.
+
+        :param output_path: Xtal file path
+        :type output_path: str
+        :return: path to xtal file
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def run_to_dict(self):
+'''Create a json string from the run stored in the run attribute.
+
+        :return: Run instance serialized to json
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def clean_base64_string(string, out_fmt=bytes):
+'''Image instances may contain byte strings that store their actual
+        crystallization image encoded as base64. Previously, these byte strings
+        were written directly into the json file as strings causing the b'
+        byte string identifier to be written along with the actual base64 data.
+        This method removes those artifacts if they are present and returns a
+        clean byte string with only the actual base64 data.
+
+        :param string: a string to interrogate
+        :type string: str
+        :return: byte string with non-data artifacts removed
+        :rtype: bytes
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def dict_to_obj(d):
+'''Opposite of the obj_to_dict method in XtalWriter class, this method
+        takes a dictionary instance that has been previously serialized and
+        attempts to convert it back into an object instance. Used as the
+        `object_hook` argument when calling `json.loads` to read xtal files.
+
+        :param d: dictionary to convert back to object
+        :type d: dict
+        :return: an object
+        :rtype: object
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def xtal_header_reader(self, xtal_file_io):
+'''Reads the header section of an open xtal file. Should always be
+        called before reading the json content of an xtal file. Note than
+        xtal files must always have a line of equal signs before the json
+        content even if there is no header content otherwise this method will
+        read one line into the json content causing the json reader to
+        throw an error.
+
+        :param xtal_file_io: xtal file currently being read
+        :type xtal_file_io: TextIoWrapper
+        :return: xtal header contents
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def xtal_to_run(self, **kwargs):
+'''Attempt to convert the file specified by the path stored in the
+        :attr:`~polo.utils.io_utils.RunDeserializer.xtal_path`
+        attribute to a :class:`Run` object. 
+
+        :return: Run object encoded by an xtal file
+        :rtype: Run
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def delete_temp_images(self):
+'''Delete an temporary images used to create the pptx presentation.
+
+        :return: True, if images are removed successfully, Exception otherwise.
+        :rtype: bool or Exception
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def sort_runs_by_spectrum(self, runs):
+'''Divids runs into two lists, one containing visible spectrum
+        runs and another containing all non-visible runs.
+
+        :param runs: List or runs
+        :type runs: list
+        :return: tuple, first item is visible runs second is non-visible runs
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_classification_slide(self, well_number, rep_image):
+'''Add a slide containing details about an images MARCO
+        and human classification in a table.
+
+        :param well_number: Well number (index) of image to use in
+                            the title of the slide 
+        :type well_number: int
+        :param rep_image: Image object to make slide from
+        :type rep_image: Image
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_new_slide(self, template=5):
+'''Add a new slide to the presentation referenced by the
+        :attr:`_presentation` attribute.
+
+        :param template: Slide template integer identifier, defaults to 5.
+                         See the python-pptx package for more details on 
+                         template integers
+        :type template: int, optional
+        :return: Presentation with the new slide added 
+        :rtype: Presentation
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_timeline_slide(self, images, well_number):
+'''Create a timeline (time resolved) slide that
+        show the progression of a sample in a particular
+        well.
+
+        :param images: List of images to include in the slide
+        :type images: list
+        :param well_number: Well number to use in the title of the slide
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_multi_spectrum_slide(self, images, well_number):
+'''Create a slide to show a all spectrums a well has been
+        imaged in.
+
+        :param images: Images to include on the slide
+        :type images: list
+        :param well_number: Well number to use in the slide title
+        :type well_number: int
+        :return: New slide
+        :rtype: slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_cocktail_slide(self, well, cocktail):
+'''Add slide with details on :class:`Cocktail` information.
+
+        :param well: Well number to use in slide title
+        :type well: int
+        :param cocktail: Cocktail to write as a slide
+        :type cocktail: Cocktail
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_table_to_slide(self, slide, data, left, top):
+'''General helper method for adding a table to a slide.
+
+        :param slide: Slide to add the table to
+        :type slide: slide
+        :param data: List of lists that has the data to write to the table
+        :type data: list
+        :param left: Left offset in inches to place to table
+        :type left: float
+        :param top: Top cordinate for placing the table
+        :type top: float
+        :return: Slide with table added
+        :rtype: slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_multi_image_slide(self, slide, images, labeler):
+'''General helper method for adding a slide that will have multiple
+        images.
+
+        :param slide: Slide to add the images to 
+        :type slide: slide
+        :param images: Images to add to the slide
+        :type images: list
+        :param labeler: Function to use to label the individual images
+        :type labeler: func
+        :return: slide with images added
+        :rtype: slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+'''General helper method for adding a slide with a single image to a
+        presentation.
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param title: Title to use for the slide
+        :type title: str
+        :param metadata: Additional information to write to the slide, defaults to None
+        :type metadata: str, optional
+        :param img_scaler: Scaler to apply to size of the image, defaults to 0.65
+                            ,should be between 0 and 1. 1 is full sized image.
+        :type img_scaler: float, optional
+        :return: The new slide with Image added
+        :rtype: slide
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_image_to_slide(self, image, slide, left, top, height):
+'''Helper method for adding images to a slide. If the :class:`Image`
+        does not have a file written on the local machine as can be
+        the case with saved runs who's image data only exists in
+        their xtal files this method will write a temporary image
+        file to the Polo :const:`TEMP_DIR` which then should be deleted after
+        the presentaton file is written.
+
+        :param image: Image to add to the slide
+        :type image: Image
+        :param slide: Slide to add the image to
+        :type slide: slide
+        :param left: Left cordinate location of the image in inches
+        :type left: float
+        :param top: Top cordinate location of the image in inches
+        :type top: float
+        :param height: Height of the image in inches
+        :type height: float
+        :return: []
+        :rtype: [type]
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def datetime_converter(date_string):
+'''General utility function for converting strings to datetime objects.
+        Attempts to convert the string by trying a couple of datetime
+        formats that are common in cocktail menu files and other
+        locations in the HWI file universe Polo runs across.
+
+        :param date_string: string to convert to datetime
+        :type date_string: str
+        :return: datetime object
+        :rtype: datetime
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def date_range_parser(date_range_string):
+'''Utility function for converting the date ranges in the cocktail
+        metadata csv file to datetime objects using the 
+        :meth:`~polo.utils.io_utils.BarTender.datetime_converter`
+        method.
+
+        Date ranges should have the format
+
+        .. code-block:: text
+
+            'start date - end date'
+
+            If the date range is for the most recent cocktail menu then there
+            will not be an end date and the format will be
+
+            'start date - '
+
+        :param date_range_string: string to pull dates out of   
+        :type date_range_string: str
+        :return: tuple of datetime objects, start date and end date
+        :rtype: tuple
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def add_menus_from_metadata(self):
+'''Adds :class:`Menu` objects to the :attr:`polo.utils.io_utils.BarTender.menus`
+        attribute by reading the cocktail csv files included
+        in the :const:`COCKTAIL_DATA_PATH` directory.'''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_menu_by_date(self, date, type_='s'):
+'''Get a :class:`Menu` instance who's usage dates include the
+        date passed through the `date` argument and
+        matches the screen type passed through the `type_` argument.
+
+        Screen types can either be 's' for 'soluble' screens or 'm' for
+        membrane screens.
+
+        :param date: Date to search menus with
+        :type date: datetime
+        :param type_: Type of screen to return (soluble or membrane)
+        :type type_: str
+        :return: menu matching the given date and type
+        :rtype: Menu
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_menus_by_type(self, type_='s'):
+'''Returns all :class:`Menu` instances of a given screen type.
+
+        's' for soluble screens and 'm' for membrane screens. No other
+        characters should be passed to `type_`.
+
+        :param type_: Key for type of screen to return
+        :type type_: str (max length 1)
+        :return: list of menus of that screen type
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_menu_by_path(self, path):
+'''Returns a :class:`Menu` instance by its file path, which is
+        used as the key for accessing the menus attribute normally.
+
+        :param path: file path of a menu csv file
+        :type path: str
+        :return: Menu instance that is mapped to given path
+        :rtype: Menu
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_menu_by_basename(self, basename):
+'''Uses the basename of a :class:`Menu` file path to return a :class:`~Menu` object.
+        Useful for retrieving menus based on the text of comboBoxes since
+        when menus are displayed to the user only the basename is used.
+
+        :param basename: Basename of a :class:`~polo.utils.io_utils.Menu` file path
+        :type basename: str
+        :return: Menu instance who's basename matches the `basename` argument,
+                returns None is no menu is found
+        :rtype: Menu or None
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def set_cocktail_map(cls, map):
+'''Classmethod to edit the
+        :attr:`~polo.utils.io_utils.CocktailMenuReader.cocktail_map`.
+        The :attr:`~polo.utils.io_utils.CocktailMenuReader.cocktail_map`
+        describes where the :class:`Cocktail` level information 
+        is stored in a given cocktail row in the csv file. 
+        It is a dictionary that maps specific indices in a row to
+        :class:`Cocktail` attributes.
+
+        The default cocktail_map dictionary is below.
+
+        >>> cocktail_map = {
+        0: 'well_assignment',
+        1: 'number',
+        8: 'pH',
+        2: 'commercial_code'
+        }
+
+        This tells instances of CocktailMenuReader to look at index 0 of a row
+        for the well_assignment attribute of the Cocktail class, index 1 for
+        the number attribute of the Cocktail class, etc.
+
+        :param map: Dictionary mapping csv row indicies to Cocktail object
+                    attributes
+        :type map: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def set_formula_pos(cls, pos):
+'''Classmethod to change the :attr:`CocktailMenuReader.formula_pos`
+        attribute. The :attr:`~CocktailMenuReader.formula_pos`
+        describes the location (base 0) of the chemical formula in a row of
+        a cocktail menu file csv. For some reason, HWI cocktail menu files
+        will only have one chemical formula per row (cocktail) no matter
+        the number of reagents that composite that cocktail. This is why
+        its location is represented using an int instead of a dict.
+
+        Generally, :attr:`CocktailMenuReader.formula_pos`
+        should not be changed without a very good
+        reason as the position of the chemical formula is consistent across
+        all HWI cocktail menu files.
+
+        :param pos: Index where chemical formula can be found
+        :type pos: int
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def read_menu_file(self):
+'''Read the contents of cocktail menu csv file. The :class:`Menu` file path
+        is read from the :attr:`Menu.menu_file_path` attribute. The first **two** lines
+        of all the cocktail menu files included in Polo are header lines and
+        so the reader will skip the first two lines before actually reading
+        in any data. Each row is converted to a
+        :class:`~polo.crystallography.cocktail.Cocktail` object and then
+        added to a dictionary based on the  :class:`~polo.crystallography.cocktail.Cocktail`
+        instance's well assignment.
+
+        :return: Dictionary of Cocktail instances. Key value is the Cocktail's
+                 well assignment in the screening plate (base 1).
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def link_visualizer(self, run):
+'''Create a text representation of the linked list structure between
+        runs for debugging.
+
+        :param run: Run to build representation from
+        :type run: Run
+        :return: Text representation of the linked list
+        :rtype: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def the_big_link(runs):
+'''Wrapper method to do all the linking required for a collection of
+        runs. First calls :meth:`~polo.utils.io_utils.RunLinker.unlink_runs_completely`
+        to separate any existing links so things do not get tangled. Then 
+        calls :meth:`~polo.utils.io_utils.RunLinker.link_runs_by_date` and
+        :meth:`~polo.utils.io_utils.RunLinker.link_runs_by_spectrum`.
+
+        :param runs: List of runs to link
+        :type runs: list
+        :return: List of runs with links made
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def link_runs_by_spectrum(runs):
+'''Link a collection of :class:`~polo.crystallography.run.HWIRun` instances
+        together by spectrum. All non-visible
+        :class:`~polo.crystallography.run.HWIRun` instances
+        are linked together in a monodirectional circular linked list.
+        Each visible :class:`~polo.crystallography.run.HWIRun` instance
+        will then point to the same non-visible run through
+        their :attr:`~polo.crystallography.run.HWIRun.alt_spectrum`
+        attribute as a way to access the non-visible
+        linked list.
+
+        :param runs: List of runs to link together
+        :type runs: list
+        :return: List of runs linked by spectrum
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def unlink_runs_completely(runs):
+'''Cuts all links between the :class:`~polo.crystallography.run.HWIRun` instances
+        passed through the `runs` argument and the
+        :class:`~polo.crystallography.image.Image` instances
+        in those runs.
+
+        :param runs: List of runs
+        :type runs: list
+        :return: List of runs without any links
+        :rtype: list
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def __init__(self, xml_path=None):
+'''XmlReader class can be used to read the xml metadata files that are
+        included in HWI screening run rar archives. Currently, is primarily meant
+        to extract metadata about the plate and the sample in that plate.
+
+        :param xml_path: File path to xml file
+        :type xml_path: str or Path
+        :param xml_files: list of xml file paths, defaults to []
+        :type xml_files: list, optional
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def get_data_from_xml_element(xml_element):
+'''Return the data stored in an `xml_element`. Helper method
+        for reading xml files.
+
+        :param xml_element: xml element to read data from
+        :type xml_element: [type]
+        :return: Dictionary of data stored in xml element
+        :rtype: dict
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def __init__(self, path, start_date, end_date, type_, cocktails={}):
+'''Creates a :class:`Menu` instance. :class:`Menu` objects are used to organize a single
+        screening run plate set up. They should contain 1536 unique screening
+        conditions; one for each well in the HWI high-throughput plate. HWI
+        has altered what cocktails are used in each of the 1536 wells over the
+        years and so many versions of cocktail menus have been used. A single
+        :class:`Menu` instance represents one of these versions and accordingly has a
+        start and end date to identify when the menu was used. Additionally, 
+        HWI offers two types of high throughput screens; membrane or soluble
+        screens. Both use 1536 well plates but have very different chemical
+        conditions at the same well index. 
+
+        :class:`Menu`s that hold conditions for soluble screens are the `type_`
+        attribute set to 's' and menus that hold conditions for membrane
+        screens have the `type_` attribute set to 'm'.
+
+        :param path: Location of the menu csv file
+        :type path: str
+        :param start_date: Date when this screen menu was first used
+        :type start_date: datetime
+        :param end_date: Last date this screen menu was used
+        :type end_date: datetime
+        :param type_: Membrane or soluble screen
+        :type type_: str
+        '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def parse_HWI_filename_meta(HWI_image_file):
+'''HWI images have a standard file nameing schema that gives info about when
+    they are taken and well number and that kind of thing. This function returns
+    that data
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/io_utils.py | def if_dir_not_exists_make(parent_dir, child_dir=None):
+'''If only parent_dir is given attempts to make that directory. If parent
+    and child are given tries to make a directory child_dir within parent dir.
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/ftp_utils.py | def catch_ftp_errors(func):
+'''General decorator function for catching any errors thrown by other
+    ftp_utils functions.
+    '''
+=========================
+=========================
+/home/ethan/Documents/github/Marco_Polo/src/polo/utils/ftp_utils.py | def logon(host, username, password, port=21):
+'''Attempts to connect to ftp server using the provided credentials.
+
+    :param host: Host FTP server address
+    :param username: Username of person attempting connection
+    :param password: Password of person attempting connections
+    :param port: Port to connect through. Default is 21.
+    '''
+=========================

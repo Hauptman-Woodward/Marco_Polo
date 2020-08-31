@@ -6,7 +6,7 @@ and follow the install instructions for the latest release for your operating
 system, but before you do please review the OS specific notes below.
 
 OS Specific Installation Notes
-==========================
+===================================
 
 Windows
 ---------------------------

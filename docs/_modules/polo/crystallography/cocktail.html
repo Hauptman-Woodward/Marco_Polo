@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.crystallography.cocktail &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.crystallography.cocktail &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,9 +52,12 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="../../../_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -72,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +103,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +142,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -158,8 +166,9 @@
   <h1>Source code for polo.crystallography.cocktail</h1><div class="highlight"><pre>
 <span></span><span class="c1"># from cockatoo.screen import _parse_cocktail_csv</span>
 <span class="c1"># from cockatoo.metric import distance</span>
-<span class="kn">from</span> <span class="nn">molmass</span> <span class="kn">import</span> <span class="n">Formula</span>
 <span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">molmass</span> <span class="kn">import</span> <span class="n">Formula</span>
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -181,7 +190,7 @@
 <span class="sd">    :type commercial_code: str, optional</span>
 <span class="sd">    :param pH: pH of the cocktail, defaults to None</span>
 <span class="sd">    :type pH: float, optional</span>
-<span class="sd">    :param reagents: list of reagent instances that make up the contents</span>
+<span class="sd">    :param reagents: list of :class:`~polo.crystallography.cocktail.Reagent` instances that make up the contents</span>
 <span class="sd">        of the cocktail, defaults to None</span>
 <span class="sd">    :type reagents: Reagent, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -227,8 +236,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_well_assignment</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Cocktail.add_reagent"><a class="viewcode-back" href="../../../polo.crystallography.html#polo.crystallography.cocktail.Cocktail.add_reagent">[docs]</a>    <span class="k">def</span> <span class="nf">add_reagent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_reagent</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Adds a reagent to the existing list of reagents referenced by the</span>
-<span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.reagents attribute.</span>
+        <span class="sd">&#39;&#39;&#39;Adds a :class:`~polo.crystallography.cocktail.Reagent` to the existing list of reagents referenced by the</span>
+<span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.reagents` attribute.</span>
 
 <span class="sd">        :param new_reagent: Reagent to add to this cocktail</span>
 <span class="sd">        :type new_reagent: Reagent</span>
@@ -371,20 +380,20 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">molarity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Attempt to calculate the molarity of this reagent at its current</span>
+        <span class="sd">&#39;&#39;&#39;Attempt to calculate the molarity of this :class:`~polo.crystallography.cocktail.Reagent` at its current</span>
 <span class="sd">        concentration. This calculation is not certain to return a value</span>
 <span class="sd">        as HWI cocktail menu files use a variety of units to describe</span>
 <span class="sd">        chemical concentrations, including %w/v or %v/v.</span>
 
 <span class="sd">        %w/v is defined as grams of colute per 100 ml of solution * 100. This can</span>
-<span class="sd">        be converted to molarity when the molar mass of the reagent is known.</span>
+<span class="sd">        be converted to molarity when the molar mass of the :class:`~polo.crystallography.cocktail.Reagent` is known.</span>
 
 <span class="sd">        %v/v is defined as the volume of solute over the total volume of solution</span>
-<span class="sd">        * 100. The density of the reagent is required to convert %w/v to molarity</span>
+<span class="sd">        * 100. The density of the :class:`~polo.crystallography.cocktail.Reagent` is required to convert %w/v to molarity</span>
 <span class="sd">        which is not included in HWI cocktail menu files. This makes conversion</span>
 <span class="sd">        from %w/v out of reach for now.</span>
 <span class="sd">        </span>
-<span class="sd">        If the reagent concentration cannot be converted to molarity then</span>
+<span class="sd">        If the :class:`~polo.crystallography.cocktail.Reagent` concentration cannot be converted to molarity then</span>
 <span class="sd">        this function will return False.</span>
 
 <span class="sd">        :return: molarity or False</span>
@@ -402,10 +411,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">molar_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Attempt to calculate the molar mass of this reagent. Closely related</span>
-<span class="sd">        to the molarity property. The molar mass of the reagent cannot be</span>
+<span class="sd">        to the molarity property. The molar mass of the :class:`~polo.crystallography.cocktail.Reagent` cannot be</span>
 <span class="sd">        calculated for all HWI reagents. </span>
 <span class="sd">      </span>
-<span class="sd">        :return: Molar mass of the Reagent if it is calculable, False otherwise.</span>
+<span class="sd">        :return: Molar mass of the :class:`~polo.crystallography.cocktail.Reagent` if it is calculable, False otherwise.</span>
 <span class="sd">        :rtype: UnitValue or bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">mm</span> <span class="o">=</span> <span class="kc">None</span>
@@ -444,7 +453,7 @@
 <span class="sd">        argument. Stock concentration is taken from the </span>
 <span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` attribute. If</span>
 <span class="sd">        :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` is not</span>
-<span class="sd">        set or the molarity of the reagent can not be calculated this method</span>
+<span class="sd">        set or the molarity of the :class:`~polo.crystallography.cocktail.Reagent` can not be calculated this method</span>
 <span class="sd">        will return False.</span>
 
 <span class="sd">        :param target_volume: Volume in which stock will be diluted into</span>
@@ -593,11 +602,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -608,7 +625,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

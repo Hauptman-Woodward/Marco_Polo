@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Future Maintainers &mdash; Polo 0.0.5 documentation</title>
+  <title>Future Maintainers &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,9 +54,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -74,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -101,6 +108,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#polo-package-notes">Polo Package Notes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-exes-for-distribution">Creating Exes for Distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-and-extending-this-documentation">Editing and Extending this Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -114,6 +122,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -152,7 +161,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
@@ -299,7 +308,7 @@ to automatically generate the Python files which define each interface.</p>
 <div class="section" id="src-directory">
 <h3>src Directory<a class="headerlink" href="#src-directory" title="Permalink to this headline">¶</a></h3>
 <p>The src directory includes all Python scripts Polo needs to run plus any
-data required, such as the MARCO tensflow model. Below are short desciptions
+data required, such as the MARCO tensorflow model. Below are short descriptions
 of what you’ll find in this directory.</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">Polo.py</span></code> : Main script. Use to launch the application.</p></li>
@@ -375,17 +384,33 @@ relationships between widgets are in question.</p>
 </div>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="crystallography-subpackage">
+<h3>Crystallography Subpackage<a class="headerlink" href="#crystallography-subpackage" title="Permalink to this headline">¶</a></h3>
 <p>Contains scripts relating to crystallography and high-throughput imaging.
 Most of the main data containing classes are defined here.</p>
+</div>
+<div class="section" id="designer-subpackage">
+<h3>Designer Subpackage<a class="headerlink" href="#designer-subpackage" title="Permalink to this headline">¶</a></h3>
 <p>Contains all the pyqt Designer generated UI scripts. These are used to define
 the graphical interfaces (buttons, knobs, etc.) that make up the widgets and
 dialogs defined in Polo. These scripts do not provide any functionality to
 the graphical components, they just define their layout and names.</p>
-<p>Holds scripts relating to running the MARCO model for image classification.</p>
+</div>
+<div class="section" id="marco-subpackage">
+<h3>Marco Subpackage<a class="headerlink" href="#marco-subpackage" title="Permalink to this headline">¶</a></h3>
+<p>Holds scripts relating to running the MARCO model for image classification.
+There is really only one important function in here which classifies an image
+passed to it.</p>
+</div>
+<div class="section" id="plots-subpackage">
+<h3>Plots Subpackage<a class="headerlink" href="#plots-subpackage" title="Permalink to this headline">¶</a></h3>
 <p>Functions related to generating plots shown in the plots tab of the main window.
 This one is kind of a todo I didn’t get around to and there is a lot of clean up
 that could be done here. Especially since plots does not have its own widget
 like the slideshow inspector or plate inspectors.</p>
+</div>
+<div class="section" id="threads-subpackage">
+<h3>Threads Subpackage<a class="headerlink" href="#threads-subpackage" title="Permalink to this headline">¶</a></h3>
 <p>A lot of the operations Polo undertakes, like running the MARCO model, are
 CPU intense and cannot be run on the same thread that the GUI is run on. The
 threads package holds the <code class="code docutils literal notranslate"><span class="pre">thread.py</span></code> script which defines QThread objects
@@ -394,21 +419,34 @@ the GUI when preforming a large operation. Windows is particularly fast to recog
 a frozen program so it is often necessary to put tasks that take more than a few
 seconds onto a thread.</p>
 </div>
+<div class="section" id="utils-subpackage">
+<h3>Utils Subpackage<a class="headerlink" href="#utils-subpackage" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="widgets-subpackage">
+<h3>Widgets Subpackage<a class="headerlink" href="#widgets-subpackage" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="windows-subpackage">
+<h3>Windows Subpackage<a class="headerlink" href="#windows-subpackage" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+</div>
 <div class="section" id="creating-exes-for-distribution">
 <h2>Creating Exes for Distribution<a class="headerlink" href="#creating-exes-for-distribution" title="Permalink to this headline">¶</a></h2>
 <p>Once you have made some modifications to your program you are going to want
 to create exe for potential users. I used Pyinstaller to create the exe files
 and then on Windows Inno setup to create an installer and will cover those
 topic in this section.</p>
-<div class="section" id="pyinstaller-overview">
-<h3>Pyinstaller Overview<a class="headerlink" href="#pyinstaller-overview" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pyinstaller-overview-and-usage-guide">
+<h3>Pyinstaller Overview and Usage Guide<a class="headerlink" href="#pyinstaller-overview-and-usage-guide" title="Permalink to this headline">¶</a></h3>
 <p>Pyinstaller is not included as a dependency in the <code class="code docutils literal notranslate"><span class="pre">requirements.txt</span></code>
 file so will need to install it using Pip.</p>
 <p>Polo includes a <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file in the outermost directory. This is the file
 I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
 the exe will be specific to the operating system you create it on. A Polo
 exe created on Windows will only work on Windows machines. Despite it’s file
-extention, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
+extension, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
 information along to pyinstaller.</p>
 <p>Running pyinstaller using the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is actually
 very easy and can be done with the command
@@ -425,8 +463,8 @@ file paths based on the locations on your development machine(s).</p>
 <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
 misses the binary files in the Tensorflow library that are required for the
 package to work correctly. Therefore these files need to be collected as
-passed to pyinstaller explictly to create a working exe. Stragenly, I only
-encoutered this problem on Linux and Mac.
+passed to pyinstaller explicitly to create a working exe. Strangely, I only
+encountered this problem on Linux and Mac.
 The <code class="code docutils literal notranslate"><span class="pre">tensorflow_location</span></code> dictionary specifies the location of the
 Tensorflow package on your machine. You will need to modify these paths to
 the Tensorflow package being used by your virtual environment.</p>
@@ -440,6 +478,51 @@ running the pyinstaller command without <code class="code docutils literal notra
 a directory instead of a single file. This will let you more easily see
 exactly what pyinstaller has included in your distribution. If it isn’t in
 the directory distribution it won’t be found in the single file distribution.</p>
+</div>
+</div>
+<div class="section" id="editing-and-extending-this-documentation">
+<h2>Editing and Extending this Documentation<a class="headerlink" href="#editing-and-extending-this-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="documentation-background">
+<h3>Documentation Background<a class="headerlink" href="#documentation-background" title="Permalink to this headline">¶</a></h3>
+<p>All Polo documentation is written using the RST (restructured text) markdown
+language. I find myself going back to this <a class="reference external" href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">cheat sheet</a>
+when I have syntax questions but overall it is very similar to GitHub markdown.
+The code (API) documentation and html is generated using Sphinx Python package which you
+can read more about at the <a class="reference external" href="https://www.sphinx-doc.org/en/master/index.html">Sphinx website</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Everything below has been done on Ubuntu (Linux) OS. Results may vary on Windows or Mac.</p>
+</div>
+</div>
+<div class="section" id="editing-the-docs">
+<h3>Editing the Docs<a class="headerlink" href="#editing-the-docs" title="Permalink to this headline">¶</a></h3>
+<p>You can edit the documentation in two main ways. First, directly editing the rst files located in the
+<code class="code docutils literal notranslate"><span class="pre">sphinx</span></code> directory of the Polo repository. This is the best way to edit pages like the <span class="xref std std-ref">User Guide</span>
+or <a class="reference internal" href="install.html#installation-guide"><span class="std std-ref">Installation Guide</span></a> that are not generated automatically. The second way is through the docstrings
+of Polo functions. Sphinx collects these docstrings and creates the code documentation from them.
+Either way, you will need to render your rst / Python files to HTML which actually forms the documentation
+website. To learn how, read on.</p>
+</div>
+<div class="section" id="creating-html-files">
+<h3>Creating HTML Files<a class="headerlink" href="#creating-html-files" title="Permalink to this headline">¶</a></h3>
+<p>1. If you have not done so already, install the Sphinx package and the Read the Docs theme. Follow the instructions
+in the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/installation.html">Sphinx Installation Guide</a> to install
+Sphinx and use the command <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx_rtd_theme</span></code> to install the RTD theme. You should use whatever
+virtual environment you are using while working on Polo as all the dependencies required to run Polo will be
+required to run Sphinx.</p>
+<p>2. Navigate to the <code class="code docutils literal notranslate"><span class="pre">sphinx</span></code> directory of the Polo repository. Run the command <code class="code docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code>. This should
+collect docstrings and render your RST files to html. They will be places in the <code class="code docutils literal notranslate"><span class="pre">sphinx/_build/html</span></code>
+directory of the Polo repository.</p>
+<p>3. Checkout the changes you made by opening the HTML files. If everything looks good move all files to the
+<code class="code docutils literal notranslate"><span class="pre">docs</span></code> folder of the repository and commit your changes. If GitHub pages is still being used to host
+the documentation website, the changes should come online in a few minutes. If some other hosting solution is
+in use, I can guide you no further.</p>
+</div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>A good place to start if things go weird in creating the documentation is the <code class="code docutils literal notranslate"><span class="pre">conf.py</span></code> file
+located in the <code class="code docutils literal notranslate"><span class="pre">sphinx</span></code> directory of the Polo repository. It defines filepaths and assets that
+are used when rendering so it is a good place to start looking for issues.</p>
 </div>
 </div>
 </div>
@@ -464,11 +547,19 @@ the directory distribution it won’t be found in the single file distribution.<
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -479,7 +570,6 @@ the directory distribution it won’t be found in the single file distribution.<
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

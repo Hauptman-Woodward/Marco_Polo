@@ -21,13 +21,13 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     HTML_ICON = str(ICON_DICT['html'])
     GRID_ICON = str(ICON_DICT['grid'])
-    '''The OptimizeWidget is a primary run interface widget that allows
+    '''The :class:`OptimizeWidget` class is a primary run interface widget that allows
     users to create optimization screens around the crystallization conditions
     that yielded xtal hits. The concept is very similar to the program MakeTray
     available from Hampton Research. Currently, users cannot specify their
     own conditions and are limited to the predetermined conditions of the
     :class:`~polo.utils.io_utils.Menu` that was selected when the run was originally imported
-    into Polo. Additionally, the OptimizeWidget is only available to :class:`HWIRun` instances
+    into Polo. Additionally, the :class:`OptimizeWidget` is only available to :class:`HWIRun` instances
     as the cocktail to well mapping cannot be inferred for other more
     general :class:`Run` types.
 
@@ -127,7 +127,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     @property
     def constant_reagents(self):
         '''Retrieve a set of :class:`Reagents` that are not included as either the
-        x reagent or the y reagent but are still part of the crystallization
+        attr:`x_reagent` or the attr:`y_reagent` but are still part of the crystallization
         cocktail and therefore need to be included in the screen. Unlike
         either the x or y reagents, constant reagents do not change their
         concentration across the screening plate.
@@ -143,7 +143,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         '''Return the constant :class:`Reagent` that is currently
         selected by the user.
 
-        :return: Currently selected constant reagent if exists and selected, 
+        :return: Currently selected constant :class:`~polo.crystallography.cocktail.Reagent` if exists and selected, 
                 None otherwise
         :rtype: Reagent or None
         ''' 
@@ -166,7 +166,7 @@ class OptimizeWidget(QtWidgets.QWidget):
     def hit_images(self):
         '''Retrieves a list of :class:`~polo.crystallography.image.Image`
         object instances that have human
-        classification (`human_class` attribute) == 'Crystals'. Used to
+        classification == 'Crystals'. Used to
         determine what wells to allow the user to optimize. Currently, only
         allow the user to optimize wells they have marked as crystal.
         '''
@@ -180,13 +180,13 @@ class OptimizeWidget(QtWidgets.QWidget):
 
     @property
     def x_step(self):
-        '''The percent variance between x reagent wells.
+        '''The percent variance between :attr:`x_reagent` wells.
         '''
         return self.ui.doubleSpinBox_4.value() / 100
 
     @property
     def y_step(self):
-        '''The percent variance between y reagent wells.
+        '''The percent variance between :attr:`y_reagent` wells.
         '''
         return self.ui.doubleSpinBox_5.value() / 100
 
@@ -217,8 +217,8 @@ class OptimizeWidget(QtWidgets.QWidget):
         self.ui.unitComboBox_2.scalers = UnitComboBox.saved_scalers
     
     def _handle_reagent_change(self, x=False, y=False, const=False):
-        '''Private method that handles when a reagent is changed. The arguments
-        indicate which reagent has been changed.
+        '''Private method that handles when a :class:`~polo.crystallography.cocktail.Reagent` is changed. The arguments
+        indicate which :class:`~polo.crystallography.cocktail.Reagent` has been changed.
 
         :param x: If True update the x reagent, defaults to False
         :type x: bool, optional
@@ -238,7 +238,7 @@ class OptimizeWidget(QtWidgets.QWidget):
             if self.selected_constant:
                 self.ui.unitComboBox_4.set_value(self.selected_constant.stock_con)
 
-    def update(self):
+    def update_interface(self):
         '''Method to update reagents and selectable wells to the user after
         they have made additional classifications that would increase or
         decrease the pool of crystal classified images.
@@ -274,7 +274,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         # sets options to well numbers of hits
 
     def _update_current_reagents(self, image_index=None):
-        '''Private method that updates x and y reagent comboBox widgets to 
+        '''Private method that updates x and y :class:`~polo.crystallography.cocktail.Reagent` comboBox widgets to 
         reflect what :class:`Reagent` instances are contained in the
         currently selected well.
 
@@ -305,7 +305,7 @@ class OptimizeWidget(QtWidgets.QWidget):
         based on the currently selected well. :class:`Reagents` must come from the
         class:`Cocktail` instance associated with the selected well.
 
-        TODO: Add the option to vary pH instead of a reagent along either
+        TODO: Add the option to vary pH instead of a :class:`~polo.crystallography.cocktail.Reagent` along either
         axis. This would also mean that the constant reagents would need to
         be updated.
         '''
@@ -346,9 +346,9 @@ class OptimizeWidget(QtWidgets.QWidget):
         called. The stock concentration value is pulled from each reagent's
         respective `unitComboBox` instance.
 
-        :param x: If True, set x reagent stock con, defaults to False
+        :param x: If True, set :attr:`x_reagent` stock con, defaults to False
         :type x: bool, optional
-        :param y: If True, set the y reagent stock con, defaults to False
+        :param y: If True, set the :attr:`y_reagent` stock con, defaults to False
         :type y: bool, optional
         :param const: If True, sets the constant reagents stock con,
                       defaults to False
@@ -443,6 +443,7 @@ class OptimizeWidget(QtWidgets.QWidget):
                         break
                 if breaker:
                     break
+            self.repaint()  # repaint for Mac catalina OS
 
     def adjust_unit(self, signed_value, new_unit):
 

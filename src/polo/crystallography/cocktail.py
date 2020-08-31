@@ -1,7 +1,8 @@
 # from cockatoo.screen import _parse_cocktail_csv
 # from cockatoo.metric import distance
-from molmass import Formula
 import re
+
+from molmass import Formula
 from polo import *
 
 logger = make_default_logger(__name__)
@@ -23,7 +24,7 @@ class Cocktail():
     :type commercial_code: str, optional
     :param pH: pH of the cocktail, defaults to None
     :type pH: float, optional
-    :param reagents: list of reagent instances that make up the contents
+    :param reagents: list of :class:`~polo.crystallography.cocktail.Reagent` instances that make up the contents
         of the cocktail, defaults to None
     :type reagents: Reagent, optional
     '''
@@ -69,8 +70,8 @@ class Cocktail():
         self._well_assignment = value
 
     def add_reagent(self, new_reagent):
-        '''Adds a reagent to the existing list of reagents referenced by the
-        :attr:`~polo.crystallography.cocktail.Cocktail.reagents attribute.
+        '''Adds a :class:`~polo.crystallography.cocktail.Reagent` to the existing list of reagents referenced by the
+        :attr:`~polo.crystallography.cocktail.Cocktail.reagents` attribute.
 
         :param new_reagent: Reagent to add to this cocktail
         :type new_reagent: Reagent
@@ -213,20 +214,20 @@ class Reagent():
 
     @property
     def molarity(self):
-        '''Attempt to calculate the molarity of this reagent at its current
+        '''Attempt to calculate the molarity of this :class:`~polo.crystallography.cocktail.Reagent` at its current
         concentration. This calculation is not certain to return a value
         as HWI cocktail menu files use a variety of units to describe
         chemical concentrations, including %w/v or %v/v.
 
         %w/v is defined as grams of colute per 100 ml of solution * 100. This can
-        be converted to molarity when the molar mass of the reagent is known.
+        be converted to molarity when the molar mass of the :class:`~polo.crystallography.cocktail.Reagent` is known.
 
         %v/v is defined as the volume of solute over the total volume of solution
-        * 100. The density of the reagent is required to convert %w/v to molarity
+        * 100. The density of the :class:`~polo.crystallography.cocktail.Reagent` is required to convert %w/v to molarity
         which is not included in HWI cocktail menu files. This makes conversion
         from %w/v out of reach for now.
         
-        If the reagent concentration cannot be converted to molarity then
+        If the :class:`~polo.crystallography.cocktail.Reagent` concentration cannot be converted to molarity then
         this function will return False.
 
         :return: molarity or False
@@ -244,10 +245,10 @@ class Reagent():
     @property
     def molar_mass(self):
         '''Attempt to calculate the molar mass of this reagent. Closely related
-        to the molarity property. The molar mass of the reagent cannot be
+        to the molarity property. The molar mass of the :class:`~polo.crystallography.cocktail.Reagent` cannot be
         calculated for all HWI reagents. 
       
-        :return: Molar mass of the Reagent if it is calculable, False otherwise.
+        :return: Molar mass of the :class:`~polo.crystallography.cocktail.Reagent` if it is calculable, False otherwise.
         :rtype: UnitValue or bool
         '''
         mm = None
@@ -286,7 +287,8 @@ class Reagent():
         argument. Stock concentration is taken from the 
         :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` attribute. If
         :attr:`~polo.crystallography.cocktail.Cocktail.stock_con` is not
-        set or the molarity of the reagent can not be calculated this method
+        set or the molarity of the :class:`~polo.crystallography.cocktail.Reagent`
+        can not be calculated this method
         will return False.
 
         :param target_volume: Volume in which stock will be diluted into

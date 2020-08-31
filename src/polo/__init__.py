@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 import sys
+import inspect
 import platform
 
 
@@ -10,7 +11,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-polo_version = '0.0.8'
+polo_version = '0.1.0'  # should be int.int.int format
 dirname = Path(os.path.dirname(__file__)).parent
 
 
@@ -18,18 +19,24 @@ dirname = Path(os.path.dirname(__file__)).parent
 # =============================================================================
 
 LOG_PATH = Path('polo.log')  # always in same dir as Polo main file
-APP_ICON = dirname.joinpath('polo.png')
+RECENT_FILES = Path('recents.txt')
 DATA_DIR = dirname.joinpath('data')
+APP_ICON = DATA_DIR.joinpath('images/logos/polo.png')
 UNRAR = dirname.joinpath('unrar')
 TEMP_DIR = dirname.joinpath('.tmp')
 
 BACKUP_DIR = Path(os.getcwd()).joinpath('.polo_backups')
 
-if not os.path.isdir(str(TEMP_DIR)):
+if not TEMP_DIR.is_dir():
     os.makedirs(str(TEMP_DIR))
 
-if not os.path.isdir(str(BACKUP_DIR)):
+if not BACKUP_DIR.is_dir():
     os.makedirs(str(BACKUP_DIR))
+
+if not RECENT_FILES.is_file():
+    f = open(str(RECENT_FILES), 'w')
+    f.close()
+    
 
 COCKTAIL_DATA_PATH = DATA_DIR.joinpath('cocktail_data')
 COCKTAIL_META_DATA = COCKTAIL_DATA_PATH.joinpath('cocktail_meta.csv')
@@ -139,7 +146,7 @@ def make_default_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
-        '%(levelname)s:%(asctime)s:%(name)s:%(lineno)d:%(message)s')
+        '%(levelname)s\t%(asctime)s\t%(name)s\t%(lineno)d\t%(message)s')
     file_handler = logging.FileHandler(str(LOG_PATH))
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
@@ -149,24 +156,31 @@ def make_default_logger(name):
 
 # URLS
 # =============================================================================
-ABOUT = 'https://ethanholleman.github.io/Marco_Polo/about.html'
-QUICKSTART = 'https://ethanholleman.github.io/Marco_Polo/Quickstart.html'
-FAQS = 'https://ethanholleman.github.io/Marco_Polo/FAQS.html'
-USER_GUIDE = 'https://ethanholleman.github.io/Marco_Polo/user_guide.html'
-DOCS = 'https://ethanholleman.github.io/Marco_Polo/polo.html'
-BETA = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html'
-RELEASES = 'https://github.com/EthanHolleman/Marco_Polo/tags'
-REPORTS = 'https://ethanholleman.github.io/Marco_Polo/beta_testers.html#i-found-a-bug'
+
+HOST_PREFIX = 'https://ethanholleman.github.io/'
+
+ABOUT = HOST_PREFIX + 'Marco_Polo/about.html'
+QUICKSTART = HOST_PREFIX + 'Marco_Polo/Quickstart.html'
+FAQS = HOST_PREFIX + 'Marco_Polo/FAQS.html'
+USER_GUIDE = HOST_PREFIX + 'Marco_Polo/user_guide.html'
+DOCS = HOST_PREFIX + 'Marco_Polo/polo.html'
+BETA = HOST_PREFIX + 'Marco_Polo/beta_testers.html'
+REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
+
+RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
 
-from polo.crystallography.image import Image
-from polo.crystallography.cocktail import Cocktail, Reagent, UnitValue
-from polo.utils.io_utils import BarTender, Menu
-from polo.crystallography.run import HWIRun, Run
-from polo.threads import thread
+# RUN_TYPES = sorted(
+#             [types[-1] for types in 
+#             inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
+#             if issubclass(types[-1], Run)],
+#             key=lambda c: c.import_priority,
+#             reverse=True)
 
-# best bartender at Cunneen's bar in Rodger's Park
-# and in this program handles cocktail data
+
+# get all classes in the Run module that are subclassed from Run this is
+# used for imports. Sort th
+
 
 # logger = make_default_logger(__name__)
 
@@ -185,6 +199,14 @@ critical_paths = [
 #     else:
 #         logger.critical('Critical path {} does not exist!'.format(path))
 
-
+from polo.utils.io_utils import BarTender, Menu
 tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
+
+# best bartender at Cunneen's bar in Rodger's Park
+# and in this program handles cocktail data
+
+from polo.crystallography.image import *
+from polo.crystallography.cocktail import *
+from polo.crystallography.run import *
+from polo.threads import *
 

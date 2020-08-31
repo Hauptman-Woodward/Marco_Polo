@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>polo.widgets.run_organizer &mdash; Polo 0.0.5 documentation</title>
+  <title>polo.widgets.run_organizer &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +36,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -49,9 +52,12 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Polo
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="../../../_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -72,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +103,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +142,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -204,21 +212,55 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">shown_unrar_message</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># x of y downloads complete</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_classification_request</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_current_run</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">dropped_links_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">dropped_links_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_import_runs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">classify_sample_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_classify_multiple_runs</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">all_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get all runs currently listed in the :attr:`~ui.runTree`.</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">run</span> <span class="k">for</span> <span class="n">run_name</span><span class="p">,</span> <span class="n">run</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+<span class="sd">        :return: List of :class:`Run` objects</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">recent_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Return recently accessed imports.</span>
+
+<span class="sd">        :return: List of recently accessed imports</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span>
+    
+    <span class="nd">@recent_files</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">recent_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_file</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_file</span><span class="p">))</span>
+    
+<div class="viewcode-block" id="RunOrganizer.save_recent_import_paths"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.save_recent_import_paths">[docs]</a>    <span class="k">def</span> <span class="nf">save_recent_import_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Save the recently used import paths to the path specified by the</span>
+<span class="sd">        :const:`~polo.RECENT_FILES` path. Polo will attempt to open and read</span>
+<span class="sd">        this file the next time the program is run in order to allow users</span>
+<span class="sd">        to open recently opened runs.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RECENT_FILES</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">recent_files</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span><span class="p">:</span>
+                    <span class="n">recent_files</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._clear_current_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._clear_current_run">[docs]</a>    <span class="k">def</span> <span class="nf">_clear_current_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_list</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Clear out the current run from other widgets by emiting a</span>
-<span class="sd">        `opening_run` signal with a list that does not contain</span>
+<span class="sd">        :attr:`opening_run` signal with a list that does not contain</span>
 <span class="sd">        a Run or HWIRun object.</span>
 
 <span class="sd">        :param run_list: List of runs</span>
@@ -238,7 +280,7 @@
 
 <div class="viewcode-block" id="RunOrganizer._handle_opening_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that signal to other widgets that the current run should be opened</span>
-<span class="sd">        for analysis and viewing by emiting the `opening_run` signal containing</span>
+<span class="sd">        for analysis and viewing by emiting the :attr:`opening_run` signal containing</span>
 <span class="sd">        the selected run.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># get the selected item</span>
@@ -295,15 +337,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_classification_cleanup</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_classified_run</span><span class="p">(</span><span class="n">run</span><span class="p">)</span></div>
-        <span class="c1">#self.classification_thread.start()</span>
-        <span class="c1"># logger.info(&#39;Opened classification thread: {}&#39;.format(</span>
-        <span class="c1">#     self.classification_thread))</span>
     
 <div class="viewcode-block" id="RunOrganizer._classification_cleanup"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classification_cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">_classification_cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;&quot;Cleanup&quot; the UI after a classification thread has completed.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Closed classification thread: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Closed classification thread: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span>
         <span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">exceptions</span><span class="p">:</span>
@@ -393,74 +432,74 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_run_to_tree</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
             <span class="n">sample_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">loaded_runs</span><span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">run_name</span><span class="p">]</span><span class="o">.</span><span class="n">sampleName</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="s1">&#39;save_file_path&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">save_file_path</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">save_file_path</span>
+                <span class="c1"># imported from an xtal file</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">image_dir</span>
             <span class="c1"># pulling run from runTree ensures it has a sample name if it</span>
             <span class="c1"># was added to the tree</span>
         <span class="c1"># link the runs together by sample</span>
         <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">sample_names</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">link_sample</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="RunOrganizer._add_run_from_directory"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._add_run_from_directory">[docs]</a>    <span class="k">def</span> <span class="nf">_add_run_from_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to add a run to the runTree from a directory path.</span>
-
-<span class="sd">        :param dir_path: Path to directory to import</span>
-<span class="sd">        :type dir_path: str or Path</span>
-<span class="sd">        :return: Run or HWIRun created from directory if successful</span>
-<span class="sd">        :rtype: Run or HWIRun</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># use run importer class to make the run</span>
-        <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_run_from_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">new_run</span><span class="p">])</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added run </span><span class="si">{}</span><span class="s1"> from directory&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_run</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">new_run</span></div>
-        <span class="c1"># message box failed to import?</span>
     
-<div class="viewcode-block" id="RunOrganizer._import_runs_from_drop"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._import_runs_from_drop">[docs]</a>    <span class="k">def</span> <span class="nf">_import_runs_from_drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">paths</span><span class="p">:</span>
+<div class="viewcode-block" id="RunOrganizer._import_runs"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._import_runs">[docs]</a>    <span class="k">def</span> <span class="nf">_import_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_paths</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Import :class:`Run` objects from a list of file and directory paths.</span>
+<span class="sd">        Runs that are imported successfully will be added to the sample browser.</span>
+
+<span class="sd">        :param file_paths: List of paths to files and directories to be imported</span>
+<span class="sd">                            as runs</span>
+<span class="sd">        :type file_paths: list</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">file_paths</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-                <span class="c1">#QApplication.setOverrideCursor(Qt.WaitCursor)</span>
-                <span class="n">current_path</span> <span class="o">=</span> <span class="n">paths</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="kc">None</span>
-
-                <span class="k">if</span> <span class="n">current_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                    <span class="k">if</span>  <span class="n">current_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.rar&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">unpack_rar_archive_thread</span><span class="p">(</span>
-                        <span class="n">current_path</span>
-                    <span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">current_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.xtal&#39;</span><span class="p">:</span>
-                        <span class="n">reader</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">current_path</span><span class="p">))</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span>
-                            <span class="n">reader</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">,</span> 
-                        <span class="p">)</span>
-                <span class="k">elif</span> <span class="n">current_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span> <span class="o">=</span> <span class="n">QuickThread</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">current_path</span><span class="p">)</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_paths</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">importer</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">create_import_thread</span><span class="p">()</span>
                 
-                <span class="c1"># gone through all import options, see if import thread is a thread</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="p">:</span>
-                
-                    <span class="k">def</span> <span class="nf">finished_import</span><span class="p">():</span>
-                        <span class="n">import_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">result</span>
-                        
-                        <span class="c1"># if coming from rar or dir result should be dir</span>
-
-                        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">import_result</span><span class="p">)):</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_from_directory</span><span class="p">(</span><span class="n">import_result</span><span class="p">)</span>
-                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">import_result</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">import_result</span><span class="p">])</span>
+                <span class="k">def</span> <span class="nf">finished_import_thread</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">result</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span> 
+                        <span class="k">for</span> <span class="n">run_type</span> <span class="ow">in</span> <span class="n">RUN_TYPES</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">result</span> <span class="o">=</span> <span class="n">run_type</span><span class="o">.</span><span class="n">init_from_directory</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                                <span class="n">result</span><span class="o">.</span><span class="n">add_images_from_dir</span><span class="p">()</span>
+                                <span class="k">break</span>
+                            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                                <span class="k">continue</span>
                     
-                        <span class="k">if</span> <span class="n">paths</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="c1">#QApplication.restoreOverrideCursor()</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-                            
-                        
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">finished_import</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Run</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">result</span><span class="p">])</span>
+                    
+                    <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="ow">and</span> <span class="n">file_paths</span><span class="p">:</span>
+                        <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_paths</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                        <span class="n">importer</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">create_import_thread</span><span class="p">()</span>
+                    
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                            <span class="k">lambda</span><span class="p">:</span> <span class="n">finished_import_thread</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                        <span class="k">lambda</span><span class="p">:</span> <span class="n">finished_import_thread</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">import_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">make_message_box</span><span class="p">(</span>
+                        <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Could not import </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                    <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs_from_drop</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs</span><span class="p">))</span>
                 <span class="n">make_message_box</span><span class="p">(</span>
                     <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Import failed </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -490,12 +529,10 @@
                     <span class="k">return</span> <span class="n">each_backup</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-
 <div class="viewcode-block" id="RunOrganizer.remove_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.remove_run">[docs]</a>    <span class="k">def</span> <span class="nf">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span> 
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">formated_name_to_name</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">remove_run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></div>
-            
 
 <div class="viewcode-block" id="RunOrganizer.backup_classifications_on_thread"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.backup_classifications_on_thread">[docs]</a>    <span class="k">def</span> <span class="nf">backup_classifications_on_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Does the exact same thing as </span>
@@ -554,24 +591,7 @@
             <span class="n">xtal_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="n">xtal_files</span> <span class="o">=</span> <span class="n">xtal_dialog</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">xtal_files</span><span class="p">:</span>  <span class="c1"># returned as a list</span>
-            <span class="n">runs_to_add</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">xtal</span> <span class="ow">in</span> <span class="n">xtal_files</span><span class="p">:</span>
-                <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xtal</span><span class="p">):</span>
-                    <span class="n">deserializer</span> <span class="o">=</span> <span class="n">RunDeserializer</span><span class="p">(</span><span class="n">xtal</span><span class="p">)</span>
-                    <span class="n">new_run</span> <span class="o">=</span> <span class="n">deserializer</span><span class="o">.</span><span class="n">xtal_to_run</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">HWIRun</span><span class="p">,</span> <span class="n">Run</span><span class="p">)):</span>
-                        <span class="n">runs_to_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_run</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
-                        <span class="n">make_message_box</span><span class="p">(</span>
-                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                            <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Could not load run from </span><span class="si">{}</span><span class="s1">. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                <span class="n">xtal</span><span class="p">,</span> <span class="n">new_run</span><span class="p">)</span>
-                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">(</span><span class="n">runs_to_add</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added </span><span class="si">{}</span><span class="s1"> runs from saved files&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runs_to_add</span><span class="p">))</span>
-        <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs</span><span class="p">(</span><span class="n">xtal_files</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RunOrganizer.import_run_from_dialog"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.import_run_from_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">import_run_from_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Import a run from a file dialog.</span>
@@ -580,9 +600,9 @@
             <span class="n">current_run_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">current_run_names</span><span class="p">,</span>
             <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">run_importer_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">(</span><span class="n">run_importer_dialog</span><span class="o">.</span><span class="n">imported_runs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">(</span><span class="n">run_importer_dialog</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Added </span><span class="si">{}</span><span class="s1"> runs from file dialog&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">run_importer_dialog</span><span class="o">.</span><span class="n">imported_runs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">run_importer_dialog</span><span class="o">.</span><span class="n">import_candidates</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">))</span></div>
         <span class="c1"># for run_name, run in run_importer_dialog.imported_runs.items():</span>
         <span class="c1">#     self._add_run_to_tree(run)</span>
@@ -600,6 +620,7 @@
             <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;ftp_download_thread&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">isRunning</span><span class="p">():</span>
+            <span class="c1"># handle if download is already in progress</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
                 <span class="n">message</span><span class="o">=</span><span class="s1">&#39;FTP download already in progress. </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1"> files downloaded.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -616,23 +637,34 @@
                 <span class="n">ftp_browser</span><span class="o">.</span><span class="n">ftp</span><span class="p">,</span> <span class="n">ftp_browser</span><span class="o">.</span><span class="n">download_files</span><span class="p">,</span> <span class="n">ftp_browser</span><span class="o">.</span><span class="n">save_dir</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">download_path</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">handle_ftp_download</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_handle_ftp_download</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">finished_ftp_download</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_finished_ftp_download</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_status</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ftp_browser</span><span class="o">.</span><span class="n">download_files</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Started FTP download thread </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span>
-            <span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="RunOrganizer.finished_ftp_download"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.finished_ftp_download">[docs]</a>    <span class="k">def</span> <span class="nf">finished_ftp_download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RunOrganizer._handle_ftp_download"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._handle_ftp_download">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_ftp_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles when an individual file in the FTP</span>
+<span class="sd">        download queue has finished downloading. Attempts to import the run</span>
+<span class="sd">        by calling :meth:`import_runs` and then increments the FTP</span>
+<span class="sd">        download counter by one.</span>
+
+<span class="sd">        :param file_path: Path to file that was just downloaded</span>
+<span class="sd">        :type file_path: str or Path</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_import_runs</span><span class="p">([</span><span class="n">file_path</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="RunOrganizer._finished_ftp_download"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._finished_ftp_download">[docs]</a>    <span class="k">def</span> <span class="nf">_finished_ftp_download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method that cleans up after all queued FTP downloads have</span>
+<span class="sd">        been completed and shows a message box to the user to inform them of the</span>
+<span class="sd">        status of their downloads.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_status</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># reset the counter</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished FTP download thread </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span>
-        <span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_thread</span><span class="o">.</span><span class="n">exceptions</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Failed to download all files from FTP server </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -642,35 +674,7 @@
             
         <span class="n">make_message_box</span><span class="p">(</span>
             <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="RunOrganizer.handle_ftp_download"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.handle_ftp_download">[docs]</a>    <span class="k">def</span> <span class="nf">handle_ftp_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">test_for_working_unrar</span><span class="p">():</span>
-            <span class="n">unpacker</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">unpack_rar_archive_thread</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">unpacker</span><span class="p">:</span>
-                <span class="n">unpacker</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_run_from_directory</span><span class="p">(</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">))</span>  <span class="c1"># remove rar suffix</span>
-                <span class="p">))</span>
-                <span class="n">unpacker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
-
-        <span class="c1"># connect the downloaded file to classification thread if it</span>
-        <span class="c1"># is in the visible spectrum and another run is not already</span>
-        <span class="c1"># going can create a kind of que for classification here</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
-        <span class="c1"># do something to tell the user that they need to unpack their files</span>
-        <span class="c1"># message box failed to import?</span>
-
-<div class="viewcode-block" id="RunOrganizer.add_run_from_directory"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer.add_run_from_directory">[docs]</a>    <span class="k">def</span> <span class="nf">add_run_from_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">):</span>
-        <span class="c1"># use run importer class to make the run</span>
-        <span class="n">new_run</span> <span class="o">=</span> <span class="n">RunImporter</span><span class="o">.</span><span class="n">import_run_from_directory</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_path</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_runs_to_tree</span><span class="p">([</span><span class="n">new_run</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">new_run</span></div></div>
-        <span class="c1"># message box failed to import?</span>
-
+        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div></div>
 
                     
 
@@ -687,11 +691,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -702,7 +714,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -26,7 +26,6 @@ def unrar_archive(rar_path, target_dir=None):
     try:
         unrar_cmd = [UNRAR_EXE, 'x', '-y', str(rar_path), str(target_dir)]
         exit_status = subprocess.call(unrar_cmd)
-
         if exit_status == 0:
             logger.debug('Unrar completed successfully')
             return Path(str(rar_path)).with_suffix('')

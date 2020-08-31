@@ -75,8 +75,14 @@ class QuickThread(thread):
         self.wait()
 
     def run(self):
-        self.result = self.job_func(**self.func_args)
-        logger.debug('{} completed job'.format(self))
+        try:
+            self.result = self.job_func(**self.func_args)
+            logger.debug('{} completed job'.format(self))
+        except Exception as e:
+            result = e
+            logger.error('Caught {} calling {} on {}'.format(
+                e, self.job_func, self
+            ))
 
 
 class ClassificationThread(thread):

@@ -229,7 +229,7 @@ class plateViewer(QtWidgets.QGraphicsView):
 
     def _set_prerender_info(self, item, image):
         '''Private helper method that sets flags and the tooltip for
-        GraphicsItems before they are added to the GraphicsScene.
+        :class:`QGraphicsItems` before they are added to the :class:`GraphicsScene`.
 
         :param item: GraphicsItem that is to be added to the scene
         :type item: QGraphicsItem
@@ -246,7 +246,7 @@ class plateViewer(QtWidgets.QGraphicsView):
     def tile_images_onto_scene(self, label_dict={}):
         '''Calculates images that should be shown based on the current page
         and the number of images per page. Then tiles these images into a grid,
-        adding them to `_scene` attribute. 
+        adding them to :attr:`_scene` attribute. 
 
         :param label_dict: Dictionary of Image attributes to pass along to
                            :meth:`~polo.widgets.plate_viewer.plateViewer._make_image_label`
@@ -266,6 +266,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             images = [self.run.images[i] for i in self._get_visible_wells()]
             _, stride = self.subgrid_dict[self.images_per_page]
             self._scene.clear()
+            self.viewport().update()
 
             for i, image in enumerate(images):
                 if i % stride == 0 and i != 0:
@@ -297,11 +298,12 @@ class plateViewer(QtWidgets.QGraphicsView):
             )
             logger.debug('Added {} images to scene'.format(len(images)))
             self.changed_page_signal.emit(self._current_page)
+            self.repaint()
 
     def set_scene_opacity_from_filters(self, image_types, human=False,
                                        marco=False, favorite=False,
                                        filtered_opacity=0.2):
-        '''Sets the opacity of all items in the current scene (`_scene` attribute)
+        '''Sets the opacity of all items in the :attr:`_scene` attribute
         based on image filtering criteria. Allows for highlighting images that
         meet specific qualifications such has having a MARCO classification of
         crystals. Images that do not meet the set filter requirements will have
@@ -361,7 +363,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 item.setGraphicsEffect(effect)
 
     def fitInView(self, scene, preserve_aspect=False):
-        '''Fit items added to `_scene` attribute into the available
+        '''Fit items added to :attr:`_scene` attribute into the available
         display space.
 
         :param scene: QGraphicsScene to fit
@@ -378,7 +380,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             super(plateViewer, self).fitInView(scene.itemsBoundingRect())
 
     def wheelEvent(self, event):
-        '''Handle Qt wheelEvents by setting the `_zoom` attribute. Allows users
+        '''Handle Qt wheelEvents by setting the :attr:`_zoom` attribute. Allows users
         to zoom in and out of the current view.
 
         :param event: event
@@ -399,7 +401,7 @@ class plateViewer(QtWidgets.QGraphicsView):
                 self._zoom = 0
 
     def pop_out_selected_well(self):
-        '''Helper method to handle image selection and open an ImagePopDialog
+        '''Helper method to handle image selection and open an :class:`ImagePopDialog`
         that displays the selected image in a pop out view.
         '''
         selection = self._scene.selectedItems()
@@ -411,7 +413,7 @@ class plateViewer(QtWidgets.QGraphicsView):
             self._scene.clearSelection()
 
     def emphasize_all_images(self):
-        '''Returns the opacity of all images in the `_scene` attribute
+        '''Returns the opacity of all images in the :attr:`_scene` attribute
         to 1, or fully opaque.
         '''
         for each_gw in self._scene.items():
@@ -419,14 +421,14 @@ class plateViewer(QtWidgets.QGraphicsView):
                 each_gw.setOpacity(1)
 
     def decolor_all_images(self):
-        '''Removes all coloring from images in the `_scene` attribute.
+        '''Removes all coloring from images in the :attr:`_scene` attribute.
         '''
         for each_item in self._scene.items():
             if isinstance(each_item, QtWidgets.QGraphicsPixmapItem):
                 each_item.setGraphicsEffect(None)
 
     def export_current_view(self, save_path=None):
-        '''Exports the current content of the QGraphicsScene `_scene` attribute
+        '''Exports the current content of the  :attr:`_scene` attribute
         to a png file.
 
         :param save_path: Path to save the image to, defaults to None. If kept 

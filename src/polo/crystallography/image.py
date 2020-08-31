@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
 from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
                   make_default_logger, BLANK_IMAGE)
+from polo.utils.io_utils import BarTender
 from polo.marco.run_marco import run_model
 
 logger = make_default_logger(__name__)
@@ -277,7 +278,6 @@ class Image(QtGui.QPixmap):
                 if dates[i].human_class == IMAGE_CLASSIFICATIONS[0]:
                     return dates[i].date
         except Exception as e:
-            print(e)
             return None
 
     def setPixmap(self, scaling=None):
@@ -363,11 +363,6 @@ class Image(QtGui.QPixmap):
             )
         image_string += 'Date: {}\n'.format(self.formated_date)
         image_string += 'Spectrum: {}\n'.format(self.spectrum)
-        if self.earliest_crystallization_date:
-            date = datetime.strftime(self.earliest_crystallization_date, '%m/%d/%Y')
-        else:
-            date = 'No human classified crystals at this well'
-        image_string += "Well Earliest Crystallization Date: {}".format(date)
         return image_string
 
     def encode_base64(self):
@@ -528,4 +523,3 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
-from polo.utils.io_utils import BarTender

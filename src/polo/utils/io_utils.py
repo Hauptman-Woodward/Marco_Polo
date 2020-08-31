@@ -1,147 +1,41 @@
 import base64
 import csv
+import inspect
 import json
 import os
 import sys
 import time
+import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
-import xml.etree.ElementTree as ET
 
+from jinja2 import Template
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QBrush, QColor, QIcon, QImage, QPainter, QPixmap
+from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 from pptx import Presentation
 from pptx.util import Inches, Pt
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap, QImage, QPainter
-from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
-
-from jinja2 import Template
 from polo import *
-from polo import polo_version
 from polo.threads.thread import QuickThread
-from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
-from polo.crystallography.cocktail import *
 from polo.utils.dialog_utils import *
-from polo.utils.unrar_utils import *
+from polo.utils.exceptions import EmptyRunNameError, ForbiddenImageTypeError
 from polo.utils.math_utils import *
-
+from polo.utils.unrar_utils import *
 
 logger = make_default_logger(__name__)
 
+
 class RunImporter():
-    '''Class to hold general use methods for importing runs into Polo.
-    '''
 
-    @staticmethod
-    def directory_validator(dir_path):
-        '''Check if a directory should proceed further down the import
-        pipeline. Includes checks to make sure the directory exists,
-        is a directory and that the directory contains images of
-        filetypes that can be imported.
+    allowed_filetypes = set(['.xtal', '.rar'])
 
-        :param dir_path: Path to a directory
-        :type dir_path: str or Path
-        :return: True, if directory can be imported, an Exception otherwise
-        :rtype: bool or Exception
-        '''
-        dir_path = str(dir_path)
-        if os.path.exists(dir_path):
-            if os.path.isdir(dir_path):
-                files = list_dir_abs(dir_path, allowed=True)
-                if files:
-                    return True
-                else:
-                    e = ForbiddenImageTypeError
-                    logger.warning('Directory validation failed with {}'.format(e))
-                    return e
-            else:
-                e = NotADirectoryError
-                logger.warning('Directory validation failed with {}'.format(e))
-                return e
-        else:
-            e = FileNotFoundError
-            logger.warning('Directory validation failed with {}'.format(e))
-            return FileNotFoundError
-    
-    @staticmethod
-    def parse_hwi_dir_metadata(dir_name):
-        '''Parse the directory name of an :class:`HWIRun` directory to pull out
-        metadata. If the directory name conforms to HWI naming conventions
-        the function should be able to return the image spectrum, the plate id,
-        the date and the run name. If the directory does not conform to HWI
-        naming standards this will cause an exception which is caught and the
-        function will return None.
-
-        If the parse is successful will return a dictionary with the following
-        format.
-
-         .. code-block:: text
-
-            {'image_spectrum': String describing the image spectrum,
-            'plate_id': String representing the plate id,
-            'date': Datetime instance of imaging date,
-            'run_name': String holding the run name
-            }
-
-        :param dir_name: Name of directory to check for metadata
-        :type dir_name: str or Path
-        :return: Dictionary of extracted metadata or None if parse fails
-        :rtype: dict or None
-        '''
-        try:
-            dir_name = str(Path(dir_name).with_suffix('').name)
-            image_type = dir_name.split('-')[-1].strip()
-            if image_type in SPEC_KEYS:
-                image_spectrum = SPEC_KEYS[image_type]
-            else:
-                image_spectrum = IMAGE_SPECS[0]  # default to visible
-            plate_id = dir_name[:10]
-            date = datetime.strptime(dir_name[10:].split('-')[0],
-                                    '%Y''%m''%d''%H''%M')
-            
-            #return image_type, plate_id, date, run_name  # last is suggeseted run name
-            return {
-                'image_spectrum': image_spectrum,
-                'plate_id': plate_id,
-                'date': date,
-                'run_name': dir_name
-                }
-
-        except Exception as e:
-            logger.error('Caught {} at {} attempting to parse {}'.format(
-                e, RunImporter.parse_hwi_dir_metadata, dir_name
-            ))
-            return False
-    
-    @staticmethod
-    def crack_open_a_rar_one(rar_path):
-        '''Method to open a compressed rar archive.
-
-        :param rar_path: Path to rar archive.
-        :type rar_path: str or Path
-        :return: Path to uncompressed archive if successful
-        :rtype: Path
-        '''
-        if not isinstance(rar_path, Path):
-            rar_path = Path(rar_path)
-        parent_path = rar_path.parent
-        return unrar_archive(rar_path, parent_path)
-    
-    @staticmethod
-    def import_from_xtal_thread(xtal_path):
-        '''Given the path to an xtal file returns a :class:`QuickThread`
-        which can be run to load the run serialized in the
-        xtal file.
-
-        :param xtal_path: File path to xtal file.
-        :type xtal_path: str
-        :return: QuickThread for deserializing the given xtal file.
-        :rtype: QuickThread
-        '''
-        reader = RunDeserializer(xtal_path)
-        if os.path.isfile(xtal_path):
-            return reader.make_read_xtal_thread()
+    def __init__(self, target_path):
+        self.target_path = Path(target_path)
+        self.imported_run = None
+        self.is_running = False
+        logger.debug('Created {} for {}'.format(self, self.target_path))
     
     @staticmethod
     def make_xtal_file_dialog(parent=None):
@@ -159,86 +53,58 @@ class RunImporter():
         return file_dlg
     
     @staticmethod
-    def unpack_rar_archive_thread(archive_path):
-        '''Create a :class:`QuickThread` that is setup to de-compress
-        a rar archive file.
+    def crack_open_a_rar_one(rar_path):
+        '''Unrar a directory of images
 
-        :param archive_path: Path to rar archive.
-        :type archive_path: str or Path
-        :return: QuickThread that can be run to de-compress the given archive path.
+        :param rar_path: Path to rar archive file
+        :type rar_path: str or Path
+        :return: Unrar result
+        :rtype: str, exception or int
+        '''
+
+        parent_path = rar_path.parent
+        return unrar_archive(rar_path, parent_path)
+    
+    def _target_is_valid(self):
+        '''Private method to chech if a the file or directory referenced by
+        :attr:`target_path` is valid for import.
+
+        :return: True if could be imported, False otherwise
+        :rtype: bool
+        '''
+        if self.target_path.exists():
+            if (self.target_path.is_file()
+                and self.target_path.suffix in RunImporter.allowed_filetypes):
+                return True
+            elif (self.target_path.is_dir() 
+                 and list_dir_abs(str(self.target_path), allowed=True)):
+                return True
+        return False
+    
+    def create_import_thread(self):
+        '''Creates a :class:`polo.threads.thread.QuickThread` with function
+        based on the type of file that is to be imported.
+
+        :return: QuickThread
         :rtype: QuickThread
         '''
-        archive_path = str(archive_path)
-        if os.path.exists(archive_path) and Path(archive_path).suffix == '.rar':
-            return QuickThread(job_func=RunImporter.crack_open_a_rar_one, rar_path=archive_path)
-
-    @staticmethod
-    def import_run_from_directory(data_dir, **kwargs):
-        '''Imports a run from a local directory. First attempts to import
-        the run as an :class:`HWIRun` and if this fails attempts an import as
-        a general :class:`Run` object.
-
-        :param data_dir: Directory to build the Run from
-        :type data_dir: str or Path
-        :return: Run, HWIRun or False depending on directory content
-                 and if import succeeds.
-        :rtype: Run, HWIRun, bool
-        '''
-        hwi_import_attempt = RunImporter.import_hwi_run(data_dir, **kwargs)
-        if isinstance(hwi_import_attempt, HWIRun):
-            return hwi_import_attempt
-        else:
-            return RunImporter.import_general_run(data_dir, **kwargs)
-
-    @staticmethod
-    def import_hwi_run(data_dir, **kwargs):
-        '''Attempt to create a :class:`HWIRun` from a directory of
-        images.
-
-        :param data_dir: Directory to import from.
-        :type data_dir: str or Path
-        :return: HWIRun if import is successful, False otherwise
-        :rtype: HWIRun, bool
-        '''
-        if RunImporter.directory_validator(data_dir) == True:
-            from polo import tim
-            metadata = XmlReader().find_and_read_plate_data(data_dir)
-            file_name_data = RunImporter.parse_hwi_dir_metadata(data_dir)
-            if metadata and file_name_data:
-                date = file_name_data['date']
-                menu = tim.get_menu_by_date(date, 's')
-                # assuming soluble need to change based on metadata parse
-                new_run = HWIRun(image_dir=data_dir, cocktail_menu=menu, **file_name_data)
-                new_run.__dict__.update(metadata)  # from xml data
-                new_run.__dict__.update(kwargs)  # for user supplied data
-                # that could overwrite what is in metadata
-                new_run.add_images_from_dir()
-                return new_run
-            else:
-                pass
-            # TODO try importing as non hwi run and show error message
+        if self._target_is_valid():
+            # check if needs unrar
             
-        return False
-
-    @staticmethod
-    def import_general_run(data_dir, **kwargs):
-        '''Attempt to import a :class:`Run` from a directory of images. 
-
-        :param data_dir: [description]
-        :type data_dir: [type]
-        :return: [description]
-        :rtype: [type]
-        '''
-        if RunImporter.directory_validator(data_dir) == True:
-            # cover all required arguments
-            if 'run_name' not in kwargs:
-                kwargs['run_name'] = Path(data_dir).name
-            if 'image_dir' not in kwargs:
-                kwargs['image_dir'] = data_dir
-            new_run = Run(**kwargs)
-            new_run.add_images_from_dir()
-            return new_run
-        return False
+            if self.target_path.suffix == '.rar':
+                import_thread = QuickThread(
+                    RunImporter.crack_open_a_rar_one, rar_path=self.target_path)
+            elif self.target_path.suffix == '.xtal':
+                self._xtal_reader = RunDeserializer(str(self.target_path))
+                import_thread = QuickThread(
+                    self._xtal_reader.xtal_to_run
+                )
+            else:
+                # is a directory create a dummy thread
+                import_thread = QuickThread(
+                    lambda: self.target_path
+                )
+            return import_thread
 
 
 class RunSerializer():
@@ -375,7 +241,7 @@ class HtmlWriter(RunSerializer):
         :type well_number: int or str
         :param x_reagent: reagent varied in x direction
         :type x_reagent: Reagent
-        :param y_reagent: reagent varied in y direction
+        :param y_reagent: Reagent varied in y direction
         :type y_reagent: Reagent
         :param well_volume: Volume of well used in screen
         :type well_volume: int or str
@@ -992,6 +858,8 @@ class RunDeserializer():  # convert saved file into a run
                 class_name, mod_name = d.pop('__class__'), d.pop('__module__')
                 try:
                     module = __import__(mod_name)
+                    # BUG module is polo from init so if currently if classes are
+                    # not imported into init file they will not be found here
                     class_ = getattr(module, class_name)
                 except AttributeError as e:
                     logger.error('Caught {} while calling {}'.format(
@@ -999,7 +867,7 @@ class RunDeserializer():  # convert saved file into a run
                     return None
                 temp_d = {}
                 for key, item in d.items():
-                    if '__' in key:  # deal with object properties
+                    if '__' in key:  # deal with private object properties
                         key = key.split('__')[-1]
                     elif '_' == key[0]:
                         key = key[1:]
@@ -1015,19 +883,6 @@ class RunDeserializer():  # convert saved file into a run
             return obj
         else:
             return None
-
-    def xtal_to_run_on_thread(self):
-        '''Wrapper method around `xtal_to_run` method. Does the exact same thing
-        except creates a `QuickThread` instance and runs `xtal_to_run` on the
-        thread. When finished adds the newly created run to the main window's
-        loaded_run dictionary to signify that the run has been loaded and is
-        ready for further operations.
-        '''
-        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
-
-
-    def make_read_xtal_thread(self):
-        return QuickThread(self.xtal_to_run, xtal_path=self.xtal_path)
 
     def xtal_header_reader(self, xtal_file_io):
         '''Reads the header section of an open xtal file. Should always be
@@ -1146,77 +1001,27 @@ class PptxWriter():
                 other.append(run)
         return visible, other
            
-    # def make_sample_presentation(self, sample_name, runs, title,
-    #                              subtitle, cocktail_data=True):
-    #     '''Create a pptx presentation from a collection of runs intended to
-    #     be all of the same sample. This allows for time resolved comparisons
-    #     and comparisons between spectrums. Should generally not include all
-    #     images in the presentation or with runs who's images do not exist
-    #     on the local machine. Doing so creates huge presentation files and
-    #     long write times.
+    def make_presentation(self, run, title, subtitle=None,
+                                    cocktail_data=True, all_specs=False,
+                                    all_dates=False):
+        '''Create a pptx presentation file from a screening run instance.
 
-    #     :param sample_name: Name of the sample
-    #     :type sample_name: str
-    #     :param runs: List of runs to include in the presentation
-    #     :type runs: list
-    #     :param title: Title of the presentation
-    #     :type title: str
-    #     :param subtitle: Subtitle of the presentation
-    #     :type subtitle: str
-    #     :param cocktail_data: Include cocktail data if True, defaults to True
-    #     :type cocktail_data: bool, optional
-    #     :return: Path to presentation file if write is successful, False otherwise
-    #     :rtype: str or bool
-    #     '''
-    #     visible, other = self.sort_runs_by_spectrum(runs)
-    #     title_slide = self.add_new_slide(0)
-    #     title_slide.shapes.title.text = title
-    #     if subtitle:
-    #         title_slide.placeholders[1].text = subtitle
+        :param run: Run to create the presentation from
+        :type run: Run
+        :param title: Title for the presentation
+        :type title: str
+        :param subtitle: Subtitle for the presentation, defaults to None
+        :type subtitle: str, optional
+        :param cocktail_data: If True include cocktail data on slide, defaults to True
+        :type cocktail_data: bool, optional
+        :param all_specs: If True include all spectrum image slide, defaults to False
+        :type all_specs: bool, optional
+        :param all_dates: If True include all dates slide, defaults to False
+        :type all_dates: bool, optional
+        :return: True if presentation was created successfully, Exception otherwise
+        :rtype: bool or Exception
+        '''
 
-    #     try:
-    #         if visible or other:
-    #             show_all_dates, show_single_image, show_alt_specs = False, False, False
-    #             if visible:
-    #                 if len(visible) > 1:
-    #                     show_all_dates = True
-    #                 else:
-    #                     show_single_image = True
-    #             if other:
-    #                 show_alt_specs = True
-
-    #             if show_all_dates or show_single_image:
-    #                 rep_run = visible[0]
-    #             else:
-    #                 rep_run = other[0]
-                
-    #             for i in range(10):
-    #                 if show_all_dates:
-    #                     self.add_timeline_slide([r.images[i] for r in visible], i+1)
-    #                 elif show_single_image:
-    #                     metadata = str(rep_run.images[i])
-    #                     if hasattr(rep_run.images[i], 'cocktail') and cocktail_data:
-    #                         metadata += '\n\n' + str(rep_run.images[i].cocktail)
-    #                     title = 'Well Number {}'.format(rep_run.images[i].well_number)
-    #                     self.add_single_image_slide(rep_run.images[i], title, metadata)
-                    
-    #                 if show_alt_specs:
-    #                     well_number = i + 1
-    #                     self.add_multi_spectrum_slide([r.images[i] for r in other], well_number)
-                
-    #             self._presentation.save(str(self.output_path))
-    #             self.delete_temp_images()
-    #             return True
-                    
-    #         else:
-    #             return False
-    #     except Exception as e:
-    #         return e
-        
-
-    def make_single_run_presentation(self, run, title, subtitle=None,
-                                     cocktail_data=True, all_specs=False,
-                                     all_dates=False):
         try:
             title_slide = self.add_new_slide(0)
             title_slide.shapes.title.text = title
@@ -1241,8 +1046,6 @@ class PptxWriter():
                             image.get_linked_images_by_spectrum(), image.well_number)
                     if all_dates and (image.next_image or image.previous_image):
                         self.add_timeline_slide(image.get_linked_images_by_date(), image.well_number)
-
-
             
             self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
             self._presentation.save(str(self.output_path))
@@ -1250,7 +1053,7 @@ class PptxWriter():
             return True
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
-                            e, self.make_single_run_presentation))
+                            e, self.make_presentation))
             return e
                 
     
@@ -1277,6 +1080,16 @@ class PptxWriter():
         # do for most recent human classification image if it exits
 
     def add_new_slide(self, template=5):
+        '''Add a new slide to the presentation referenced by the
+        :attr:`_presentation` attribute.
+
+        :param template: Slide template integer identifier, defaults to 5.
+                         See the python-pptx package for more details on 
+                         template integers
+        :type template: int, optional
+        :return: Presentation with the new slide added 
+        :rtype: Presentation
+        '''
         return self._presentation.slides.add_slide(
             self._presentation.slide_layouts[template])
     
@@ -1579,7 +1392,7 @@ class BarTender():
         return s, e
 
     def add_menus_from_metadata(self):
-        '''Adds :class:`Menu` objects to the :attr:polo.utils.io_utils.BarTender.menus`
+        '''Adds :class:`Menu` objects to the :attr:`polo.utils.io_utils.BarTender.menus`
         attribute by reading the cocktail csv files included
         in the :const:`COCKTAIL_DATA_PATH` directory.'''
         if self.cocktail_meta:
@@ -1624,7 +1437,6 @@ class BarTender():
                 if date < self.menus[each_key].start_date:
                     return self.menus[each_key]
         return self.menus[menus_keys_by_date[-1]]
-
 
     def get_menus_by_type(self, type_='s'):
         '''Returns all :class:`Menu` instances of a given screen type.
@@ -1913,10 +1725,10 @@ class RunLinker():
 
 class XmlReader():
 
-    platedef_key = 'platedef'  # keyword that is always in plate definition
+    #platedef_key = 'platedef'  # keyword that is always in plate definition
     # xml file names
 
-    def __init__(self, xml_path=None, xml_files=[]):
+    def __init__(self, xml_path=None):
         '''XmlReader class can be used to read the xml metadata files that are
         included in HWI screening run rar archives. Currently, is primarily meant
         to extract metadata about the plate and the sample in that plate.
@@ -1927,7 +1739,10 @@ class XmlReader():
         :type xml_files: list, optional
         '''
         self.xml_path = xml_path
-        self.xml_files = xml_files
+        self._tree = ET.parse(str(xml_path))
+        self._root = self._tree.getroot()
+        logger.debug('Made {} for {}'.format(self, str(self.xml_path)))
+
 
     @staticmethod
     def get_data_from_xml_element(xml_element):
@@ -1941,77 +1756,10 @@ class XmlReader():
         '''
         return {elem.tag: elem.text for elem in xml_element
                 if elem.tag and elem.text}
+    
+    def __getitem__(self, index):
+        return self.get_data_from_xml_element(self._root[index])
 
-    def read_plate_data_xml(self, xml_path=None):
-        '''Read the data stored in an xml document. HWI includes metadata
-        about samples, imaging dates and other plate information in each
-        rar archive that is distrubted. This method is used to read that
-        data so it can be incorporated into :class:`HWIRun` objects.
-
-        :param xml_path: Path to xml file to read, defaults to None.
-                         If None uses the xml path stored in `xml_path` attribute.
-        :type xml_path: str or Path, optional
-        :return: Dictionary of xml data if read was successful, Exception otherwise
-        :rtype: dict or Exception
-        '''
-        if not xml_path:
-            xml_path = self.xml_file
-        xml_path = str(xml_path)
-        try:
-            tree = ET.parse(xml_path)
-            root = tree.getroot()
-
-            d = XmlReader.get_data_from_xml_element(root[0])
-            d.update(
-                XmlReader.get_data_from_xml_element(root[1])
-            )
-            logger.debug('Read data from {}'.format(xml_path))
-            return d
-
-        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-            logger.error('Caught {} while calling {}'.format(
-                            e, self.read_plate_data_xml))
-            return e
-
-    def discover_xml_files(self, parent_dir):
-        '''Look for xml files in a given directory.
-
-        :param parent_dir: Directory to look for xml files in
-        :type parent_dir: str or Path
-        :return: List of xml file paths, if any exist
-        :rtype: list
-        '''
-        parent_dir = Path(str(parent_dir))
-        try:
-            file_paths = [parent_dir.joinpath(f)
-                          for f in os.listdir(str(parent_dir))]
-            xmls = [f for f in file_paths if f.suffix.lower() == '.xml']
-            logger.debug('Found {} xml files in {}'.format(
-                len(xmls), parent_dir
-            ))
-            return xmls
-        except (PermissionError, FileNotFoundError) as e:
-            logger.error('Caught {} while calling {}'.format(
-                            e, self.discover_xml_files))
-            return e
-
-    def find_and_read_plate_data(self, parent_dir):
-        '''Find xml metadata files in a given directory. Read the
-        data from xml files that contain the :const:`plate_def` key
-        string.
-
-        :param parent_dir: Directory to look for xml files
-        :type parent_dir: Path or str
-        :return: Dict if xml file found and read successfully, False otherwise
-        :rtype: dict or bool
-        '''
-        xml_files = self.discover_xml_files(parent_dir)
-        if isinstance(xml_files, list):
-            for xml_file in xml_files:
-                if self.platedef_key in str(xml_file):
-                    return self.read_plate_data_xml(xml_file)
-        else:
-            return None
 
 
 class Menu():  # holds the dictionary of cocktails
@@ -2096,8 +1844,7 @@ def write_screen_html(plate_list, well_number, run_name, x_reagent,
 
 
 def parse_HWI_filename_meta(HWI_image_file):
-    '''
-    HWI images have a standard file nameing schema that gives info about when
+    '''HWI images have a standard file nameing schema that gives info about when
     they are taken and well number and that kind of thing. This function returns
     that data
     '''
@@ -2206,6 +1953,18 @@ def if_dir_not_exists_make(parent_dir, child_dir=None):
 
     return path
 
+# NOTE imports moved to end as quick fix. Files imported here import classes
+# and functions from io_utils so entire io_utils script must be run before
+# other scripts are run to avoid import errors
+# RUN_TYPES is also here because until those scripts are run they are not
+# included in sys.modules dictionary
+
+from polo.crystallography.cocktail import *
 from polo.crystallography.image import Image
 from polo.crystallography.run import *
-
+RUN_TYPES = sorted(
+        [types[-1] for types in 
+        inspect.getmembers(sys.modules['polo.crystallography.run'], inspect.isclass)
+        if issubclass(types[-1], Run)],
+        key=lambda c: c.import_priority,
+        reverse=True)

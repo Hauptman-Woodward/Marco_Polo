@@ -1,23 +1,30 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Beta Testers Guide &mdash; Polo 0.0.5 documentation</title>
+  <title>Beta Testers Guide &mdash; Polo 0.1.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/polo.ico"/>
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,14 +36,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polo package" href="polo.html" />
+    <link rel="next" title="Polo Code Documentation" href="polo.html" />
     <link rel="prev" title="Video Tutorials" href="video_guides.html" /> 
 </head>
 
@@ -51,9 +54,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
+          
+            
+            <img src="_static/polo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -74,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -99,12 +106,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#i-found-a-bug">I Found a Bug</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="polo.html">polo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -143,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Beta Testers Guide</li>
     
@@ -197,7 +205,7 @@ on how to do it.</p>
 <li><p>Open the xtal file: <a class="reference internal" href="user_guide.html#importing-images-from-a-directory"><span class="std std-ref">Importing Images from a Directory</span></a></p></li>
 <li><p>Open the folder of images and classify them: <a class="reference internal" href="user_guide.html#importing-a-saved-run"><span class="std std-ref">Importing a Saved Run</span></a></p></li>
 <li><p>Classify images using the Slideshow Viewer: <a class="reference internal" href="user_guide.html#using-the-slideshow-view"><span class="std std-ref">Using the Slideshow View</span></a></p></li>
-<li><p>Classify images using the Plate Viewer: <a class="reference internal" href="video_guides.html#using-the-plate-viewer"><span class="std std-ref">Using the Plate Viewer</span></a></p></li>
+<li><p>Classify images using the Plate Viewer: <a class="reference internal" href="user_guide.html#using-the-plate-viewer"><span class="std std-ref">Using the Plate Viewer</span></a></p></li>
 <li><p>Create an optimization screen: <a class="reference internal" href="user_guide.html#using-the-optimize-tool"><span class="std std-ref">Using the Optimize Tool</span></a></p></li>
 <li><p>Do something unexpected in an attempt to break the program (<strong>Highly Recommended!</strong>)</p></li>
 </ul>
@@ -219,7 +227,7 @@ page of the Polo repository or fill out the Google form below.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="polo.html" class="btn btn-neutral float-right" title="polo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="polo.html" class="btn btn-neutral float-right" title="Polo Code Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="video_guides.html" class="btn btn-neutral float-left" title="Video Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -231,11 +239,19 @@ page of the Polo repository or fill out the Google form below.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -246,7 +262,6 @@ page of the Polo repository or fill out the Google form below.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

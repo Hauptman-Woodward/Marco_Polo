@@ -6,6 +6,8 @@ from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_unit_combo import Ui_unitCombo
 from polo.utils.math_utils import *
 
+logger = make_default_logger(__name__)
+
 
 class UnitComboBox(QtWidgets.QWidget):
     '''Widget that is a combination of a spinbox and a
