@@ -157,7 +157,7 @@ def make_default_logger(name):
 # URLS
 # =============================================================================
 
-HOST_PREFIX = 'https://ethanholleman.github.io/'
+HOST_PREFIX = 'https://hauptman-woodward.github.io/Marco_Polo/'
 
 ABOUT = HOST_PREFIX + 'Marco_Polo/about.html'
 QUICKSTART = HOST_PREFIX + 'Marco_Polo/Quickstart.html'
