@@ -1,7 +1,7 @@
 Installation Guide
 =========================
 
-Please visit `the GitHub Release page <https://github.com/EthanHolleman/Marco_Polo/releases>`_
+Please visit `the GitHub Release page <https://hauptman-woodward.github.io/Marco_Polo/releases>`_
 and follow the install instructions for the latest release for your operating
 system, but before you do please review the OS specific notes below.
 

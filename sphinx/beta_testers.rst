@@ -23,7 +23,7 @@ Test Data
 ----------------
 
 If you do not have any screening data of your own that is not a problem.
-You can visit the `Test Data release page <https://github.com/EthanHolleman/Marco_Polo/releases/tag/test-data>`_
+You can visit the `Test Data release page <https://hauptman-woodward.github.io/Marco_Polo/releases/tag/test-data>`_
 at the Polo GitHub repository and download the files there.
 
 What Now?
@@ -46,7 +46,7 @@ For more ideas and help getting started check out the :ref:`User's Guide`
 I Found a Bug
 --------------------------
 Thats great! If you have some GitHub knowhow you can report it on the issues
-`on the issues <https://github.com/EthanHolleman/Marco_Polo/issues>`_
+`on the issues <https://hauptman-woodward.github.io/Marco_Polo/issues>`_
 page of the Polo repository or fill out the Google form below.
 
 .. raw:: html
