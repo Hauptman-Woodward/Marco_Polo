@@ -308,7 +308,7 @@ to automatically generate the Python files which define each interface.</p>
 <div class="section" id="src-directory">
 <h3>src Directory<a class="headerlink" href="#src-directory" title="Permalink to this headline">¶</a></h3>
 <p>The src directory includes all Python scripts Polo needs to run plus any
-data required, such as the MARCO tensflow model. Below are short desciptions
+data required, such as the MARCO tensorflow model. Below are short descriptions
 of what you’ll find in this directory.</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">Polo.py</span></code> : Main script. Use to launch the application.</p></li>
@@ -446,7 +446,7 @@ file so will need to install it using Pip.</p>
 I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
 the exe will be specific to the operating system you create it on. A Polo
 exe created on Windows will only work on Windows machines. Despite it’s file
-extention, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
+extension, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
 information along to pyinstaller.</p>
 <p>Running pyinstaller using the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is actually
 very easy and can be done with the command
@@ -463,8 +463,8 @@ file paths based on the locations on your development machine(s).</p>
 <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
 misses the binary files in the Tensorflow library that are required for the
 package to work correctly. Therefore these files need to be collected as
-passed to pyinstaller explictly to create a working exe. Stragenly, I only
-encoutered this problem on Linux and Mac.
+passed to pyinstaller explicitly to create a working exe. Strangely, I only
+encountered this problem on Linux and Mac.
 The <code class="code docutils literal notranslate"><span class="pre">tensorflow_location</span></code> dictionary specifies the location of the
 Tensorflow package on your machine. You will need to modify these paths to
 the Tensorflow package being used by your virtual environment.</p>

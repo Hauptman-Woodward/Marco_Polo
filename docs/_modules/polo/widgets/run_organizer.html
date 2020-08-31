@@ -224,7 +224,7 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">all_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Get all runs currently listed in the RunTree.</span>
+        <span class="sd">&#39;&#39;&#39;Get all runs currently listed in the :attr:`~ui.runTree`.</span>
 
 <span class="sd">        :return: List of :class:`Run` objects</span>
 <span class="sd">        :rtype: list</span>
@@ -233,7 +233,7 @@
     
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">recent_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Return recently accessed imports</span>
+        <span class="sd">&#39;&#39;&#39;Return recently accessed imports.</span>
 
 <span class="sd">        :return: List of recently accessed imports</span>
 <span class="sd">        :rtype: list</span>
@@ -260,7 +260,7 @@
 
 <div class="viewcode-block" id="RunOrganizer._clear_current_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._clear_current_run">[docs]</a>    <span class="k">def</span> <span class="nf">_clear_current_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_list</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Clear out the current run from other widgets by emiting a</span>
-<span class="sd">        `opening_run` signal with a list that does not contain</span>
+<span class="sd">        :attr:`opening_run` signal with a list that does not contain</span>
 <span class="sd">        a Run or HWIRun object.</span>
 
 <span class="sd">        :param run_list: List of runs</span>
@@ -280,7 +280,7 @@
 
 <div class="viewcode-block" id="RunOrganizer._handle_opening_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that signal to other widgets that the current run should be opened</span>
-<span class="sd">        for analysis and viewing by emiting the `opening_run` signal containing</span>
+<span class="sd">        for analysis and viewing by emiting the :attr:`opening_run` signal containing</span>
 <span class="sd">        the selected run.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># get the selected item</span>

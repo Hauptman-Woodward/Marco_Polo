@@ -134,7 +134,7 @@ src Directory
 -------------------------
 
 The src directory includes all Python scripts Polo needs to run plus any
-data required, such as the MARCO tensflow model. Below are short desciptions
+data required, such as the MARCO tensorflow model. Below are short descriptions
 of what you'll find in this directory.
 
 - :code:`Polo.py` : Main script. Use to launch the application.
@@ -290,7 +290,7 @@ Polo includes a :code:`.spec` file in the outermost directory. This is the file
 I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
 the exe will be specific to the operating system you create it on. A Polo
 exe created on Windows will only work on Windows machines. Despite it's file
-extention, the  :code:`.spec` file is really a python script that passes
+extension, the  :code:`.spec` file is really a python script that passes
 information along to pyinstaller.
 
 Running pyinstaller using the :code:`.spec` file is actually 
@@ -310,8 +310,8 @@ First, you'll notice the dictionary :code:`Tensorflow_location`. Much of the
 :code:`.spec` is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
 misses the binary files in the Tensorflow library that are required for the
 package to work correctly. Therefore these files need to be collected as
-passed to pyinstaller explictly to create a working exe. Stragenly, I only
-encoutered this problem on Linux and Mac.
+passed to pyinstaller explicitly to create a working exe. Strangely, I only
+encountered this problem on Linux and Mac.
 The :code:`tensorflow_location` dictionary specifies the location of the
 Tensorflow package on your machine. You will need to modify these paths to
 the Tensorflow package being used by your virtual environment.
@@ -379,6 +379,5 @@ Debugging
 A good place to start if things go weird in creating the documentation is the :code:`conf.py` file
 located in the :code:`sphinx` directory of the Polo repository. It defines filepaths and assets that
 are used when rendering so it is a good place to start looking for issues.
-
 
 

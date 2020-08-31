@@ -212,7 +212,7 @@ Currently, cocktails are only supported for HWIRuns.</p>
 cocktail belongs to, defaults to None</p></li>
 <li><p><strong>commercial_code</strong> (<em>str</em><em>, </em><em>optional</em>) – Commercial code of cocktail, defaults to None</p></li>
 <li><p><strong>pH</strong> (<em>float</em><em>, </em><em>optional</em>) – pH of the cocktail, defaults to None</p></li>
-<li><p><strong>reagents</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a><em>, </em><em>optional</em>) – list of reagent instances that make up the contents
+<li><p><strong>reagents</strong> (<a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><em>Reagent</em></a><em>, </em><em>optional</em>) – list of <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> instances that make up the contents
 of the cocktail, defaults to None</p></li>
 </ul>
 </dd>
@@ -220,7 +220,7 @@ of the cocktail, defaults to None</p></li>
 <dl class="py method">
 <dt id="polo.crystallography.cocktail.Cocktail.add_reagent">
 <code class="sig-name descname">add_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_reagent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/cocktail.html#Cocktail.add_reagent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.cocktail.Cocktail.add_reagent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a reagent to the existing list of reagents referenced by the
+<dd><p>Adds a <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> to the existing list of reagents referenced by the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">reagents</span></code> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -321,11 +321,11 @@ ultimately refers back to a condition in a specific screening well.</p>
 <dt id="polo.crystallography.cocktail.Reagent.molar_mass">
 <em class="property">property </em><code class="sig-name descname">molar_mass</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.molar_mass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempt to calculate the molar mass of this reagent. Closely related
-to the molarity property. The molar mass of the reagent cannot be
+to the molarity property. The molar mass of the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> cannot be
 calculated for all HWI reagents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Molar mass of the Reagent if it is calculable, False otherwise.</p>
+<dd class="field-odd"><p>Molar mass of the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> if it is calculable, False otherwise.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#polo.crystallography.cocktail.UnitValue" title="polo.crystallography.cocktail.UnitValue">UnitValue</a> or bool</p>
@@ -336,17 +336,17 @@ calculated for all HWI reagents.</p>
 <dl class="py method">
 <dt id="polo.crystallography.cocktail.Reagent.molarity">
 <em class="property">property </em><code class="sig-name descname">molarity</code><a class="headerlink" href="#polo.crystallography.cocktail.Reagent.molarity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to calculate the molarity of this reagent at its current
+<dd><p>Attempt to calculate the molarity of this <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> at its current
 concentration. This calculation is not certain to return a value
 as HWI cocktail menu files use a variety of units to describe
 chemical concentrations, including %w/v or %v/v.</p>
 <p>%w/v is defined as grams of colute per 100 ml of solution * 100. This can
-be converted to molarity when the molar mass of the reagent is known.</p>
+be converted to molarity when the molar mass of the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> is known.</p>
 <p>%v/v is defined as the volume of solute over the total volume of solution
-* 100. The density of the reagent is required to convert %w/v to molarity
+* 100. The density of the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> is required to convert %w/v to molarity
 which is not included in HWI cocktail menu files. This makes conversion
 from %w/v out of reach for now.</p>
-<p>If the reagent concentration cannot be converted to molarity then
+<p>If the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> concentration cannot be converted to molarity then
 this function will return False.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -386,7 +386,7 @@ produce the Reagent’s set concentration in the given <cite>target_volume</cite
 argument. Stock concentration is taken from the 
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">stock_con</span></code> attribute. If
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">stock_con</span></code> is not
-set or the molarity of the reagent can not be calculated this method
+set or the molarity of the <a class="reference internal" href="#polo.crystallography.cocktail.Reagent" title="polo.crystallography.cocktail.Reagent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reagent</span></code></a> can not be calculated this method
 will return False.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -187,13 +187,13 @@
 
     <span class="n">HTML_ICON</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;html&#39;</span><span class="p">])</span>
     <span class="n">GRID_ICON</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ICON_DICT</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">])</span>
-    <span class="sd">&#39;&#39;&#39;The OptimizeWidget is a primary run interface widget that allows</span>
+    <span class="sd">&#39;&#39;&#39;The :class:`OptimizeWidget` class is a primary run interface widget that allows</span>
 <span class="sd">    users to create optimization screens around the crystallization conditions</span>
 <span class="sd">    that yielded xtal hits. The concept is very similar to the program MakeTray</span>
 <span class="sd">    available from Hampton Research. Currently, users cannot specify their</span>
 <span class="sd">    own conditions and are limited to the predetermined conditions of the</span>
 <span class="sd">    :class:`~polo.utils.io_utils.Menu` that was selected when the run was originally imported</span>
-<span class="sd">    into Polo. Additionally, the OptimizeWidget is only available to :class:`HWIRun` instances</span>
+<span class="sd">    into Polo. Additionally, the :class:`OptimizeWidget` is only available to :class:`HWIRun` instances</span>
 <span class="sd">    as the cocktail to well mapping cannot be inferred for other more</span>
 <span class="sd">    general :class:`Run` types.</span>
 
@@ -293,7 +293,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">constant_reagents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Retrieve a set of :class:`Reagents` that are not included as either the</span>
-<span class="sd">        x reagent or the y reagent but are still part of the crystallization</span>
+<span class="sd">        attr:`x_reagent` or the attr:`y_reagent` but are still part of the crystallization</span>
 <span class="sd">        cocktail and therefore need to be included in the screen. Unlike</span>
 <span class="sd">        either the x or y reagents, constant reagents do not change their</span>
 <span class="sd">        concentration across the screening plate.</span>
@@ -309,7 +309,7 @@
         <span class="sd">&#39;&#39;&#39;Return the constant :class:`Reagent` that is currently</span>
 <span class="sd">        selected by the user.</span>
 
-<span class="sd">        :return: Currently selected constant reagent if exists and selected, </span>
+<span class="sd">        :return: Currently selected constant :class:`~polo.crystallography.cocktail.Reagent` if exists and selected, </span>
 <span class="sd">                None otherwise</span>
 <span class="sd">        :rtype: Reagent or None</span>
 <span class="sd">        &#39;&#39;&#39;</span> 
@@ -332,7 +332,7 @@
     <span class="k">def</span> <span class="nf">hit_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Retrieves a list of :class:`~polo.crystallography.image.Image`</span>
 <span class="sd">        object instances that have human</span>
-<span class="sd">        classification (`human_class` attribute) == &#39;Crystals&#39;. Used to</span>
+<span class="sd">        classification == &#39;Crystals&#39;. Used to</span>
 <span class="sd">        determine what wells to allow the user to optimize. Currently, only</span>
 <span class="sd">        allow the user to optimize wells they have marked as crystal.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -346,13 +346,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;The percent variance between x reagent wells.</span>
+        <span class="sd">&#39;&#39;&#39;The percent variance between :attr:`x_reagent` wells.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox_4</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">y_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;The percent variance between y reagent wells.</span>
+        <span class="sd">&#39;&#39;&#39;The percent variance between :attr:`y_reagent` wells.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">doubleSpinBox_5</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span>
 
@@ -383,8 +383,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">unitComboBox_2</span><span class="o">.</span><span class="n">scalers</span> <span class="o">=</span> <span class="n">UnitComboBox</span><span class="o">.</span><span class="n">saved_scalers</span></div>
     
 <div class="viewcode-block" id="OptimizeWidget._handle_reagent_change"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._handle_reagent_change">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_reagent_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that handles when a reagent is changed. The arguments</span>
-<span class="sd">        indicate which reagent has been changed.</span>
+        <span class="sd">&#39;&#39;&#39;Private method that handles when a :class:`~polo.crystallography.cocktail.Reagent` is changed. The arguments</span>
+<span class="sd">        indicate which :class:`~polo.crystallography.cocktail.Reagent` has been changed.</span>
 
 <span class="sd">        :param x: If True update the x reagent, defaults to False</span>
 <span class="sd">        :type x: bool, optional</span>
@@ -440,7 +440,7 @@
         <span class="c1"># sets options to well numbers of hits</span>
 
 <div class="viewcode-block" id="OptimizeWidget._update_current_reagents"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.optimize_widget.OptimizeWidget._update_current_reagents">[docs]</a>    <span class="k">def</span> <span class="nf">_update_current_reagents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method that updates x and y reagent comboBox widgets to </span>
+        <span class="sd">&#39;&#39;&#39;Private method that updates x and y :class:`~polo.crystallography.cocktail.Reagent` comboBox widgets to </span>
 <span class="sd">        reflect what :class:`Reagent` instances are contained in the</span>
 <span class="sd">        currently selected well.</span>
 
@@ -471,7 +471,7 @@
 <span class="sd">        based on the currently selected well. :class:`Reagents` must come from the</span>
 <span class="sd">        class:`Cocktail` instance associated with the selected well.</span>
 
-<span class="sd">        TODO: Add the option to vary pH instead of a reagent along either</span>
+<span class="sd">        TODO: Add the option to vary pH instead of a :class:`~polo.crystallography.cocktail.Reagent` along either</span>
 <span class="sd">        axis. This would also mean that the constant reagents would need to</span>
 <span class="sd">        be updated.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -512,9 +512,9 @@
 <span class="sd">        called. The stock concentration value is pulled from each reagent&#39;s</span>
 <span class="sd">        respective `unitComboBox` instance.</span>
 
-<span class="sd">        :param x: If True, set x reagent stock con, defaults to False</span>
+<span class="sd">        :param x: If True, set :attr:`x_reagent` stock con, defaults to False</span>
 <span class="sd">        :type x: bool, optional</span>
-<span class="sd">        :param y: If True, set the y reagent stock con, defaults to False</span>
+<span class="sd">        :param y: If True, set the :attr:`y_reagent` stock con, defaults to False</span>
 <span class="sd">        :type y: bool, optional</span>
 <span class="sd">        :param const: If True, sets the constant reagents stock con,</span>
 <span class="sd">                      defaults to False</span>
