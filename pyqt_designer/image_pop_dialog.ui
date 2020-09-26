@@ -119,7 +119,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as crystal.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as crystal.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Crystal</string>
@@ -147,10 +147,10 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as clear.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as precipitate.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Clear</string>
+         <string>Precipitate</string>
         </property>
         <property name="shortcut">
          <string>3</string>
@@ -166,7 +166,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as other.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as other.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Other</string>
@@ -185,10 +185,10 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as precipitate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classify current image as clear.&lt;/p&gt;&lt;p&gt;Shortcut: &lt;span style=&quot; font-weight:600;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Precipitate</string>
+         <string>Clear</string>
         </property>
         <property name="shortcut">
          <string>2</string>
@@ -197,8 +197,14 @@
       </item>
       <item row="2" column="0">
        <widget class="QRadioButton" name="radioButton">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mark image as a favorite.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Shortcut:&lt;span style=&quot; font-weight:600;&quot;&gt; F&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Favorite?</string>
+        </property>
+        <property name="shortcut">
+         <string>F</string>
         </property>
        </widget>
       </item>

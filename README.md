@@ -32,4 +32,4 @@ users that incorporates all the tools needed to go from raw crystallization imag
 to designing optimization screens without the need to install any dependencies.
 
 For more information, please visit the documentation page linked below.
-# [Link to Docs](https://hauptman-woodward.github.io/Marco_Polo/)
+# [Link to Docs](https://github.com/Hauptman-Woodward/Marco_Polo/)
