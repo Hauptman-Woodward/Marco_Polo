@@ -34,5 +34,5 @@ For more information, please visit the documentation page linked below.
 
 # Helpful Links
 
-- [Documentation](https://github.com/Hauptman-Woodward/Marco_Polo/)
+- [Documentation](https://hauptman-woodward.github.io/Marco_Polo/)
 - [2020 SSRL / LCLS Users' Meeting Poster and Live Session](https://events.bizzabo.com/SLAC-UsersMeeting-2020/agenda/session/363994)
