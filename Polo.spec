@@ -43,7 +43,7 @@ polo_locations = {  # paths to polo directory on each system
 }
 
 polo_dir = polo_locations[OS]
-polo_logo = Path(polo_dir).joinpath('src/polo.png')
+polo_logo = Path(polo_dir).joinpath('src/data/images/logos/polo.png')
 polo_logo = str(polo_logo)  # use path to avoid issues on windows
 
 polo_icon = str(Path(polo_dir).joinpath('src/data/images/icons/polo.ico'))
