@@ -279,7 +279,12 @@ class HWIRun(Run):
         metadata.update(HWIRun.parse_file_metadata(image_dir))
         metadata.update(kwargs)
 
-        cocktail_menu = tim.get_menu_by_date(metadata['date'])
+        if Path(image_dir).stem[0].lower() == 'x':
+            menu_type = 's'  # is soluble screen
+        else:
+            menu_type = 'm'  # is a membrane screen
+
+        cocktail_menu = tim.get_menu_by_date(metadata['date'], menu_type)
 
         return cls(image_dir=image_dir, cocktail_menu=cocktail_menu, **metadata)
     
