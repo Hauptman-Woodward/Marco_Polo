@@ -32,6 +32,10 @@ to designing optimization screens without the need to install any dependencies.
 
 For more information, please visit the documentation page linked below.
 
+# Installation
+
+[Download the latest release here](https://github.com/Hauptman-Woodward/Marco_Polo/releases).
+
 # Helpful Links
 
 - [Documentation](https://hauptman-woodward.github.io/Marco_Polo/)
