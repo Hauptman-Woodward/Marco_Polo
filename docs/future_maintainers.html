@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,6 +11,10 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="_static/polo.ico"/>
   
@@ -19,7 +22,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -53,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -79,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -90,17 +92,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Bug Reports and Suggestions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Future Maintainers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lore">Lore</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#directory-layout">Directory Layout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#polo-package-notes">Polo Package Notes</a></li>
@@ -120,6 +119,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -158,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
@@ -187,9 +187,9 @@
 or have been assigned to modify / maintain / improve Polo. Here, I will do my
 best to fill you in on Polo’s background and go through the problems, quirks
 and bugs that you may encounter while modifying Polo.</p>
-<div class="section" id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
-<p>Polo was created over the course of 10 weeks for the 2020 BioXFEL summer
+<div class="section" id="lore">
+<h2>Lore<a class="headerlink" href="#lore" title="Permalink to this headline">¶</a></h2>
+<p>Polo was created (mostly) over the course of 10 weeks for the 2020 BioXFEL summer
 internship. Development focused on creating a working final product that could
 be improved on and extended in the future, which is probably why you are here.
 Polo was my first real adventure into GUI programming and the PyQt library
@@ -210,11 +210,12 @@ development machine. PyQt Designer will allow you to open the <code class="code 
 files located in the <code class="code docutils literal notranslate"><span class="pre">pyqt_designer</span></code> directory. The <code class="code docutils literal notranslate"><span class="pre">.ui</span></code> files
 are then translated by the <code class="code docutils literal notranslate"><span class="pre">pyuic5</span></code> command line program into Python
 scripts which define the layout of the graphical interface.</p>
-<p>I used  <a class="reference external" href="https://pythonbasics.org/qt-designer-python/">This tutorial</a>
+<p>I used  <a class="reference external" href="https://pythonbasics.org/qt-designer-python/">this tutorial</a>
 to install PyQt Designer and other devtools like pyuic5 on Ubuntu.</p>
 <p>This will allow you to graphically modify interfaces and easily find the names of widgets so
 you can make sure buttons and other interfaces get connected to the correct
-functions. Additionally, you can modify the <code class="code docutils literal notranslate"><span class="pre">UI_helper.py</span></code> script in
+functions (widget names are, admittedly, a bit of a mess).
+Additionally, you can modify the <code class="code docutils literal notranslate"><span class="pre">UI_helper.py</span></code> script in
 the <code class="code docutils literal notranslate"><span class="pre">src</span></code> directory with the path to your <code class="code docutils literal notranslate"><span class="pre">pyqt_designer</span></code> directory
 to automatically generate the Python files which define each interface.</p>
 </div>
@@ -444,8 +445,8 @@ I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
 the exe will be specific to the operating system you create it on. A Polo
 exe created on Windows will only work on Windows machines. Despite it’s file
 extension, the  <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is really a python script that passes
-information along to pyinstaller.</p>
-<p>Running pyinstaller using the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is actually
+information along to Pyinstaller.</p>
+<p>Running Pyinstaller using the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file is actually
 very easy and can be done with the command
 <code class="code docutils literal notranslate"><span class="pre">pyinstaller</span> <span class="pre">Polo.spec</span></code>. Additionally, I have made some changes to the
 <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> which allow you to generate one file exes by appending
@@ -456,11 +457,11 @@ need to make some modifications to the <code class="code docutils literal notran
 <h3>Spec File Details and Modifications<a class="headerlink" href="#spec-file-details-and-modifications" title="Permalink to this headline">¶</a></h3>
 <p>Before running the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code> file you will need to modify a couple
 file paths based on the locations on your development machine(s).</p>
-<p>First, you’ll notice the dictionary <code class="code docutils literal notranslate"><span class="pre">Tensorflow_location</span></code>. Much of the
-<code class="code docutils literal notranslate"><span class="pre">.spec</span></code> is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
-misses the binary files in the Tensorflow library that are required for the
-package to work correctly. Therefore these files need to be collected as
-passed to pyinstaller explicitly to create a working exe. Strangely, I only
+<p>First, you’ll notice the dictionary <code class="code docutils literal notranslate"><span class="pre">tensorflow_location</span></code>. Much of the
+<code class="code docutils literal notranslate"><span class="pre">.spec</span></code> is devoted to dealing with packing Tensorflow 1.14 as Pyinstaller
+misses the binary files in the library that are required for the
+everything to work correctly. Therefore these files need to be collected and
+passed to Pyinstaller explicitly to create a working exe. Strangely, I only
 encountered this problem on Linux and Mac.
 The <code class="code docutils literal notranslate"><span class="pre">tensorflow_location</span></code> dictionary specifies the location of the
 Tensorflow package on your machine. You will need to modify these paths to
@@ -471,10 +472,14 @@ repository on that machine. When run, the <code class="code docutils literal not
 the OS it is being run on and picks the file path corresponding to that OS.</p>
 <p>After making these modifications you should be able to run the <code class="code docutils literal notranslate"><span class="pre">.spec</span></code>
 file successfully. If something is not working correctly I recommend
-running the pyinstaller command without <code class="code docutils literal notranslate"><span class="pre">F</span></code> argument to create
+running the Pyinstaller command without <code class="code docutils literal notranslate"><span class="pre">F</span></code> argument to create
 a directory instead of a single file. This will let you more easily see
-exactly what pyinstaller has included in your distribution. If it isn’t in
+exactly what Pyinstaller has included in your distribution. If it isn’t in
 the directory distribution it won’t be found in the single file distribution.</p>
+<p>Pyinstaller will generate two new directories <code class="code docutils literal notranslate"><span class="pre">build</span></code> and <code class="code docutils literal notranslate"><span class="pre">dist</span></code>.
+You can ignore <code class="code docutils literal notranslate"><span class="pre">build</span></code> (I did and faced no wrath), the exe will be located
+in code <code class="code docutils literal notranslate"><span class="pre">dist</span></code>. I have also found that if Pyinstaller is acting up it can help
+to delete both these directories and rerunning the <code class="code docutils literal notranslate"><span class="pre">spec</span></code> file.</p>
 </div>
 </div>
 <div class="section" id="editing-and-extending-this-documentation">
@@ -544,11 +549,19 @@ are used when rendering so it is a good place to start looking for issues.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -559,7 +572,6 @@ are used when rendering so it is a good place to start looking for issues.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

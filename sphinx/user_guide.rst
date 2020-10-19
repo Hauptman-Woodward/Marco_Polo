@@ -1,9 +1,8 @@
 User's Guide
 =============
 
-
 If you have yet to install Polo on your machine, head to the installation
-guide here.
+guide here, :ref:`Installation`. 
 
 Importing and Opening Image Data
 ##################################
@@ -459,22 +458,6 @@ can specify a location and name for your save file.
 After the save is complete Polo will notify you with a popup telling you it
 is safe to close the program and your save as completed. You can now share
 your xtal file with anyone else using Polo!
-
-
-Exporting a Run
-######################
-
-In addition to saving screening runs as xtal files, Polo supports exporting
-to formats which can be viewed outside of the Polo application. Currently
-available export options are described below.
-
-
-HTML Reports
----------------
-
-
-CSV Exports
----------------
 
 
 

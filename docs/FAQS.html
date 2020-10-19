@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,6 +11,10 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="_static/polo.ico"/>
   
@@ -19,7 +22,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,10 +36,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -53,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Polo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
           
 
           
@@ -79,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -90,19 +92,23 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#os-specific-installation-notes">OS Specific Installation Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#issues-others-have-encountered">Issues Others have Encountered</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html#running-from-source">Running From Source</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-install-polo">How do I install Polo?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-did-not-do-my-crystal-screening-at-hwi-can-i-still-use-polo">I did not do my crystal screening at HWI, can I still use Polo?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polo-isn-t-working-on-my-machine-what-can-i-do">Polo isn’t working on my machine, what can I do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#my-question-isn-t-here-how-can-i-get-it-answered">My question isn’t here, how can I get it answered?</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="beta_testers.html">Beta Testers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Bug Reports and Suggestions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="polo.html">Polo Code Documentation</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -141,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>FAQs</li>
     
@@ -164,7 +170,40 @@
             
   <div class="section" id="faqs">
 <h1>FAQs<a class="headerlink" href="#faqs" title="Permalink to this headline">¶</a></h1>
-<p>A place to include frequently asked questions</p>
+<div class="section" id="how-do-i-install-polo">
+<h2>How do I install Polo?<a class="headerlink" href="#how-do-i-install-polo" title="Permalink to this headline">¶</a></h2>
+<p>Please visit the installation guide, <span class="xref std std-ref">Installation</span>. Polo is available for
+Windows 10, Mac and Ubuntu.</p>
+</div>
+<div class="section" id="i-did-not-do-my-crystal-screening-at-hwi-can-i-still-use-polo">
+<h2>I did not do my crystal screening at HWI, can I still use Polo?<a class="headerlink" href="#i-did-not-do-my-crystal-screening-at-hwi-can-i-still-use-polo" title="Permalink to this headline">¶</a></h2>
+<p>Yes, definitely! Although some functionality of Polo will be limited, mostly due
+to the fact we cannot anticipate how metadata for your images (cocktail formulations,
+sample info, etc.) is formatted. The good news is you will still be able to classify
+your images using the MARCO model, export your classifications to text files,
+create PowerPoint presentations and use all of the image viewing interfaces.</p>
+<p>On that note though if you would like to have more out of the box compatibility
+with your screening images please feel free to write your own
+code to do so and add a pull request. We are very interested in building functionality
+for as many people as possible and working towards standardizing data management
+and file formats for high throughput crystallography. If adding your own code
+is not realistic, or just when in doubt feel free to reach out to
+<a class="reference external" href="https://github.com/EthanHolleman">Ethan Holleman</a>.</p>
+</div>
+<div class="section" id="polo-isn-t-working-on-my-machine-what-can-i-do">
+<h2>Polo isn’t working on my machine, what can I do?<a class="headerlink" href="#polo-isn-t-working-on-my-machine-what-can-i-do" title="Permalink to this headline">¶</a></h2>
+<p>If you haven’t already please visit <a class="reference internal" href="install.html#issues-others-have-encountered"><span class="std std-ref">Issues Others have Encountered</span></a> and see
+if anything looks familiar. Also if nothing does and you are able to
+solve your issue please let us know so we can document the problem, improve
+Polo and help other users. If you are unable to fix the problem feel free to
+open an issue on the <a class="reference external" href="https://github.com/EthanHolleman">Polo GitHub page</a> or
+contact <a class="reference external" href="https://github.com/EthanHolleman">Ethan Holleman</a>. Please include a
+detailed description of your problem and screenshots of any error messages.</p>
+</div>
+<div class="section" id="my-question-isn-t-here-how-can-i-get-it-answered">
+<h2>My question isn’t here, how can I get it answered?<a class="headerlink" href="#my-question-isn-t-here-how-can-i-get-it-answered" title="Permalink to this headline">¶</a></h2>
+<p>Please reach out to <a class="reference external" href="https://github.com/EthanHolleman">Ethan Holleman</a>.</p>
+</div>
 </div>
 
 
@@ -187,11 +226,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -202,7 +249,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

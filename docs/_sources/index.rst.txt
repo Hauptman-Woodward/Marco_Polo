@@ -20,7 +20,7 @@ summer internship program.
    FAQS
    user_guide
    video_guides
-   beta_testers
+   reports
    polo
 
 
