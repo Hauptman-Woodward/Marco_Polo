@@ -11,7 +11,6 @@ import platform
 import sys
 block_cipher = None
 
-
 # update the repo to latest version
 
 print('Pulling latest changes from git')
@@ -35,11 +34,12 @@ pptx_location = {
   # thanks for letting me borrow the mac Mom
 }
 
+# path to Polo directory on machine probably should change to an arg
 
 polo_locations = {  # paths to polo directory on each system 
-  'Linux': '/home/ethan/Documents/github/Marco_Polo',
+  'Linux': '/home/ethan/Documents/github/HWI/Marco_Polo',
   'Darwin': '/Users/michelleholleman/Documents/Marco_Polo/',
-  'Windows': r'C:\Users\User\Desktop\marco_3\Marco_Polo'
+  'Windows': r'C:\Users\User\Desktop\marco_3\hwi\Marco_Polo'
 }
 
 polo_dir = polo_locations[OS]
