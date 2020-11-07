@@ -2,9 +2,6 @@
 
 # Spec script to build exe files via pyinstaller
 # Pass arg "F" at end of pyinstaller call to run in one file mode
-
-block_cipher = None
-
 import os
 from pathlib import Path
 import platform
@@ -19,37 +16,57 @@ os.system('git pull')
 # path to tensorflow in anaconda env
 OS = platform.system()
 
-tensorflow_binaries = []
+tensorflow_binaries = []  # collect tensorflow files that pyinstaller misses here 
+
+# Paths to tensorflow package on your machine, you can either change these paths directly here
+# when running this file or update your environmental variables to reflect the variable names
+# in tensorflow_location dictionary
 tensorflow_location = {
-  'Linux': '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow',
-  'Darwin': '/Users/michelleholleman/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow',
+  'Linux': os.environ['TENSORFLOW_LINUX'],
+  'Darwin': os.environ['TENSORFLOW_MAC'],
   'Windows': None
-  # thanks for letting me borrow the mac Mom
 }
 
+# Pyinstaller also seems to have some issues with collecting everything from the
+# pptx package. So we do the same thing we do for Tensorflow here.
 pptx_location = {
-  'Linux': '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/pptx/',
-  'Darwin': '/Users/michelleholleman/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/pptx/',
-  'Windows': '\\Users\\User\\.conda\\envs\\polo_3.5\\lib\\site-packages\\pptx\\'
-  # thanks for letting me borrow the mac Mom
+  'Linux': os.environ['PPTX_LINUX'],
+  'Darwin': os.environ['PPTX_MAC'],
+  'Windows': os.environ['PPTX_WINDOWS']
 }
 
-# path to Polo directory on machine probably should change to an arg
 
 polo_locations = {  # paths to polo directory on each system 
-  'Linux': '/home/ethan/Documents/github/HWI/Marco_Polo',
-  'Darwin': '/Users/michelleholleman/Documents/Marco_Polo/',
-  'Windows': r'C:\Users\User\Desktop\marco_3\hwi\Marco_Polo'
+  'Linux': os.environ['POLO_LINUX'],
+  'Darwin': os.environ['POLO_MAC'],
+  'Windows': os.environ['POLO_WINDOWS']
 }
 
 polo_dir = polo_locations[OS]
+
+if not os.path.isdir(str(polo_dir)):
+    raise Exception('Polo directory {} does not exist! Please check the paths specified in the "polo_locations" vairable.')
+                  
+
+# Set the path for Polo logo and icon
 polo_logo = Path(polo_dir).joinpath('src/data/images/logos/polo.png')
 polo_logo = str(polo_logo)  # use path to avoid issues on windows
-
 polo_icon = str(Path(polo_dir).joinpath('src/data/images/icons/polo.ico'))
 
-print('Added logo at {}'.format(polo_logo))
-print(sys.argv)
+# Ask the user if they want to continue if either the logo or the icon cannot
+# be found
+
+if not os.path.isfile(polo_icon):
+    print('WAIT WAIT WAIT POLO ICON NOT FOUND')
+    if input('Q to quit, any other key to continue: ').lower() == 'q':
+        sys.exit()
+
+if not os.path.isfile(polo_logo):
+    print('WAIT WAIT WAIT WHAT ABOUT THE BRANDING!')
+    print('POLO LOGO NOT FOUND AT {}'.format(polo_logo))
+    if input('Q to quit, any other key to continue: ').lower() == 'q':
+        sys.exit()
+
 
 tensorflow_location = tensorflow_location[OS]
 print('tensorflow location set to {}'.format(tensorflow_location))
