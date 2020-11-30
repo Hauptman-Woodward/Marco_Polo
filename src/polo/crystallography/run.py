@@ -84,6 +84,18 @@ class Run():
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
+    
+    @property
+    def has_been_machine_classified(self):
+        # determine if run has been classified by MARCO
+        is_classified = True
+        for image in self.images:
+            if image.machine_class and image.prediction_dict:
+                continue
+            else:
+                is_classified = True
+                break
+        return is_classified
 
     def __getitem__(self, n):
         try:

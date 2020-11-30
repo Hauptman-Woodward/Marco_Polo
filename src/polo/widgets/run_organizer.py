@@ -1,6 +1,7 @@
 import ftplib
 import os
 from pathlib import Path, PurePosixPath
+from random import randint
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import *
@@ -110,7 +111,24 @@ class RunOrganizer(QtWidgets.QWidget):
         '''
         selected_run = self.ui.runTree.selected_run
         if selected_run:
-            self._classify_multiple_runs([self.ui.runTree.selected_run])
+
+            if selected_run.has_been_machine_classified:
+                # ask user if they want to reclassify run if work has already
+                # been done
+                choice = make_message_box(
+                    parent=self,
+                    message="Selected run has already been classified. Would you like to classify again?",
+                    buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                ).exec_()
+                if choice == QtWidgets.QMessageBox.Yes:
+                    self._classify_multiple_runs([self.ui.runTree.selected_run])
+                else:
+                    if randint(0, 100) == 31:
+                        make_message_box(
+                            parent=self,
+                            message="Thank you human - Polo",
+                            buttons=QtWidgets.QMessageBox.Ok
+                        ).exec_()
 
     def _handle_opening_run(self, *args):
         '''Private method that signal to other widgets that the current run should be opened

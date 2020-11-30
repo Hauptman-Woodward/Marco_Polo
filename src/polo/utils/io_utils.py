@@ -301,8 +301,8 @@ class RunCsvWriter(RunSerializer):
                     if attr_b not in row:  # only add if will not override higher level attr
                         # only go one level deep for now
                         row[attr_b] = str(value_b)
-            elif isinstance(value, bytes):
-                continue  # currently do not encode bytes (base 64 stuff)
+            elif isinstance(value, bytes) or attr[0] == '_':
+                continue  # currently do not encode bytes (base 64 stuff)  
             else:
                 row[attr] = str(value)  # default to case to string
         return row
