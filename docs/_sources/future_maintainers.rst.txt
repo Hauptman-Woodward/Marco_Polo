@@ -6,10 +6,10 @@ or have been assigned to modify / maintain / improve Polo. Here, I will do my
 best to fill you in on Polo's background and go through the problems, quirks
 and bugs that you may encounter while modifying Polo.
 
-Background
+Lore
 #######################################
 
-Polo was created over the course of 10 weeks for the 2020 BioXFEL summer
+Polo was created (mostly) over the course of 10 weeks for the 2020 BioXFEL summer
 internship. Development focused on creating a working final product that could
 be improved on and extended in the future, which is probably why you are here.
 Polo was my first real adventure into GUI programming and the PyQt library
@@ -33,12 +33,13 @@ files located in the :code:`pyqt_designer` directory. The :code:`.ui` files
 are then translated by the :code:`pyuic5` command line program into Python
 scripts which define the layout of the graphical interface.
 
-I used  `This tutorial <https://pythonbasics.org/qt-designer-python/>`_ 
+I used  `this tutorial <https://pythonbasics.org/qt-designer-python/>`_ 
 to install PyQt Designer and other devtools like pyuic5 on Ubuntu. 
 
 This will allow you to graphically modify interfaces and easily find the names of widgets so
 you can make sure buttons and other interfaces get connected to the correct
-functions. Additionally, you can modify the :code:`UI_helper.py` script in
+functions (widget names are, admittedly, a bit of a mess).
+Additionally, you can modify the :code:`UI_helper.py` script in
 the :code:`src` directory with the path to your :code:`pyqt_designer` directory
 to automatically generate the Python files which define each interface.
 
@@ -291,9 +292,9 @@ I used on Ubuntu, Mac and Windows to generate exe files. It should be noted that
 the exe will be specific to the operating system you create it on. A Polo
 exe created on Windows will only work on Windows machines. Despite it's file
 extension, the  :code:`.spec` file is really a python script that passes
-information along to pyinstaller.
+information along to Pyinstaller.
 
-Running pyinstaller using the :code:`.spec` file is actually 
+Running Pyinstaller using the :code:`.spec` file is actually 
 very easy and can be done with the command
 :code:`pyinstaller Polo.spec`. Additionally, I have made some changes to the
 :code:`.spec` which allow you to generate one file exes by appending
@@ -306,11 +307,11 @@ Spec File Details and Modifications
 Before running the :code:`.spec` file you will need to modify a couple
 file paths based on the locations on your development machine(s).
 
-First, you'll notice the dictionary :code:`Tensorflow_location`. Much of the
-:code:`.spec` is devoted to dealing with packing Tensorflow 1.14 as pyinstaller
-misses the binary files in the Tensorflow library that are required for the
-package to work correctly. Therefore these files need to be collected as
-passed to pyinstaller explicitly to create a working exe. Strangely, I only
+First, you'll notice the dictionary :code:`tensorflow_location`. Much of the
+:code:`.spec` is devoted to dealing with packing Tensorflow 1.14 as Pyinstaller
+misses the binary files in the library that are required for the
+everything to work correctly. Therefore these files need to be collected and
+passed to Pyinstaller explicitly to create a working exe. Strangely, I only
 encountered this problem on Linux and Mac.
 The :code:`tensorflow_location` dictionary specifies the location of the
 Tensorflow package on your machine. You will need to modify these paths to
@@ -323,10 +324,15 @@ the OS it is being run on and picks the file path corresponding to that OS.
 
 After making these modifications you should be able to run the :code:`.spec`
 file successfully. If something is not working correctly I recommend
-running the pyinstaller command without :code:`F` argument to create
+running the Pyinstaller command without :code:`F` argument to create
 a directory instead of a single file. This will let you more easily see
-exactly what pyinstaller has included in your distribution. If it isn't in
+exactly what Pyinstaller has included in your distribution. If it isn't in
 the directory distribution it won't be found in the single file distribution.
+
+Pyinstaller will generate two new directories :code:`build` and :code:`dist`.
+You can ignore :code:`build` (I did and faced no wrath), the exe will be located
+in code :code:`dist`. I have also found that if Pyinstaller is acting up it can help
+to delete both these directories and rerunning the :code:`spec` file. 
 
 Editing and Extending this Documentation
 ###########################################

@@ -82,8 +82,7 @@ Open Source Code Base
 ++++++++++++++++++++++
 
 Polo is written in Python and is licensed under the 
-GNU 3.X license. This allows for modification and use of any of the 
+GNU 3.0 license. This allows for modification and use of any of the 
 Polo source code. If you wish to change modify or extend any of 
-Polo’s functionality you are free to do so. Additionally, 
-documentation is available at THIS LINK. 
+Polo’s functionality you are free to do so.
 

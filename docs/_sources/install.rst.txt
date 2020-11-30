@@ -6,7 +6,7 @@ and follow the install instructions for the latest release for your operating
 system, but before you do please review the OS specific notes below.
 
 OS Specific Installation Notes
-===================================
+++++++++++++++++++++++++++++++++
 
 Windows
 ---------------------------
@@ -61,7 +61,7 @@ issues and make suggestions.
 
 
 Issues Others have Encountered
-=====================================
+++++++++++++++++++++++++++++++++
 
 Below is a compilation of issues others have encountered and potential 
 OS specific solutions solutions. If you have an issue and are able to solve the
@@ -150,7 +150,7 @@ clicking the Polo executable and selecting **Open**.
 
 
 Running From Source
-=========================
+++++++++++++++++++++++++++++++++
 
 If you do not want to use the binary files, you can run Polo like any
 other Python program. Steps to do so are below.
