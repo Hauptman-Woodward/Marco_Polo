@@ -109,8 +109,8 @@ class TableViewer(QtWidgets.QTableWidget):
 
         return True
 
-    def make_header_map(self, headers):
-        '''Helper method to map header keywords to their index (order). 
+    def _make_header_map(self, headers):
+        '''Private method to map header keywords to their index (order). 
         This method is required as headers are delivered as a set and 
         we want them to be presented in a consistent order to the user.
 
@@ -136,7 +136,7 @@ class TableViewer(QtWidgets.QTableWidget):
         if self.run:
             self.clear()
             headers, data = self.table_data
-            header_map = self.make_header_map(headers)
+            header_map = self._make_header_map(headers)
             header_labels = sorted(
                 [h for h in header_map.keys()], key=lambda k: header_map[k])
             self.setHorizontalHeaderLabels(header_labels)

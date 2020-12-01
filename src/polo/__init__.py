@@ -170,6 +170,8 @@ REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
 
 RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
+MARCO_ARTICLE = 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0198883'
+POLO_ARTICLE = ''
 
 # RUN_TYPES = sorted(
 #             [types[-1] for types in 

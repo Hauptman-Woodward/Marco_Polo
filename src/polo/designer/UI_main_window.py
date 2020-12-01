@@ -418,6 +418,8 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName("menuFile")
         self.menuReport_An_Issue = QtWidgets.QMenu(self.menubar)
         self.menuReport_An_Issue.setObjectName("menuReport_An_Issue")
+        self.menuCite = QtWidgets.QMenu(self.menubar)
+        self.menuCite.setObjectName("menuCite")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -522,6 +524,8 @@ class Ui_MainWindow(object):
         self.actionReport_An_Issue.setObjectName("actionReport_An_Issue")
         self.actiontest = QtWidgets.QAction(MainWindow)
         self.actiontest.setObjectName("actiontest")
+        self.actionCitation = QtWidgets.QAction(MainWindow)
+        self.actionCitation.setObjectName("actionCitation")
         self.menuImages.addAction(self.actionFrom_FTP)
         self.menuImages.addSeparator()
         self.menuImages.addAction(self.actionFrom_Saved_Run_3)
@@ -550,11 +554,13 @@ class Ui_MainWindow(object):
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionRemove_Run)
         self.menuReport_An_Issue.addAction(self.actionReport_An_Issue)
+        self.menuCite.addAction(self.actionCitation)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuImport.menuAction())
         self.menubar.addAction(self.menuExport.menuAction())
         self.menubar.addAction(self.menuTools.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.menubar.addAction(self.menuCite.menuAction())
         self.menubar.addAction(self.menuReport_An_Issue.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -598,6 +604,7 @@ class Ui_MainWindow(object):
         self.menuTools.setTitle(_translate("MainWindow", "Tools"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuReport_An_Issue.setTitle(_translate("MainWindow", "Report An Issue"))
+        self.menuCite.setTitle(_translate("MainWindow", "Cite Polo"))
         self.actionQuickstart_Guide.setText(_translate("MainWindow", "Quickstart Guide"))
         self.actionDocumentation.setText(_translate("MainWindow", "Documentation"))
         self.actionFAQ.setText(_translate("MainWindow", "FAQ"))
@@ -653,6 +660,7 @@ class Ui_MainWindow(object):
         self.actionVia_Form.setText(_translate("MainWindow", "Via Form"))
         self.actionReport_An_Issue.setText(_translate("MainWindow", "Report An Issue"))
         self.actiontest.setText(_translate("MainWindow", "test"))
+        self.actionCitation.setText(_translate("MainWindow", "Cite Polo"))
 from polo.widgets.optimize_widget import OptimizeWidget
 from polo.widgets.plate_inspector_widget import PlateInspectorWidget
 from polo.widgets.run_organizer import RunOrganizer

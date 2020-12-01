@@ -1172,11 +1172,18 @@
     </property>
     <addaction name="actionReport_An_Issue"/>
    </widget>
+   <widget class="QMenu" name="menuCite">
+    <property name="title">
+     <string>Cite Polo</string>
+    </property>
+    <addaction name="actionCitation"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImport"/>
    <addaction name="menuExport"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuCite"/>
    <addaction name="menuReport_An_Issue"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1443,6 +1450,11 @@
   <action name="actiontest">
    <property name="text">
     <string>test</string>
+   </property>
+  </action>
+  <action name="actionCitation">
+   <property name="text">
+    <string>Cite Polo</string>
    </property>
   </action>
  </widget>

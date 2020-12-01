@@ -28,6 +28,7 @@ class slideshowInspector(QtWidgets.QWidget):
     :type run: Run or HWIRun, optional
 
     '''
+
     def __init__(self, parent, run=None):
 
         super(slideshowInspector, self).__init__(parent)
@@ -103,7 +104,7 @@ class slideshowInspector(QtWidgets.QWidget):
             )
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
-                            e, slideshowInspector.sort_images_by_marco_confidence))
+                e, slideshowInspector.sort_images_by_marco_confidence))
             return False
 
     @staticmethod
@@ -124,7 +125,7 @@ class slideshowInspector(QtWidgets.QWidget):
             )
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
-                            e, slideshowInspector.sort_images_by_cocktail_number))
+                e, slideshowInspector.sort_images_by_cocktail_number))
             return False
 
     @staticmethod
@@ -145,9 +146,9 @@ class slideshowInspector(QtWidgets.QWidget):
             )
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
-                            e, slideshowInspector.sort_images_by_well_number))
+                e, slideshowInspector.sort_images_by_well_number))
             return False
-    
+
     # @staticmethod
     # def sort_images_by_fastest_to_crystalize(images):
     #     # images must have at least one other date
@@ -168,7 +169,7 @@ class slideshowInspector(QtWidgets.QWidget):
     #             e, SlideshowInspector.sort_images_by_fastest_to_crystallize
     #         ))
     #         return False
-        
+
     @property
     def run(self):
         return self._run
@@ -337,18 +338,18 @@ class slideshowInspector(QtWidgets.QWidget):
         '''
         if self.current_image:
             self.current_image.favorite = self.ui.checkBox_7.isChecked()
-    
+
     def _set_slide_number_label(self):
         try:
             label = 'Image {} of {}'.format(
                 self.ui.slideshowViewer.current_slide_number,
                 self.ui.slideshowViewer.total_slides
-                )
+            )
             self.ui.groupBox.setTitle(label)
         except Exception as e:
             raise e
-            logger.error('Caught {} at {}'.format(e, self._set_slide_number_label))
-
+            logger.error('Caught {} at {}'.format(
+                e, self._set_slide_number_label))
 
     def _classify_image(self, classification):
         '''Private method to change the human classification of the current
@@ -399,7 +400,6 @@ class slideshowInspector(QtWidgets.QWidget):
             self.ui.textBrowser_2.repaint()
             self.ui.textBrowser_2.repaint()
 
-
             if isinstance(self._run, HWIRun):
                 if self.ui.textBrowser_2.toPlainText() == cur_image_string:
                     logger.error('Image data display did not update')
@@ -412,7 +412,8 @@ class slideshowInspector(QtWidgets.QWidget):
             self._set_alt_spectrum_buttons()
             self._set_slide_number_label()
         except Exception as e:
-            logger.error('Caught {} at {}'.format(e, self._display_current_image))
+            logger.error('Caught {} at {}'.format(
+                e, self._display_current_image))
             make_message_box(
                 parent=self,
                 message='Failed to display current image {}'.format(e)
@@ -508,7 +509,8 @@ class slideshowInspector(QtWidgets.QWidget):
                 self, 'Save View'
             )[0]
             if save_path:
-                save_path = RunSerializer.path_suffix_checker(save_path, '.png')
+                save_path = RunSerializer.path_suffix_checker(
+                    save_path, '.png')
             write_result = SceneExporter.write_image(
                 self.ui.slideshowViewer.scene, save_path)
 

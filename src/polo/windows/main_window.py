@@ -33,6 +33,7 @@ from polo.windows.pptx_dialog import PptxDesignerDialog
 from polo.windows.run_updater_dialog import RunUpdaterDialog
 from polo.windows.spectrum_dialog import SpectrumDialog
 from polo.windows.time_res_dialog import TimeResDialog
+from polo.windows.cite_dialog import CiteDialog
 
 logger = make_default_logger(__name__)
 
@@ -61,6 +62,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.menuTools.triggered[QAction].connect(self._handle_tool_menu)
         self.menuRecent.triggered[QAction].connect(self._handle_recent_import)
+        self.menuCite.triggered[QAction].connect(self._handle_citation_menu)
 
         # change tab updates control
         self.run_interface.currentChanged.connect(self._on_changed_tab)
@@ -275,6 +277,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.tab_10.setEnabled(True)
             self.tab_2.setEnabled(True)
+    
+    def _handle_citation_menu(self, action):
+        try:
+            cite_dialog = CiteDialog(parent=self)
+            cite_dialog.exec_()
+        except Exception as e:
+            logger.error('Caught {} at {}u'.format(
+                e, self._handle_citation_menu)
+            )
+            make_message_box(
+                'Error {}: Could not open citation dialog.'
+            ).exec_()
+
 
     def _handle_opening_run(self, new_run):
         '''Private method that handles opening a run. For the most part,
