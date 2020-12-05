@@ -135,12 +135,12 @@ class RunOrganizer(QtWidgets.QWidget):
                 ).exec_()
                 if choice == QtWidgets.QMessageBox.No:
                     if randint(0, 100) == 31:
-                        classification_greenlight = False
                         make_message_box(
                             parent=self,
                             message="Thank you human - Polo",
                             buttons=QtWidgets.QMessageBox.Ok
                         ).exec_()
+                    classification_greenlight = False 
             if classification_greenlight:
                 self._open_classification_thread(selected_run)
                 self.classification_thread.start()
