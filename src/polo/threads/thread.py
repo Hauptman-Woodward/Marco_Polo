@@ -126,6 +126,7 @@ class ClassificationThread(thread):
                     self.estimated_time.emit(
                         e-s, len(self.classification_run.images)-(i+1))
             end_time = time.time()
+            self.classification_run.has_been_machine_classified = True
             logger.debug(
                 'Classified {} images in {} minutes'.format(
                 len(self.classification_run.images), round((end_time - start_time) / 60), 2)

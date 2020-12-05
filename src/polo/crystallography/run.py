@@ -63,6 +63,7 @@ class Run():
         self.image_spectrum = image_spectrum
         self.images = images
         self.date = date
+        self.has_been_machine_classified = False
         self.__dict__.update(kwargs)
 
 
@@ -85,18 +86,6 @@ class Run():
         else:
             return self.run_name
     
-    @property
-    def has_been_machine_classified(self):
-        # determine if run has been classified by MARCO
-        is_classified = True
-        for image in self.images:
-            if image.machine_class and image.prediction_dict:
-                continue
-            else:
-                is_classified = True
-                break
-        return is_classified
-
     def __getitem__(self, n):
         try:
             return self.images[n]

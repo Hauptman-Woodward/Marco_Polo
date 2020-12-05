@@ -112,6 +112,19 @@ class RunOrganizer(QtWidgets.QWidget):
         selected_run = self.ui.runTree.selected_run
         if selected_run:
 
+            classification_greenlight = True
+
+            # check if run is an alternative spectrum, if true then warn the
+            # user that MARCO has not been trained on this type of image
+            if selected_run.image_spectrum.lower() != 'visible':
+                choice = make_message_box(
+                    parent=self,
+                    message='WAIT! MARCO has not been trained on images that do not use standard visible light microscopy, like the images you have requested to classify. Therefore, image classifications may not be accurate. Press OK to continue classification despite having read this advice.',
+                    buttons=QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
+                ).exec_()
+                if choice == QtWidgets.QMessageBox.Cancel:
+                    classification_greenlight = False
+
             if selected_run.has_been_machine_classified:
                 # ask user if they want to reclassify run if work has already
                 # been done
@@ -120,15 +133,19 @@ class RunOrganizer(QtWidgets.QWidget):
                     message="Selected run has already been classified. Would you like to classify again?",
                     buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
                 ).exec_()
-                if choice == QtWidgets.QMessageBox.Yes:
-                    self._classify_multiple_runs([self.ui.runTree.selected_run])
-                else:
+                if choice == QtWidgets.QMessageBox.No:
                     if randint(0, 100) == 31:
+                        classification_greenlight = False
                         make_message_box(
                             parent=self,
                             message="Thank you human - Polo",
                             buttons=QtWidgets.QMessageBox.Ok
                         ).exec_()
+            if classification_greenlight:
+                self._open_classification_thread(selected_run)
+                self.classification_thread.start()
+        else:
+            logger.error('Failed to open classification thread for {}'.format(selected_run))
 
     def _handle_opening_run(self, *args):
         '''Private method that signal to other widgets that the current run should be opened
@@ -137,8 +154,8 @@ class RunOrganizer(QtWidgets.QWidget):
         '''
         # get the selected item
         selected_run = self.ui.runTree.selected_run
+        logger.debug('Request open {}'.format(selected_run))
         if selected_run:
-
             if selected_run.run_name not in self._has_been_opened:
                 if not isinstance(selected_run, HWIRun):
                     make_message_box(
@@ -169,14 +186,20 @@ class RunOrganizer(QtWidgets.QWidget):
                             ).exec_()
             self.opening_run.emit([selected_run])
             self._has_been_opened.add(selected_run.run_name)
+        else:
+            logger.error('Could not open {}'.format(selected_run))
 
     def _open_classification_thread(self, run):
         '''Private method to create and run a classification thread which will run
         the MARCO model on all images in the run passed to `run` argument.
+        Does not actually start the classification thread, just stores the
+        newly created classification thread in `classification_thread`
+        attribute.
 
         :param run: Run or HWIRun instance to run MARCO on
         :type run: Run or HWIRun
         '''
+        logger.debug('Opening classification thread for {}'.format(run))
         self.ui.pushButton.setEnabled(False)
         self.ui.progressBar.setMaximum(len(run))
         self.ui.progressBar.setValue(1)  # reset the bar to 0
@@ -189,6 +212,9 @@ class RunOrganizer(QtWidgets.QWidget):
         self.classification_thread.finished.connect(self._classification_cleanup)
         self.ui.runTree.setEnabled(False)
         self.ui.runTree.add_classified_run(run)
+
+        return self.classification_thread
+        # add return classification thread for easier access
     
     def _classification_cleanup(self):
         '''"Cleanup" the UI after a classification thread has completed.

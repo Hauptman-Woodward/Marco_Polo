@@ -166,7 +166,7 @@ FAQS = HOST_PREFIX + 'Marco_Polo/FAQS.html'
 USER_GUIDE = HOST_PREFIX + 'Marco_Polo/user_guide.html'
 DOCS = HOST_PREFIX + 'Marco_Polo/polo.html'
 BETA = HOST_PREFIX + 'Marco_Polo/beta_testers.html'
-REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
+REPORTS = HOST_PREFIX + 'Marco_Polo/reports.html'
 
 RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
