@@ -58,7 +58,7 @@ class Image(QtGui.QPixmap):
     '''
 
     def __init__(self, path=None, bites=None, well_number=None, human_class=None,
-                 machine_class=None, prediction_dict=None,
+                 machine_class=None, prediction_dict={},
                  plate_id=None, date=None, cocktail=None, spectrum=None,
                  previous_image=None, next_image=None, alt_image=None,
                  favorite=False, parent=None, **kwargs):
@@ -186,7 +186,29 @@ class Image(QtGui.QPixmap):
             self._bites = Image.clean_base64_string(new_bites)
         else:
             self._bites = None
-
+    
+    @property
+    def prediction_dict(self):
+        return self._prediction_dict
+    
+    @prediction_dict.setter
+    def prediction_dict(self, new_dict):
+        try:
+            default = dict(zip(IMAGE_CLASSIFICATIONS, [0]*len(IMAGE_CLASSIFICATIONS)))
+            valid_dict = False
+            self._prediction_dict = new_dict
+            if all([im_cls in new_dict for im_cls in IMAGE_CLASSIFICATIONS]):
+                valid_dict = True
+            if valid_dict:
+                self._prediction_dict = new_dict
+            else:
+                self._prediction_dict = default
+        except Exception as e:
+            logger.critical('Caught {} setting prediction_dict value'.format(e))
+            self._prediction_dict = {}  # try and save face
+            # had issues finding errors this method threw because setter
+            # decorator kind of hides them. 
+    
     # @property
     # def machine_class(self):
     #     '''MARCO classification of the :class:`~polo.crystallography.image.Image`.

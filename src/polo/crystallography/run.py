@@ -63,6 +63,7 @@ class Run():
         self.image_spectrum = image_spectrum
         self.images = images
         self.date = date
+        self.has_been_machine_classified = False
         self.__dict__.update(kwargs)
 
 
@@ -84,7 +85,7 @@ class Run():
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
-
+    
     def __getitem__(self, n):
         try:
             return self.images[n]

@@ -43,6 +43,11 @@ def run_model(tf_predictor, image_path):
                 new_dict[key.decode('utf-8')] = dictionary[key]
             else:
                 new_dict[key] = dictionary
+        
+
+        # round values in the new dict
+        new_dict = {key: round(val, 3) for key, val in new_dict.items()}
+
         return prediction.decode('utf-8'), new_dict
     except Exception as e:
         logger.error('Caught exception {}'.format(e))

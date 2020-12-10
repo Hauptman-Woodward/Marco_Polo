@@ -107,6 +107,7 @@ class TableInspector(QtWidgets.QWidget):
         '''
         try:
             if self.run:
+                self._set_column_options()
                 self.ui.tableViewer.selected_headers = self.selected_headers
                 self.ui.tableViewer.populate_table(
                     self.selected_classifications,
