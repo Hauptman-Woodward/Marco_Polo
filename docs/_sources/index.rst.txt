@@ -16,6 +16,7 @@ summer internship program.
    :caption: Contents:
 
    about
+   Quickstart
    install
    FAQS
    user_guide

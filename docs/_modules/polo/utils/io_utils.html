@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,10 +12,6 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
@@ -22,9 +19,7 @@
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,6 +31,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -52,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -78,7 +77,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +87,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -100,7 +99,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -139,7 +137,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -464,8 +462,8 @@
                     <span class="k">if</span> <span class="n">attr_b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>  <span class="c1"># only add if will not override higher level attr</span>
                         <span class="c1"># only go one level deep for now</span>
                         <span class="n">row</span><span class="p">[</span><span class="n">attr_b</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value_b</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
-                <span class="k">continue</span>  <span class="c1"># currently do not encode bytes (base 64 stuff)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># currently do not encode bytes (base 64 stuff)  </span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># default to case to string</span>
         <span class="k">return</span> <span class="n">row</span></div>
@@ -971,6 +969,32 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
                 <span class="k">return</span> <span class="n">e</span></div></div>
 
+<div class="viewcode-block" id="XtalToImages"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalToImages">[docs]</a><span class="k">class</span> <span class="nc">XtalToImages</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;One of the features of Polo is the ability to save images, classifications</span>
+<span class="sd">    and cocktail data all as one (xtal) file. This also means that users may</span>
+<span class="sd">    be loading in their run data from xtal files but want some way to recover</span>
+<span class="sd">    the images that are encoded (as base64) within the delicious onion like</span>
+<span class="sd">    layers of the JSON formated xtal file. This class acomplishes this goal by</span>
+<span class="sd">    intializing with a run that has base64 encoded image data and writes that</span>
+<span class="sd">    data as jpegs to a user specified directory.</span>
+
+<span class="sd">    Currently under construction as of 12-14-2020</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span> <span class="o">=</span> <span class="n">run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">output_dir</span>
+    
+<div class="viewcode-block" id="XtalToImages.write_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalToImages.write_images">[docs]</a>    <span class="k">def</span> <span class="nf">write_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collect_writable_image_indicies</span><span class="p">():</span>
+            <span class="n">image_write_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">))</span></div>
+    
+
+<div class="viewcode-block" id="XtalToImages._collect_writable_image_indicies"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.XtalToImages._collect_writable_image_indicies">[docs]</a>    <span class="k">def</span> <span class="nf">_collect_writable_image_indicies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">))</span> <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">bites</span><span class="p">]</span></div></div>
+        
+
+
 
 <div class="viewcode-block" id="RunDeserializer"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunDeserializer">[docs]</a><span class="k">class</span> <span class="nc">RunDeserializer</span><span class="p">():</span>  <span class="c1"># convert saved file into a run</span>
 
@@ -1130,44 +1154,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">=</span> <span class="mi">6</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span>
     
-<div class="viewcode-block" id="PptxWriter.delete_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">delete_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
-    
-<div class="viewcode-block" id="PptxWriter.delete_temp_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.delete_temp_images">[docs]</a>    <span class="k">def</span> <span class="nf">delete_temp_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Delete an temporary images used to create the pptx presentation.</span>
-
-<span class="sd">        :return: True, if images are removed successfully, Exception otherwise.</span>
-<span class="sd">        :rtype: bool or Exception</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span><span class="p">]</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">e</span></div>
-    
-<div class="viewcode-block" id="PptxWriter.sort_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">sort_runs_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Divids runs into two lists, one containing visible spectrum</span>
-<span class="sd">        runs and another containing all non-visible runs.</span>
-
-<span class="sd">        :param runs: List or runs</span>
-<span class="sd">        :type runs: list</span>
-<span class="sd">        :return: tuple, first item is visible runs second is non-visible runs</span>
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">visible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">visible</span><span class="p">,</span> <span class="n">other</span></div>
-           
 <div class="viewcode-block" id="PptxWriter.make_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                     <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                     <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Create a pptx presentation file from a screening run instance.</span>
+        <span class="sd">&#39;&#39;&#39;Create a pptx presentation file from a screening run instance. This</span>
+<span class="sd">        should be the only public method in the class. All other methods are</span>
+<span class="sd">        internal to actually creating the presentation file. </span>
 
 <span class="sd">        :param run: Run to create the presentation from</span>
 <span class="sd">        :type run: Run</span>
@@ -1186,7 +1178,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">title_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_new_slide</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">title_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
             <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
                 <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
@@ -1194,55 +1186,66 @@
             <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
             <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
                     <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
                         <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">add_single_image_slide</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_single_image_slide</span><span class="p">(</span>
                         <span class="n">image</span><span class="p">,</span> 
                         <span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
                         <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
                         <span class="p">)</span>
                     <span class="k">if</span> <span class="n">all_specs</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_spectrum_slide</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_multi_spectrum_slide</span><span class="p">(</span>
                             <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">all_dates</span> <span class="ow">and</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="ow">or</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
             
             <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_temp_images</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delete_temp_images</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
-                
     
-<div class="viewcode-block" id="PptxWriter.add_classification_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_classification_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_classification_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">well_number</span><span class="p">,</span> <span class="n">rep_image</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Add a slide containing details about an images MARCO</span>
-<span class="sd">        and human classification in a table.</span>
+<div class="viewcode-block" id="PptxWriter._delete_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._delete_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">_delete_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="PptxWriter._delete_temp_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._delete_temp_images">[docs]</a>    <span class="k">def</span> <span class="nf">_delete_temp_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Delete an temporary images used to create the pptx presentation.</span>
 
-<span class="sd">        :param well_number: Well number (index) of image to use in</span>
-<span class="sd">                            the title of the slide </span>
-<span class="sd">        :type well_number: int</span>
-<span class="sd">        :param rep_image: Image object to make slide from</span>
-<span class="sd">        :type rep_image: Image</span>
+<span class="sd">        :return: True, if images are removed successfully, Exception otherwise.</span>
+<span class="sd">        :rtype: bool or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Classifications&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
-        <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="ne">IsADirectoryError</span><span class="p">,</span> <span class="ne">PermissionError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete_temp_images</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">e</span></div>
+    
+<div class="viewcode-block" id="PptxWriter.sort_runs_by_spectrum"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">sort_runs_by_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">runs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Divids runs into two lists, one containing visible spectrum</span>
+<span class="sd">        runs and another containing all non-visible runs.</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">[</span><span class="s1">&#39;Human Classification&#39;</span><span class="p">,</span> <span class="s1">&#39;MARCO Classification&#39;</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">rep_image</span><span class="o">.</span><span class="n">human_class</span><span class="p">,</span> <span class="n">rep_image</span><span class="o">.</span><span class="n">machine_class</span><span class="p">]</span>
-        <span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_table_to_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
-        <span class="c1"># do for most recent human classification image if it exits</span>
-
-<div class="viewcode-block" id="PptxWriter.add_new_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_new_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="sd">        :param runs: List or runs</span>
+<span class="sd">        :type runs: list</span>
+<span class="sd">        :return: tuple, first item is visible runs second is non-visible runs</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">visible</span><span class="p">,</span> <span class="n">other</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="o">==</span> <span class="n">IMAGE_SPECS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">visible</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">visible</span><span class="p">,</span> <span class="n">other</span></div>
+                
+<div class="viewcode-block" id="PptxWriter._add_new_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_new_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_new_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Add a new slide to the presentation referenced by the</span>
 <span class="sd">        :attr:`_presentation` attribute.</span>
 
@@ -1256,7 +1259,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="n">template</span><span class="p">])</span></div>
     
-<div class="viewcode-block" id="PptxWriter.add_timeline_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_timeline_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_timeline_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+<div class="viewcode-block" id="PptxWriter._add_timeline_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_timeline_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_timeline_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a timeline (time resolved) slide that</span>
 <span class="sd">        show the progression of a sample in a particular</span>
 <span class="sd">        well.</span>
@@ -1269,17 +1272,16 @@
 <span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">date_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_new_slide</span><span class="p">()</span>
         <span class="n">labeler</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">formated_date</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
         <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">well_number</span><span class="p">,</span> <span class="n">date_images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">formated_date</span><span class="p">,</span> <span class="n">date_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">formated_date</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
 
         <span class="k">return</span> <span class="n">new_slide</span></div>
-    
 
-<div class="viewcode-block" id="PptxWriter.add_multi_spectrum_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_multi_spectrum_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_multi_spectrum_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
+<div class="viewcode-block" id="PptxWriter._add_multi_spectrum_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_multi_spectrum_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_multi_spectrum_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">well_number</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a slide to show a all spectrums a well has been</span>
 <span class="sd">        imaged in.</span>
 
@@ -1291,9 +1293,9 @@
 <span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">spec_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">spectrum</span><span class="p">))</span>
-        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">()</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_new_slide</span><span class="p">()</span>
         <span class="n">labeler</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">spectrum</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_multi_image_slide</span><span class="p">(</span><span class="n">new_slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">)</span>
         <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Alternate Imagers&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well_number</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
 
@@ -1307,7 +1309,7 @@
 <span class="sd">        :param cocktail: Cocktail to write as a slide</span>
 <span class="sd">        :type cocktail: Cocktail</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Well </span><span class="si">{}</span><span class="s1"> Cocktail: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">well</span><span class="p">,</span> <span class="n">cocktail</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span></div>
 
@@ -1341,8 +1343,8 @@
                 <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">slide</span></div>
 
-<div class="viewcode-block" id="PptxWriter.add_multi_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_multi_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_multi_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;General helper method for adding a slide that will have multiple</span>
+<div class="viewcode-block" id="PptxWriter._add_multi_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_multi_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_multi_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">labeler</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method for adding a slide that will have multiple</span>
 <span class="sd">        images.</span>
 
 <span class="sd">        :param slide: Slide to add the images to </span>
@@ -1361,17 +1363,17 @@
         <span class="n">left</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">-</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.2</span>
 
         <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_image_to_slide</span><span class="p">(</span>
                 <span class="n">image</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">img_size</span>
             <span class="p">)</span>
             <span class="n">label_text</span> <span class="o">=</span> <span class="n">labeler</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_text_to_slide</span><span class="p">(</span>
                 <span class="n">slide</span><span class="p">,</span> <span class="n">label_text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="p">(</span><span class="n">img_size</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">img_size</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> 
                 <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
             <span class="n">left</span> <span class="o">+=</span> <span class="n">img_size</span>
         <span class="k">return</span> <span class="n">slide</span></div>
     
-<div class="viewcode-block" id="PptxWriter.add_single_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_single_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_single_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">img_scaler</span><span class="o">=</span><span class="mf">0.65</span><span class="p">):</span>
+<div class="viewcode-block" id="PptxWriter._add_single_image_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_single_image_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_single_image_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">img_scaler</span><span class="o">=</span><span class="mf">0.65</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;General helper method for adding a slide with a single image to a</span>
 <span class="sd">        presentation.</span>
 
@@ -1387,10 +1389,10 @@
 <span class="sd">        :return: The new slide with Image added</span>
 <span class="sd">        :rtype: slide</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">new_slide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_new_slide</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">new_slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span>
         <span class="n">img_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">*</span> <span class="n">img_scaler</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_image_to_slide</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_image_to_slide</span><span class="p">(</span>
             <span class="n">image</span><span class="p">,</span> <span class="n">new_slide</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
@@ -1398,13 +1400,13 @@
             <span class="n">metadata_left</span> <span class="o">=</span> <span class="n">img_size</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">metadata_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">-</span> <span class="n">metadata_left</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span>
             <span class="n">metadata_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_text_to_slide</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_text_to_slide</span><span class="p">(</span>
                 <span class="n">new_slide</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">metadata_left</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">metadata_width</span><span class="p">,</span>
                 <span class="n">metadata_height</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_slide</span></div>
         
     
-<div class="viewcode-block" id="PptxWriter.add_text_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_text_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_text_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+<div class="viewcode-block" id="PptxWriter._add_text_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_text_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_text_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
                           <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Helper method to add text to a slide</span>
 
@@ -1438,8 +1440,8 @@
 
         <span class="k">return</span> <span class="n">text_box</span></div>
     
-<div class="viewcode-block" id="PptxWriter.add_image_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.add_image_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">add_image_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Helper method for adding images to a slide. If the :class:`Image`</span>
+<div class="viewcode-block" id="PptxWriter._add_image_to_slide"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_image_to_slide">[docs]</a>    <span class="k">def</span> <span class="nf">_add_image_to_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">slide</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method for adding images to a slide. If the :class:`Image`</span>
 <span class="sd">        does not have a file written on the local machine as can be</span>
 <span class="sd">        the case with saved runs who&#39;s image data only exists in</span>
 <span class="sd">        their xtal files this method will write a temporary image</span>
@@ -1471,6 +1473,28 @@
         
         <span class="k">return</span> <span class="n">slide</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">add_picture</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="n">Inches</span><span class="p">(</span><span class="n">top</span><span class="p">),</span> 
                                         <span class="n">height</span><span class="o">=</span><span class="n">Inches</span><span class="p">(</span><span class="n">height</span><span class="p">))</span></div></div>
+    
+    <span class="c1"># def add_classification_slide(self, well_number, rep_image):</span>
+    <span class="c1">#     &#39;&#39;&#39;Add a slide containing details about an images MARCO</span>
+    <span class="c1">#     and human classification in a table.</span>
+
+    <span class="c1">#     :param well_number: Well number (index) of image to use in</span>
+    <span class="c1">#                         the title of the slide </span>
+    <span class="c1">#     :type well_number: int</span>
+    <span class="c1">#     :param rep_image: Image object to make slide from</span>
+    <span class="c1">#     :type rep_image: Image</span>
+    <span class="c1">#     &#39;&#39;&#39;</span>
+    <span class="c1">#     new_slide = self._add_new_slide()</span>
+    <span class="c1">#     title = &#39;Well {} Classifications&#39;.format(well_number)</span>
+    <span class="c1">#     new_slide.shapes.title.text = title</span>
+
+    <span class="c1">#     data = [</span>
+    <span class="c1">#         [&#39;Human Classification&#39;, &#39;MARCO Classification&#39;]</span>
+    <span class="c1">#         [rep_image.human_class, rep_image.machine_class]</span>
+    <span class="c1">#     ]</span>
+
+    <span class="c1">#     self.add_table_to_slide(new_slide, data, self._bumper, 2)</span>
+    <span class="c1">#     # do for most recent human classification image if it exits</span>
 
 
 <div class="viewcode-block" id="BarTender"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.BarTender">[docs]</a><span class="k">class</span> <span class="nc">BarTender</span><span class="p">():</span>
@@ -2143,19 +2167,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -2166,6 +2182,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

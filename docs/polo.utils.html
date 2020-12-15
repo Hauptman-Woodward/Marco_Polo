@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,10 +12,6 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="_static/polo.ico"/>
   
@@ -22,9 +19,7 @@
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,6 +31,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -54,7 +53,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -80,7 +79,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,6 +89,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
@@ -125,7 +124,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -164,7 +162,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
@@ -865,39 +863,9 @@ must have a classification in this set, defaults to None</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_classification_slide">
-<code class="sig-name descname">add_classification_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well_number</span></em>, <em class="sig-param"><span class="n">rep_image</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_classification_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_classification_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a slide containing details about an images MARCO
-and human classification in a table.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>well_number</strong> (<em>int</em>) – Well number (index) of image to use in
-the title of the slide</p></li>
-<li><p><strong>rep_image</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><em>Image</em></a>) – Image object to make slide from</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_cocktail_slide">
-<code class="sig-name descname">add_cocktail_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well</span></em>, <em class="sig-param"><span class="n">cocktail</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_cocktail_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_cocktail_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add slide with details on <code class="xref py py-class docutils literal notranslate"><span class="pre">Cocktail</span></code> information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>well</strong> (<em>int</em>) – Well number to use in slide title</p></li>
-<li><p><strong>cocktail</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.Cocktail" title="polo.crystallography.cocktail.Cocktail"><em>Cocktail</em></a>) – Cocktail to write as a slide</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_image_to_slide">
-<code class="sig-name descname">add_image_to_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">left</span></em>, <em class="sig-param"><span class="n">top</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_image_to_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_image_to_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method for adding images to a slide. If the <code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code>
+<dt id="polo.utils.io_utils.PptxWriter._add_image_to_slide">
+<code class="sig-name descname">_add_image_to_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">left</span></em>, <em class="sig-param"><span class="n">top</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_image_to_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_image_to_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method for adding images to a slide. If the <code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code>
 does not have a file written on the local machine as can be
 the case with saved runs who’s image data only exists in
 their xtal files this method will write a temporary image
@@ -923,9 +891,9 @@ the presentaton file is written.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_multi_image_slide">
-<code class="sig-name descname">add_multi_image_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">labeler</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_multi_image_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_multi_image_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>General helper method for adding a slide that will have multiple
+<dt id="polo.utils.io_utils.PptxWriter._add_multi_image_slide">
+<code class="sig-name descname">_add_multi_image_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">labeler</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_multi_image_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_multi_image_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method for adding a slide that will have multiple
 images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -945,8 +913,8 @@ images.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_multi_spectrum_slide">
-<code class="sig-name descname">add_multi_spectrum_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_multi_spectrum_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_multi_spectrum_slide" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.utils.io_utils.PptxWriter._add_multi_spectrum_slide">
+<code class="sig-name descname">_add_multi_spectrum_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_multi_spectrum_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_multi_spectrum_slide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a slide to show a all spectrums a well has been
 imaged in.</p>
 <dl class="field-list simple">
@@ -966,8 +934,8 @@ imaged in.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_new_slide">
-<code class="sig-name descname">add_new_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_new_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_new_slide" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.utils.io_utils.PptxWriter._add_new_slide">
+<code class="sig-name descname">_add_new_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_new_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_new_slide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new slide to the presentation referenced by the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">_presentation</span></code> attribute.</p>
 <dl class="field-list simple">
@@ -986,8 +954,8 @@ template integers</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_single_image_slide">
-<code class="sig-name descname">add_single_image_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">img_scaler</span><span class="o">=</span><span class="default_value">0.65</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_single_image_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_single_image_slide" title="Permalink to this definition">¶</a></dt>
+<dt id="polo.utils.io_utils.PptxWriter._add_single_image_slide">
+<code class="sig-name descname">_add_single_image_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">img_scaler</span><span class="o">=</span><span class="default_value">0.65</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_single_image_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_single_image_slide" title="Permalink to this definition">¶</a></dt>
 <dd><p>General helper method for adding a slide with a single image to a
 presentation.</p>
 <dl class="field-list simple">
@@ -1005,6 +973,87 @@ presentation.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>slide</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._add_text_to_slide">
+<code class="sig-name descname">_add_text_to_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">left</span></em>, <em class="sig-param"><span class="n">top</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">rotation</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">font_size</span><span class="o">=</span><span class="default_value">14</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_text_to_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_text_to_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method to add text to a slide</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add text to</p></li>
+<li><p><strong>text</strong> (<em>str</em>) – Text to add to the slide</p></li>
+<li><p><strong>left</strong> (<em>float</em>) – Left cordinate location of the text in inches</p></li>
+<li><p><strong>top</strong> (<em>float</em>) – Top cordinate location of the text in inches</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – Width of the text in inches</p></li>
+<li><p><strong>height</strong> (<em>float</em>) – Height of the text in inches</p></li>
+<li><p><strong>rotation</strong> (<em>int</em><em>, </em><em>optional</em>) – Rotation to apply to the text in degrees, defaults to 0</p></li>
+<li><p><strong>font_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Font size of text, defaults to 14</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Slide with text added</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>slide</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._add_timeline_slide">
+<code class="sig-name descname">_add_timeline_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_timeline_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_timeline_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a timeline (time resolved) slide that
+show the progression of a sample in a particular
+well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>list</em>) – List of images to include in the slide</p></li>
+<li><p><strong>well_number</strong> (<em>int</em>) – Well number to use in the title of the slide</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New slide</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>slide</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._delete_presentation">
+<code class="sig-name descname">_delete_presentation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._delete_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._delete_presentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._delete_temp_images">
+<code class="sig-name descname">_delete_temp_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._delete_temp_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._delete_temp_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete an temporary images used to create the pptx presentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True, if images are removed successfully, Exception otherwise.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool or Exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter.add_cocktail_slide">
+<code class="sig-name descname">add_cocktail_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well</span></em>, <em class="sig-param"><span class="n">cocktail</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_cocktail_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_cocktail_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add slide with details on <code class="xref py py-class docutils literal notranslate"><span class="pre">Cocktail</span></code> information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>well</strong> (<em>int</em>) – Well number to use in slide title</p></li>
+<li><p><strong>cocktail</strong> (<a class="reference internal" href="polo.crystallography.html#polo.crystallography.cocktail.Cocktail" title="polo.crystallography.cocktail.Cocktail"><em>Cocktail</em></a>) – Cocktail to write as a slide</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1032,76 +1081,11 @@ presentation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_text_to_slide">
-<code class="sig-name descname">add_text_to_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slide</span></em>, <em class="sig-param"><span class="n">text</span></em>, <em class="sig-param"><span class="n">left</span></em>, <em class="sig-param"><span class="n">top</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">rotation</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">font_size</span><span class="o">=</span><span class="default_value">14</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_text_to_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_text_to_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper method to add text to a slide</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>slide</strong> (<em>slide</em>) – Slide to add text to</p></li>
-<li><p><strong>text</strong> (<em>str</em>) – Text to add to the slide</p></li>
-<li><p><strong>left</strong> (<em>float</em>) – Left cordinate location of the text in inches</p></li>
-<li><p><strong>top</strong> (<em>float</em>) – Top cordinate location of the text in inches</p></li>
-<li><p><strong>width</strong> (<em>float</em>) – Width of the text in inches</p></li>
-<li><p><strong>height</strong> (<em>float</em>) – Height of the text in inches</p></li>
-<li><p><strong>rotation</strong> (<em>int</em><em>, </em><em>optional</em>) – Rotation to apply to the text in degrees, defaults to 0</p></li>
-<li><p><strong>font_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Font size of text, defaults to 14</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Slide with text added</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>slide</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.add_timeline_slide">
-<code class="sig-name descname">add_timeline_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">well_number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_timeline_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_timeline_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a timeline (time resolved) slide that
-show the progression of a sample in a particular
-well.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>images</strong> (<em>list</em>) – List of images to include in the slide</p></li>
-<li><p><strong>well_number</strong> (<em>int</em>) – Well number to use in the title of the slide</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>New slide</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>slide</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.delete_presentation">
-<code class="sig-name descname">delete_presentation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.delete_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.delete_presentation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polo.utils.io_utils.PptxWriter.delete_temp_images">
-<code class="sig-name descname">delete_temp_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.delete_temp_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.delete_temp_images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete an temporary images used to create the pptx presentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True, if images are removed successfully, Exception otherwise.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool or Exception</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.make_presentation">
 <code class="sig-name descname">make_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">all_specs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">all_dates</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_presentation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a pptx presentation file from a screening run instance.</p>
+<dd><p>Create a pptx presentation file from a screening run instance. This
+should be the only public method in the class. All other methods are
+internal to actually creating the presentation file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1589,6 +1573,30 @@ for reading xml files.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="polo.utils.io_utils.XtalToImages">
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">XtalToImages</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">output_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalToImages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalToImages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>One of the features of Polo is the ability to save images, classifications
+and cocktail data all as one (xtal) file. This also means that users may
+be loading in their run data from xtal files but want some way to recover
+the images that are encoded (as base64) within the delicious onion like
+layers of the JSON formated xtal file. This class acomplishes this goal by
+intializing with a run that has base64 encoded image data and writes that
+data as jpegs to a user specified directory.</p>
+<p>Currently under construction as of 12-14-2020</p>
+<dl class="py method">
+<dt id="polo.utils.io_utils.XtalToImages._collect_writable_image_indicies">
+<code class="sig-name descname">_collect_writable_image_indicies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalToImages._collect_writable_image_indicies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalToImages._collect_writable_image_indicies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.XtalToImages.write_images">
+<code class="sig-name descname">write_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalToImages.write_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalToImages.write_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="polo.utils.io_utils.XtalWriter">
 <em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">XtalWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">main_window</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#XtalWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.XtalWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#polo.utils.io_utils.RunSerializer" title="polo.utils.io_utils.RunSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">polo.utils.io_utils.RunSerializer</span></code></a></p>
@@ -1840,19 +1848,11 @@ operating systems but not for Linux.</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1863,6 +1863,7 @@ operating systems but not for Linux.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
