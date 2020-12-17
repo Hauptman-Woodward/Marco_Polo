@@ -93,22 +93,23 @@ class TableInspector(QtWidgets.QWidget):
         TODO: formating for private attributes to make them prettier
         '''
         if self.run:
-            self.ui.listWidget.clear()
+            current_headers = set([self.ui.listWidget.item(i).text() for i in range(self.ui.listWidget.count())])
             for fieldname in self.ui.tableViewer.fieldnames:
-                item = QtWidgets.QListWidgetItem(self.ui.listWidget)
-                item.setText(fieldname)
-                item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-                item.setCheckState(Qt.Checked)
-                self.ui.listWidget.addItem(item)
-
+                if fieldname not in current_headers:
+                    item = QtWidgets.QListWidgetItem(self.ui.listWidget)
+                    item.setText(fieldname)
+                    item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+                    item.setCheckState(Qt.Checked)
+                    self.ui.listWidget.addItem(item)
+                
     def update_table_view(self):
         '''Private method that updates the data being displayed
         in the tableViewer.
         '''
         try:
             if self.run:
-                self._set_column_options()
                 self.ui.tableViewer.selected_headers = self.selected_headers
+                self._set_column_options()
                 self.ui.tableViewer.populate_table(
                     self.selected_classifications,
                     self.ui.checkBox_12.isChecked(),
@@ -118,6 +119,7 @@ class TableInspector(QtWidgets.QWidget):
                     type(self.run)
                 ))
         except Exception as e:
+            raise e
             logger.error('Caught {} at {}'.format(e, self.update_table_view))
             make_message_box(
                 parent=self,

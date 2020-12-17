@@ -73,6 +73,15 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         :rtype: bool
         '''
         return self.ui.radioButton_2.isChecked()
+    
+    @property
+    def favorite(self):
+        '''State of the favorite button. Returns boolean based on check status.
+
+        Returns:
+            bool: State of the favorite button
+        '''
+        return self.ui.checkBox_5.isChecked()
 
     @property
     def title(self):
@@ -190,7 +199,8 @@ class PptxDesignerDialog(QtWidgets.QDialog):
 
             writer = PptxWriter(file_path,
                                 image_types=self._parse_image_classifications(),
-                                marco=self.marco, human=self.human)
+                                marco=self.marco, human=self.human,
+                                favorite=self.favorite)
 
             self.setEnabled(False)
             QApplication.setOverrideCursor(Qt.WaitCursor)

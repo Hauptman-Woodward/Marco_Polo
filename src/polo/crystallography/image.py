@@ -248,24 +248,24 @@ class Image(QtGui.QPixmap):
     #     else:
     #         self._machine_class = None
 
-    @property
-    def human_class(self):
-        '''Return the :attr:`~polo.crystallography.image.Image.human_class`
-        attribute which specifies the current human classification of the
-        :class:`~polo.crystallography.image.Image`.
+    # @property
+    # def human_class(self):
+    #     '''Return the :attr:`~polo.crystallography.image.Image.human_class`
+    #     attribute which specifies the current human classification of the
+    #     :class:`~polo.crystallography.image.Image`.
 
-        :return: Current human classification of the
-                 :class:`~polo.crystallography.image.Image`
-        :rtype: str
-        '''
-        return self._human_class
+    #     :return: Current human classification of the
+    #              :class:`~polo.crystallography.image.Image`
+    #     :rtype: str
+    #     '''
+    #     return self._human_class
 
-    @human_class.setter
-    def human_class(self, new_class):
-        if new_class in IMAGE_CLASSIFICATIONS:
-            self._human_class = new_class
-        else:
-            self._human_class = None
+    # @human_class.setter
+    # def human_class(self, new_class):
+    #     if new_class in IMAGE_CLASSIFICATIONS:
+    #         self._human_class = new_class
+    #     else:
+    #         self._human_class = None
 
     @property
     def formated_date(self):
@@ -545,3 +545,14 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
+    
+    def write_from_bites(self, path):
+        '''Write the `Image` instance to a file using the base64 encoded data
+        stored in the :attr:`~polo.crystallography.image.Image.bites` attribute.
+        '''
+        if bites:
+            with open(path, 'wb') as handle:
+                handle.write(base64.decodebytes(self.bites))
+            return path
+        else:
+            raise Exception('Image has not been base64 encoded')
