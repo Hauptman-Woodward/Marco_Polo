@@ -5,6 +5,7 @@ from polo import make_default_logger
 
 logger = make_default_logger(__name__)
 
+# https://github.com/tensorflow/models/blob/master/research/marco/Automated_Marco.py
 def run_model(tf_predictor, image_path):
     '''Given a tensorflow predictor (the MARCO model) and the path to an image, 
     runs the model on that image. Returns a tuple where the first item is the
