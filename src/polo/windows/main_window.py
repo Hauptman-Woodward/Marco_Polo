@@ -26,7 +26,6 @@ from polo.utils.io_utils import *
 from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
 from polo.widgets.plate_viewer import plateViewer
 from polo.widgets.slideshow_viewer import SlideshowViewer
-from polo.windows.ftp_dialog import FTPDialog
 from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
 from polo.windows.pptx_dialog import PptxDesignerDialog

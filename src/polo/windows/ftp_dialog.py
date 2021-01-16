@@ -42,11 +42,13 @@ class FTPDialog(QtWidgets.QDialog):
         self.ui.pushButton.clicked.connect(self.connect_ftp)
         self.ui.pushButton_3.clicked.connect(self.close)
         self.ftp = ftp_connection
+        self._connected = False 
         self.download_files = None
         self.save_dir = None
         self.home_dir = None
 
         self.ui.pushButton_2.setIcon(QIcon(self.DOWNLOAD_ICON))
+        self.ui.pushButton_2.setEnabled(False)  # disable download until connected
 
         logger.debug('Created {}'.format(self))
         
@@ -76,6 +78,20 @@ class FTPDialog(QtWidgets.QDialog):
         :rtype: str
         '''
         return self.ui.lineEdit.text()
+    
+    @property
+    def connected(self):
+        return self._connected
+    
+    @connected.setter
+    def connected(self, status):
+        self._connected = status
+        if status == True:
+            self.ui.label_3.setText('Connected')
+        else:
+            self.ui.label_3.setText('Disconnected')
+        
+        self.ui.pushButton_2.setEnabled(status)
 
     def connect_ftp(self):
         '''Attempt to establish a connection to an ftp server. If the connection is
@@ -107,7 +123,7 @@ class FTPDialog(QtWidgets.QDialog):
                         QApplication.restoreOverrideCursor()
                         message.close()
                         logger.debug('Connected to FTP server')
-                        self.set_connection_status(connected=True)
+                        self.connected = True
                         make_message_box(
                             message='Connected to {}! They say {}'.format(
                                 self.host,
@@ -125,7 +141,7 @@ class FTPDialog(QtWidgets.QDialog):
                                 self.host, e),
                                 parent=self
                             ).exec_()
-                        self.set_connection_status(connected=False)
+                        self.connected = False
                 else:  # did not connect in the first place
                     message.close()
                     self.setEnabled(True)
@@ -135,7 +151,7 @@ class FTPDialog(QtWidgets.QDialog):
                     logger.debug('FTP connection failed with code {}'.format(
                         self.ftp
                     ))
-                    self.set_connection_status(connected=False)
+                    self.connected = False
                     m.exec_()
             
 
@@ -164,14 +180,21 @@ class FTPDialog(QtWidgets.QDialog):
         else:
             self.ui.label_3.setText('Disconnected')
 
-        # want to return the error message as some kind of flash
 
     def download_selected_files(self):
-        '''Signals to the `fileBrowser` widget to download all files / dirs the
-        user has selected. Downloading occurs in the background and the FTP
-        browser dialog is closed after a download has successfully begun.
-        Another download should not be initiated while one is
-        already in progress.
+        '''Opens a file dialog for the user to select a location to download
+        remote files to. All files / directories that are currently selected
+        in the `FTPDialog` will then be appended to `download_files`
+        attribute, marking them for download. A message box informing the user
+        that files are downloading is shown and then the FTPDialog closes.
+
+        At this point the method that originally created the `FTPDialog`
+        instance should realize the dialog is closed and check for an open
+        FTP connection and the presence of files in the `download_file`
+        attribute (indicating the user had selecting files for downloading).
+
+        An `FTPDownloadThread` instance can then be created to download files
+        in the background without interrupting other Polo interfaces.
         '''
         file_dlg = QtWidgets.QFileDialog()
         file_dlg.setFileMode(QtWidgets.QFileDialog.Directory)
@@ -181,6 +204,8 @@ class FTPDialog(QtWidgets.QDialog):
             self.save_dir = filenames[0]
             self.download_files = self.ui.fileBrowser.get_checked_files(
                 self.home_dir)
+            # This string is really long because adding \ makes it look weird
+            # as a dialog.
             message = 'Your files are being downloaded to {} in the background. Polo will notify you when the download is completed. This window will now close.'.format(
                 self.save_dir)
             start_box = make_message_box(
@@ -190,4 +215,3 @@ class FTPDialog(QtWidgets.QDialog):
                 self.save_dir))
             self.close()
 
-    # will need to open dialog to browse directory to place downloads in
