@@ -978,15 +978,17 @@ class PptxWriter():
     :param favorite: Only include images marked as favorite, defaults to False
     :type favorite: bool, optional
     '''
+    slide_title_formater = 'Well Number {}'
 
     # 13.33 x 7.5 
-    def __init__(self, output_path,
-                 image_types = None, human=False, marco=False, favorite=False):
+    def __init__(self, output_path, image_types = None, human=False, 
+                marco=False, favorite=False, images_indices=[]):
         self.output_path = output_path
         self.human = human
         self.marco = marco
         self.favorite = favorite
         self.image_types = image_types
+        self.images_indices = images_indices
         self._temp_images = []
         self._bumper = 1
         self._slide_width = 10
@@ -1022,33 +1024,60 @@ class PptxWriter():
             if subtitle:
                 title_slide.placeholders[1].text = subtitle
             
-            slide_title_formater = 'Well Number {}'
-            for image in run.images:
-                if image.standard_filter(self.image_types,
-                                            self.human, self.marco,
-                                            self.favorite):
-                    metadata = str(image)
-                    if cocktail_data and hasattr(image, 'cocktail'):
-                        metadata += '\n\n' + str(image.cocktail)
-                    self._add_single_image_slide(
-                        image, 
-                        slide_title_formater.format(image.well_number),
-                        metadata=metadata
-                        )
-                    if all_specs and image.alt_image:
-                        self._add_multi_spectrum_slide(
-                            image.get_linked_images_by_spectrum(), image.well_number)
-                    if all_dates and (image.next_image or image.previous_image):
-                        self._add_timeline_slide(image.get_linked_images_by_date(), image.well_number)
-            
-            self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
-            self._presentation.save(str(self.output_path))
-            self._delete_temp_images()
-            return True
+            images = self._select_images(run)
+            metadata = self._metadata_from_images(images, cocktail_data)
+            self._add_images_and_metadata_to_slideshow(images, metadata, all_specs, all_dates)            
+            self.output_path = RunSerializer.path_suffix_checker(
+                                                                self.output_path, 
+                                                                '.pptx'
+                                                                )
+            if images:  # make sure actualy were images to write to file
+                self._presentation.save(str(self.output_path))
+                return True
+            else:
+                return False
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, self.make_presentation))
             return e
+    
+    def _add_images_and_metadata_to_slideshow(self, images, metadata, all_specs, all_dates):
+        for image, image_metadata in zip(images, metadata):
+            self._add_single_image_slide(
+                image, PptxWriter.slide_title_formater.format(image.well_number),
+                metadata=image_metadata
+            )
+            if all_specs and image.alt_image:
+                self._add_multi_spectrum_slide(
+                    image.get_linked_images_by_spectrum(), image.well_number
+                )
+            if all_dates and (image.next_image or image.previous_image):
+                self._add_timeline_slide(image.get_linked_images_by_date(), 
+                                        image.well_number
+                                        )
+            
+    def _metadata_from_images(self, images, cocktail_data):
+        all_metadata = []
+        for image in images:
+            image_metadata = str(image)
+            if cocktail_data and hasattr(image, 'cocktail'):
+                # user wants to display cocktail data and the image has it
+                image_metadata += '\n\n' + str(image.cocktail)
+            all_metadata.append(image_metadata)
+        return all_metadata
+    
+    def _select_images(self, run):
+        '''Selects images to add to the presentation.
+        '''
+        if self.images_indices:
+            # Use these index instead of classifications
+            return [run.images[i] for i in self.images_indices]
+        else:
+            return [image for image in run.images 
+                    if image.standard_filter(
+                        self.image_types, self.human, self.marco, self.favorite
+                        )
+                    ]
     
     def _delete_presentation(self):
         self._presentation = Presentation()

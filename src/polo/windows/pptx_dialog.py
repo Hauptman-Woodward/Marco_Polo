@@ -172,7 +172,28 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         # return image classifications whose checkboxes are checked
         return set([clss for clss, box in self._image_class_checkboxes.items()
                                        if box.isChecked()])
-
+    
+    def _parse_manual_image_entry(self, num_wells):
+        '''Private method to return the image (well) numbers if they have been
+        manually specified by the user.
+        '''
+        text = self.ui.plainTextEdit.toPlainText()
+        text = text.split(',')
+        for i, _ in enumerate(text):
+            text[i] = text[i].strip()
+            try:
+                text[i] = int(text[i]) - 1  # convert to base 0
+                assert num_wells > text[i] and text[i] > 0
+            except Exception as e:
+                if isinstance(e, AssertionError):
+                    message = 'Make sure not to enter well numbers greater than the total number of wells in the run ({})'.format(num_wells)
+                else:
+                    message = 'Could not parse text entered. Please make sure to separate well numbers using commas and do not enter non-well-number values.'
+                make_message_box(message).exec_()
+                return
+        
+        return text
+    
     def _write_presentation(self, run=None):
         '''Private method that actually does the work of generating a
         presentation from a :class:`Run` or :class:`HWIRun` instance.
@@ -196,11 +217,14 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                 file_path = self._get_save_path()
             else:
                 file_path = self.ui.lineEdit_3.text()
-
+            
+            image_indices = self._parse_manual_image_entry(len(run.images))
+            image_types = self._parse_image_classifications()
             writer = PptxWriter(file_path,
-                                image_types=self._parse_image_classifications(),
+                                image_types=image_types,
                                 marco=self.marco, human=self.human,
-                                favorite=self.favorite)
+                                favorite=self.favorite,
+                                images_indices=image_indices)
 
             self.setEnabled(False)
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -223,6 +247,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
             make_message_box(parent=self, message=message).exec_()
             return write_result
         except Exception as e:
+            raise e
             logger.error('Caught {} at {}'.format(e, self._write_presentation))
             make_message_box(
                 parent=self,
