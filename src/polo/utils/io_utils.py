@@ -291,6 +291,8 @@ class RunCsvWriter(RunSerializer):
         '''
         row = {}
         for attr, value in image.__dict__.items():
+            if attr[0] == '_':  # remove _ from hidden attributes so looks nice when displayed
+                attr = attr[1:]
             if isinstance(value, Cocktail):
                 row[attr] = value.number
             elif isinstance(value, Image):
@@ -301,7 +303,7 @@ class RunCsvWriter(RunSerializer):
                     if attr_b not in row:  # only add if will not override higher level attr
                         # only go one level deep for now
                         row[attr_b] = str(value_b)
-            elif isinstance(value, bytes) or attr[0] == '_':
+            elif isinstance(value, bytes) or attr == 'bites':
                 continue  # currently do not encode bytes (base 64 stuff)  
             else:
                 row[attr] = str(value)  # default to case to string
