@@ -134,7 +134,6 @@ class RunImporterDialog(QtWidgets.QDialog):
     
     def _import_files(self, rar=True):
         '''
-
         :param rar: If True opens the filebrowser for rar archives and filters
                     out all other import types, defaults to True
         :type rar: bool, optional
@@ -148,7 +147,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             
             def finished_import_thread(file_path):
                 result = self.import_thread.result
-                if isinstance(result, (str, Path)) and Path(result).is_dir():  # need more work
+                if isinstance(result, (str, Path)) and Path(result).is_dir():
                     for run_type in RUN_TYPES:
                         try:
                             result = run_type.init_from_directory(result)
@@ -296,15 +295,16 @@ class RunImporterDialog(QtWidgets.QDialog):
                 self._disable_hwi_import_tools()
 
             for key, value in import_candidate.__dict__.items():
-                if key == 'cocktail_menu':
-                    self._set_cocktail_menu(import_candidate)
-                elif key == 'image_spectrum':
-                    self._set_image_spectrum(value)
-                    pass
-                elif key == 'run_name':
-                    self.ui.lineEdit.setText(str(value))
-                elif key == 'date':
-                    self.ui.dateEdit_2.setDate(value)
+                if value:  # only proceed is actually have value to use
+                    if key == 'cocktail_menu':
+                        self._set_cocktail_menu(import_candidate)
+                    elif key == 'image_spectrum':
+                        self._set_image_spectrum(value)
+                        pass
+                    elif key == 'run_name':
+                        self.ui.lineEdit.setText(str(value))
+                    elif key == 'date':
+                        self.ui.dateEdit_2.setDate(value)
         except Exception as e:
             logger.error('Caught {} at {}'.format(e, self._populate_fields))
             make_message_box(
