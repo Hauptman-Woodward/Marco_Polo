@@ -4,12 +4,12 @@ from random import randint
 #from cockatoo import screen
 from polo.crystallography.cocktail import Cocktail
 
-from polo import tim  # import the bartender
+from polo import bartender  # import the bartender
 import logging
 
 @pytest.fixture
 def bartender():
-    return tim
+    return bartender
 
 @pytest.fixture
 def random_cocktail(bartender):

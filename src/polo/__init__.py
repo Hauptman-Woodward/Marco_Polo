@@ -107,8 +107,6 @@ REV_MSO_DICT = {
     0: IMAGE_CLASSIFICATIONS[3]   # unsure
 }
 
-
-
 # UNRAR EXE
 # =============================================================================
 
@@ -201,10 +199,7 @@ critical_paths = [
 #         logger.critical('Critical path {} does not exist!'.format(path))
 
 from polo.utils.io_utils import BarTender, Menu
-tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
-
-# best bartender at Cunneen's bar in Rodger's Park
-# and in this program handles cocktail data
+bartender = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
 
 from polo.crystallography.image import *
 from polo.crystallography.cocktail import *

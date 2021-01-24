@@ -20,7 +20,7 @@ from polo.utils.io_utils import XmlReader
 
 from polo import ALLOWED_IMAGE_COUNTS, IMAGE_SPECS
 
-from polo import tim, IMAGE_SPECS, SPEC_KEYS  # the bartender
+from polo import bartender, IMAGE_SPECS, SPEC_KEYS  # the bartender
 
 from polo.threads.thread import QuickThread
 from PyQt5.QtWidgets import QApplication
@@ -109,7 +109,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         :rtype: dict
         '''
         return {
-            'cocktail_menu': tim.get_menu_by_basename(self.ui.comboBox_3.currentText()),
+            'cocktail_menu': bartender.get_menu_by_basename(self.ui.comboBox_3.currentText()),
             'date': self.ui.dateEdit_2.dateTime().toPyDateTime(),
             'run_name': self.ui.textEdit.text(),
             'image_spectrum': self.ui.comboBox_2.currentText()
@@ -389,9 +389,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         if menu_type == 's' or menu_type == 'm':
             self._set_cocktail_menu_type_radiobuttons(menu_type)
         if self.ui.radioButton_2.isChecked():  # soluble screens
-            menus = tim.get_menus_by_type('s')
+            menus = bartender.get_menus_by_type('s')
         elif self.ui.radioButton.isChecked():
-            menus = tim.get_menus_by_type('m')
+            menus = bartender.get_menus_by_type('m')
 
         menus = [os.path.basename(menu.path) for menu in sorted(
             menus, key=lambda m: m.start_date)]
@@ -411,7 +411,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             'date': self.ui.dateEdit_2.dateTime().toPyDateTime()
         }
         if isinstance(import_candidate, HWIRun):
-            selection_dict['cocktail_menu'] = tim.get_menu_by_basename(
+            selection_dict['cocktail_menu'] = bartender.get_menu_by_basename(
                 self.ui.comboBox_3.currentText()
             )
         self.import_candidates[import_candidate_path].__dict__.update(selection_dict)

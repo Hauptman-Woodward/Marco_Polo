@@ -116,7 +116,7 @@ class RunOrganizer(QtWidgets.QWidget):
 
             # check if run is an alternative spectrum, if true then warn the
             # user that MARCO has not been trained on this type of image
-            if selected_run.image_spectrum.lower() != 'visible':
+            if selected_run.image_spectrum and selected_run.image_spectrum.lower() != 'visible':
                 choice = make_message_box(
                     parent=self,
                     message='WAIT! MARCO has not been trained on images that do not use standard visible light microscopy, like the images you have requested to classify. Therefore, image classifications may not be accurate. Press OK to continue classification despite having read this advice.',

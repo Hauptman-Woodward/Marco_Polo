@@ -21,9 +21,9 @@ def test_model_creation():
     assert MODEL  # find out what type this should be 
 
 def test_bartender_creation():
-    assert isinstance(tim, BarTender)
-    assert tim.menus
-    for path, menu in tim.menus.items():
+    assert isinstance(bartender, BarTender)
+    assert bartender.menus
+    for path, menu in bartender.menus.items():
         assert isinstance(path, str)
         assert isinstance(menu, Menu)
         for well_assignment, cocktail in menu.cocktails.items():

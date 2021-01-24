@@ -66,7 +66,7 @@ class RunImporter():
         return unrar_archive(rar_path, parent_path)
     
     def _target_is_valid(self):
-        '''Private method to chech if a the file or directory referenced by
+        '''Private method to check if a the file or directory referenced by
         :attr:`target_path` is valid for import.
 
         :return: True if could be imported, False otherwise
@@ -1539,9 +1539,7 @@ class CocktailMenuReader():
     '''CocktailMenuReader instances should be used to read a csv file containing
     a collection of cocktail screens. The csv file should contain cocktail
     related formulations and assign each cocktail to a specific well in the
-    screening plate. CocktailMenuReader is essentially a wrapper around 
-    the :class:`csv.DictReader` class. However it returns a :class:`Cocktail` instance 
-    instead of returning a dictionary via when it's __iter__ method is called.
+    screening plate.
 
     .. highlight:: python
     .. code-block:: python
@@ -1598,7 +1596,7 @@ class CocktailMenuReader():
         for the well_assignment attribute of the Cocktail class, index 1 for
         the number attribute of the Cocktail class, etc.
 
-        :param map: Dictionary mapping csv row indicies to Cocktail object
+        :param map: Dictionary mapping csv row indices to Cocktail object
                     attributes
         :type map: dict
         '''
@@ -1814,7 +1812,6 @@ class XmlReader():
     
     def __getitem__(self, index):
         return self.get_data_from_xml_element(self._root[index])
-
 
 
 class Menu():  # holds the dictionary of cocktails

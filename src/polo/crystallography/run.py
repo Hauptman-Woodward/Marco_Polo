@@ -214,6 +214,7 @@ class Run():
                 if image and image.human_class == 'Crystals']
 
 
+
 class HWIRun(Run):
 
     AllOWED_PLOTS = ['Classification Counts',
@@ -273,7 +274,7 @@ class HWIRun(Run):
     
     @classmethod
     def init_from_directory(cls, image_dir, **kwargs):
-        from polo import tim
+        from polo import bartender
         run_name = str((Path(image_dir).with_suffix('').name))
         metadata = {}
         metadata.update(HWIRun.parse_dirname_metadata(image_dir))
@@ -285,7 +286,7 @@ class HWIRun(Run):
         else:
             menu_type = 'm'  # is a membrane screen
 
-        cocktail_menu = tim.get_menu_by_date(metadata['date'], menu_type)
+        cocktail_menu = bartender.get_menu_by_date(metadata['date'], menu_type)
 
         return cls(image_dir=image_dir, cocktail_menu=cocktail_menu, **metadata)
     
@@ -447,7 +448,6 @@ class HWIRun(Run):
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
     
-
     def add_images_from_dir(self):
         '''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
         attribute with a list of `Images` instances
