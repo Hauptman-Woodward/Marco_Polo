@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,10 +12,6 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
@@ -22,9 +19,7 @@
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,6 +31,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -52,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -78,7 +77,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +87,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -100,7 +99,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -139,7 +137,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -164,6 +162,7 @@
 <span></span><span class="kn">import</span> <span class="nn">ftplib</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PurePosixPath</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
 
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span><span class="p">,</span> <span class="n">uic</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
@@ -273,7 +272,41 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span>
         <span class="k">if</span> <span class="n">selected_run</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_classify_multiple_runs</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span><span class="p">])</span></div>
+
+            <span class="n">classification_greenlight</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># check if run is an alternative spectrum, if true then warn the</span>
+            <span class="c1"># user that MARCO has not been trained on this type of image</span>
+            <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">image_spectrum</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;visible&#39;</span><span class="p">:</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;WAIT! MARCO has not been trained on images that do not use standard visible light microscopy, like the images you have requested to classify. Therefore, image classifications may not be accurate. Press OK to continue classification despite having read this advice.&#39;</span><span class="p">,</span>
+                    <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">,</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Cancel</span><span class="p">:</span>
+                    <span class="n">classification_greenlight</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">has_been_machine_classified</span><span class="p">:</span>
+                <span class="c1"># ask user if they want to reclassify run if work has already</span>
+                <span class="c1"># been done</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Selected run has already been classified. Would you like to classify again?&quot;</span><span class="p">,</span>
+                    <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">==</span> <span class="mi">31</span><span class="p">:</span>
+                        <span class="n">make_message_box</span><span class="p">(</span>
+                            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Thank you human - Polo&quot;</span><span class="p">,</span>
+                            <span class="n">buttons</span><span class="o">=</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                    <span class="n">classification_greenlight</span> <span class="o">=</span> <span class="kc">False</span> 
+            <span class="k">if</span> <span class="n">classification_greenlight</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_open_classification_thread</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to open classification thread for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">selected_run</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._handle_opening_run"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that signal to other widgets that the current run should be opened</span>
@@ -282,8 +315,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># get the selected item</span>
         <span class="n">selected_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">selected_run</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Request open </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">selected_run</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">selected_run</span><span class="p">:</span>
-
             <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
                     <span class="n">make_message_box</span><span class="p">(</span>
@@ -313,15 +346,21 @@
                                 <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span>
                             <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="n">selected_run</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not open </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">selected_run</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="RunOrganizer._open_classification_thread"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._open_classification_thread">[docs]</a>    <span class="k">def</span> <span class="nf">_open_classification_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method to create and run a classification thread which will run</span>
 <span class="sd">        the MARCO model on all images in the run passed to `run` argument.</span>
+<span class="sd">        Does not actually start the classification thread, just stores the</span>
+<span class="sd">        newly created classification thread in `classification_thread`</span>
+<span class="sd">        attribute.</span>
 
 <span class="sd">        :param run: Run or HWIRun instance to run MARCO on</span>
 <span class="sd">        :type run: Run or HWIRun</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Opening classification thread for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># reset the bar to 0</span>
@@ -333,7 +372,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_classification_cleanup</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_classified_run</span><span class="p">(</span><span class="n">run</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">add_classified_run</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classification_thread</span></div>
+        <span class="c1"># add return classification thread for easier access</span>
     
 <div class="viewcode-block" id="RunOrganizer._classification_cleanup"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.run_organizer.RunOrganizer._classification_cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">_classification_cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;&quot;Cleanup&quot; the UI after a classification thread has completed.</span>
@@ -688,19 +730,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -711,6 +745,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

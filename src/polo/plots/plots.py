@@ -20,8 +20,6 @@ logger = make_default_logger(__name__)
 
 
 # Ensure using PyQt5 backend
-
-
 # Matplotlib canvas class to create figure
 
 
@@ -101,13 +99,13 @@ class StaticCanvas(MplCanvas):
         # need to know total classified and
         # human, machine machine is the total
         class_dict = {'Crystals': [0, 0], 'Precipitate': [0, 0],
-                      'Clear': [0, 0], 'Other': [0, 0], None: [0, 0]}
+                      'Clear': [0, 0], 'Other': [0, 0]}
         # two lists tuple for each bar
         for image in current_run.images:
             if image.machine_class in class_dict:  # could be None
-                class_dict[image.machine_class][1] += 1
+                class_dict[str(image.machine_class)][1] += 1
             if image.human_class in class_dict:
-                class_dict[image.machine_class][0] += 1
+                class_dict[str(image.machine_class)][0] += 1
 
         bar_values = [class_dict[x][0] for x in class_dict.keys(
         )], [class_dict[x][1] for x in class_dict.keys()], list(class_dict.keys())

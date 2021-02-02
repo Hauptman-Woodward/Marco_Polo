@@ -63,6 +63,7 @@ class Run():
         self.image_spectrum = image_spectrum
         self.images = images
         self.date = date
+        self.has_been_machine_classified = False
         self.__dict__.update(kwargs)
 
 
@@ -80,23 +81,11 @@ class Run():
     
     @property
     def formated_name(self):
-        if isinstance(self.date, datetime):
+        if isinstance(self.date, datetime) and self.image_spectrum:
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
     
-    @property
-    def has_been_machine_classified(self):
-        # determine if run has been classified by MARCO
-        is_classified = True
-        for image in self.images:
-            if image.machine_class and image.prediction_dict:
-                continue
-            else:
-                is_classified = True
-                break
-        return is_classified
-
     def __getitem__(self, n):
         try:
             return self.images[n]
@@ -225,6 +214,7 @@ class Run():
                 if image and image.human_class == 'Crystals']
 
 
+
 class HWIRun(Run):
 
     AllOWED_PLOTS = ['Classification Counts',
@@ -284,7 +274,7 @@ class HWIRun(Run):
     
     @classmethod
     def init_from_directory(cls, image_dir, **kwargs):
-        from polo import tim
+        from polo import bartender
         run_name = str((Path(image_dir).with_suffix('').name))
         metadata = {}
         metadata.update(HWIRun.parse_dirname_metadata(image_dir))
@@ -296,7 +286,7 @@ class HWIRun(Run):
         else:
             menu_type = 'm'  # is a membrane screen
 
-        cocktail_menu = tim.get_menu_by_date(metadata['date'], menu_type)
+        cocktail_menu = bartender.get_menu_by_date(metadata['date'], menu_type)
 
         return cls(image_dir=image_dir, cocktail_menu=cocktail_menu, **metadata)
     
@@ -458,7 +448,6 @@ class HWIRun(Run):
                 except ValueError:
                     linked_runs[-1].link_to_alt_spectrum(self)
     
-
     def add_images_from_dir(self):
         '''Populates the :attr:`~polo.crystallography.run.HWIRun.images` 
         attribute with a list of `Images` instances

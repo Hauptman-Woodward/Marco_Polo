@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,10 +12,6 @@
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/polo.ico"/>
   
@@ -22,9 +19,7 @@
   
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,6 +31,10 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -52,7 +51,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="../../../index.html" class="icon icon-home"> Polo
           
 
           
@@ -78,7 +77,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +87,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -100,7 +99,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -139,7 +137,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -183,7 +181,7 @@
 
 <span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">ALLOWED_IMAGE_COUNTS</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">tim</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">SPEC_KEYS</span>  <span class="c1"># the bartender</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">bartender</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">SPEC_KEYS</span>  <span class="c1"># the bartender</span>
 
 <span class="kn">from</span> <span class="nn">polo.threads.thread</span> <span class="kn">import</span> <span class="n">QuickThread</span>
 <span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
@@ -272,7 +270,7 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;cocktail_menu&#39;</span><span class="p">:</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()),</span>
+            <span class="s1">&#39;cocktail_menu&#39;</span><span class="p">:</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()),</span>
             <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">dateTime</span><span class="p">()</span><span class="o">.</span><span class="n">toPyDateTime</span><span class="p">(),</span>
             <span class="s1">&#39;run_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">textEdit</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
             <span class="s1">&#39;image_spectrum&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_2</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
@@ -552,9 +550,9 @@
         <span class="k">if</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">menu_type</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_cocktail_menu_type_radiobuttons</span><span class="p">(</span><span class="n">menu_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>  <span class="c1"># soluble screens</span>
-            <span class="n">menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+            <span class="n">menus</span> <span class="o">=</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">radioButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
-            <span class="n">menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+            <span class="n">menus</span> <span class="o">=</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
 
         <span class="n">menus</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">menu</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="n">menus</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">start_date</span><span class="p">)]</span>
@@ -574,7 +572,7 @@
             <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">dateEdit_2</span><span class="o">.</span><span class="n">dateTime</span><span class="p">()</span><span class="o">.</span><span class="n">toPyDateTime</span><span class="p">()</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">import_candidate</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
-            <span class="n">selection_dict</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span>
+            <span class="n">selection_dict</span><span class="p">[</span><span class="s1">&#39;cocktail_menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox_3</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">import_candidates</span><span class="p">[</span><span class="n">import_candidate_path</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">selection_dict</span><span class="p">)</span></div>
@@ -614,19 +612,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -637,6 +627,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

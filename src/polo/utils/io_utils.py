@@ -66,7 +66,7 @@ class RunImporter():
         return unrar_archive(rar_path, parent_path)
     
     def _target_is_valid(self):
-        '''Private method to chech if a the file or directory referenced by
+        '''Private method to check if a the file or directory referenced by
         :attr:`target_path` is valid for import.
 
         :return: True if could be imported, False otherwise
@@ -291,6 +291,8 @@ class RunCsvWriter(RunSerializer):
         '''
         row = {}
         for attr, value in image.__dict__.items():
+            if attr[0] == '_':  # remove _ from hidden attributes so looks nice when displayed
+                attr = attr[1:]
             if isinstance(value, Cocktail):
                 row[attr] = value.number
             elif isinstance(value, Image):
@@ -301,7 +303,7 @@ class RunCsvWriter(RunSerializer):
                     if attr_b not in row:  # only add if will not override higher level attr
                         # only go one level deep for now
                         row[attr_b] = str(value_b)
-            elif isinstance(value, bytes) or attr[0] == '_':
+            elif isinstance(value, bytes) or attr == 'bites':
                 continue  # currently do not encode bytes (base 64 stuff)  
             else:
                 row[attr] = str(value)  # default to case to string
@@ -808,6 +810,32 @@ class XtalWriter(RunSerializer):
                     self.run, e))
                 return e
 
+class XtalToImages():
+    '''One of the features of Polo is the ability to save images, classifications
+    and cocktail data all as one (xtal) file. This also means that users may
+    be loading in their run data from xtal files but want some way to recover
+    the images that are encoded (as base64) within the delicious onion like
+    layers of the JSON formated xtal file. This class acomplishes this goal by
+    intializing with a run that has base64 encoded image data and writes that
+    data as jpegs to a user specified directory.
+
+    Currently under construction as of 12-14-2020
+    '''
+
+    def __init__(self, run, output_dir):
+        self.run = run
+        self.output_dir = output_dir
+    
+    def write_images(self):
+        for i in self._collect_writable_image_indicies():
+            image_write_path = os.path.join(output_dir, os.path.basename(image.path))
+    
+
+    def _collect_writable_image_indicies(self):
+        return [i for i in range(len(self.run.images)) if image.bites]
+        
+
+
 
 class RunDeserializer():  # convert saved file into a run
 
@@ -952,59 +980,29 @@ class PptxWriter():
     :param favorite: Only include images marked as favorite, defaults to False
     :type favorite: bool, optional
     '''
+    slide_title_formater = 'Well Number {}'
 
     # 13.33 x 7.5 
-    def __init__(self, output_path,
-                 image_types = None, human=False, marco=False, favorite=False):
+    def __init__(self, output_path, image_types = None, human=False, 
+                marco=False, favorite=False, images_indices=[]):
         self.output_path = output_path
         self.human = human
         self.marco = marco
         self.favorite = favorite
         self.image_types = image_types
+        self.images_indices = images_indices
         self._temp_images = []
         self._bumper = 1
         self._slide_width = 10
         self._slide_height = 6
         self._presentation = Presentation()
     
-    def delete_presentation(self):
-        self._presentation = Presentation()
-    
-    def delete_temp_images(self):
-        '''Delete an temporary images used to create the pptx presentation.
-
-        :return: True, if images are removed successfully, Exception otherwise.
-        :rtype: bool or Exception
-        '''
-        try:
-            [os.remove(img_path) for img_path in self._temp_images]
-            return True
-        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
-            logger.error('Caught {} while calling {}'.format(
-                            e, self.delete_temp_images))
-            return e
-    
-    def sort_runs_by_spectrum(self, runs):
-        '''Divids runs into two lists, one containing visible spectrum
-        runs and another containing all non-visible runs.
-
-        :param runs: List or runs
-        :type runs: list
-        :return: tuple, first item is visible runs second is non-visible runs
-        :rtype: tuple
-        '''
-        visible, other = [], []
-        for run in runs:
-            if run.image_spectrum == IMAGE_SPECS[0]:
-                visible.append(run)
-            else:
-                other.append(run)
-        return visible, other
-           
     def make_presentation(self, run, title, subtitle=None,
                                     cocktail_data=True, all_specs=False,
                                     all_dates=False):
-        '''Create a pptx presentation file from a screening run instance.
+        '''Create a pptx presentation file from a screening run instance. This
+        should be the only public method in the class. All other methods are
+        internal to actually creating the presentation file. 
 
         :param run: Run to create the presentation from
         :type run: Run
@@ -1023,63 +1021,101 @@ class PptxWriter():
         '''
 
         try:
-            title_slide = self.add_new_slide(0)
+            title_slide = self._add_new_slide(0)
             title_slide.shapes.title.text = title
             if subtitle:
                 title_slide.placeholders[1].text = subtitle
             
-            slide_title_formater = 'Well Number {}'
-            for image in run.images:
-                if image.standard_filter(self.image_types,
-                                         self.human, self.marco,
-                                         self.favorite):
-                    metadata = str(image)
-                    if cocktail_data and hasattr(image, 'cocktail'):
-                        metadata += '\n\n' + str(image.cocktail)
-                    self.add_single_image_slide(
-                        image, 
-                        slide_title_formater.format(image.well_number),
-                        metadata=metadata
-                        )
-                    if all_specs and image.alt_image:
-                        self.add_multi_spectrum_slide(
-                            image.get_linked_images_by_spectrum(), image.well_number)
-                    if all_dates and (image.next_image or image.previous_image):
-                        self.add_timeline_slide(image.get_linked_images_by_date(), image.well_number)
-            
-            self.output_path = RunSerializer.path_suffix_checker(self.output_path, '.pptx')
-            self._presentation.save(str(self.output_path))
-            self.delete_temp_images()
-            return True
+            images = self._select_images(run)
+            metadata = self._metadata_from_images(images, cocktail_data)
+            self._add_images_and_metadata_to_slideshow(images, metadata, all_specs, all_dates)            
+            self.output_path = RunSerializer.path_suffix_checker(
+                                                                self.output_path, 
+                                                                '.pptx'
+                                                                )
+            if images:  # make sure actualy were images to write to file
+                self._presentation.save(str(self.output_path))
+                return True
+            else:
+                return False
         except Exception as e:
             logger.error('Caught {} while calling {}'.format(
                             e, self.make_presentation))
             return e
-                
     
-    def add_classification_slide(self, well_number, rep_image):
-        '''Add a slide containing details about an images MARCO
-        and human classification in a table.
-
-        :param well_number: Well number (index) of image to use in
-                            the title of the slide 
-        :type well_number: int
-        :param rep_image: Image object to make slide from
-        :type rep_image: Image
+    def _add_images_and_metadata_to_slideshow(self, images, metadata, all_specs, all_dates):
+        for image, image_metadata in zip(images, metadata):
+            self._add_single_image_slide(
+                image, PptxWriter.slide_title_formater.format(image.well_number),
+                metadata=image_metadata
+            )
+            if all_specs and image.alt_image:
+                self._add_multi_spectrum_slide(
+                    image.get_linked_images_by_spectrum(), image.well_number
+                )
+            if all_dates and (image.next_image or image.previous_image):
+                self._add_timeline_slide(image.get_linked_images_by_date(), 
+                                        image.well_number
+                                        )
+            
+    def _metadata_from_images(self, images, cocktail_data):
+        all_metadata = []
+        for image in images:
+            image_metadata = str(image)
+            if cocktail_data and hasattr(image, 'cocktail'):
+                # user wants to display cocktail data and the image has it
+                image_metadata += '\n\n' + str(image.cocktail)
+            all_metadata.append(image_metadata)
+        return all_metadata
+    
+    def _select_images(self, run):
+        '''Selects images to add to the presentation.
         '''
-        new_slide = self.add_new_slide()
-        title = 'Well {} Classifications'.format(well_number)
-        new_slide.shapes.title.text = title
+        if self.images_indices:
+            # Use these index instead of classifications
+            return [run.images[i] for i in self.images_indices]
+        else:
+            return [image for image in run.images 
+                    if image.standard_filter(
+                        self.image_types, self.human, self.marco, self.favorite
+                        )
+                    ]
+    
+    def _delete_presentation(self):
+        self._presentation = Presentation()
+    
+    def _delete_temp_images(self):
+        '''Delete an temporary images used to create the pptx presentation.
 
-        data = [
-            ['Human Classification', 'MARCO Classification']
-            [rep_image.human_class, rep_image.machine_class]
-        ]
+        :return: True, if images are removed successfully, Exception otherwise.
+        :rtype: bool or Exception
+        '''
+        try:
+            [os.remove(img_path) for img_path in self._temp_images]
+            return True
+        except (FileNotFoundError, IsADirectoryError, PermissionError) as e:
+            logger.error('Caught {} while calling {}'.format(
+                            e, self._delete_temp_images))
+            return e
+    
+    def sort_runs_by_spectrum(self, runs):
+        '''Divids runs into two lists, one containing visible spectrum
+        runs and another containing all non-visible runs.
 
-        self.add_table_to_slide(new_slide, data, self._bumper, 2)
-        # do for most recent human classification image if it exits
-
-    def add_new_slide(self, template=5):
+        :param runs: List or runs
+        :type runs: list
+        :return: tuple, first item is visible runs second is non-visible runs
+        :rtype: tuple
+        '''
+        visible, other = [], []
+        for run in runs:
+            if run.image_spectrum == IMAGE_SPECS[0]:
+                visible.append(run)
+            else:
+                other.append(run)
+        return visible, other
+                
+    def _add_new_slide(self, template=5):
         '''Add a new slide to the presentation referenced by the
         :attr:`_presentation` attribute.
 
@@ -1093,7 +1129,7 @@ class PptxWriter():
         return self._presentation.slides.add_slide(
             self._presentation.slide_layouts[template])
     
-    def add_timeline_slide(self, images, well_number):
+    def _add_timeline_slide(self, images, well_number):
         '''Create a timeline (time resolved) slide that
         show the progression of a sample in a particular
         well.
@@ -1106,17 +1142,16 @@ class PptxWriter():
         :rtype: slide
         '''
         date_images = sorted(images, key=lambda i: i.date)
-        new_slide = self.add_new_slide()
+        new_slide = self._add_new_slide()
         labeler = lambda i: i.formated_date
-        self.add_multi_image_slide(new_slide, images, labeler)
+        self._add_multi_image_slide(new_slide, images, labeler)
         title = 'Well {}: {} - {}'.format(
             well_number, date_images[0].formated_date, date_images[-1].formated_date)
         new_slide.shapes.title.text = title
 
         return new_slide
-    
 
-    def add_multi_spectrum_slide(self, images, well_number):
+    def _add_multi_spectrum_slide(self, images, well_number):
         '''Create a slide to show a all spectrums a well has been
         imaged in.
 
@@ -1128,9 +1163,9 @@ class PptxWriter():
         :rtype: slide
         '''
         spec_images = sorted(images, key=lambda i: len(i.spectrum))
-        new_slide = self.add_new_slide()
+        new_slide = self._add_new_slide()
         labeler = lambda i: i.spectrum
-        self.add_multi_image_slide(new_slide, images, labeler)
+        self._add_multi_image_slide(new_slide, images, labeler)
         title = 'Well {} Alternate Imagers'.format(well_number)
         new_slide.shapes.title.text = title
 
@@ -1144,7 +1179,7 @@ class PptxWriter():
         :param cocktail: Cocktail to write as a slide
         :type cocktail: Cocktail
         '''
-        new_slide = self.add_new_slide(5)
+        new_slide = self._add_new_slide(5)
         title = 'Well {} Cocktail: {}'.format(well, cocktail.number)
         new_slide.shapes.title.text = title
 
@@ -1178,8 +1213,8 @@ class PptxWriter():
                 table.cell(i, j).text = data[i][j]
         return slide
 
-    def add_multi_image_slide(self, slide, images, labeler):
-        '''General helper method for adding a slide that will have multiple
+    def _add_multi_image_slide(self, slide, images, labeler):
+        '''Private method for adding a slide that will have multiple
         images.
 
         :param slide: Slide to add the images to 
@@ -1198,17 +1233,17 @@ class PptxWriter():
         left = ((self._slide_width - (img_size * len(images))) / 2) - 0.2
 
         for image in images:
-            self.add_image_to_slide(
+            self._add_image_to_slide(
                 image, slide, left, top, img_size
             )
             label_text = labeler(image)
-            self.add_text_to_slide(
+            self._add_text_to_slide(
                 slide, label_text, left, top + (img_size * 1.2), img_size, 1.5, 
                 rotation=90)
             left += img_size
         return slide
     
-    def add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
+    def _add_single_image_slide(self, image, title, metadata=None, img_scaler=0.65):
         '''General helper method for adding a slide with a single image to a
         presentation.
 
@@ -1224,10 +1259,10 @@ class PptxWriter():
         :return: The new slide with Image added
         :rtype: slide
         '''
-        new_slide = self.add_new_slide(5)
+        new_slide = self._add_new_slide(5)
         new_slide.shapes.title.text = title
         img_size = self._slide_height * img_scaler
-        self.add_image_to_slide(
+        self._add_image_to_slide(
             image, new_slide, self._bumper, 2, img_size)
 
         if metadata:
@@ -1235,13 +1270,13 @@ class PptxWriter():
             metadata_left = img_size + (self._bumper * 2)
             metadata_width = self._slide_width - metadata_left - self._bumper
             metadata_height = self._slide_height - 2 - self._bumper
-            self.add_text_to_slide(
+            self._add_text_to_slide(
                 new_slide, metadata, metadata_left, 2, metadata_width,
                 metadata_height)
         return new_slide
         
     
-    def add_text_to_slide(self, slide, text, left, top, width, height,
+    def _add_text_to_slide(self, slide, text, left, top, width, height,
                           rotation=0, font_size=14):
         '''Helper method to add text to a slide
 
@@ -1275,8 +1310,8 @@ class PptxWriter():
 
         return text_box
     
-    def add_image_to_slide(self, image, slide, left, top, height):
-        '''Helper method for adding images to a slide. If the :class:`Image`
+    def _add_image_to_slide(self, image, slide, left, top, height):
+        '''Private method for adding images to a slide. If the :class:`Image`
         does not have a file written on the local machine as can be
         the case with saved runs who's image data only exists in
         their xtal files this method will write a temporary image
@@ -1308,6 +1343,28 @@ class PptxWriter():
         
         return slide.shapes.add_picture(img_path, Inches(left), Inches(top), 
                                         height=Inches(height))
+    
+    # def add_classification_slide(self, well_number, rep_image):
+    #     '''Add a slide containing details about an images MARCO
+    #     and human classification in a table.
+
+    #     :param well_number: Well number (index) of image to use in
+    #                         the title of the slide 
+    #     :type well_number: int
+    #     :param rep_image: Image object to make slide from
+    #     :type rep_image: Image
+    #     '''
+    #     new_slide = self._add_new_slide()
+    #     title = 'Well {} Classifications'.format(well_number)
+    #     new_slide.shapes.title.text = title
+
+    #     data = [
+    #         ['Human Classification', 'MARCO Classification']
+    #         [rep_image.human_class, rep_image.machine_class]
+    #     ]
+
+    #     self.add_table_to_slide(new_slide, data, self._bumper, 2)
+    #     # do for most recent human classification image if it exits
 
 
 class BarTender():
@@ -1484,9 +1541,7 @@ class CocktailMenuReader():
     '''CocktailMenuReader instances should be used to read a csv file containing
     a collection of cocktail screens. The csv file should contain cocktail
     related formulations and assign each cocktail to a specific well in the
-    screening plate. CocktailMenuReader is essentially a wrapper around 
-    the :class:`csv.DictReader` class. However it returns a :class:`Cocktail` instance 
-    instead of returning a dictionary via when it's __iter__ method is called.
+    screening plate.
 
     .. highlight:: python
     .. code-block:: python
@@ -1543,7 +1598,7 @@ class CocktailMenuReader():
         for the well_assignment attribute of the Cocktail class, index 1 for
         the number attribute of the Cocktail class, etc.
 
-        :param map: Dictionary mapping csv row indicies to Cocktail object
+        :param map: Dictionary mapping csv row indices to Cocktail object
                     attributes
         :type map: dict
         '''
@@ -1759,7 +1814,6 @@ class XmlReader():
     
     def __getitem__(self, index):
         return self.get_data_from_xml_element(self._root[index])
-
 
 
 class Menu():  # holds the dictionary of cocktails

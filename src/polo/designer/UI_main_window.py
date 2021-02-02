@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/HWI/Marco_Polo/pyqt_designer/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -533,7 +533,6 @@ class Ui_MainWindow(object):
         self.menuRecent.addSeparator()
         self.menuImport.addAction(self.menuImages.menuAction())
         self.menuImport.addAction(self.menuRecent.menuAction())
-        self.menuExport.addAction(self.actionAs_HTML)
         self.menuExport.addAction(self.actionAs_CSV)
         self.menuExport.addAction(self.actionAs_JSON)
         self.menuExport.addAction(self.actionAs_MSO)

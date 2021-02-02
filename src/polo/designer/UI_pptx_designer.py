@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/HWI/Marco_Polo/pyqt_designer/pptx_designer.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,9 +11,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_PptxDialog(object):
+
     def setupUi(self, PptxDialog):
         PptxDialog.setObjectName("PptxDialog")
-        PptxDialog.resize(743, 555)
+        PptxDialog.resize(743, 606)
         PptxDialog.setSizeGripEnabled(False)
         PptxDialog.setModal(False)
         self.gridLayout_3 = QtWidgets.QGridLayout(PptxDialog)
@@ -36,9 +37,15 @@ class Ui_PptxDialog(object):
         self.gridLayout_4.addWidget(self.label_3, 0, 0, 1, 1)
         self.groupBox_2 = QtWidgets.QGroupBox(self.groupBox)
         self.groupBox_2.setObjectName("groupBox_2")
-        self.gridLayout = QtWidgets.QGridLayout(self.groupBox_2)
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_2)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.tabWidget = QtWidgets.QTabWidget(self.groupBox_2)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.gridLayout = QtWidgets.QGridLayout(self.tab)
         self.gridLayout.setObjectName("gridLayout")
-        self.groupBox_3 = QtWidgets.QGroupBox(self.groupBox_2)
+        self.groupBox_3 = QtWidgets.QGroupBox(self.tab)
         self.groupBox_3.setObjectName("groupBox_3")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_3)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -59,7 +66,7 @@ class Ui_PptxDialog(object):
         self.checkBox_5.setObjectName("checkBox_5")
         self.verticalLayout.addWidget(self.checkBox_5)
         self.gridLayout.addWidget(self.groupBox_3, 0, 0, 1, 1)
-        self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_2)
+        self.groupBox_4 = QtWidgets.QGroupBox(self.tab)
         self.groupBox_4.setObjectName("groupBox_4")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_4)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -71,6 +78,16 @@ class Ui_PptxDialog(object):
         self.radioButton_2.setObjectName("radioButton_2")
         self.verticalLayout_2.addWidget(self.radioButton_2)
         self.gridLayout.addWidget(self.groupBox_4, 0, 1, 1, 1)
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.tab_2)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.tab_2)
+        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.gridLayout_6.addWidget(self.plainTextEdit, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tab_2, "")
+        self.gridLayout_5.addWidget(self.tabWidget, 0, 0, 1, 1)
         self.gridLayout_4.addWidget(self.groupBox_2, 4, 0, 1, 3)
         self.label_6 = QtWidgets.QLabel(self.groupBox)
         self.label_6.setObjectName("label_6")
@@ -104,6 +121,7 @@ class Ui_PptxDialog(object):
         self.gridLayout_3.addWidget(self.groupBox, 0, 1, 1, 1)
 
         self.retranslateUi(PptxDialog)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(PptxDialog)
 
     def retranslateUi(self, PptxDialog):
@@ -121,6 +139,9 @@ class Ui_PptxDialog(object):
         self.groupBox_4.setTitle(_translate("PptxDialog", "Classifier"))
         self.radioButton.setText(_translate("PptxDialog", "Human"))
         self.radioButton_2.setText(_translate("PptxDialog", "Marco"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("PptxDialog", "Auto"))
+        self.plainTextEdit.setToolTip(_translate("PptxDialog", "<html><head/><body><p>Enter well numbers of images to include in the presentation as a comma delimited list.</p><p><br/></p><p><span style=\" font-style:italic;\">Example: 1, 2, 5, 6, 200, 33</span></p><p><br/></p><p><span style=\" font-weight:600;\">Note:</span> Currently, if you are exporting a non-HWI run well numbers are arbitrary so double check your numbers are correct using the slideshow viewer.</p></body></html>"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("PptxDialog", "Manual"))
         self.label_6.setText(_translate("PptxDialog", "Export Path"))
         self.label_5.setText(_translate("PptxDialog", "Subtitle"))
         self.pushButton.setText(_translate("PptxDialog", "Browse"))

@@ -9,7 +9,7 @@ from polo.designer.UI_run_updater_dialog import Ui_runUpdater
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import RunLinker
 
-from polo import LOG_PATH, tim, IMAGE_SPECS, make_default_logger
+from polo import LOG_PATH, bartender, IMAGE_SPECS, make_default_logger
 
 logger = make_default_logger(__name__)
 
@@ -56,7 +56,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
     @current_menus.setter
     def current_menus(self, type_key):
         if type_key == 's' or type_key == 'm':  # soluble or membrane
-            self._current_menus = tim.get_menus_by_type(type_key)
+            self._current_menus = bartender.get_menus_by_type(type_key)
         else:
             return []
 
@@ -113,7 +113,7 @@ class RunUpdaterDialog(QtWidgets.QDialog):
         `Run` instance referenced by the :attr:`run` attribute based on the current 
         :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` selection.
         '''
-        new_menu = tim.get_menu_by_basename(self.ui.comboBox.currentText())
+        new_menu = bartender.get_menu_by_basename(self.ui.comboBox.currentText())
         if new_menu and new_menu.path != self.run.cocktail_menu.path:
             self.run.cocktail_menu = new_menu
             for i, image in enumerate(self.run.images):

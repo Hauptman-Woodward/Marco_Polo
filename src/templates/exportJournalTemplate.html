@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="src/python/static/stylesheet.css">
+  <link rel="stylesheet" href="static/stylesheet.css">
+</head>
   </head>
-<body>
-<h1>{{run_name}} Journal</h1>
-<br>
-{% for entry_date, content in journal.items() %}
-    <h2>{{content[0]}}</h2>
-    <h3>{{entry_date}}</h3>
-    <hr>
-    {{content[1]}}
-{% endfor %}
-</body>
+  <body>
+
+    <div class="sidenav">
+      <a href="#slideshow">Slideshow</a>
+  
+    </div>
+    
+    <div class="main">
+     
+      <div class='slideshow', id='slideshow'>
+        This is the slideshow area
+      </div>
+      <div class='slideshow-grid'></div>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+      <button>Hello</button>
+    </div>
+       
+    </body>
 </html>

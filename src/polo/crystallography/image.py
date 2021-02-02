@@ -58,7 +58,7 @@ class Image(QtGui.QPixmap):
     '''
 
     def __init__(self, path=None, bites=None, well_number=None, human_class=None,
-                 machine_class=None, prediction_dict=None,
+                 machine_class=None, prediction_dict={},
                  plate_id=None, date=None, cocktail=None, spectrum=None,
                  previous_image=None, next_image=None, alt_image=None,
                  favorite=False, parent=None, **kwargs):
@@ -186,7 +186,29 @@ class Image(QtGui.QPixmap):
             self._bites = Image.clean_base64_string(new_bites)
         else:
             self._bites = None
-
+    
+    @property
+    def prediction_dict(self):
+        return self._prediction_dict
+    
+    @prediction_dict.setter
+    def prediction_dict(self, new_dict):
+        try:
+            default = dict(zip(IMAGE_CLASSIFICATIONS, [0]*len(IMAGE_CLASSIFICATIONS)))
+            valid_dict = False
+            self._prediction_dict = new_dict
+            if all([im_cls in new_dict for im_cls in IMAGE_CLASSIFICATIONS]):
+                valid_dict = True
+            if valid_dict:
+                self._prediction_dict = new_dict
+            else:
+                self._prediction_dict = default
+        except Exception as e:
+            logger.critical('Caught {} setting prediction_dict value'.format(e))
+            self._prediction_dict = {}  # try and save face
+            # had issues finding errors this method threw because setter
+            # decorator kind of hides them. 
+    
     # @property
     # def machine_class(self):
     #     '''MARCO classification of the :class:`~polo.crystallography.image.Image`.
@@ -226,24 +248,24 @@ class Image(QtGui.QPixmap):
     #     else:
     #         self._machine_class = None
 
-    @property
-    def human_class(self):
-        '''Return the :attr:`~polo.crystallography.image.Image.human_class`
-        attribute which specifies the current human classification of the
-        :class:`~polo.crystallography.image.Image`.
+    # @property
+    # def human_class(self):
+    #     '''Return the :attr:`~polo.crystallography.image.Image.human_class`
+    #     attribute which specifies the current human classification of the
+    #     :class:`~polo.crystallography.image.Image`.
 
-        :return: Current human classification of the
-                 :class:`~polo.crystallography.image.Image`
-        :rtype: str
-        '''
-        return self._human_class
+    #     :return: Current human classification of the
+    #              :class:`~polo.crystallography.image.Image`
+    #     :rtype: str
+    #     '''
+    #     return self._human_class
 
-    @human_class.setter
-    def human_class(self, new_class):
-        if new_class in IMAGE_CLASSIFICATIONS:
-            self._human_class = new_class
-        else:
-            self._human_class = None
+    # @human_class.setter
+    # def human_class(self, new_class):
+    #     if new_class in IMAGE_CLASSIFICATIONS:
+    #         self._human_class = new_class
+    #     else:
+    #         self._human_class = None
 
     @property
     def formated_date(self):
@@ -523,3 +545,14 @@ class Image(QtGui.QPixmap):
                     return True  # set no filters so return True
         else:
             return False
+    
+    def write_from_bites(self, path):
+        '''Write the `Image` instance to a file using the base64 encoded data
+        stored in the :attr:`~polo.crystallography.image.Image.bites` attribute.
+        '''
+        if bites:
+            with open(path, 'wb') as handle:
+                handle.write(base64.decodebytes(self.bites))
+            return path
+        else:
+            raise Exception('Image has not been base64 encoded')

@@ -107,8 +107,6 @@ REV_MSO_DICT = {
     0: IMAGE_CLASSIFICATIONS[3]   # unsure
 }
 
-
-
 # UNRAR EXE
 # =============================================================================
 
@@ -166,7 +164,7 @@ FAQS = HOST_PREFIX + 'Marco_Polo/FAQS.html'
 USER_GUIDE = HOST_PREFIX + 'Marco_Polo/user_guide.html'
 DOCS = HOST_PREFIX + 'Marco_Polo/polo.html'
 BETA = HOST_PREFIX + 'Marco_Polo/beta_testers.html'
-REPORTS = HOST_PREFIX + 'Marco_Polo/beta_testers.html#i-found-a-bug'
+REPORTS = HOST_PREFIX + 'Marco_Polo/reports.html'
 
 RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
@@ -210,10 +208,7 @@ critical_paths = [
 #         logger.critical('Critical path {} does not exist!'.format(path))
 
 from polo.utils.io_utils import BarTender, Menu
-tim = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
-
-# best bartender at Cunneen's bar in Rodger's Park
-# and in this program handles cocktail data
+bartender = BarTender(str(COCKTAIL_DATA_PATH), str(COCKTAIL_META_DATA))
 
 from polo.crystallography.image import *
 from polo.crystallography.cocktail import *

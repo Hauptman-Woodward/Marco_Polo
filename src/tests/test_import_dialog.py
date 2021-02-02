@@ -38,15 +38,15 @@ def import_dialog():
 
 @pytest.fixture
 def bartender():
-    return tim
+    return bartender
 
 def test_cocktail_imports(import_dialog):
     import_dialog.ui.radioButton.setChecked(True)  # membrane sceens
     for i in range(import_dialog.ui.comboBox_3.count()):
         item = import_dialog.ui.comboBox_3.itemText(i)
-        get_menu = tim.get_menu_by_basename(item)
+        get_menu = bartender.get_menu_by_basename(item)
         assert isinstance(get_menu, Menu)
-        assert (isinstance(tim.get_menu_by_basename(item), Menu)
+        assert (isinstance(bartender.get_menu_by_basename(item), Menu)
                 and os.path.basename(get_menu.path) == item
                 )
 

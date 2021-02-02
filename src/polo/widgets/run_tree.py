@@ -19,6 +19,7 @@ logger = make_default_logger(__name__)
 
 class RunTreeItem(QtWidgets.QTreeWidgetItem):
 
+
     def __init__(self, date, parent):
         self.date = date  # datetime
         super(RunTreeItem, self).__init__(parent)

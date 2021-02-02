@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,10 +12,6 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="_static/polo.ico"/>
   
@@ -22,9 +19,7 @@
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,6 +31,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -54,7 +53,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Polo
+            <a href="index.html" class="icon icon-home"> Polo
           
 
           
@@ -80,7 +79,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,6 +89,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
@@ -122,7 +121,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -161,7 +159,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
@@ -511,7 +509,7 @@ to the base unit, if it is not already in the base unit.</p>
 <span id="polo-crystallography-image-module"></span><h2>polo.crystallography.image module<a class="headerlink" href="#module-polo.crystallography.image" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="polo.crystallography.image.Image">
-<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bites</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">well_number</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">machine_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prediction_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plate_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">previous_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">next_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alt_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">polo.crystallography.image.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bites</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">well_number</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">machine_class</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prediction_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">plate_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spectrum</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">previous_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">next_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alt_image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtGui.QPixmap</span></code></p>
 <p>Image objects hold the data relating to one image in a particular
 screening well of a paricular run. Images encode the actual image file as
@@ -553,7 +551,7 @@ different imaging tech, defaults to None</p></li>
 <dd><p>Classify the <a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>
 using the MARCO CNN model. Sets the 
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">machine</span> <span class="pre">class</span></code> and 
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">prediction_dict</span></code> 
+<a class="reference internal" href="#polo.crystallography.image.Image.prediction_dict" title="polo.crystallography.image.Image.prediction_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">prediction_dict</span></code></a> 
 attributes based on the model results.</p>
 </dd></dl>
 
@@ -796,6 +794,11 @@ file may have been created on a different machine.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.crystallography.image.Image.prediction_dict">
+<em class="property">property </em><code class="sig-name descname">prediction_dict</code><a class="headerlink" href="#polo.crystallography.image.Image.prediction_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.crystallography.image.Image.setPixmap">
 <code class="sig-name descname">setPixmap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scaling</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.setPixmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.setPixmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads the <a class="reference internal" href="#polo.crystallography.image.Image" title="polo.crystallography.image.Image"><code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code></a>’s 
@@ -883,6 +886,13 @@ pixmap</p>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.crystallography.image.Image.write_from_bites">
+<code class="sig-name descname">write_from_bites</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/crystallography/image.html#Image.write_from_bites"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.crystallography.image.Image.write_from_bites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the <cite>Image</cite> instance to a file using the base64 encoded data
+stored in the <a class="reference internal" href="#polo.crystallography.image.Image.bites" title="polo.crystallography.image.Image.bites"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bites</span></code></a> attribute.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1220,19 +1230,11 @@ to</p></li>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Ethan Holleman
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1243,6 +1245,7 @@ to</p></li>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
