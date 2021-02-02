@@ -170,7 +170,7 @@
 <span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="n">make_message_box</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">RunLinker</span>
 
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">tim</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">make_default_logger</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">bartender</span><span class="p">,</span> <span class="n">IMAGE_SPECS</span><span class="p">,</span> <span class="n">make_default_logger</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -217,7 +217,7 @@
     <span class="nd">@current_menus</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">current_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_key</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">type_key</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">or</span> <span class="n">type_key</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>  <span class="c1"># soluble or membrane</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_current_menus</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="n">type_key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_menus</span> <span class="o">=</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menus_by_type</span><span class="p">(</span><span class="n">type_key</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
@@ -274,7 +274,7 @@
 <span class="sd">        `Run` instance referenced by the :attr:`run` attribute based on the current </span>
 <span class="sd">        :class:`~polo.utils.io_utils.Menu` :class:`QComboBox` selection.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">new_menu</span> <span class="o">=</span> <span class="n">tim</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+        <span class="n">new_menu</span> <span class="o">=</span> <span class="n">bartender</span><span class="o">.</span><span class="n">get_menu_by_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">comboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">new_menu</span> <span class="ow">and</span> <span class="n">new_menu</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">cocktail_menu</span> <span class="o">=</span> <span class="n">new_menu</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>

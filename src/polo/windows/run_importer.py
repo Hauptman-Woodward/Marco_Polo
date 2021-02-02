@@ -53,7 +53,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.listWidget.currentItemChanged.connect(
             self._handle_candidate_change)
         self.ui.radioButton.toggled.connect(self._display_cocktail_files)
-        self.ui.pushButton.clicked.connect(lambda: self.close())
+        self.ui.pushButton.clicked.connect(self._close_dialog)
         self.ui.pushButton_2.clicked.connect(self._remove_run)
         self.ui.pushButton_3.clicked.connect(self._restore_defaults)
         self._display_cocktail_files()
@@ -184,6 +184,14 @@ class RunImporterDialog(QtWidgets.QDialog):
                 ).exec_()
                 QApplication.restoreOverrideCursor()
     
+    def _close_dialog(self):
+        # Closes the dialog and updates the last select run
+        current_item = self.ui.listWidget.currentItem()
+        if current_item:
+            current_item_path = current_item.text()
+            self._update_candidate_run_data(current_item_path)
+            self.close()
+    
     def _open_browser(self, rar=True):
         '''Private method that opens a :class:`QFileBrowser` instance that allows the 
         user to select files for import. 
@@ -209,7 +217,9 @@ class RunImporterDialog(QtWidgets.QDialog):
         return browser.selectedFiles()
 
     def _handle_candidate_change(self):
-        '''Private method that calls 
+        '''Needs rewrite for clarity 
+        
+        Private method that calls 
         :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
         and then  :meth:`~polo.windows.run_importer.RunImporterDialog._populate_fields`. 
         This updates the data of the previously selected 
@@ -242,14 +252,6 @@ class RunImporterDialog(QtWidgets.QDialog):
             ).exec_()
             self.ui.lineEdit.clear()
 
-    def _restore_defaults(self):
-        '''Restore suggested import settings for an :class:`ImportCandidate` in case
-        the user has changed them and then wants to undo those changes.
-        '''
-        # self.selected_candidate.assign_run_type()  # reread the metadata
-        # self._populate_fields(self.selected_candidate)
-        pass
-
     def _remove_run(self):
         '''Removes a run as an import candidate and refreshes the 
         :class:`QlistWidget` to reflect the removal.
@@ -272,9 +274,7 @@ class RunImporterDialog(QtWidgets.QDialog):
                 ).exec_()
 
     def _display_candidate_paths(self):
-        '''Private method that updates the dialog's :class:`QListWidget` with the
-        file paths of the current :class:`ImportCandidate` instances referenced
-        by the  :attr:`import_candidates` attribute.
+        '''rewrite import candidate class is no longer used
         '''
         self.ui.listWidget.clear()
         self.ui.listWidget.addItems(
@@ -282,11 +282,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.listWidget.repaint()  # catalina os patch
 
     def _populate_fields(self, import_candidate):
-        '''Private method to display :class:`ImportCandidate` 
-        data to the user.
-
-        :param import_candidate: ImportCandidate to display
-        :type import_candidate: ImportCandidate
+        '''rewrite
         '''
         try:
             if isinstance(import_candidate, HWIRun):
@@ -390,7 +386,7 @@ class RunImporterDialog(QtWidgets.QDialog):
             self._set_cocktail_menu_type_radiobuttons(menu_type)
         if self.ui.radioButton_2.isChecked():  # soluble screens
             menus = bartender.get_menus_by_type('s')
-        elif self.ui.radioButton.isChecked():
+        elif self.ui.radioButton.isChecked():  # membrane screens
             menus = bartender.get_menus_by_type('m')
 
         menus = [os.path.basename(menu.path) for menu in sorted(
@@ -399,10 +395,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.comboBox_3.addItems(menus)
 
     def _update_candidate_run_data(self, import_candidate_path):
-        '''Private method that allows the user to update an :class:`ImportCandidate`
-        instance's data from the widgets in the `RunImporterDialog` by updating
-        the dictionary referenced by an :class:`ImportCandidate` instacnes's 
-        :attr:`~ImportCandidate.data` attribute with user entered values.
+        '''Rewrite
         '''
         import_candidate = self.import_candidates[import_candidate_path]
         selection_dict = {

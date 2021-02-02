@@ -81,7 +81,7 @@ class Run():
     
     @property
     def formated_name(self):
-        if isinstance(self.date, datetime):
+        if isinstance(self.date, datetime) and self.image_spectrum:
             return '{}-{}'.format(datetime.strftime(self.date, '%m/%d/%Y'), self.image_spectrum)
         else:
             return self.run_name
