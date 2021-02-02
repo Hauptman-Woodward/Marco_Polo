@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/HWI/Marco_Polo/pyqt_designer/pptx_designer.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_PptxDialog(object):
-
     def setupUi(self, PptxDialog):
         PptxDialog.setObjectName("PptxDialog")
         PptxDialog.resize(743, 606)

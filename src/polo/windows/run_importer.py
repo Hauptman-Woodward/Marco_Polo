@@ -55,7 +55,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.radioButton.toggled.connect(self._display_cocktail_files)
         self.ui.pushButton.clicked.connect(self._close_dialog)
         self.ui.pushButton_2.clicked.connect(self._remove_run)
-        self.ui.pushButton_3.clicked.connect(self._restore_defaults)
+        #self.ui.pushButton_3.clicked.connect(self._restore_defaults)
         self._display_cocktail_files()
 
     @property

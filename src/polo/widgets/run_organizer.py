@@ -48,6 +48,7 @@ class RunOrganizer(QtWidgets.QWidget):
         self.ftp_download_counter = [0, 0]  # x of y downloads complete
         self._has_been_opened = set([])
         self._recent_files = []
+        self._shown_unrecognized_run_warning = False
         self.ui.pushButton.clicked.connect(self._handle_classification_request)
         self.ui.runTree.itemDoubleClicked.connect(self._handle_opening_run)
         self.ui.runTree.opening_run.connect(self._handle_opening_run)
@@ -157,11 +158,12 @@ class RunOrganizer(QtWidgets.QWidget):
         logger.debug('Request open {}'.format(selected_run))
         if selected_run:
             if selected_run.run_name not in self._has_been_opened:
-                if not isinstance(selected_run, HWIRun):
+                if not isinstance(selected_run, HWIRun) and not self._shown_unrecognized_run_warning:
                     make_message_box(
                     parent=self,
                     message='Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.'
                     ).exec_()
+                    self._shown_unrecognized_run_warning = True
                 if not hasattr(selected_run, 'save_file_path'):
                     backup = self._check_for_existing_backup(selected_run)
                     if backup and os.path.isfile(str(backup)):

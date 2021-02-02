@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ethan/Documents/github/HWI/Marco_Polo/pyqt_designer/multi_run_importer.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.14.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -91,9 +91,6 @@ class Ui_multiImporter(object):
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox_3)
         self.pushButton_2.setObjectName("pushButton_2")
         self.horizontalLayout.addWidget(self.pushButton_2)
-        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox_3)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout.addWidget(self.pushButton_3)
         self.pushButton = QtWidgets.QPushButton(self.groupBox_3)
         self.pushButton.setDefault(True)
         self.pushButton.setObjectName("pushButton")
@@ -105,7 +102,7 @@ class Ui_multiImporter(object):
 
     def retranslateUi(self, multiImporter):
         _translate = QtCore.QCoreApplication.translate
-        multiImporter.setWindowTitle(_translate("multiImporter", "Dialog"))
+        multiImporter.setWindowTitle(_translate("multiImporter", "Run Importer"))
         self.groupBox.setTitle(_translate("multiImporter", "Selected Paths"))
         self.listWidget.setToolTip(_translate("multiImporter", "<html><head/><body><p>Potential imports will be shown here. Selecting a potential import will display the metadata Polo as infered in the <span style=\" font-style:italic;\">Adjust Default Values </span>box.</p></body></html>"))
         self.groupBox_4.setToolTip(_translate("multiImporter", "<html><head/><body><p>Browse for rar archives or uncompressed directories of images to import into Polo.</p><p><span style=\" font-weight:600;\">Note</span>: If you are an HWI user it is important to maintain the integrity of your image data. Polo uses the metadata files and folder/file names to infer important information about your screening images. </p><p><span style=\" font-weight:600;\">IT IS THEREFORE NOT RECOMMENDED TO RENAME OR EDIT ANY FILES DOWNLOADED FROM THE HWI SERVER.</span></p></body></html>"))
@@ -128,6 +125,5 @@ class Ui_multiImporter(object):
         self.groupBox_3.setTitle(_translate("multiImporter", "Controls"))
         self.pushButton_2.setToolTip(_translate("multiImporter", "<html><head/><body><p>Remove the currently selected import.</p></body></html>"))
         self.pushButton_2.setText(_translate("multiImporter", "Remove Selected Run"))
-        self.pushButton_3.setText(_translate("multiImporter", "Restore Defaults"))
         self.pushButton.setToolTip(_translate("multiImporter", "<html><head/><body><p>Attempt to import all paths listed in the <span style=\" font-style:italic;\">Selected Paths</span> box.</p></body></html>"))
         self.pushButton.setText(_translate("multiImporter", "Import Runs"))
