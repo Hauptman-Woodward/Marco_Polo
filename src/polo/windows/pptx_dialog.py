@@ -4,8 +4,9 @@ from PyQt5.QtWidgets import QApplication
 from polo.designer.UI_pptx_designer import Ui_PptxDialog
 from polo.utils.io_utils import *
 from polo.utils.dialog_utils import *
-from polo import IMAGE_CLASSIFICATIONS, make_default_logger
+from polo import IMAGE_CLASSIFICATIONS, DEFAULT_IMAGE_PATH, make_default_logger
 from polo.widgets.run_tree import RunTree
+from pathlib import Path
 
 logger = make_default_logger(__name__)
 
@@ -178,21 +179,37 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         manually specified by the user.
         '''
         text = self.ui.plainTextEdit.toPlainText()
-        text = text.split(',')
-        for i, _ in enumerate(text):
-            text[i] = text[i].strip()
-            try:
-                text[i] = int(text[i]) - 1  # convert to base 0
-                assert num_wells > text[i] and text[i] > 0
-            except Exception as e:
-                if isinstance(e, AssertionError):
-                    message = 'Make sure not to enter well numbers greater than the total number of wells in the run ({})'.format(num_wells)
-                else:
-                    message = 'Could not parse text entered. Please make sure to separate well numbers using commas and do not enter non-well-number values.'
-                make_message_box(message).exec_()
-                return
-        
+        if text:  # only parse if user has entered text
+            text = text.split(',')
+            for i, _ in enumerate(text):
+                text[i] = text[i].strip().replace(',', '')  # strip and remove extra commas
+                try:
+                    text[i] = int(text[i]) - 1  # convert to base 0
+                    assert num_wells > text[i] and text[i] >= 0
+                except Exception as e:
+                    if isinstance(e, AssertionError):
+                        message = 'Make sure not to enter well numbers greater than the total number of wells in the run ({})'.format(num_wells)
+                    else:
+                        message = 'Could not parse text entered. Please make sure to separate well numbers using commas and do not enter non-well-number values.'
+                    make_message_box(message).exec_()
+                    return e
         return text
+    
+    def _get_images_from_manual_entry(self, run):
+        indices = self._parse_manual_image_entry(len(run.images))
+        if isinstance(indices, Exception):
+            return indices 
+        if indices:
+            return [run.images[i] for i in indices]
+    
+    def _get_images_from_auto_entry(self, run):
+        return run.image_filter_query(
+            self._parse_image_classifications(),
+            self.human,
+            self.marco,
+            self.favorite
+        )
+        
     
     def _write_presentation(self, run=None):
         '''Private method that actually does the work of generating a
@@ -205,7 +222,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
         :rtype: str or Exception
         ''' 
         try:
-            if not isinstance(run, (Run, HWIRun)):
+            if not issubclass(type(run), Run):
                 if self.ui.runTreeWidget.selected_run:
                     run = self.ui.runTreeWidget.selected_run
                 else:
@@ -213,29 +230,48 @@ class PptxDesignerDialog(QtWidgets.QDialog):
                     QApplication.restoreOverrideCursor()
                     return
 
+            # user has not entered an export path
             if not self.ui.lineEdit_3.text():
-                file_path = self._get_save_path()
+                make_message_box(
+                    'Please set a path to export presentation to.').exec_()
+                QApplication.restoreOverrideCursor()
+                return
             else:
-                file_path = self.ui.lineEdit_3.text()
+                file_path = str(Path(self.ui.lineEdit_3.text()))
             
-            image_indices = self._parse_manual_image_entry(len(run.images))
-            image_types = self._parse_image_classifications()
-            writer = PptxWriter(file_path,
-                                image_types=image_types,
-                                marco=self.marco, human=self.human,
-                                favorite=self.favorite,
-                                images_indices=image_indices)
+            images = self._get_images_from_manual_entry(run)
 
-            self.setEnabled(False)
+            if isinstance(images, Exception):  # user attempted to enter manual
+                # exception indicates user did something incorrectly or we
+                # just failed to parse. None type would indicate user did
+                # not use manual entry
+                make_message_box(
+                    'Could not read manual values, using auto.').exec_()
+                images = self._get_images_from_auto_entry(run)
+            
+            if not images:
+                images = self._get_images_from_auto_entry(run)
+                
+            if len(images) == 1 and images[0].path != DEFAULT_IMAGE_PATH or not images:  
+                # check to make sure not empty image default
+                make_message_box(
+                    'No images in this run fit your selection criteria.').exec_()
+                QApplication.restoreOverrideCursor()
+                return
+            
+            writer = PptxWriter(file_path)
+
+            self.setEnabled(False)  # disable dialog while writing
             QApplication.setOverrideCursor(Qt.WaitCursor)
 
             write_result = writer.make_presentation(
                 run=run,
+                images=images,
                 title=self.title,
                 subtitle=self.subtitle,
                 all_specs=self.all_specs,
-                all_dates=self.all_dates
-                )
+                all_dates=self.all_dates,
+            )
 
             if write_result == True:
                 message = 'Wrote presentation to {}'.format(file_path)
@@ -247,7 +283,6 @@ class PptxDesignerDialog(QtWidgets.QDialog):
             make_message_box(parent=self, message=message).exec_()
             return write_result
         except Exception as e:
-            raise e
             logger.error('Caught {} at {}'.format(e, self._write_presentation))
             make_message_box(
                 parent=self,
