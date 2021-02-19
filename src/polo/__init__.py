@@ -169,10 +169,9 @@ REPORTS = HOST_PREFIX + 'Marco_Polo/reports.html'
 RELEASES = 'https://github.com/Hauptman-Woodward/Marco_Polo/tags'
 
 MARCO_ARTICLE = 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0198883'
-POLO_ARTICLE = 'https://doi.org/10.1107/S1600576721000108'
+POLO_ARTICLE = 'https://journals.iucr.org/j/issues/2021/02/00/ei5066/index.html'
 POLO_CITATION = '''
-Holleman, E.T., Duguid, E., Keefe, L.J. & Bowman, S.E.J. (2021). J. Appl. Cryst. 54, https://doi.org/10.1107/
-S1600576721000108.
+Holleman, E.T., Duguid, E., Keefe, L.J. & Bowman, S.E.J. (2021). J. Appl. Cryst. 54, https://doi.org/10.1107/S1600576721000108
 '''
 MARCO_CITATION = '''
 Bruno AE, Charbonneau P, Newman J, Snell EH, So DR, et al. (2018) Classification of crystallization outcomes using deep convolutional neural networks. PLOS ONE 13(6): e0198883. https://doi.org/10.1371/journal.pone.0198883
