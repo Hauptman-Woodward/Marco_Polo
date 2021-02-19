@@ -445,19 +445,22 @@ class OptimizeWidget(QtWidgets.QWidget):
                     break
             self.repaint()  # repaint for Mac catalina OS
 
-    def adjust_unit(self, signed_value, new_unit):
-
+    def adjust_unit(self, signed_value, new_unit, ndigits=4):
+        adjusted = None
         if signed_value.units == 'L':  # only convert volume for now
             if new_unit == 'ul':
-                return signed_value.scale('u')
+                adjusted = signed_value.scale('u')
             elif new_unit == 'ml':
-                return signed_value.scale('m')
+                adjusted = signed_value.scale('m')
             elif new_unit == 'cl':
-                return signed_value.scale('c')
+                adjusted = signed_value.scale('c')
             else:
-                return signed_value
+                adjusted = signed_value
         else:
-            return signed_value
+            adjusted = signed_value
+        if adjusted and ndigits:
+            adjusted = round(adjusted, ndigits)
+        return adjusted
 
     def _make_well_html(self, x_con, x_stock, y_con, y_stock, constants, water):
         '''Private method to format the information that describes the

@@ -407,21 +407,26 @@ class UnitValue():
         else:
             return self
     
-    def round(self, digits):
-        pass
-        # reduct the total number of digits so it looks nice to print
-
-
     def __add__(self, other):
         if self.units == other.units:
             self.value += other.value
+    
+    def __round__(self, ndigits=1):
+        self.value = round(self.value, ndigits)
+        return self
 
     def __sub__(self, other):
         if self.units == other.units:
             self.value -= other.value
 
     def __str__(self):
-        return '{} {}'.format(self.value, self.units)
+        # Had issue where value would be a list object. Currently looking into
+        # this but guessing it could be an issue reading weird cocktails
+        # from their csv files.
+        try:
+            return '{} {}'.format(self.value, self.units)
+        except Exception as e:
+            return 'Could not retrieve data'
 
     def __float__(self):
         return float(self.value)
