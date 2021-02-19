@@ -217,7 +217,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         return browser.selectedFiles()
 
     def _handle_candidate_change(self):
-        '''Needs rewrite for clarity 
+        '''TODO: Needs rewrite for clarity 
         
         Private method that calls 
         :meth:`~polo.windows.run_importer.RunImporterDialog._update_selected_candidate`
@@ -282,7 +282,7 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.listWidget.repaint()  # catalina os patch
 
     def _populate_fields(self, import_candidate):
-        '''rewrite
+        '''TODO: Needs a rewrite 
         '''
         try:
             if isinstance(import_candidate, HWIRun):
