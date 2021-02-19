@@ -283,11 +283,13 @@ class PptxDesignerDialog(QtWidgets.QDialog):
             make_message_box(parent=self, message=message).exec_()
             return write_result
         except Exception as e:
+            QApplication.restoreOverrideCursor()
             logger.error('Caught {} at {}'.format(e, self._write_presentation))
             make_message_box(
                 parent=self,
                 message='Failed to write presentation {}'.format(e)
             ).exec_()
+            self.setEnabled(True)
 
 
     def check_for_warnings(self):
