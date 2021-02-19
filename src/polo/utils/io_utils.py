@@ -983,21 +983,15 @@ class PptxWriter():
     slide_title_formater = 'Well Number {}'
 
     # 13.33 x 7.5 
-    def __init__(self, output_path, image_types = None, human=False, 
-                marco=False, favorite=False, images_indices=[]):
+    def __init__(self, output_path):
         self.output_path = output_path
-        self.human = human
-        self.marco = marco
-        self.favorite = favorite
-        self.image_types = image_types
-        self.images_indices = images_indices
         self._temp_images = []
         self._bumper = 1
         self._slide_width = 10
         self._slide_height = 6
         self._presentation = Presentation()
     
-    def make_presentation(self, run, title, subtitle=None,
+    def make_presentation(self, run, images, title, subtitle=None,
                                     cocktail_data=True, all_specs=False,
                                     all_dates=False):
         '''Create a pptx presentation file from a screening run instance. This
@@ -1026,7 +1020,6 @@ class PptxWriter():
             if subtitle:
                 title_slide.placeholders[1].text = subtitle
             
-            images = self._select_images(run)
             metadata = self._metadata_from_images(images, cocktail_data)
             self._add_images_and_metadata_to_slideshow(images, metadata, all_specs, all_dates)            
             self.output_path = RunSerializer.path_suffix_checker(
@@ -1039,6 +1032,7 @@ class PptxWriter():
             else:
                 return False
         except Exception as e:
+            raise e
             logger.error('Caught {} while calling {}'.format(
                             e, self.make_presentation))
             return e
