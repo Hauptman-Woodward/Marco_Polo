@@ -2,7 +2,8 @@ from polo.designer.UI_cite import Ui_CitePolo
 from polo.utils.dialog_utils import make_message_box
 import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from polo import MARCO_ARTICLE, POLO_ARTICLE, POLO_CITATION, MARCO_CITATION, make_default_logger
+from polo import (MARCO_ARTICLE, POLO_ARTICLE, POLO_CITATION, 
+                  MARCO_CITATION, make_default_logger)
 
 logger = make_default_logger(__name__)
 
@@ -22,13 +23,11 @@ class CiteDialog(QtWidgets.QDialog):
     @property
     def citation_display_text(self):
         return '''
-        <p>If you found Polo useful for your work, please consider citing:<\p>
+        <h1>If you found Polo useful for your work, please consider citing:</h1>
         <br><br>
-        <i>{}</i>
-        <br>
-        <p>and</p>
+        1. {}
         <br><br>
-        <i>{}</i>
+        2. {}
         <br>
         <p>Thank you for using Polo!</p>
         '''.format(POLO_CITATION, MARCO_CITATION)
