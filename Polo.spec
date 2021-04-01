@@ -23,9 +23,11 @@ tensorflow_binaries = []  # collect tensorflow files that pyinstaller misses her
 # in tensorflow_location dictionary
 
 polo_dir = os.environ['POLO_DIR']
-pptx_location = os.environ['PPTX_DIR']
+# pptx_location = os.environ['PPTX_DIR']
+pptx_location = '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/pptx/'
 if OS != 'Windows':
-  tensorflow_location = os.environ['TENSORFLOW_DIR']
+  # tensorflow_location = os.environ['TENSORFLOW_DIR']
+  tensorflow_location = '/home/ethan/anaconda3/envs/polo_3.5/lib/python3.5/site-packages/tensorflow'
 
 if not os.path.isdir(str(polo_dir)):
     raise Exception(
