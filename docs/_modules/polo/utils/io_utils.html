@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -227,7 +226,7 @@
         <span class="k">return</span> <span class="n">unrar_archive</span><span class="p">(</span><span class="n">rar_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="RunImporter._target_is_valid"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.RunImporter._target_is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">_target_is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Private method to chech if a the file or directory referenced by</span>
+        <span class="sd">&#39;&#39;&#39;Private method to check if a the file or directory referenced by</span>
 <span class="sd">        :attr:`target_path` is valid for import.</span>
 
 <span class="sd">        :return: True if could be imported, False otherwise</span>
@@ -452,6 +451,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>  <span class="c1"># remove _ from hidden attributes so looks nice when displayed</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Cocktail</span><span class="p">):</span>
                 <span class="n">row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">number</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
@@ -462,7 +463,7 @@
                     <span class="k">if</span> <span class="n">attr_b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>  <span class="c1"># only add if will not override higher level attr</span>
                         <span class="c1"># only go one level deep for now</span>
                         <span class="n">row</span><span class="p">[</span><span class="n">attr_b</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value_b</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;bites&#39;</span><span class="p">:</span>
                 <span class="k">continue</span>  <span class="c1"># currently do not encode bytes (base 64 stuff)  </span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># default to case to string</span>
@@ -1139,22 +1140,18 @@
 <span class="sd">    :param favorite: Only include images marked as favorite, defaults to False</span>
 <span class="sd">    :type favorite: bool, optional</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
 
     <span class="c1"># 13.33 x 7.5 </span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span>
-                 <span class="n">image_types</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marco</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">favorite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">human</span> <span class="o">=</span> <span class="n">human</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">marco</span> <span class="o">=</span> <span class="n">marco</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span> <span class="o">=</span> <span class="n">favorite</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span> <span class="o">=</span> <span class="n">image_types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_temp_images</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bumper</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slide_width</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slide_height</span> <span class="o">=</span> <span class="mi">6</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span>
     
-<div class="viewcode-block" id="PptxWriter.make_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="PptxWriter.make_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter.make_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">make_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">subtitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                     <span class="n">cocktail_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_specs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                     <span class="n">all_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Create a pptx presentation file from a screening run instance. This</span>
@@ -1183,33 +1180,60 @@
             <span class="k">if</span> <span class="n">subtitle</span><span class="p">:</span>
                 <span class="n">title_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subtitle</span>
             
-            <span class="n">slide_title_formater</span> <span class="o">=</span> <span class="s1">&#39;Well Number </span><span class="si">{}</span><span class="s1">&#39;</span>
-            <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">):</span>
-                    <span class="n">metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
-                        <span class="n">metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_add_single_image_slide</span><span class="p">(</span>
-                        <span class="n">image</span><span class="p">,</span> 
-                        <span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
-                        <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
-                        <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">all_specs</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_multi_spectrum_slide</span><span class="p">(</span>
-                            <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">all_dates</span> <span class="ow">and</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="ow">or</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">)</span>
-            
-            <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> <span class="s1">&#39;.pptx&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delete_temp_images</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_from_images</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">cocktail_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_images_and_metadata_to_slideshow</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">all_specs</span><span class="p">,</span> <span class="n">all_dates</span><span class="p">)</span>            
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span> <span class="o">=</span> <span class="n">RunSerializer</span><span class="o">.</span><span class="n">path_suffix_checker</span><span class="p">(</span>
+                                                                <span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">,</span> 
+                                                                <span class="s1">&#39;.pptx&#39;</span>
+                                                                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">images</span><span class="p">:</span>  <span class="c1"># make sure actualy were images to write to file</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_path</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">e</span></div>
+    
+<div class="viewcode-block" id="PptxWriter._add_images_and_metadata_to_slideshow"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._add_images_and_metadata_to_slideshow">[docs]</a>    <span class="k">def</span> <span class="nf">_add_images_and_metadata_to_slideshow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">all_specs</span><span class="p">,</span> <span class="n">all_dates</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">image</span><span class="p">,</span> <span class="n">image_metadata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_single_image_slide</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span> <span class="n">PptxWriter</span><span class="o">.</span><span class="n">slide_title_formater</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">well_number</span><span class="p">),</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">image_metadata</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">all_specs</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">alt_image</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_multi_spectrum_slide</span><span class="p">(</span>
+                    <span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_spectrum</span><span class="p">(),</span> <span class="n">image</span><span class="o">.</span><span class="n">well_number</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">all_dates</span> <span class="ow">and</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">next_image</span> <span class="ow">or</span> <span class="n">image</span><span class="o">.</span><span class="n">previous_image</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_timeline_slide</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_linked_images_by_date</span><span class="p">(),</span> 
+                                        <span class="n">image</span><span class="o">.</span><span class="n">well_number</span>
+                                        <span class="p">)</span></div>
+            
+<div class="viewcode-block" id="PptxWriter._metadata_from_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._metadata_from_images">[docs]</a>    <span class="k">def</span> <span class="nf">_metadata_from_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">cocktail_data</span><span class="p">):</span>
+        <span class="n">all_metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+            <span class="n">image_metadata</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cocktail_data</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;cocktail&#39;</span><span class="p">):</span>
+                <span class="c1"># user wants to display cocktail data and the image has it</span>
+                <span class="n">image_metadata</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">cocktail</span><span class="p">)</span>
+            <span class="n">all_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">all_metadata</span></div>
+    
+<div class="viewcode-block" id="PptxWriter._select_images"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._select_images">[docs]</a>    <span class="k">def</span> <span class="nf">_select_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Selects images to add to the presentation.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_indices</span><span class="p">:</span>
+            <span class="c1"># Use these index instead of classifications</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_indices</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">image</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">run</span><span class="o">.</span><span class="n">images</span> 
+                    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">standard_filter</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">image_types</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span>
+                        <span class="p">)</span>
+                    <span class="p">]</span></div>
     
 <div class="viewcode-block" id="PptxWriter._delete_presentation"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.PptxWriter._delete_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">_delete_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_presentation</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">()</span></div>
@@ -1671,9 +1695,7 @@
     <span class="sd">&#39;&#39;&#39;CocktailMenuReader instances should be used to read a csv file containing</span>
 <span class="sd">    a collection of cocktail screens. The csv file should contain cocktail</span>
 <span class="sd">    related formulations and assign each cocktail to a specific well in the</span>
-<span class="sd">    screening plate. CocktailMenuReader is essentially a wrapper around </span>
-<span class="sd">    the :class:`csv.DictReader` class. However it returns a :class:`Cocktail` instance </span>
-<span class="sd">    instead of returning a dictionary via when it&#39;s __iter__ method is called.</span>
+<span class="sd">    screening plate.</span>
 
 <span class="sd">    .. highlight:: python</span>
 <span class="sd">    .. code-block:: python</span>
@@ -1730,7 +1752,7 @@
 <span class="sd">        for the well_assignment attribute of the Cocktail class, index 1 for</span>
 <span class="sd">        the number attribute of the Cocktail class, etc.</span>
 
-<span class="sd">        :param map: Dictionary mapping csv row indicies to Cocktail object</span>
+<span class="sd">        :param map: Dictionary mapping csv row indices to Cocktail object</span>
 <span class="sd">                    attributes</span>
 <span class="sd">        :type map: dict</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -1946,7 +1968,6 @@
     
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_from_xml_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">[</span><span class="n">index</span><span class="p">])</span></div>
-
 
 
 <div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../../../polo.utils.html#polo.utils.io_utils.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">():</span>  <span class="c1"># holds the dictionary of cocktails</span>

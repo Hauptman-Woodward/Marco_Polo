@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -165,8 +164,9 @@
 <span class="kn">from</span> <span class="nn">polo.designer.UI_pptx_designer</span> <span class="kn">import</span> <span class="n">Ui_PptxDialog</span>
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">polo.utils.dialog_utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">make_default_logger</span>
+<span class="kn">from</span> <span class="nn">polo</span> <span class="kn">import</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">,</span> <span class="n">DEFAULT_IMAGE_PATH</span><span class="p">,</span> <span class="n">make_default_logger</span>
 <span class="kn">from</span> <span class="nn">polo.widgets.run_tree</span> <span class="kn">import</span> <span class="n">RunTree</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -333,7 +333,44 @@
         <span class="c1"># return image classifications whose checkboxes are checked</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="n">clss</span> <span class="k">for</span> <span class="n">clss</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_class_checkboxes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                                        <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()])</span></div>
-
+    
+<div class="viewcode-block" id="PptxDesignerDialog._parse_manual_image_entry"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog._parse_manual_image_entry">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_manual_image_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_wells</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to return the image (well) numbers if they have been</span>
+<span class="sd">        manually specified by the user.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">plainTextEdit</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>  <span class="c1"># only parse if user has entered text</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># strip and remove extra commas</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># convert to base 0</span>
+                    <span class="k">assert</span> <span class="n">num_wells</span> <span class="o">&gt;</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="ne">AssertionError</span><span class="p">):</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Make sure not to enter well numbers greater than the total number of wells in the run (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_wells</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Could not parse text entered. Please make sure to separate well numbers using commas and do not enter non-well-number values.&#39;</span>
+                    <span class="n">make_message_box</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+    
+<div class="viewcode-block" id="PptxDesignerDialog._get_images_from_manual_entry"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_manual_entry">[docs]</a>    <span class="k">def</span> <span class="nf">_get_images_from_manual_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_manual_image_entry</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">indices</span> 
+        <span class="k">if</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">run</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="PptxDesignerDialog._get_images_from_auto_entry"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_auto_entry">[docs]</a>    <span class="k">def</span> <span class="nf">_get_images_from_auto_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">run</span><span class="o">.</span><span class="n">image_filter_query</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parse_image_classifications</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">favorite</span>
+        <span class="p">)</span></div>
+        
+    
 <div class="viewcode-block" id="PptxDesignerDialog._write_presentation"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog._write_presentation">[docs]</a>    <span class="k">def</span> <span class="nf">_write_presentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that actually does the work of generating a</span>
 <span class="sd">        presentation from a :class:`Run` or :class:`HWIRun` instance.</span>
@@ -345,7 +382,7 @@
 <span class="sd">        :rtype: str or Exception</span>
 <span class="sd">        &#39;&#39;&#39;</span> 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="p">(</span><span class="n">Run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">run</span><span class="p">),</span> <span class="n">Run</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTreeWidget</span><span class="o">.</span><span class="n">selected_run</span><span class="p">:</span>
                     <span class="n">run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTreeWidget</span><span class="o">.</span><span class="n">selected_run</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -353,26 +390,48 @@
                     <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
                     <span class="k">return</span>
 
+            <span class="c1"># user has not entered an export path</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">():</span>
-                <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_save_path</span><span class="p">()</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="s1">&#39;Please set a path to export presentation to.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                <span class="k">return</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lineEdit_3</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+            
+            <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_images_from_manual_entry</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
 
-            <span class="n">writer</span> <span class="o">=</span> <span class="n">PptxWriter</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span>
-                                <span class="n">image_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_image_classifications</span><span class="p">(),</span>
-                                <span class="n">marco</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">marco</span><span class="p">,</span> <span class="n">human</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">human</span><span class="p">,</span>
-                                <span class="n">favorite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">favorite</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>  <span class="c1"># user attempted to enter manual</span>
+                <span class="c1"># exception indicates user did something incorrectly or we</span>
+                <span class="c1"># just failed to parse. None type would indicate user did</span>
+                <span class="c1"># not use manual entry</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="s1">&#39;Could not read manual values, using auto.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_images_from_auto_entry</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">images</span><span class="p">:</span>
+                <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_images_from_auto_entry</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+                
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="o">!=</span> <span class="n">DEFAULT_IMAGE_PATH</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">images</span><span class="p">:</span>  
+                <span class="c1"># check to make sure not empty image default</span>
+                <span class="n">make_message_box</span><span class="p">(</span>
+                    <span class="s1">&#39;No images in this run fit your selection criteria.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+                <span class="k">return</span>
+            
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">PptxWriter</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># disable dialog while writing</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">WaitCursor</span><span class="p">)</span>
 
             <span class="n">write_result</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">make_presentation</span><span class="p">(</span>
                 <span class="n">run</span><span class="o">=</span><span class="n">run</span><span class="p">,</span>
+                <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
                 <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
                 <span class="n">subtitle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subtitle</span><span class="p">,</span>
                 <span class="n">all_specs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_specs</span><span class="p">,</span>
-                <span class="n">all_dates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_dates</span>
-                <span class="p">)</span>
+                <span class="n">all_dates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_dates</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">write_result</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Wrote presentation to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
@@ -384,11 +443,13 @@
             <span class="n">make_message_box</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">write_result</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_presentation</span><span class="p">))</span>
             <span class="n">make_message_box</span><span class="p">(</span>
                 <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Failed to write presentation </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PptxDesignerDialog.check_for_warnings"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.pptx_dialog.PptxDesignerDialog.check_for_warnings">[docs]</a>    <span class="k">def</span> <span class="nf">check_for_warnings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

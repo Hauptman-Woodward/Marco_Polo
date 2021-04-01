@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -270,8 +269,8 @@
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="TableViewer.make_header_map"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_viewer.TableViewer.make_header_map">[docs]</a>    <span class="k">def</span> <span class="nf">make_header_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Helper method to map header keywords to their index (order). </span>
+<div class="viewcode-block" id="TableViewer._make_header_map"><a class="viewcode-back" href="../../../polo.widgets.html#polo.widgets.table_viewer.TableViewer._make_header_map">[docs]</a>    <span class="k">def</span> <span class="nf">_make_header_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private method to map header keywords to their index (order). </span>
 <span class="sd">        This method is required as headers are delivered as a set and </span>
 <span class="sd">        we want them to be presented in a consistent order to the user.</span>
 
@@ -297,7 +296,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             <span class="n">headers</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_data</span>
-            <span class="n">header_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_header_map</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+            <span class="n">header_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_header_map</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
             <span class="n">header_labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">header_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">header_map</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">header_labels</span><span class="p">)</span>

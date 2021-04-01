@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -209,6 +208,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ftp_download_counter</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># x of y downloads complete</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_recent_files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shown_unrecognized_run_warning</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">pushButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_classification_request</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">itemDoubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">runTree</span><span class="o">.</span><span class="n">opening_run</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_opening_run</span><span class="p">)</span>
@@ -277,7 +277,7 @@
 
             <span class="c1"># check if run is an alternative spectrum, if true then warn the</span>
             <span class="c1"># user that MARCO has not been trained on this type of image</span>
-            <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">image_spectrum</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;visible&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">image_spectrum</span> <span class="ow">and</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">image_spectrum</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;visible&#39;</span><span class="p">:</span>
                 <span class="n">choice</span> <span class="o">=</span> <span class="n">make_message_box</span><span class="p">(</span>
                     <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="s1">&#39;WAIT! MARCO has not been trained on images that do not use standard visible light microscopy, like the images you have requested to classify. Therefore, image classifications may not be accurate. Press OK to continue classification despite having read this advice.&#39;</span><span class="p">,</span>
@@ -318,11 +318,12 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Request open </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">selected_run</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">selected_run</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">selected_run</span><span class="o">.</span><span class="n">run_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_been_opened</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="n">HWIRun</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shown_unrecognized_run_warning</span><span class="p">:</span>
                     <span class="n">make_message_box</span><span class="p">(</span>
                     <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Looks like you imported a non-HWI Run. For now optimization screening and plate view is disabled.&#39;</span>
                     <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_shown_unrecognized_run_warning</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">selected_run</span><span class="p">,</span> <span class="s1">&#39;save_file_path&#39;</span><span class="p">):</span>
                     <span class="n">backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_for_existing_backup</span><span class="p">(</span><span class="n">selected_run</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">backup</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">backup</span><span class="p">)):</span>

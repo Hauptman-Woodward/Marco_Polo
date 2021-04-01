@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User’s Guide</a></li>
@@ -187,13 +186,13 @@
 <span class="kn">from</span> <span class="nn">polo.utils.math_utils</span> <span class="kn">import</span> <span class="n">best_aspect_ratio</span><span class="p">,</span> <span class="n">get_cell_image_dims</span>
 <span class="kn">from</span> <span class="nn">polo.widgets.plate_viewer</span> <span class="kn">import</span> <span class="n">plateViewer</span>
 <span class="kn">from</span> <span class="nn">polo.widgets.slideshow_viewer</span> <span class="kn">import</span> <span class="n">SlideshowViewer</span>
-<span class="kn">from</span> <span class="nn">polo.windows.ftp_dialog</span> <span class="kn">import</span> <span class="n">FTPDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.image_pop_dialog</span> <span class="kn">import</span> <span class="n">ImagePopDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.log_dialog</span> <span class="kn">import</span> <span class="n">LogDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.pptx_dialog</span> <span class="kn">import</span> <span class="n">PptxDesignerDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.run_updater_dialog</span> <span class="kn">import</span> <span class="n">RunUpdaterDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.spectrum_dialog</span> <span class="kn">import</span> <span class="n">SpectrumDialog</span>
 <span class="kn">from</span> <span class="nn">polo.windows.time_res_dialog</span> <span class="kn">import</span> <span class="n">TimeResDialog</span>
+<span class="kn">from</span> <span class="nn">polo.windows.cite_dialog</span> <span class="kn">import</span> <span class="n">CiteDialog</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">make_default_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -222,6 +221,7 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">menuTools</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_tool_menu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">menuRecent</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_recent_import</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuCite</span><span class="o">.</span><span class="n">triggered</span><span class="p">[</span><span class="n">QAction</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handle_citation_menu</span><span class="p">)</span>
 
         <span class="c1"># change tab updates control</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_interface</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_changed_tab</span><span class="p">)</span>
@@ -436,6 +436,19 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tab_10</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tab_2</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="MainWindow._handle_citation_menu"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_citation_menu">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_citation_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cite_dialog</span> <span class="o">=</span> <span class="n">CiteDialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">cite_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Caught </span><span class="si">{}</span><span class="s1"> at </span><span class="si">{}</span><span class="s1">u&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_citation_menu</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">make_message_box</span><span class="p">(</span>
+                <span class="s1">&#39;Error </span><span class="si">{}</span><span class="s1">: Could not open citation dialog.&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="MainWindow._handle_opening_run"><a class="viewcode-back" href="../../../polo.windows.html#polo.windows.main_window.MainWindow._handle_opening_run">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_opening_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_run</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Private method that handles opening a run. For the most part,</span>

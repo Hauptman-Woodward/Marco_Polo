@@ -87,7 +87,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User’s Guide</a></li>
@@ -266,8 +265,6 @@
     <span class="mi">0</span><span class="p">:</span> <span class="n">IMAGE_CLASSIFICATIONS</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>   <span class="c1"># unsure</span>
 <span class="p">}</span>
 
-
-
 <span class="c1"># UNRAR EXE</span>
 <span class="c1"># =============================================================================</span>
 
@@ -329,6 +326,14 @@
 
 <span class="n">RELEASES</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/Hauptman-Woodward/Marco_Polo/tags&#39;</span>
 
+<span class="n">MARCO_ARTICLE</span> <span class="o">=</span> <span class="s1">&#39;https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0198883&#39;</span>
+<span class="n">POLO_ARTICLE</span> <span class="o">=</span> <span class="s1">&#39;https://journals.iucr.org/j/issues/2021/02/00/ei5066/index.html&#39;</span>
+<span class="n">POLO_CITATION</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">Holleman, E.T., Duguid, E., Keefe, L.J. &amp; Bowman, S.E.J. (2021). J. Appl. Cryst. 54, https://doi.org/10.1107/S1600576721000108</span>
+<span class="s1">&#39;&#39;&#39;</span>
+<span class="n">MARCO_CITATION</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">Bruno AE, Charbonneau P, Newman J, Snell EH, So DR, et al. (2018) Classification of crystallization outcomes using deep convolutional neural networks. PLOS ONE 13(6): e0198883. https://doi.org/10.1371/journal.pone.0198883</span>
+<span class="s1">&#39;&#39;&#39;</span>
 
 <span class="c1"># RUN_TYPES = sorted(</span>
 <span class="c1">#             [types[-1] for types in </span>
@@ -361,9 +366,6 @@
 
 <span class="kn">from</span> <span class="nn">polo.utils.io_utils</span> <span class="kn">import</span> <span class="n">BarTender</span><span class="p">,</span> <span class="n">Menu</span>
 <span class="n">bartender</span> <span class="o">=</span> <span class="n">BarTender</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_DATA_PATH</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">COCKTAIL_META_DATA</span><span class="p">))</span>
-
-<span class="c1"># best bartender at Cunneen&#39;s bar in Rodger&#39;s Park</span>
-<span class="c1"># and in this program handles cocktail data</span>
 
 <span class="kn">from</span> <span class="nn">polo.crystallography.image</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">polo.crystallography.cocktail</span> <span class="kn">import</span> <span class="o">*</span>

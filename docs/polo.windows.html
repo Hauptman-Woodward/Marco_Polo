@@ -88,7 +88,6 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
@@ -238,13 +237,24 @@ the error code thrown by ftplib.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.windows.ftp_dialog.FTPDialog.connected">
+<em class="property">property </em><code class="sig-name descname">connected</code><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog.connected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.windows.ftp_dialog.FTPDialog.download_selected_files">
 <code class="sig-name descname">download_selected_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/ftp_dialog.html#FTPDialog.download_selected_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.ftp_dialog.FTPDialog.download_selected_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Signals to the <cite>fileBrowser</cite> widget to download all files / dirs the
-user has selected. Downloading occurs in the background and the FTP
-browser dialog is closed after a download has successfully begun.
-Another download should not be initiated while one is
-already in progress.</p>
+<dd><p>Opens a file dialog for the user to select a location to download
+remote files to. All files / directories that are currently selected
+in the <cite>FTPDialog</cite> will then be appended to <cite>download_files</cite>
+attribute, marking them for download. A message box informing the user
+that files are downloading is shown and then the FTPDialog closes.</p>
+<p>At this point the method that originally created the <cite>FTPDialog</cite>
+instance should realize the dialog is closed and check for an open
+FTP connection and the presence of files in the <cite>download_file</cite>
+attribute (indicating the user had selecting files for downloading).</p>
+<p>An <cite>FTPDownloadThread</cite> instance can then be created to download files
+in the background without interrupting other Polo interfaces.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -505,6 +515,11 @@ can click to take them to the releases page.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.windows.main_window.MainWindow._handle_citation_menu">
+<code class="sig-name descname">_handle_citation_menu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_citation_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_citation_menu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.windows.main_window.MainWindow._handle_delete_backups">
 <code class="sig-name descname">_handle_delete_backups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/main_window.html#MainWindow._handle_delete_backups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.main_window.MainWindow._handle_delete_backups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method that handles a user request to delete all backup 
@@ -761,6 +776,16 @@ browser then displays this path in the filepath <code class="xref py py-class do
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_auto_entry">
+<code class="sig-name descname">_get_images_from_auto_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/pptx_dialog.html#PptxDesignerDialog._get_images_from_auto_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_auto_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_manual_entry">
+<code class="sig-name descname">_get_images_from_manual_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/pptx_dialog.html#PptxDesignerDialog._get_images_from_manual_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.pptx_dialog.PptxDesignerDialog._get_images_from_manual_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.windows.pptx_dialog.PptxDesignerDialog._get_save_path">
 <code class="sig-name descname">_get_save_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/pptx_dialog.html#PptxDesignerDialog._get_save_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.pptx_dialog.PptxDesignerDialog._get_save_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method that opens a file browser and returns the selected
@@ -789,6 +814,13 @@ by reading the state of all image classification
 <dd class="field-even"><p>set</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="polo.windows.pptx_dialog.PptxDesignerDialog._parse_manual_image_entry">
+<code class="sig-name descname">_parse_manual_image_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_wells</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/pptx_dialog.html#PptxDesignerDialog._parse_manual_image_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.pptx_dialog.PptxDesignerDialog._parse_manual_image_entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private method to return the image (well) numbers if they have been
+manually specified by the user.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -979,6 +1011,11 @@ current Polo session (Run names should be unique)</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt id="polo.windows.run_importer.RunImporterDialog._close_dialog">
+<code class="sig-name descname">_close_dialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._close_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._close_dialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog._could_not_import_message">
 <code class="sig-name descname">_could_not_import_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span></em>, <em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._could_not_import_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._could_not_import_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private method that creates a message box popup for when imports fail.</p>
@@ -1009,9 +1046,7 @@ like “Could not import the following files:”</p></li>
 <dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog._display_candidate_paths">
 <code class="sig-name descname">_display_candidate_paths</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._display_candidate_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._display_candidate_paths" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method that updates the dialog’s <code class="xref py py-class docutils literal notranslate"><span class="pre">QListWidget</span></code> with the
-file paths of the current <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportCandidate</span></code> instances referenced
-by the  <code class="xref py py-attr docutils literal notranslate"><span class="pre">import_candidates</span></code> attribute.</p>
+<dd><p>rewrite import candidate class is no longer used</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1037,7 +1072,8 @@ for <code class="xref py py-class docutils literal notranslate"><span class="pre
 <dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog._handle_candidate_change">
 <code class="sig-name descname">_handle_candidate_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._handle_candidate_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._handle_candidate_change" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method that calls 
+<dd><p>TODO: Needs rewrite for clarity</p>
+<p>Private method that calls 
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">_update_selected_candidate()</span></code>
 and then  <a class="reference internal" href="#polo.windows.run_importer.RunImporterDialog._populate_fields" title="polo.windows.run_importer.RunImporterDialog._populate_fields"><code class="xref py py-meth docutils literal notranslate"><span class="pre">_populate_fields()</span></code></a>. 
 This updates the data of the previously selected 
@@ -1081,13 +1117,7 @@ only allows the user to import directories.</p>
 <dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog._populate_fields">
 <code class="sig-name descname">_populate_fields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">import_candidate</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._populate_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._populate_fields" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method to display <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportCandidate</span></code> 
-data to the user.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>import_candidate</strong> (<em>ImportCandidate</em>) – ImportCandidate to display</p>
-</dd>
-</dl>
+<dd><p>TODO: Needs a rewrite</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1095,13 +1125,6 @@ data to the user.</p>
 <code class="sig-name descname">_remove_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._remove_run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._remove_run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes a run as an import candidate and refreshes the 
 <code class="xref py py-class docutils literal notranslate"><span class="pre">QlistWidget</span></code> to reflect the removal.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polo.windows.run_importer.RunImporterDialog._restore_defaults">
-<code class="sig-name descname">_restore_defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._restore_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._restore_defaults" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restore suggested import settings for an <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportCandidate</span></code> in case
-the user has changed them and then wants to undo those changes.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1147,10 +1170,7 @@ that candidate is selected.</p>
 <dl class="py method">
 <dt id="polo.windows.run_importer.RunImporterDialog._update_candidate_run_data">
 <code class="sig-name descname">_update_candidate_run_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">import_candidate_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/windows/run_importer.html#RunImporterDialog._update_candidate_run_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.windows.run_importer.RunImporterDialog._update_candidate_run_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method that allows the user to update an <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportCandidate</span></code>
-instance’s data from the widgets in the <cite>RunImporterDialog</cite> by updating
-the dictionary referenced by an <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportCandidate</span></code> instacnes’s 
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> attribute with user entered values.</p>
+<dd><p>Rewrite</p>
 </dd></dl>
 
 <dl class="py method">

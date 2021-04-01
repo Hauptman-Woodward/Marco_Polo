@@ -37,9 +37,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polo.crystallography package" href="polo.crystallography.html" />
-    <link rel="prev" title="Polo Code Documentation" href="polo.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,35 +84,54 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reports.html">Bug Reports and Suggestions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Future Maintainers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#lore">Lore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#directory-layout">Directory Layout</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#polo-package-notes">Polo Package Notes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-exes-for-distribution">Creating Exes for Distribution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editing-and-extending-this-documentation">Editing and Extending this Documentation</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Future Maintainers</a><ul>
+<li><a class="reference internal" href="#lore">Lore</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#directory-layout">Directory Layout</a><ul>
+<li><a class="reference internal" href="#src-directory">src Directory</a></li>
+<li><a class="reference internal" href="#misc-directory">misc Directory</a></li>
+<li><a class="reference internal" href="#pyqt-designer-directory">pyqt_designer Directory</a></li>
+<li><a class="reference internal" href="#sphinx-directory">sphinx Directory</a></li>
+<li><a class="reference internal" href="#docs-directory">docs Directory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#polo-package-notes">Polo Package Notes</a><ul>
+<li><a class="reference internal" href="#notable-scripts">Notable Scripts</a><ul>
+<li><a class="reference internal" href="#the-init-script">The <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> Script</a></li>
+<li><a class="reference internal" href="#the-windows-main-window-script">The <code class="code docutils literal notranslate"><span class="pre">windows/main_window</span></code> Script</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li><a class="reference internal" href="#crystallography-subpackage">Crystallography Subpackage</a></li>
+<li><a class="reference internal" href="#designer-subpackage">Designer Subpackage</a></li>
+<li><a class="reference internal" href="#marco-subpackage">Marco Subpackage</a></li>
+<li><a class="reference internal" href="#plots-subpackage">Plots Subpackage</a></li>
+<li><a class="reference internal" href="#threads-subpackage">Threads Subpackage</a></li>
+<li><a class="reference internal" href="#utils-subpackage">Utils Subpackage</a></li>
+<li><a class="reference internal" href="#widgets-subpackage">Widgets Subpackage</a></li>
+<li><a class="reference internal" href="#windows-subpackage">Windows Subpackage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-exes-for-distribution">Creating Exes for Distribution</a><ul>
+<li><a class="reference internal" href="#pyinstaller-overview-and-usage-guide">Pyinstaller Overview and Usage Guide</a></li>
+<li><a class="reference internal" href="#spec-file-details-and-modifications">Spec File Details and Modifications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#editing-and-extending-this-documentation">Editing and Extending this Documentation</a><ul>
+<li><a class="reference internal" href="#documentation-background">Documentation Background</a></li>
+<li><a class="reference internal" href="#editing-the-docs">Editing the Docs</a></li>
+<li><a class="reference internal" href="#creating-html-files">Creating HTML Files</a></li>
+<li><a class="reference internal" href="#debugging">Debugging</a></li>
 </ul>
 </li>
 </ul>
-
+</li>
+</ul>
+</div>
             
           
         </div>
@@ -157,8 +174,6 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
       <li>Future Maintainers</li>
     
@@ -532,15 +547,6 @@ are used when rendering so it is a good place to start looking for issues.</p>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="polo.crystallography.html" class="btn btn-neutral float-right" title="polo.crystallography package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="polo.html" class="btn btn-neutral float-left" title="Polo Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

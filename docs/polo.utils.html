@@ -37,9 +37,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="polo.widgets package" href="polo.widgets.html" />
-    <link rel="prev" title="polo.threads package" href="polo.threads.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,41 +84,21 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FAQS.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="video_guides.html">Video Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reports.html">Bug Reports and Suggestions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="polo.html">Polo Code Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="polo.html#future-maintainers">Future Maintainers</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="polo.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="polo.crystallography.html">polo.crystallography package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.marco.html">polo.marco package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.threads.html">polo.threads package</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">polo.utils package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.dialog_utils">polo.utils.dialog_utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.exceptions">polo.utils.exceptions module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.ftp_utils">polo.utils.ftp_utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.io_utils">polo.utils.io_utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.math_utils">polo.utils.math_utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils.unrar_utils">polo.utils.unrar_utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-polo.utils">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="polo.widgets.html">polo.widgets package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="polo.windows.html">polo.windows package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="polo.html#module-polo">Module contents</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">polo.utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-polo.utils.dialog_utils">polo.utils.dialog_utils module</a></li>
+<li><a class="reference internal" href="#module-polo.utils.exceptions">polo.utils.exceptions module</a></li>
+<li><a class="reference internal" href="#module-polo.utils.ftp_utils">polo.utils.ftp_utils module</a></li>
+<li><a class="reference internal" href="#module-polo.utils.io_utils">polo.utils.io_utils module</a></li>
+<li><a class="reference internal" href="#module-polo.utils.math_utils">polo.utils.math_utils module</a></li>
+<li><a class="reference internal" href="#module-polo.utils.unrar_utils">polo.utils.unrar_utils module</a></li>
+<li><a class="reference internal" href="#module-polo.utils">Module contents</a></li>
 </ul>
 </li>
 </ul>
-
+</div>
             
           
         </div>
@@ -163,8 +141,6 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="polo.html">Polo Code Documentation</a> &raquo;</li>
         
       <li>polo.utils package</li>
     
@@ -467,9 +443,7 @@ characters should be passed to <cite>type_</cite>.</p>
 <p>CocktailMenuReader instances should be used to read a csv file containing
 a collection of cocktail screens. The csv file should contain cocktail
 related formulations and assign each cocktail to a specific well in the
-screening plate. CocktailMenuReader is essentially a wrapper around 
-the <code class="xref py py-class docutils literal notranslate"><span class="pre">csv.DictReader</span></code> class. However it returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Cocktail</span></code> instance 
-instead of returning a dictionary via when it’s __iter__ method is called.</p>
+screening plate.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cocktail_menu</span> <span class="o">=</span> <span class="s1">&#39;path/to/my/csv&#39;</span>
 <span class="n">my_reader</span> <span class="o">=</span> <span class="n">CocktailMenuReader</span><span class="p">(</span><span class="n">cocktail_menu</span><span class="p">)</span>
 <span class="n">csv_cocktails</span> <span class="o">=</span> <span class="n">my_reader</span><span class="o">.</span><span class="n">read_menu_file</span><span class="p">()</span>
@@ -543,7 +517,7 @@ for the well_assignment attribute of the Cocktail class, index 1 for
 the number attribute of the Cocktail class, etc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>map</strong> (<em>dict</em>) – Dictionary mapping csv row indicies to Cocktail object
+<dd class="field-odd"><p><strong>map</strong> (<em>dict</em>) – Dictionary mapping csv row indices to Cocktail object
 attributes</p>
 </dd>
 </dl>
@@ -845,7 +819,7 @@ classifications, defaults to False</p>
 
 <dl class="py class">
 <dt id="polo.utils.io_utils.PptxWriter">
-<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">PptxWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span></em>, <em class="sig-param"><span class="n">image_types</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">human</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">marco</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">favorite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">polo.utils.io_utils.</code><code class="sig-name descname">PptxWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Use for creating pptx presentation slides from <code class="xref py py-class docutils literal notranslate"><span class="pre">Run</span></code>
 or <code class="xref py py-class docutils literal notranslate"><span class="pre">HWIRun</span></code> instances.</p>
@@ -889,6 +863,11 @@ the presentaton file is written.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._add_images_and_metadata_to_slideshow">
+<code class="sig-name descname">_add_images_and_metadata_to_slideshow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">metadata</span></em>, <em class="sig-param"><span class="n">all_specs</span></em>, <em class="sig-param"><span class="n">all_dates</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._add_images_and_metadata_to_slideshow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._add_images_and_metadata_to_slideshow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter._add_multi_image_slide">
@@ -1045,6 +1024,17 @@ well.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._metadata_from_images">
+<code class="sig-name descname">_metadata_from_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">cocktail_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._metadata_from_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._metadata_from_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="polo.utils.io_utils.PptxWriter._select_images">
+<code class="sig-name descname">_select_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter._select_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter._select_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects images to add to the presentation.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.add_cocktail_slide">
 <code class="sig-name descname">add_cocktail_slide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">well</span></em>, <em class="sig-param"><span class="n">cocktail</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.add_cocktail_slide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.add_cocktail_slide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add slide with details on <code class="xref py py-class docutils literal notranslate"><span class="pre">Cocktail</span></code> information.</p>
@@ -1082,7 +1072,7 @@ well.</p>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.make_presentation">
-<code class="sig-name descname">make_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">all_specs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">all_dates</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_presentation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_presentation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">run</span></em>, <em class="sig-param"><span class="n">images</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">subtitle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cocktail_data</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">all_specs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">all_dates</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#PptxWriter.make_presentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.make_presentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a pptx presentation file from a screening run instance. This
 should be the only public method in the class. All other methods are
 internal to actually creating the presentation file.</p>
@@ -1105,6 +1095,11 @@ internal to actually creating the presentation file.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="polo.utils.io_utils.PptxWriter.slide_title_formater">
+<code class="sig-name descname">slide_title_formater</code><em class="property"> = 'Well Number {}'</em><a class="headerlink" href="#polo.utils.io_utils.PptxWriter.slide_title_formater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="polo.utils.io_utils.PptxWriter.sort_runs_by_spectrum">
@@ -1314,7 +1309,7 @@ attribute to a <code class="xref py py-class docutils literal notranslate"><span
 <dl class="py method">
 <dt id="polo.utils.io_utils.RunImporter._target_is_valid">
 <code class="sig-name descname">_target_is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/polo/utils/io_utils.html#RunImporter._target_is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#polo.utils.io_utils.RunImporter._target_is_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Private method to chech if a the file or directory referenced by
+<dd><p>Private method to check if a the file or directory referenced by
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">target_path</span></code> is valid for import.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -1833,15 +1828,6 @@ operating systems but not for Linux.</p>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="polo.widgets.html" class="btn btn-neutral float-right" title="polo.widgets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="polo.threads.html" class="btn btn-neutral float-left" title="polo.threads package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
