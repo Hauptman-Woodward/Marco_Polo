@@ -4,17 +4,17 @@ About
 Background
 -------------------------
 
-One of the largest hurtles to obtaining X-ray diffraction
+One of the largest challenges in obtaining X-ray diffraction
 data from biological samples is growing large, high quality crystals.
 
-Currently, there is not way to reliably predict successful crystallization
+Currently, there is no way to reliably predict successful crystallization
 conditions based on protein sequence alone and so high-throughput approaches
 are very appealing. High-throughput crystallization screens test a large
 chemical space using hundreds of different crystallization cocktails at the
 nano-drop scale. Successful conditions can then be scaled up and optimized to
 grow larger crystals.
 
-The high-throughput crystallization screening center at the Hauptman-Woodward 
+The Crystallization Center at the Hauptman-Woodward 
 Medical Research Institute provides this high-throughput screening service to
 users; offering 1536 condition screens for both soluble and membrane protein
 samples. Each plate is imaged over a period of two months in using both
@@ -69,7 +69,10 @@ unrar for Windows and Mac.
 Data Management
 ++++++++++++++++++++++
 
-Your image classifications are easily saved and managed via the xtal file format. Xtal files are similar to mso files created by MacroscopeJ and encode your image classifications, MARCO classifications, cocktail formulation and other metadata. In addition, xtal files increase portability 
+Your image classifications are easily saved and managed via the xtal file format. 
+Xtal files are similar to mso files created by MacroscopeJ and encode your image classifications, 
+MARCO classifications, cocktail formulation and other metadata. In addition, 
+xtal files increase portability 
 by encoding your screening images directly into the file along side your 
 metadata. This allows your classifications to be easily shared with 
 one file to anyone else with Polo on their computer. 
