@@ -1,7 +1,11 @@
-*.log
-*.pyc
-**/.vscode
-**/dist
-**/build
-**/test_files
-**/_build
+
+# ignore files that are created by polo during testing
+.polo_backups/
+recents.txt
+Polo.log
+
+# ignore sphnix build files
+sphnix/_build/
+
+# ignore vscode file
+.vscode/
