@@ -41,14 +41,14 @@ Features
 ----------------
 
 Automatic Image Classification
-++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++
 Using the MARCO model Polo can cut down the time you spend looking 
 through your crystallization images by identifying wells likely to 
 contain a protein crystal. This can reduce the total number of 
 images that need to be considered from thousands to hundreds.
 
 Multiple Image View Modes
-+++++++++++++++++++++++
+++++++++++++++++++++++++++
 Polo allows you to view your crystallization images in a variety of 
 ways that make it easier to identify true crystal hits. Images can be 
 viewed individually or in grids of up to 96. 

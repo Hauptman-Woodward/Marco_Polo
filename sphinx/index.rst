@@ -1,38 +1,34 @@
-.. Polo documentation master file, created by
-   sphinx-quickstart on Sat Jul 18 10:57:21 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-   Welcome to Polo's documentation!
-   ================================
-   
-   Polo is a python GUI build using the PyQt library for
-   high-throughput crystallization screening users. It was created by Ethan Holleman
-   for the 2020 `BioXFEL <https://www.bioxfel.org/>`_ 
-   summer internship program. Funding provided through NSF BioXFEL STC Grant Number 1231306, NSF BIO 2029943, NIH NIGMS 124135.
-   
-   .. toctree::
-      :maxdepth: 1
-      :caption: Contents:
-   
-      about
-      Quickstart
-      install
-      FAQS
-      user_guide
-      video_guides
-      reports
-      polo
-   
-   
-   
-   Indices and tables
-   ==================
-   
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
-   
+Welcome to Polo's documentation!
+================================
+
+Polo is a python GUI build using the PyQt library for
+high-throughput crystallization screening users. It was created by Ethan Holleman
+for the 2020 `BioXFEL <https://www.bioxfel.org/>`_ 
+summer internship program. Funding provided through NSF BioXFEL STC Grant Number 1231306, NSF BIO 2029943, NIH NIGMS 124135.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   about
+   Quickstart
+   install
+   FAQS
+   user_guide
+   video_guides
+   reports
+   polo
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
    
    
    
