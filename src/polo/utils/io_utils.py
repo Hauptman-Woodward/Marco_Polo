@@ -1649,10 +1649,6 @@ class CocktailMenuReader():
                 reagent_positions = [i for i in range(
                     len(row)) if i not in self.cocktail_map and i != self.formula_pos]
 
-                print(reagent_positions, len(row), self.menu_file_path)
-
-                # Seems like there is an extra row being added for new cocktail
-                # formulations
 
                 for i in range(0, len(reagent_positions), 2):
                     try:
