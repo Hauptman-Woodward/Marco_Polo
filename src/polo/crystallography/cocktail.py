@@ -110,9 +110,13 @@ class Cocktail():
         return ''.join(sorted(['{}: {}\n'.format(key, value) for key, value in self.__dict__.items()]))
 
     def __str__(self):
+
+        
         cocktail_string = 'Cocktail {}\n'.format(self.number)
         cocktail_string += '-'*len(cocktail_string) + '\n'
         cocktail_string += 'pH: {}\n'.format(self.pH)
+        if self.commercial_code:
+            cocktail_string += str(self.commercial_code).strip() + '\n'
         for reagent in self.reagents:
             cocktail_string += '{} {}\n'.format(
                 reagent.chemical_additive, reagent.concentration)

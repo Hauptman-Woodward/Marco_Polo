@@ -252,7 +252,7 @@ class PptxDesignerDialog(QtWidgets.QDialog):
             if not images:
                 images = self._get_images_from_auto_entry(run)
                 
-            if len(images) == 1 and images[0].path != DEFAULT_IMAGE_PATH or not images:  
+            if not images:
                 # check to make sure not empty image default
                 make_message_box(
                     'No images in this run fit your selection criteria.').exec_()
