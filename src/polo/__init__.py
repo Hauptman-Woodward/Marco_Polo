@@ -11,7 +11,7 @@ from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
 from PyQt5 import QtWidgets
 from tensorflow.contrib.predictor import from_saved_model
 
-polo_version = '0.1.0'  # should be int.int.int format
+polo_version = '0.2.0'  # should be int.int.int format
 dirname = Path(os.path.dirname(__file__)).parent
 
 
