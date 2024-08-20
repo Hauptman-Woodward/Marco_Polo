@@ -1,18 +1,15 @@
-name: poloBuild
+name: tf_compat
 channels:
   - defaults
   - conda-forge
-  - anaconda
 dependencies:
-  - tensorflow=1.13
-  - pyqt=5.15
-  - python
-  - pip
+  - python=3.7
+  - tensorflow
   - ca-certificates
   - certifi
+  - openssl
+  - pyqt
   - jinja2
-  - requests
-  - matplotlib
-  - pyinstaller
-  - brotlipy
-  - libxcb
+  - conda-forge::python-pptx
+  - conda-forge::matplotlib
+  - conda-forge::pyinstaller
