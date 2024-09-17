@@ -43,8 +43,6 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.setupUi(self)
         self.import_candidates = {}
         self.can_unrar = test_for_working_unrar()
-        if not self.can_unrar:
-            self.pushButton_4.setEnabled(False)
         self._last_selection = None
 
         self.ui.lineEdit.editingFinished.connect(self._verify_run_name)
@@ -56,6 +54,10 @@ class RunImporterDialog(QtWidgets.QDialog):
         self.ui.pushButton.clicked.connect(self._close_dialog)
         self.ui.pushButton_2.clicked.connect(self._remove_run)
         #self.ui.pushButton_3.clicked.connect(self._restore_defaults)
+        
+        if not self.can_unrar:
+            self.ui.pushButton_4.setEnabled(False)
+        
         self._display_cocktail_files()
 
     @property

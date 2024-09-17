@@ -9,8 +9,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QGraphicsColorizeEffect, QGraphicsScene
 
-from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS, MODEL,
-                  make_default_logger, BLANK_IMAGE)
+from polo import (DEFAULT_IMAGE_PATH, IMAGE_CLASSIFICATIONS,
+                  make_default_logger, BLANK_IMAGE, LOADED_MODEL, SESSION)
 from polo.utils.io_utils import BarTender
 from polo.marco.run_marco import run_model
 
@@ -492,7 +492,7 @@ class Image(QtGui.QPixmap):
         '''
         try:
             self.machine_class, self.prediction_dict = run_model(
-                MODEL, self.path)
+                LOADED_MODEL, SESSION, self.path)
         except AttributeError as e:
             logger.error('Caught {} at classify_image method'.format(e))
             return e
