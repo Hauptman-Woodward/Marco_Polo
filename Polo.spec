@@ -30,20 +30,25 @@ pptx_depends = (pptx_location, 'pptx/')
 # path to tensorflow in anaconda env
 OS = platform.system()
 
-a = Analysis(['src/Polo.py'],
+a = Analysis(['src/Polo.py', 'src/tensorflow_fix.py'],
              pathex=[cur_dir],
              binaries=[],
              datas=[('src/data', 'data/'), ('src/astor', 'astor/'),
                     ('src/unrar', 'unrar/'), ('src/templates', 'templates/'),
-                    pptx_depends],
+                    pptx_depends, ('src/tensorflow_fix.py', '.')],
              hiddenimports=['tensorflow', 'tensorflow_core'],
-            hookspath=[],
+            hookspath=['hooks'],
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=None,
              noarchive=False)
+
+import site
+site_packages = site.getsitepackages()[0]
+tf_path = os.path.join(site_packages, 'tensorflow')
+a.datas += Tree(tf_path, prefix='tensorflow', excludes=['*.pyc'])
 
 
 pyz = PYZ(a.pure, a.zipped_data,

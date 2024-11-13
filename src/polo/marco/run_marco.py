@@ -32,29 +32,26 @@ def process_model_output(model_output):
 
 
 
-def run_model(loaded_model, sess, image_path):
-    
-        image_bytes = load_image(image_path)
+def run_model(loaded_model, session, image_path):
+    image_bytes = load_image(image_path)
 
-        meta_graph = loaded_model        
-        # Get the 'serving_default' signature
-        signature = meta_graph.signature_def['serving_default']
-        
-        # Get input and output tensors
-        input_tensor = sess.graph.get_tensor_by_name(signature.inputs['image_bytes'].name)
-        output_tensors = {name: sess.graph.get_tensor_by_name(tensor_info.name) 
-                          for name, tensor_info in signature.outputs.items()}
-        
-        # Run inference
-        print("Running inference...")
-        feed_dict = {input_tensor: [image_bytes]}
-        results = sess.run(output_tensors, feed_dict=feed_dict)
-        
-        processed_results = process_model_output(results)
-        
-        print(results)
-        
-        return processed_results
+    meta_graph = loaded_model        
+    # Get the 'serving_default' signature
+    signature = meta_graph.signature_def['serving_default']
+    
+    # Get input and output tensors
+    input_tensor = session.graph.get_tensor_by_name(signature.inputs['image_bytes'].name)
+    output_tensors = {name: session.graph.get_tensor_by_name(tensor_info.name) 
+                      for name, tensor_info in signature.outputs.items()}
+    
+    # Run inference
+    feed_dict = {input_tensor: [image_bytes]}
+    results = session.run(output_tensors, feed_dict=feed_dict)
+    
+    processed_results = process_model_output(results)
+    
+    return processed_results
+
 
 # https://github.com/tensorflow/models/blob/master/research/marco/Automated_Marco.py
 # def run_model(tf_predictor, image_path):

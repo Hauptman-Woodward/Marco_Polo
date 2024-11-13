@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#import tensorflow_fix
 import sys, traceback
 import logging
 import multiprocessing

@@ -5,7 +5,8 @@ from pathlib import Path
 import sys
 import platform
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 
 from PyQt5.QtGui import QBrush, QColor, QIcon, QPixmap
@@ -13,7 +14,7 @@ from PyQt5 import QtWidgets
 #from tensorflow.contrib.predictor import from_saved_model
 
 
-polo_version = '0.2.0'  # should be int.int.int format
+polo_version = '0.2.1'  # should be int.int.int format
 dirname = Path(os.path.dirname(__file__)).parent
 
 
@@ -54,11 +55,22 @@ DEFAULT_IMAGE_PATH, BLANK_IMAGE = (
 
 # path to tensorflow marco model
 MODEL_PATH = DATA_DIR.joinpath('savedmodel')
-
-SESSION = tf.Session(graph=tf.Graph())
+SESS = tf.Session(graph=tf.Graph())
 LOADED_MODEL = tf.saved_model.loader.load(
-    SESSION, [tf.saved_model.tag_constants.SERVING], str(MODEL_PATH)
-    )
+    SESS, [tf.saved_model.tag_constants.SERVING], str(MODEL_PATH)
+)
+
+
+
+# LOADED_MODEL = tf.saved_model.load(str(MODEL_PATH))
+# @tf.function
+# def serve(x):
+#     return loaded_model(x)
+
+# #SESSION = tf.Session(graph=tf.Graph())
+# # LOADED_MODEL = tf.saved_model.loader.load(
+# #     SESSION, [tf.saved_model.tag_constants.SERVING], str(MODEL_PATH)
+# #     )
 
 
 # HTML jinja2 templates
