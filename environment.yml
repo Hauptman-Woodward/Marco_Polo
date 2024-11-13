@@ -1,15 +1,16 @@
-name: tf_compat
 channels:
   - defaults
   - conda-forge
 dependencies:
-  - python=3.7
   - tensorflow
+  - pyinstaller
   - ca-certificates
   - certifi
   - openssl
   - pyqt
   - jinja2
-  - conda-forge::python-pptx
-  - conda-forge::matplotlib
-  - conda-forge::pyinstaller
+  - python-pptx
+  - matplotlib
+  - pip
+  - pip:
+    - molmass

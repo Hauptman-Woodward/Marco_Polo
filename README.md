@@ -48,6 +48,26 @@ We have created a number of reasources to help you get going with Polo. If you p
 
 Polo strives to be accessible, easy to use and reduce human work. If you have a suggestion of how any of these or other aspects of the program could be improved please make it known! You can do so through the [suggestion form](https://hauptman-woodward.github.io/Marco_Polo/reports.html) or by opening an issue on this repository. Pull requests encouraged!
 
+## Run and compile from source
+
+If you are running Polo on an OS for which there is not a binary file you may follow these steps
+to first get Polo running and then use Pyinstaller to create your own binary file if you wish.
+  
+
+0. Clone this repository to your favorite location on your machine. It is important you feel that
+this is a special place in your file tree to ensure Polo is at home and feels safe. 
+
+
+1. Install the dependencies in a new conda environment from the included `environment.yml` file. You can do this with the command `conda env create -f environment.yml`
+2. Activate this conda environment (at the time of writing) this command would be `conda activate polo0.2.1`
+3. Navigate to the `src` directory included in the Polo repository. And run `python Polo.py`. The program should launch the GUI. You can use Polo just as you would a binary file now, but you will need to repeat this process from step `2` to launch the program again.
+
+If you would like to compile Polo into a single binary file for your machine please continue, be warned though that Pyinstaller (the program used for mashing everything into an executable file) can sometimes be a bit particular. Disclaimer over.
+
+4. Navigate back to the repository root directory. You should find a file called `Polo.spec`. This contains the information that Pyinstaller (in theory) needs to create the binary file.
+5. Run the command `pyinstaller Polo.spec F`. This should create your binary file in a new directory called `dist`. You should then be able to run this file and launch the Polo GUI. 
+
+See `Contact` if you encounter issues at any of these steps.
 
 # Features
 
@@ -74,3 +94,9 @@ Polo allows you to share your results with other humans or machines easily. Expo
 
 - [Documentation](https://hauptman-woodward.github.io/Marco_Polo/)
 - [2020 SSRL / LCLS Users' Meeting Poster and Live Session](https://events.bizzabo.com/SLAC-UsersMeeting-2020/agenda/session/363994)
+
+# Contact
+
+If you encounter issues or have questions about the program please reach out to me (Ethan Holleman) via email. I will do my best to get back to you quickly but please be aware that Polo is not currently my primary research focus as a PhD student at UC Davis. 
+
+`etholleman [ @at@ ] ucdavis [ .dot. ] edu`
