@@ -1,37 +1,24 @@
-import copy
-import json
-import logging
 import os
-import random
 import re
-import sys
-import time
 import webbrowser
 from pathlib import Path
 
 import requests
 from matplotlib.backends.backend_qt5agg import \
     NavigationToolbar2QT as NavigationToolbar
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap, QPixmapCache
+from PyQt5.QtGui import QIcon,QPixmapCache
 from PyQt5.QtWidgets import QAction, QApplication, QGridLayout
 
 from polo import *
 from polo.crystallography.run import HWIRun, Run
 from polo.designer.UI_main_window import Ui_MainWindow
-from polo.plots.plots import MplCanvas, MplWidget, StaticCanvas
+from polo.plots.plots import StaticCanvas
 from polo.utils.dialog_utils import make_message_box
 from polo.utils.io_utils import *
-from polo.utils.math_utils import best_aspect_ratio, get_cell_image_dims
-from polo.widgets.plate_viewer import plateViewer
-from polo.widgets.slideshow_viewer import SlideshowViewer
-from polo.windows.image_pop_dialog import ImagePopDialog
 from polo.windows.log_dialog import LogDialog
 from polo.windows.pptx_dialog import PptxDesignerDialog
-from polo.windows.run_updater_dialog import RunUpdaterDialog
-from polo.windows.spectrum_dialog import SpectrumDialog
-from polo.windows.time_res_dialog import TimeResDialog
 from polo.windows.cite_dialog import CiteDialog
 
 logger = make_default_logger(__name__)
