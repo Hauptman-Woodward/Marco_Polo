@@ -1484,9 +1484,13 @@ class BarTender():
             # search for a menu whos usage dates include this date
             # end up with a list of keys for menus of the specified type that
             # are sorted by the start date of their use at HWI cente
-            for each_key in menus_keys_by_date:
-                if date < self.menus[each_key].start_date:
+            for each_key in menus_keys_by_date[0:-1]:
+                #print(self.menus[each_key].start_date, date)
+                if (date >= self.menus[each_key].start_date and 
+                    date <= self.menus[each_key].end_date
+                    ):
                     return self.menus[each_key]
+        
         return self.menus[menus_keys_by_date[-1]]
 
     def get_menus_by_type(self, type_='s'):
